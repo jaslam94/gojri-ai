@@ -1,0 +1,18 @@
+# Raw PDF source collection (large scans/books, CC-BY-NC-4.0 / non-redistributable,
+# not meant to live on GitHub). Kept locally; see data/manifest.csv for the catalog.
+/PDFs/
+
+# Common Voice audio corpus (large, CC0 but terms prohibit re-hosting/speaker ID).
+# Publicly available directly from Mozilla Common Voice / Data Collective.
+/cv-corpus-*/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/

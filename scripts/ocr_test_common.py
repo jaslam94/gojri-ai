@@ -9,6 +9,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 PROMPTS_DIR = ROOT / "prompts"
+TRANSCRIPTIONS_DIR = ROOT / "data" / "gold" / "transcriptions"
 LATEST_PROMPT_VERSION = "v2"
 RUNS_LOG = ROOT / "data" / "gold" / "ocr_runs_log.csv"
 
@@ -24,7 +25,9 @@ def load_prompt(version=LATEST_PROMPT_VERSION):
 
 
 def output_path(image_path, model_tag, prompt_version=LATEST_PROMPT_VERSION):
-    return image_path.with_name(f"{image_path.stem}_{model_tag}_{prompt_version}.txt")
+    page_dir = TRANSCRIPTIONS_DIR / image_path.stem
+    page_dir.mkdir(parents=True, exist_ok=True)
+    return page_dir / f"{model_tag}_{prompt_version}.txt"
 
 
 def log_run(page_id, model, prompt_version, input_tokens, output_tokens, total_tokens, output_file):

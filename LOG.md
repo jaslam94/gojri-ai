@@ -252,6 +252,39 @@ identical content to the existing `dict_alif_sonnet_5_corrected.txt`.
 
 ---
 
+---
+
+## 2026-08-04 — Reorganized gold-set storage: transcriptions/ per page
+
+A separate session (see `plans/STAGE-1-TEST-BATCH.md`, a handoff briefing for
+running the real 12-page Bedrock test batch) hit real friction with two competing
+AWS CLI installs, and separately worked out that Claude Sonnet 5 needed a one-time
+console enablement on Bedrock before its inference profile
+(`us.anthropic.claude-sonnet-5`) would stop returning `AccessDeniedException`. That
+session's plan calls for `boto3` directly (skips the CLI issue) and Haiku 4.5 +
+Sonnet 5 (once enabled) as the two models for the batch.
+
+Before running that batch, reorganized how gold-set files are stored — the flat
+`data/gold/images/` folder was getting cluttered mixing `.png` images with every
+model's `.txt` output for every page. New layout:
+- `data/gold/images/` — page images only.
+- `data/gold/transcriptions/<page_id>/` — one folder per page, holding `draft.txt`
+  (the hand-corrected gold standard) plus every tested model's output, named
+  `<model>_<prompt_version>.txt`.
+
+Also dropped `<page>_sonnet_5_corrected.txt` (duplicate of `draft.txt`, no
+information lost) and cleared `ocr_runs_log.csv` back to just its header, since its
+old rows pointed at the now-moved file paths. Confirmed via `git status` before
+touching anything that all the "removed" files were safe, recoverable
+deletions already sitting in a prior commit — nothing was actually lost.
+
+Upcoming Bedrock run naming, confirmed: append `_v1` even though this batch is
+single-prompt-version, for consistency with the Gemini files; log all runs
+(Gemini + upcoming Haiku/Sonnet) into the one shared `ocr_runs_log.csv` rather than
+a second parallel CSV.
+
+---
+
 ## Glossary (grows as new terms come up)
 
 - **Token**: the unit a model reads/writes in and is billed by — roughly a

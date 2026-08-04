@@ -1,21 +1,29 @@
 # OCR Gold Set — Correction Instructions
 
-This folder has 14 page images (from 12 real pages, 2 of which are two-page spreads
-split into halves) plus a draft transcription for each. **The drafts are a starting
-point, not a finished product** — they were produced by Claude reading each image
-once, and are expected to contain real errors, especially:
+This folder covers 14 page images (from 12 real pages, 2 of which are two-page
+spreads split into halves). Layout:
+- `images/` — the page images only (`.png`), nothing else.
+- `transcriptions/<page_id>/` — one folder per page, holding every text file for
+  that page: `draft.txt` (your hand-corrected gold standard, the one to edit), plus
+  whatever model outputs have been tested for that page so far, named
+  `<model>_<prompt_version>.txt` (e.g. `gemini_3.6_flash_v1.txt`,
+  `haiku_4.5_v1.txt`). A few pages also have `sonnet_5_original.txt`, the
+  uncorrected first-pass draft kept for before/after comparison.
+
+**`draft.txt` is a starting point, not a finished product** — it was produced by
+Claude reading each image once, and is expected to contain real errors, especially:
 - Diacritics and small marks (dots, nasalization strokes) — the hardest part of
   Nastaliq to get right and where most mistakes will be.
 - Anywhere marked `[...]` in brackets — these are notes about images or uncertain
   content, not transcribed text, and need your judgment.
 
 ## How to correct each one
-1. Open the `.png` and its matching `_draft.txt` side by side.
+1. Open `images/<page_id>.png` and `transcriptions/<page_id>/draft.txt` side by side.
 2. Read the image yourself and fix the text file until it exactly matches what's on
    the page, character for character.
 3. Leave `[bracketed notes]` as-is if they're accurately describing a non-text
    element (like an illustration); delete them if they're wrong.
-4. Don't worry about the two `direct_extraction` files (`hindi_dict`,
+4. Don't worry about the two `direct_extraction` pages (`hindi_dict`,
    `quran_translation`) needing the same scrutiny as the others — those came from
    the PDF's real text layer, not a guess, but a quick check that nothing looks
    wrong is still worth doing.

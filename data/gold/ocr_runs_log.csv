@@ -1,5 +1,1 @@
 timestamp_utc,page_id,model,prompt_version,input_tokens,output_tokens,total_tokens,output_file
-2026-08-04T06:44:13+00:00,dict_alif,gemini_3.6_flash,v1,1833,505,8272,data/gold/images/dict_alif_gemini_3.6_flash_v1.txt
-2026-08-04T06:44:36+00:00,gojri_adbiyaat,gemini_3.6_flash,v1,1833,413,4228,data/gold/images/gojri_adbiyaat_gemini_3.6_flash_v1.txt
-2026-08-04T07:46:50+00:00,dict_alif,gemini_3.6_flash,v2,2329,508,7395,data/gold/images/dict_alif_gemini_3.6_flash_v2.txt
-2026-08-04T07:47:31+00:00,gojri_adbiyaat,gemini_3.6_flash,v2,2329,415,6748,data/gold/images/gojri_adbiyaat_gemini_3.6_flash_v2.txt

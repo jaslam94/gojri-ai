@@ -422,6 +422,49 @@ until this is understood.
 
 ---
 
+---
+
+## 2026-08-04 — Haiku 4.5 and Qwen3-VL shelved
+
+Both failed on both test pages (`dict_alif`, `gojri_adbiyaat`), under identical,
+controlled conditions (same cropped images, same v1 prompt, temperature=0, logged
+settings) where Gemini 3.6 Flash succeeded on the exact same inputs — so this isn't
+a settings, prompt, or image-quality issue, it's the models themselves. Decision:
+**stop using both going forward.** Full outputs preserved for the record in
+`data/gold/transcriptions_archived/<page_id>/` rather than deleted, so the evidence
+stays available if this ever needs revisiting.
+
+**Concrete examples, `gojri_adbiyaat` (correct reading known from earlier hand
+correction, before the file was later wiped from the working copy):**
+
+| Correct | Haiku 4.5 | Qwen3-VL |
+|---|---|---|
+| `وِچ چھوڑا کے عمر گزری، دتو تیں نہ کدے دیدار مِناں` | `ویچ ویڑھو کے عم گردی، ڑو تھیں یک کے دھار دھیال` | *(not tested on this exact line)* |
+| `جان میری تیرے باجھ چلی سجنا لائی پریت نا توڑئیے نہ` | `جان میری تھیرے پاچھے جھلی پیت تونے ند` | `جان میری تیرے باجھ چلی بیتا لائی پریت نا توڑے نہ` |
+
+Haiku's first example isn't a near-miss with a few wrong diacritics — most of the
+words are simply different. Qwen3-VL's second example is structurally closer (right
+number of words, right general shape) but still swaps real words (`سجنا`→`بیتا`)
+and drops the recurring `-ئیے` radif ending the same way the very first, informal
+Sonnet draft did back at the start of this project — that specific ligature
+(hamza-bearing yeh in a verb ending) seems to be a genuinely hard case across
+multiple models now, not just one.
+
+**`dict_alif` (dictionary layout) — different failure shape entirely**: both models
+substitute a placeholder character for headwords they can't read, rather than
+attempting a (possibly wrong) reading. Haiku used `ئ` in the first smoke test and
+`Ī` — not even a character that belongs in this script — in the controlled rerun of
+the identical page. Not a consistent substitution, which suggests genuine
+uncertainty/failure rather than a deterministic quirk.
+
+**Kept**: Gemini 3.6 Flash, the only model so far that's transcribed both pages
+correctly under matched conditions.
+
+**Next**: test Kimi K2.5 and one more model (still deciding which) before moving to
+Sonnet 5, per updated plan.
+
+---
+
 ## Glossary (grows as new terms come up)
 
 - **Token**: the unit a model reads/writes in and is billed by — roughly a

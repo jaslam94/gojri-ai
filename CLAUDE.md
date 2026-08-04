@@ -285,6 +285,27 @@ number Stage 1's cost estimate should be built on.
    test batch must directly A/B compare Haiku vs Sonnet output on the same pages
    (and optionally Tesseract, see below, as a free zero-cost baseline) so the
    cost/quality tradeoff is based on evidence, not assumption.
+   - **Resolved (Aug 2026, Stage 1 test batch)**: Haiku 4.5 tested directly via AWS
+     Bedrock on 2 real gold-set pages (`dict_alif`, `gojri_adbiyaat`), controlled
+     settings (temperature=0, explicit max_tokens, no thinking — logged in
+     `data/gold/ocr_runs_log.csv`). **Quality is not usable**: on `dict_alif`
+     (dense dictionary layout) it substitutes a placeholder character in place of
+     headwords it can't read, inconsistently (`ئ` in one run, `Ī` — not even a
+     valid character in this script — in a rerun of the same page); on
+     `gojri_adbiyaat` (poetry) whole phrases are wrong, not just diacritics, e.g.
+     `وِچ چھوڑا کے عمر گزری، دتو تیں نہ کدے دیدار مِناں` (correct) came back as
+     `ویچ ویڑھو کے عم گردی، ڑو تھیں یک کے دھار دھیال` — most words differ, not a
+     near-miss. **Qwen3-VL** (a candidate cheap alternative, not in the original
+     Haiku/Sonnet plan) was tested alongside and also failed, differently: mostly
+     correct structure but frequent character-order corruption and word swaps
+     (`الف` read as `فلف`). **Both ruled out for this project.** The one variable
+     controlled for and eliminated as the cause: Gemini 3.6 Flash, given the exact
+     same cropped images and prompt, transcribed both pages correctly — so this is
+     a real capability gap on small/dense Nastaliq text for these two specific
+     models, not a settings or input-quality issue. Full outputs kept for the
+     record in `data/gold/transcriptions_archived/`. Sonnet 5 (enabled on Bedrock
+     this session) remains the next model to test against Gemini's cost/quality
+     bar, per `LOG.md`.
 6. **Tesseract (traditional OCR) considered as an alternative/baseline**: free and
    runs locally, but is a pattern-matching engine with no language understanding, it
    cannot use surrounding context to resolve ambiguous cursive strokes the way a

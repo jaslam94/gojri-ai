@@ -584,6 +584,21 @@ remains the only way to properly evaluate DeepSeek-OCR for this project, and is 
 real chunk of setup work, not a quick check - shelved as a "maybe later," not
 tested, not ruled out on merit.
 
+**Follow-up same day**: pushed on this rather than dropping it - checked for a
+local GPU first (none: no `nvidia-smi`, no CUDA), then built
+`notebooks/deepseek_ocr_colab.ipynb` (generated via
+`scripts/build_deepseek_ocr_notebook.py`, so the long prompt string gets JSON-escaped
+correctly rather than hand-typed into notebook JSON). Verified against the actual
+model card rather than guessed: DeepSeek-OCR is 3B params (comfortably fits a free
+Colab T4's 16GB VRAM in bfloat16), loads via `transformers` with
+`trust_remote_code=True`, and — importantly, unlike the Gradio demos — its real
+prompt format is `"<image>\n"` + free-text instruction, so **the full v1 prompt can
+actually be sent**, making this a genuinely controlled, comparable run if it works.
+Includes a fallback to eager attention if `flash-attn` fails to build, a common
+Colab pain point. I can't execute this myself (no browser/notebook-execution
+access) - the user runs it in their own free Colab account and pastes results
+back, same pattern as the manual Sonnet/Haiku chat-session runs.
+
 ---
 
 ## Glossary (grows as new terms come up)

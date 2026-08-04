@@ -1,3 +1,7 @@
-timestamp_utc,page_id,model,prompt_version,input_tokens,output_tokens,total_tokens,stop_reason,output_file
-2026-08-04T16:59:13+00:00,dict_alif,qwen3_vl,v1,1447,608,2055,end_turn,data/gold/transcriptions/dict_alif/qwen3_vl_v1.txt
-2026-08-04T17:14:52+00:00,dict_alif,haiku_4.5,v1,1795,656,2451,end_turn,data/gold/transcriptions/dict_alif/haiku_4.5_v1.txt
+timestamp_utc,page_id,model,prompt_version,temperature,max_tokens_requested,thinking,input_tokens,output_tokens,total_tokens,stop_reason,extra_settings,output_file
+2026-08-04T17:27:29+00:00,dict_alif,haiku_4.5,v1,0,4096,not enabled (opt-in only; Haiku 4.5 does not support adaptive-thinking/effort),1795,618,2413,end_turn,,data/gold/transcriptions/dict_alif/dict_alif_haiku_4.5_v1.txt
+2026-08-04T17:28:05+00:00,dict_alif,qwen3_vl,v1,0,4096,not enabled (no thinking/reasoning field sent),1447,605,2052,end_turn,,data/gold/transcriptions/dict_alif/dict_alif_qwen3_vl_v1.txt
+2026-08-04T17:28:26+00:00,gojri_adbiyaat,haiku_4.5,v1,0,4096,not enabled (opt-in only; Haiku 4.5 does not support adaptive-thinking/effort),1795,655,2450,end_turn,,data/gold/transcriptions/gojri_adbiyaat/gojri_adbiyaat_haiku_4.5_v1.txt
+2026-08-04T17:29:04+00:00,gojri_adbiyaat,qwen3_vl,v1,0,4096,not enabled (no thinking/reasoning field sent),1481,689,2170,end_turn,,data/gold/transcriptions/gojri_adbiyaat/gojri_adbiyaat_qwen3_vl_v1.txt
+2026-08-04T17:31:02+00:00,dict_alif,gemini_3.6_flash,v1,,,thinking_level=low,1823,506,2329,FinishReason.STOP,,data/gold/transcriptions/dict_alif/dict_alif_gemini_3.6_flash_v1.txt
+2026-08-04T17:31:21+00:00,dict_alif,gemini_3.6_flash,v1,,,thinking_level=low,1823,499,2322,FinishReason.STOP,,data/gold/transcriptions/dict_alif/dict_alif_gemini_3.6_flash_v1.txt

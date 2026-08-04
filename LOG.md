@@ -363,6 +363,65 @@ won't reliably follow a transcription prompt).
 
 ---
 
+---
+
+## 2026-08-04 — Settings weren't controlled at all; fixed, logged, re-ran, verdict unchanged
+
+Asked directly: "which settings are you running these models with? Is thinking on?
+Is effort High?" Honest answer at the time: none of that had been explicitly set —
+the Bedrock `converse()` calls only passed `modelId` and `messages`, nothing else.
+Real gap, worth researching properly rather than guessing.
+
+**Findings, checked against AWS's/Google's own docs, not assumed:**
+- Claude's extended thinking is opt-in — off unless explicitly requested. It was off.
+- **Haiku 4.5 doesn't support the adaptive-thinking/effort parameter at all** —
+  confirmed against AWS's own docs; that feature is limited to Opus 4.6+/5-tier and
+  Sonnet 4.6. "Is effort High?" doesn't apply to Haiku 4.5 as a question.
+- Temperature was never set, so it used the API default (1.0 for Claude/Anthropic —
+  non-deterministic sampling, a bad fit for an exact-copy task).
+- **Gemini is the opposite case**: Google's own Gemini 3 docs explicitly warn
+  *against* changing temperature from its default of 1.0 ("may cause looping or
+  degraded performance"). So the three models now deliberately use *different*
+  settings, not matched ones — Claude/Qwen get `temperature=0`, Gemini keeps its
+  default — and that asymmetry is logged explicitly rather than left implicit.
+- Gemini 3.6 Flash's own default `thinking_level` is already `"minimal"`, i.e.
+  close to what an OCR task wants anyway.
+
+**Built proper settings logging**, per direct request: every script now echoes the
+exact prompt file path + full prompt text to console before calling, prints the
+exact model ID/temperature/max_tokens/thinking config being sent
+(`print_call_settings` in `ocr_test_common.py`), and logs all of it to
+`ocr_runs_log.csv` (new columns: `temperature`, `max_tokens_requested`, `thinking`,
+`extra_settings`). Also fixed: output filenames now include the page ID
+(`dict_alif_haiku_4.5_v1.txt`, not just `haiku_4.5_v1.txt`), and a copy-paste bug
+where the Qwen3-VL rows' `thinking` column incorrectly cited Haiku-specific wording.
+
+**Re-ran `dict_alif` + `gojri_adbiyaat` on Haiku 4.5 and Qwen3-VL with temperature=0,
+plus `dict_alif` on Gemini, fresh** (old, unconfigured-settings smoke-test rows and
+files deleted rather than kept, since they're fully superseded).
+
+**Result: temperature=0 did not fix the quality problem.** Haiku 4.5 still
+substitutes placeholder characters for headwords it can't read (this time `Ī`, a
+Latin letter that isn't even valid in this script — a different placeholder than the
+earlier smoke test's `ئ`, meaning it's not a fixed/deterministic substitution
+either). Qwen3-VL still shows the same character-order corruption pattern. This
+points away from "unlucky high-temperature sampling" as the explanation and toward
+a genuine capability gap on this specific page's small, dense headwords, at least
+for these two models.
+
+**Gemini's result on the same page, same settings-rigor, is a clean pass** —
+correctly transcribed headwords throughout (`آپ ہُدرو` matches the known-correct
+reading exactly), no placeholder substitutions. Also **directly confirms an earlier
+open question**: with `thinking_level=low` explicitly set, Gemini's `total_tokens`
+now exactly equals `input + output` (no more of the unexplained gap noted on
+2026-08-04 earlier — "total_tokens noticeably higher than input+output" — that was
+the model thinking by default, now resolved).
+
+Scope held to these 2 pages only, per instruction — not extending to the full 12
+until this is understood.
+
+---
+
 ## Glossary (grows as new terms come up)
 
 - **Token**: the unit a model reads/writes in and is billed by — roughly a

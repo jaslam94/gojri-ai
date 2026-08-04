@@ -515,6 +515,35 @@ eventual 14,550-page cost extrapolation regardless of which model(s) get chosen.
 
 ---
 
+---
+
+## 2026-08-04 — Pixtral Large and Llama 4 Maverick shelved
+
+Same process as Haiku 4.5/Qwen3-VL: outputs archived to
+`data/gold/transcriptions_archived/<page_id>/` rather than deleted, reasons
+documented here with examples, both stop being used going forward.
+
+**Pixtral Large**: shelved for fabrication, not just inaccuracy — on
+`dict_alif` it invented an example sentence not on the page
+(`آپنے گھوڑے کو کیا نام رکھا؟`, "What did you name your horse?") and appended a
+stray markdown code fence; on `gojri_adbiyaat` it produced a complete, fluent,
+entirely fabricated Urdu parable (a boy refusing food, a sadhu searching for a
+cow, a monkey eating fruit) with no connection to the actual poem on the page.
+Confident, coherent, and wrong is a worse failure mode for this project than
+visible garbling — it's exactly the silent-hallucination risk flagged early on in
+`CLAUDE.md`.
+
+**Llama 4 Maverick**: shelved for the same placeholder-substitution pattern as
+Haiku (`˜` in place of unreadable headwords on `dict_alif`) plus a practical cost
+problem — it used ~4,520 input tokens per page on the identical cropped image that
+Kimi K2.5 processed in ~1,764, roughly 2.5x more expensive for a weaker result.
+
+**Currently active candidates**: Gemini 3.6 Flash (clean on both pages tested) and
+Kimi K2.5 (best non-Gemini result, no placeholder failures). Sonnet 5 still pending
+as the next test.
+
+---
+
 ## Glossary (grows as new terms come up)
 
 - **Token**: the unit a model reads/writes in and is billed by — roughly a

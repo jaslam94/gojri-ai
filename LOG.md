@@ -211,6 +211,47 @@ useful. Sticking with Gemini + Sonnet + Haiku for now.
 
 ---
 
+---
+
+## 2026-08-04 — Prompt versioning tightened; dict_alif original partially recovered
+
+**Prompt v1 frozen, v2 created.** You'd substantially expanded
+`prompts/ocr_transcription_v1.txt` in place (good additions: don't skip/repeat
+similar dictionary lines, preserve Eastern vs. Western numerals as printed, transcribe
+printed symbols/dingbats as content, ignore scan show-through, note stamps/handwriting,
+a new rule for right-column/left-column paired layouts). Since two runs were already
+logged against the old `v1` wording, editing it in place would have silently broken
+the "same prompt across models" guarantee the whole comparison depends on. Split it
+instead: `v1` stays frozen exactly as first used, the new rules are
+`prompts/ocr_transcription_v2.txt`.
+
+**Tooling updated to make this mistake structurally harder to repeat**: output
+filenames and `ocr_runs_log.csv` now both carry the prompt version explicitly
+(`<page>_<model>_<version>.txt`, e.g. `dict_alif_gemini_3.6_flash_v2.txt`) instead of
+one bare filename that a future run could silently overwrite.
+
+**Re-ran Gemini on both pages under v2.** Diff against v1 came back mostly minor
+sampling variance (spacing, hyphenation, word order of the page-top label). One
+genuine new issue, though: v2 misread the headword letter **ا** (alif) as the digit
+**۱** (one) in `ا(alif)nm.A.1.` — the two characters are visually near-identical in
+this script, and the new numeral-preservation rule may have made the model more
+eager to read ambiguous marks as digits specifically. Small sample (2 pages), but a
+concrete thing to watch for as more pages get tested under v2 — a prompt change
+fixing one failure mode can introduce a different one.
+
+**`dict_alif`'s original transcription, partially recovered.** You found and
+confirmed one genuine original (mis-OCR'd) reading against the gold version:
+headword `خُودرو` (correct) was originally misread as `ھُدرو`, with a duplicated
+trailing `آپ` — a real example of the "don't repeat a line/word" failure the v2
+prompt now explicitly guards against. Saved as
+`data/gold/images/dict_alif_sonnet_5_original.txt`, seeded from the gold text with
+just this one line reverted — **the rest of that file still matches the gold
+version**, i.e. it is not yet a complete original, just the one confirmed
+difference. Also cleaned up a duplicate `dict_alif_corrected.txt` that had
+identical content to the existing `dict_alif_sonnet_5_corrected.txt`.
+
+---
+
 ## Glossary (grows as new terms come up)
 
 - **Token**: the unit a model reads/writes in and is billed by — roughly a

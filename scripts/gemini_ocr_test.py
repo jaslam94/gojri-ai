@@ -1,10 +1,11 @@
 """
 A/B test: transcribe a gold-set page image with Gemini using the shared canonical
-prompt (prompts/ocr_transcription_v1.txt), save the output next to the image as
-<page_id>_<model_tag>.txt, and log the run to data/gold/ocr_runs_log.csv.
+prompt (prompts/ocr_transcription_<version>.txt), save the output next to the image
+as <page_id>_<model_tag>_<prompt_version>.txt, and log the run to
+data/gold/ocr_runs_log.csv.
 
 Usage:
-    py -3 scripts/gemini_ocr_test.py data/gold/images/dict_alif.png
+    py -3 scripts/gemini_ocr_test.py data/gold/images/dict_alif.png [prompt_version]
 """
 
 import io
@@ -18,16 +19,18 @@ from dotenv import load_dotenv
 from google import genai
 from google.genai import types
 
-from ocr_test_common import load_prompt, log_run, output_path
+from ocr_test_common import LATEST_PROMPT_VERSION, load_prompt, log_run, output_path
 
 MODEL = "gemini-3.6-flash"
 MODEL_TAG = "gemini_3.6_flash"
 
 
 def main():
-    if len(sys.argv) != 2:
-        print("Usage: py -3 scripts/gemini_ocr_test.py <path-to-image>")
+    if len(sys.argv) not in (2, 3):
+        print("Usage: py -3 scripts/gemini_ocr_test.py <path-to-image> [prompt_version]")
         sys.exit(1)
+
+    prompt_version = sys.argv[2] if len(sys.argv) == 3 else LATEST_PROMPT_VERSION
 
     load_dotenv()
     image_path = Path(sys.argv[1]).resolve()
@@ -38,11 +41,11 @@ def main():
         model=MODEL,
         contents=[
             types.Part.from_bytes(data=image_path.read_bytes(), mime_type="image/png"),
-            load_prompt(),
+            load_prompt(prompt_version),
         ],
     )
 
-    print(f"--- {MODEL} transcription of {image_path.name} ---\n")
+    print(f"--- {MODEL} ({prompt_version}) transcription of {image_path.name} ---\n")
     print(response.text)
 
     usage = response.usage_metadata
@@ -52,9 +55,9 @@ def main():
     if usage:
         print(f"\n--- tokens: prompt={in_tok} output={out_tok} total={total_tok} ---")
 
-    out_path = output_path(image_path, MODEL_TAG)
+    out_path = output_path(image_path, MODEL_TAG, prompt_version)
     out_path.write_text(response.text, encoding="utf-8")
-    log_run(page_id, MODEL_TAG, in_tok, out_tok, total_tok, out_path)
+    log_run(page_id, MODEL_TAG, prompt_version, in_tok, out_tok, total_tok, out_path)
     print(f"\n(saved to {out_path}, run logged)")
 
 

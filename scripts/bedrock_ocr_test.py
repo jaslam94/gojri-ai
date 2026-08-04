@@ -1,18 +1,24 @@
 """
 A/B test: transcribe a gold-set page image with a Bedrock Converse API model
-(Claude Haiku 4.5 or Qwen3-VL) using the shared canonical prompt, save the output
-under data/gold/transcriptions/<page_id>/, and log the run (including exact
-inference settings used) to data/gold/ocr_runs_log.csv.
+using the shared canonical prompt, save the output under
+data/gold/transcriptions/<page_id>/, and log the run (including exact inference
+settings used) to data/gold/ocr_runs_log.csv.
 
-Settings: temperature=0 and an explicit max_tokens ceiling are set for both models,
+Settings: temperature=0 and an explicit max_tokens ceiling are set for every model,
 since this is an exact-transcription task, not a creative one. Extended
-thinking/reasoning is not enabled for either model - Claude's thinking is opt-in
+thinking/reasoning is not enabled for any model - Claude's thinking is opt-in
 (off unless explicitly requested), and Haiku 4.5 does not support the
 adaptive-thinking/effort parameter at all (confirmed against AWS's own docs -
 that feature is limited to the Opus 4.6+/5-tier and Sonnet 4.6 models).
 
+Model IDs verified against each provider's actual AWS model card (not the Bedrock
+console's summary blurbs, which have repeatedly omitted real capabilities). Llama 4
+Maverick and Pixtral Large are not available in-region for us-east-1 and need the
+cross-region ("us.") inference profile ID; Kimi K2.5 and Qwen3-VL are in-region.
+
 Usage:
-    py -3 scripts/bedrock_ocr_test.py <path-to-image> <haiku_4.5|qwen3_vl> [prompt_version]
+    py -3 scripts/bedrock_ocr_test.py <path-to-image> <model_tag> [prompt_version]
+    model_tag one of: haiku_4.5, qwen3_vl, kimi_k2.5, llama4_maverick, pixtral_large
 """
 
 import io
@@ -35,17 +41,24 @@ MAX_TOKENS = 4096
 MODELS = {
     "haiku_4.5": "us.anthropic.claude-haiku-4-5-20251001-v1:0",
     "qwen3_vl": "qwen.qwen3-vl-235b-a22b",
+    "kimi_k2.5": "moonshotai.kimi-k2.5",
+    "llama4_maverick": "us.meta.llama4-maverick-17b-instruct-v1:0",
+    "pixtral_large": "us.mistral.pixtral-large-2502-v1:0",
 }
 
 THINKING_NOTES = {
     "haiku_4.5": "not enabled (opt-in only; Haiku 4.5 does not support adaptive-thinking/effort)",
     "qwen3_vl": "not enabled (no thinking/reasoning field sent)",
+    "kimi_k2.5": "not enabled (no thinking/reasoning field sent)",
+    "llama4_maverick": "not enabled (no thinking/reasoning field sent)",
+    "pixtral_large": "not enabled (no thinking/reasoning field sent)",
 }
 
 
 def main():
     if len(sys.argv) not in (3, 4):
-        print("Usage: py -3 scripts/bedrock_ocr_test.py <path-to-image> <haiku_4.5|qwen3_vl> [prompt_version]")
+        print(f"Usage: py -3 scripts/bedrock_ocr_test.py <path-to-image> <model_tag> [prompt_version]")
+        print(f"model_tag one of: {list(MODELS)}")
         sys.exit(1)
 
     image_path = Path(sys.argv[1]).resolve()

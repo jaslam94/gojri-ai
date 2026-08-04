@@ -465,6 +465,56 @@ Sonnet 5, per updated plan.
 
 ---
 
+---
+
+## 2026-08-04 — Kimi K2.5, Llama 4 Maverick, Pixtral Large tested
+
+Verified all three against their actual AWS model cards before running anything
+(same discipline as Qwen3-VL/Llama 4 earlier) — all three support image input via
+the Converse API. Kimi K2.5 (`moonshotai.kimi-k2.5`) is in-region for `us-east-1`;
+Llama 4 Maverick and Pixtral Large both need the cross-region ID
+(`us.meta.llama4-maverick-17b-instruct-v1:0`,
+`us.mistral.pixtral-large-2502-v1:0`) since neither is available in-region here.
+Same settings discipline as before: temperature=0, explicit max_tokens, no
+thinking, all logged.
+
+**Kimi K2.5 — the best non-Gemini result so far.** On `dict_alif`, it correctly
+read `آپ خُودرو` (matches the known-correct gold reading exactly) where every other
+non-Gemini model tested has gotten this specific entry wrong. No placeholder-
+character substitutions anywhere in either page. Still has real, ordinary OCR
+errors (missing/wrong diacritics, occasional wrong word), but nothing like the
+severity seen from Haiku/Qwen3-VL. Worth carrying forward as a real candidate.
+
+**Llama 4 Maverick — mixed, closer to Haiku's failure mode than Kimi's.**
+Still substitutes a placeholder (`˜`, a tilde, twice on `dict_alif`) for headwords
+it can't read, and mangles some phrases significantly. Notably more expensive too:
+~4,520 input tokens per page vs. ~1,450-1,800 for every other model tested on the
+same cropped images — its image tokenization is markedly less efficient. Not ruled
+out yet, but the weakest of the three new candidates.
+
+**Pixtral Large — a worse failure than anything seen yet, and a different kind of
+danger.** On `dict_alif` it invented fabricated example sentences not on the page
+(`آپنے گھوڑے کو کیا نام رکھا؟` — "What did you name your horse?" — pure invention)
+and appended a stray ` ``` ` markdown fence, violating the prompt's explicit
+plain-text-only rule. On `gojri_adbiyaat` it did something much worse: **produced
+an entirely fabricated, fluent, coherent Urdu parable about a boy refusing food, a
+sadhu searching for a cow, and a monkey eating fruit — none of which has anything
+to do with the actual poem on the page.** This is exactly the "confident-but-wrong"
+hallucination risk flagged early in this project (`CLAUDE.md`'s OCR pipeline plan,
+point 7): Tesseract-style engines fail visibly; this failed by inventing plausible,
+complete, unrelated content. Arguably more dangerous than Haiku/Qwen3-VL's garbling,
+since a less careful review pass could mistake fluent invented prose for a real
+(if imperfect) transcription. **Recommending this one be shelved too** — flagging
+for confirmation rather than deciding unilaterally, given how much this changes the
+picture, but the evidence is strong.
+
+**Cost note**: token usage varies a lot by model on the *identical* cropped image —
+Kimi ~1,764 input tokens/page, Pixtral ~3,439, Llama 4 Maverick ~4,520. Image
+tokenization efficiency isn't uniform across providers, which will matter for the
+eventual 14,550-page cost extrapolation regardless of which model(s) get chosen.
+
+---
+
 ## Glossary (grows as new terms come up)
 
 - **Token**: the unit a model reads/writes in and is billed by — roughly a

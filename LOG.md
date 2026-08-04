@@ -310,6 +310,59 @@ left to the user's own process, not something Claude generates.
 
 ---
 
+---
+
+## 2026-08-04 — Bedrock smoke test: real blockers, real quality concerns, one caught bug
+
+**AWS setup**: `boto3` installed. First `dict_alif` call to Haiku 4.5 failed with
+`ResourceNotFoundException: Model use case details have not been submitted` — a
+one-time, Anthropic-specific account requirement on Bedrock, separate from the
+model-access toggle already done for Sonnet 5. Confirmed it's Anthropic-specific
+(not account-wide) by running Qwen3-VL in the same session, which worked
+immediately. Form submitted, Haiku unblocked after.
+
+**Request format decided**: both Haiku 4.5 and Qwen3-VL support Bedrock's unified
+Converse API with images, so one script (`scripts/bedrock_ocr_test.py`) handles both
+via a shared code path — image bytes passed raw (not base64, unlike the
+`invoke_model`/Anthropic-specific format the original plan assumed).
+
+**Smoke test on `dict_alif` (cropped, v1 prompt) — both models showed real quality
+problems, in different ways**:
+- Qwen3-VL: character-order corruption in places (`فلف` instead of `الف`,
+  `اياكو فل فيقيح` instead of `ایکو الف حقیقی`) — looks like scrambling, not just
+  missing marks.
+- Haiku 4.5: repeatedly substituted a generic `ئ` placeholder in place of several
+  different actual headwords, rather than attempting to read them.
+
+Both are worse than the diacritic-drop/heh-confusion pattern seen earlier from
+Gemini and the original Sonnet draft. Decided not to over-read this from one page —
+`dict_alif` has unusually small, dense headwords and may be a harder case than the
+other 11 pages. Plan: run the full 12-page batch for both models before judging.
+
+**Bug caught and fixed**: added a `stop_reason` column to the shared run-log schema
+in `ocr_test_common.py`, but `log_run()` only writes a header for a brand-new file —
+since `ocr_runs_log.csv` already existed (header-only, from the earlier wipe), it
+kept the *old* 8-column header while new rows wrote 9 columns. Caught by manually
+re-verifying the log matched what was actually sent, after being asked directly
+whether v1 was really being used. Fixed by hand-correcting the header; no schema
+migration logic was worth adding for a CSV this size, but a lesson worth keeping:
+verify by reading the actual artifact, not by trusting that code ran the way it was
+written to.
+
+**Model catalog research, for later reference**: confirmed via AWS's own model
+cards (not the console's summary blurbs, which have twice now omitted real
+capabilities — Claude and Llama 4 both show as text-only in some console list views
+despite genuinely supporting images) that Llama 4 Maverick supports image input +
+Converse API, but needs the cross-region ID (`us.meta.llama4-maverick-17b-instruct-v1:0`)
+since it's not available in-region for `us-east-1`. Also identified Pixtral Large,
+Kimi K2.5, and NVIDIA Nemotron Nano 12B v2 VL as genuinely OCR-relevant candidates
+if more models are wanted later; ruled out Stability AI (image generation, not
+understanding), TwelveLabs (video embeddings), and Gemma (the only multimodal
+variant on Bedrock is the base/pretrained "PT" model, not instruction-tuned, so it
+won't reliably follow a transcription prompt).
+
+---
+
 ## Glossary (grows as new terms come up)
 
 - **Token**: the unit a model reads/writes in and is billed by — roughly a

@@ -15,7 +15,7 @@ RUNS_LOG = ROOT / "data" / "gold" / "ocr_runs_log.csv"
 
 RUNS_LOG_FIELDS = [
     "timestamp_utc", "page_id", "model", "prompt_version",
-    "input_tokens", "output_tokens", "total_tokens", "output_file",
+    "input_tokens", "output_tokens", "total_tokens", "stop_reason", "output_file",
 ]
 
 
@@ -30,7 +30,7 @@ def output_path(image_path, model_tag, prompt_version=LATEST_PROMPT_VERSION):
     return page_dir / f"{model_tag}_{prompt_version}.txt"
 
 
-def log_run(page_id, model, prompt_version, input_tokens, output_tokens, total_tokens, output_file):
+def log_run(page_id, model, prompt_version, input_tokens, output_tokens, total_tokens, output_file, stop_reason=None):
     is_new = not RUNS_LOG.exists()
     RUNS_LOG.parent.mkdir(parents=True, exist_ok=True)
     with open(RUNS_LOG, "a", newline="", encoding="utf-8") as f:
@@ -45,5 +45,6 @@ def log_run(page_id, model, prompt_version, input_tokens, output_tokens, total_t
             "input_tokens": input_tokens,
             "output_tokens": output_tokens,
             "total_tokens": total_tokens,
+            "stop_reason": stop_reason,
             "output_file": str(output_file.relative_to(ROOT).as_posix()),
         })

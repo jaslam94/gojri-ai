@@ -2,9 +2,11 @@
 # not meant to live on GitHub). Kept locally; see data/manifest.csv for the catalog.
 /PDFs/
 
-# Common Voice audio corpus (large, CC0 but terms prohibit re-hosting/speaker ID).
+# Common Voice audio clips (large, CC0 but terms prohibit re-hosting/speaker ID).
 # Publicly available directly from Mozilla Common Voice / Data Collective.
-/cv-corpus-*/
+# Metadata (train/dev/validated .tsv etc.) stays tracked - only the audio itself
+# is excluded. Path reflects the "existing datasets/" reorganization.
+existing datasets/cv-corpus-*/**/clips/
 
 # Python
 __pycache__/

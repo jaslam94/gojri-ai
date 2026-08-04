@@ -61,7 +61,7 @@ def render_spread_halves(pdf_path, page_index, zoom=2, out_dir=None):
 if __name__ == "__main__":
     import sys
     pdf = sys.argv[1] if len(sys.argv) > 1 else \
-        "PDFs/javaidrahi-blog/kulyate_rana_fazal_hussan_ed-dr-javaid-rah.pdf"
+        "pdfs/javaidrahi-blog/kulyate_rana_fazal_hussan_ed-dr-javaid-rah.pdf"
     page_idx = int(sys.argv[2]) if len(sys.argv) > 2 else 60
     r, l = render_spread_halves(pdf, page_idx, out_dir="data/gold/spread_test")
     print(f"right (read first): {r}")

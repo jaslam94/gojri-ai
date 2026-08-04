@@ -1,15 +1,15 @@
 id,source_pdf,page_1idx,image,note,check_type
-dict_alif,anjumshanasi/Gojri-English-Dictionary.pdf,25,data/gold/images/dict_alif.png,"PUA scheme, tier1 dictionary, mixed Nastaliq+English on one page",vision_ocr
-kahawat_kosh,anjumshanasi/Kahawat-Kosh.pdf,50,data/gold/images/kahawat_kosh.png,"PUA scheme, tier1, proverb-dictionary layout",vision_ocr
-gojri_adbiyaat,anjumshanasi/Gojri-Adbiyaat.pdf,200,data/gold/images/gojri_adbiyaat.png,"PUA scheme, tier3, general literary prose",vision_ocr
-gojri_ghazal,anjumshanasi/Gojri-Ghazal.pdf,40,data/gold/images/gojri_ghazal.png,"PUA scheme, tier3, poetry layout (single page, not a spread)",vision_ocr
-mahatma_gandhi,MAHATMA_GANDHI_Tasweeran_Sangh_Kahani_by.pdf,30,data/gold/images/mahatma_gandhi.png,"legacy_8bit scheme, the one non-spread example of this scheme",vision_ocr
-kulyate_spread_a_right,javaidrahi-blog/kulyate_rana_fazal_hussan_ed-dr-javaid-rah.pdf,61,data/gold/images/kulyate_spread_a_right.png,"legacy_8bit scheme, two-page spread, poetry (previously validated)",vision_ocr
-kulyate_spread_b_left,javaidrahi-blog/kulyate_rana_fazal_hussan_ed-dr-javaid-rah.pdf,61,data/gold/images/kulyate_spread_b_left.png,"legacy_8bit scheme, two-page spread, poetry (previously validated)",vision_ocr
-nazir_spread_a_right,javaidrahi-blog/gojri-kalam-e-nazir-ahmad-nazir-nazir-ed-by-dr-javaid-rahi.pdf,70,data/gold/images/nazir_spread_a_right.png,"legacy_8bit scheme, two-page spread, second example for cross-check",vision_ocr
-nazir_spread_b_left,javaidrahi-blog/gojri-kalam-e-nazir-ahmad-nazir-nazir-ed-by-dr-javaid-rahi.pdf,70,data/gold/images/nazir_spread_b_left.png,"legacy_8bit scheme, two-page spread, second example for cross-check",vision_ocr
-louk_warsti,Gujjar_Qabila_Ki_Louk_Warsti_Dictionary.pdf,100,data/gold/images/louk_warsti.png,"image_only, tier1, folklore dictionary, no text layer at all",vision_ocr
-shingar_textbook,GOJRI_TEXT_BOOK_Series_SHINGAR_for_class.pdf,21,data/gold/images/shingar_textbook.png,"image_only, tier2, school textbook (previously validated)",vision_ocr
-primer_pehli,GUJJARS_GOJRI_KI_PEHLI_KITAB_Gojri_Prime.pdf,20,data/gold/images/primer_pehli.png,"image_only, tier2, children's primer, likely simpler/larger typography",vision_ocr
-hindi_dict,anjumshanasi/Gojri-Hindi-English-Dictionary.pdf,81,data/gold/images/hindi_dict.png,"good_text, Devanagari script -- tests direct EXTRACTION fidelity, not vision OCR",direct_extraction
-quran_translation,QURANIC_TRANSLATION_in_GOJRI_by_Dr_Rafiq.pdf,100,data/gold/images/quran_translation.png,"good_text, Perso-Arabic -- tests direct EXTRACTION fidelity, not vision OCR",direct_extraction
+dict_alif,anjumshanasi/Gojri-English-Dictionary.pdf,25,data/gold/images_cropped/dict_alif.png,"PUA scheme, tier1 dictionary, mixed Nastaliq+English on one page",vision_ocr
+kahawat_kosh,anjumshanasi/Kahawat-Kosh.pdf,50,data/gold/images_cropped/kahawat_kosh.png,"PUA scheme, tier1, proverb-dictionary layout",vision_ocr
+gojri_adbiyaat,anjumshanasi/Gojri-Adbiyaat.pdf,200,data/gold/images_cropped/gojri_adbiyaat.png,"PUA scheme, tier3, general literary prose",vision_ocr
+gojri_ghazal,anjumshanasi/Gojri-Ghazal.pdf,40,data/gold/images_cropped/gojri_ghazal.png,"PUA scheme, tier3, poetry layout (single page, not a spread)",vision_ocr
+mahatma_gandhi,MAHATMA_GANDHI_Tasweeran_Sangh_Kahani_by.pdf,30,data/gold/images_cropped/mahatma_gandhi.png,"legacy_8bit scheme, the one non-spread example of this scheme",vision_ocr
+kulyate_spread_a_right,javaidrahi-blog/kulyate_rana_fazal_hussan_ed-dr-javaid-rah.pdf,61,data/gold/images_cropped/kulyate_spread_a_right.png,"legacy_8bit scheme, two-page spread, poetry (previously validated)",vision_ocr
+kulyate_spread_b_left,javaidrahi-blog/kulyate_rana_fazal_hussan_ed-dr-javaid-rah.pdf,61,data/gold/images_cropped/kulyate_spread_b_left.png,"legacy_8bit scheme, two-page spread, poetry (previously validated)",vision_ocr
+nazir_spread_a_right,javaidrahi-blog/gojri-kalam-e-nazir-ahmad-nazir-nazir-ed-by-dr-javaid-rahi.pdf,70,data/gold/images_cropped/nazir_spread_a_right.png,"legacy_8bit scheme, two-page spread, second example for cross-check",vision_ocr
+nazir_spread_b_left,javaidrahi-blog/gojri-kalam-e-nazir-ahmad-nazir-nazir-ed-by-dr-javaid-rahi.pdf,70,data/gold/images_cropped/nazir_spread_b_left.png,"legacy_8bit scheme, two-page spread, second example for cross-check",vision_ocr
+louk_warsti,Gujjar_Qabila_Ki_Louk_Warsti_Dictionary.pdf,100,data/gold/images_cropped/louk_warsti.png,"image_only, tier1, folklore dictionary, no text layer at all",vision_ocr
+shingar_textbook,GOJRI_TEXT_BOOK_Series_SHINGAR_for_class.pdf,21,data/gold/images_cropped/shingar_textbook.png,"image_only, tier2, school textbook (previously validated)",vision_ocr
+primer_pehli,GUJJARS_GOJRI_KI_PEHLI_KITAB_Gojri_Prime.pdf,20,data/gold/images_cropped/primer_pehli.png,"image_only, tier2, children's primer, likely simpler/larger typography",vision_ocr
+hindi_dict,anjumshanasi/Gojri-Hindi-English-Dictionary.pdf,81,data/gold/images_cropped/hindi_dict.png,"good_text, Devanagari script -- tests direct EXTRACTION fidelity, not vision OCR",direct_extraction
+quran_translation,QURANIC_TRANSLATION_in_GOJRI_by_Dr_Rafiq.pdf,100,data/gold/images_cropped/quran_translation.png,"good_text, Perso-Arabic -- tests direct EXTRACTION fidelity, not vision OCR",direct_extraction

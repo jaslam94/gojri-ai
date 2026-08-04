@@ -49,7 +49,7 @@ We research, discuss, and agree on a roadmap together before writing pipeline co
   template to follow for the ASR piece.
 
 ## Data already collected (in this repo)
-- `Gojri Language Corpus/`: 11 UTF-8 .txt files from the Mozilla Data Collective
+- `datasets/Gojri Language Corpus/`: 11 UTF-8 .txt files from the Mozilla Data Collective
   "Gojri Literature Corpus" dataset, curated by FLI. Actually read the content (Aug
   2026), not just file names, confirming word count (~60,814 words) matches the
   dataset's reported ~60,821 tokens, so this is verified as the right/complete data
@@ -78,7 +78,7 @@ We research, discuss, and agree on a roadmap together before writing pipeline co
     against an original source if one exists) before using these 4 files as
     training-quality data.
   License: CC-BY-NC-4.0 (non-commercial only, attribution required).
-- **`cv-corpus-26.0-2026-06-12/gju/`: the Common Voice "Scripted Speech 26.0 - Gujari"
+- **`datasets/cv-corpus-26.0-2026-06-12/gju/`: the Common Voice "Scripted Speech 26.0 - Gujari"
   dataset, confirmed present locally** (verified Aug 2026, not just referenced from
   the dataset page as earlier noted). Standard Common Voice layout
   (`clips/`, `train.tsv`, `dev.tsv`, `test.tsv`, `validated.tsv`, etc.).
@@ -90,10 +90,10 @@ We research, discuss, and agree on a roadmap together before writing pipeline co
   `invalidated.tsv`, not confirmed. Gender field is 'unknown' for all validated rows
   in this release, so gender-based diversity can't be assessed from the data itself.
   License: CC0 (public domain, no re-hosting/speaker-identification per terms).
-- `PDFs/`: 92 PDF files, dictionaries, textbooks, poetry, folklore, a Quran
+- `pdfs/`: 92 PDF files, dictionaries, textbooks, poetry, folklore, a Quran
   translation, history volumes, etc. See the precise, hash-verified categorization
   and duplicate list further down (not repeated here to avoid two sources of truth).
-- `PDFs/unlocked/`: contains one already-extracted .txt sample that reads as clean,
+- `pdfs/unlocked/`: contains one already-extracted .txt sample that reads as clean,
   correct Nastaliq Unicode (including bracketed image descriptions like
   `[لوگو: ...]`). **Resolved**: asked the user directly, this was not produced by
   running any AI/OCR tool ourselves, it's a file collected as-is from an online
@@ -104,7 +104,7 @@ We research, discuss, and agree on a roadmap together before writing pipeline co
 ## Key technical findings from research
 
 ### Garbled text when copy-pasting from PDFs — CONFIRMED with direct inspection
-Verified directly (Aug 2026) using PyMuPDF against the actual files in `PDFs/`, not
+Verified directly (Aug 2026) using PyMuPDF against the actual files in `pdfs/`, not
 just literature research. Root cause confirmed: most of these PDFs embed Nastaliq
 text using **Noori Nastaleeq**, the Nastaliq font family bundled with InPage (the
 desktop publishing software used for nearly all Urdu/Nastaliq print production for
@@ -162,7 +162,7 @@ Private-Use-Area (PUA) characters vs Latin characters in sampled pages of each f
   just extract and clean. Includes `QURANIC_TRANSLATION_in_GOJRI_by_Dr_Rafiq.pdf` and
   its duplicate `javaidrahi-blog/gojri-quran-final-1010-1.pdf` (717 pages each — a
   huge chunk of total page count, and duplicated), plus `ABC-Islamic-Studies.pdf`
-  (401 pages) and `Revival-of-Islam.pdf` (116 pages), both under `PDFs/anjumshanasi/`.
+  (401 pages) and `Revival-of-Islam.pdf` (116 pages), both under `pdfs/anjumshanasi/`.
 - **59 files = "bad text" (Problem 1, PUA font-encoding)**: needs vision
   transcription (see below).
 - **18 files = "image only" (Problem 2, no text layer)**: needs vision transcription
@@ -366,7 +366,7 @@ before committing bulk spend, not after.
 - Fine-tuning OpenAI Whisper is the standard low-resource approach. Literature
   (BaltiVoice and others) suggests roughly 15-20 hours of labeled audio gives a usable,
   if imperfect, fine-tuned model; we have 10.68 hours validated for Gojri locally
-  (see `cv-corpus-26.0-2026-06-12/gju/` above), close to but under that range, so
+  (see `datasets/cv-corpus-26.0-2026-06-12/gju/` above), close to but under that range, so
   more contributed recordings would meaningfully help.
   More Gojri voice data can be added directly through Mozilla Common Voice's normal
   contribution flow (record/validate sentences in the app), which feeds back into

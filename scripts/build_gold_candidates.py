@@ -5,9 +5,16 @@ Picks specific pages across every hard case found during triage, renders them to
 PNG at zoom 2 (the resolution level already decided on, since zoom 3 wastes tokens
 for no quality gain), and writes data/gold/candidates.csv describing each one.
 
-This does NOT transcribe anything. Transcription drafts are produced separately
-(by having a vision model read each image) and then hand-corrected by the user.
-Read-only against the source PDFs.
+This does NOT transcribe anything - that's the per-model test scripts
+(gemini_ocr_test.py, bedrock_ocr_test.py), which write into
+data/gold/transcriptions/<page_id>/, not this script.
+
+Note: after this script runs, scripts/crop_gold_images.py crops the rendered pages
+(cuts image tokens substantially on pages with large blank margins) into
+data/gold/images_cropped/, which is what OCR test calls actually use. Re-running
+this script regenerates candidates.csv pointing at the uncropped data/gold/images/
+originals again - re-point the "image" column at images_cropped/ afterward (or
+re-run crop_gold_images.py, which doesn't touch candidates.csv itself).
 """
 
 import csv
@@ -20,7 +27,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from split_spread import render_spread_halves
 
 ROOT = Path(__file__).resolve().parent.parent
-PDF_DIR = ROOT / "PDFs"
+PDF_DIR = ROOT / "pdfs"
 OUT_DIR = ROOT / "data" / "gold" / "images"
 CANDIDATES_CSV = ROOT / "data" / "gold" / "candidates.csv"
 

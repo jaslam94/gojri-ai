@@ -2,12 +2,19 @@
 
 This folder covers 14 page images (from 12 real pages, 2 of which are two-page
 spreads split into halves). Layout:
-- `images/` — the page images only (`.png`), nothing else.
-- `transcriptions/<page_id>/` — one folder per page. Populated with each model's raw
-  output, named `<model>_<prompt_version>.txt` (e.g. `gemini_3.6_flash_v1.txt`,
-  `haiku_4.5_v1.txt`, `sonnet_5_v1.txt`), produced under the fixed prompt in
-  `prompts/`. **These are Claude-/model-generated only — no single file here is
-  "the" gold standard.**
+- `images/` — the original page images (`.png`), rendered straight from the PDFs.
+- `images_cropped/` — same images cropped to their content bounding box (+50px
+  safety padding). **This is what OCR test calls actually use** — cuts image
+  tokens substantially on pages with large blank margins (~60% on the densest
+  pages). `images/` is kept only for comparison, not used for OCR calls.
+- `transcriptions/<page_id>/` — one folder per page. Populated with each *active*
+  candidate model's raw output, named `<page_id>_<model>_<prompt_version>.txt`
+  (e.g. `dict_alif_gemini_3.6_flash_v1.txt`), produced under the fixed prompt in
+  `prompts/`. **These are model-generated only — no single file here is "the" gold
+  standard.**
+- `transcriptions_archived/<page_id>/` — same naming, for models that were tested
+  and shelved (reasons + concrete examples in `LOG.md`). Kept for the record, not
+  deleted, but not part of the active comparison.
 
 Earlier this project had one `draft.txt` per page acting as the gold standard, but
 it was produced without a real fixed, documented prompt, so it wasn't a fair
@@ -42,6 +49,9 @@ correct Unicode pulled straight from the PDF's text layer, not vision-OCR
 candidates, not part of this model comparison.
 
 ## Why this matters (recap)
-Every OCR approach tested (Gemini, Haiku, Sonnet, later the decode-table idea,
-future prompt versions) gets run against these same 12 pages, so quality/cost
+Every OCR approach tested gets run against these same 12 pages, so quality/cost
 tradeoffs are based on real, comparable outputs instead of a handful of spot checks.
+Current status (see `LOG.md` for the full, up-to-date picture): Gemini 3.6 Flash and
+Kimi K2.5 are active candidates; Haiku 4.5, Qwen3-VL, Llama 4 Maverick, and Pixtral
+Large were tested and shelved; Sonnet 5 is next; the decode-table idea and future
+prompt versions remain open follow-ups.

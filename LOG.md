@@ -601,6 +601,43 @@ back, same pattern as the manual Sonnet/Haiku chat-session runs.
 
 ---
 
+---
+
+## 2026-08-05 — Documentation sync pass after the "datasets/" reorg
+
+User reorganized dataset folders (`Gojri Language Corpus/` and `cv-corpus-.../` now
+under `datasets/`; `PDFs/` lowercased to `pdfs/`) and asked for docs to be
+updated. Surveyed every tracked file for stale path references rather than
+guessing which ones mattered - found and fixed:
+- `CLAUDE.md`, `ROADMAP.md`, `plans/STAGE-0.md`: path references to the old
+  locations (7 spots across the three files).
+- `scripts/build_manifest.py`, `scripts/build_gold_candidates.py`,
+  `scripts/split_spread.py`: hardcoded `PDF_DIR`/default-arg references to `PDFs`
+  (still worked on Windows due to case-insensitive filesystem lookups, but wrong
+  and would break on a case-sensitive one - fixed for correctness, not just
+  because something was broken).
+- `.gitignore`: `/PDFs/` → `/pdfs/` (same case-insensitivity caveat).
+- `data/gold/candidates.csv`: the `image` column still pointed at
+  `data/gold/images/` (pre-crop originals) even though every OCR call has used
+  `data/gold/images_cropped/` since that decision. Genuine functional staleness,
+  not just cosmetic - a future session following this CSV naively would've used
+  the wrong, more expensive images. Fixed, and added a note to
+  `build_gold_candidates.py`'s docstring since re-running it would regenerate the
+  CSV pointing at the uncropped originals again.
+- `plans/STAGE-1-TEST-BATCH.md`: this handoff plan (written by a separate session)
+  had drifted well beyond just paths - file naming convention, settings-logging
+  addition, and the whole model roster (Gemini/Kimi active, four models shelved,
+  Sonnet 5 pending) all postdate it. Added a status-update block at the top
+  pointing to `LOG.md` rather than rewriting the whole plan, since the
+  methodology/background sections are still accurate.
+- `data/gold/README.md`: added `images_cropped/` and `transcriptions_archived/` to
+  the documented layout (both existed but weren't described), fixed the
+  transcription filename example to include the page ID, and updated the
+  "why this matters" recap to name actual current model status instead of a
+  generic "Gemini, Haiku, Sonnet" list.
+
+---
+
 ## Glossary (grows as new terms come up)
 
 - **Token**: the unit a model reads/writes in and is billed by — roughly a

@@ -1,5 +1,31 @@
 # Handoff: Run the real OCR test batch via AWS Bedrock
 
+> **Status update (2026-08-05): this plan has been executed and substantially
+> extended since it was written. Read `LOG.md`'s 2026-08-04/05 entries for the full,
+> current picture before acting on anything below** — several specifics here are now
+> stale:
+> - Images actually used are `data/gold/images_cropped/{id}.png`, not
+>   `data/gold/images/{id}.png` — cropping margins cut image tokens ~60% on the
+>   densest pages, with originals kept for comparison. `data/gold/candidates.csv`
+>   now points at the cropped versions.
+> - Output files are named `{id}_{model}_{version}.txt` under
+>   `data/gold/transcriptions/<page_id>/`, not `data/gold/images/{id}_{model}.txt`.
+> - Every call now logs exact temperature/max_tokens/thinking settings to
+>   `data/gold/ocr_runs_log.csv`, not just token counts - settings were found to be
+>   completely unconfigured in the first pass, which mattered.
+> - The model roster grew well beyond Haiku/Sonnet: Gemini 3.6 Flash and Kimi K2.5
+>   are the current active candidates; Haiku 4.5, Qwen3-VL, Llama 4 Maverick, and
+>   Pixtral Large were all tested and shelved (reasons + concrete examples in
+>   `LOG.md`); Sonnet 5 is tested next; DeepSeek-OCR has no working free API path
+>   found so far (also in `LOG.md`).
+> - There's no single gold-standard `draft.txt` anymore - see `data/gold/README.md`
+>   for the current (revised) correction workflow.
+>
+> The sections below are kept for historical/methodology reference (the AWS
+> Bedrock setup notes, request-format background, and cost-math framing are still
+> accurate) but don't follow the specific file paths/names here without
+> cross-checking `LOG.md` first.
+
 This is a self-contained briefing for a fresh Claude session that will execute what
 this session only prepared. Read this file plus the four referenced below, and you
 have everything needed to run the task without re-deriving anything.

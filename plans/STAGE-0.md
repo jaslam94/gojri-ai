@@ -19,7 +19,7 @@ each time we look).
 Columns:
 | Column | Meaning |
 |---|---|
-| `path` | relative path from `PDFs/` |
+| `path` | relative path from `pdfs/` |
 | `size_mb`, `pages` | basic stats |
 | `md5` | file hash, for exact-duplicate detection |
 | `dup_group` | id shared by byte-identical files, blank if unique |

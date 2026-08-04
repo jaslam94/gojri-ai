@@ -176,7 +176,7 @@ Fine-tune an open speech-recognition model (Whisper) on the existing Gojri audio
 following the same recipe used for Balti (a very similar, already solved case):
 expect a rough but usable result, not something polished.
 
-- **Confirmed locally present**: `cv-corpus-26.0-2026-06-12/gju/`, 11,741 clips,
+- **Confirmed locally present**: `datasets/cv-corpus-26.0-2026-06-12/gju/`, 11,741 clips,
   10.68 hours, 11,081 validated rows. Speaker count has a small discrepancy worth
   knowing about: the online dataset page says 7 speakers, our own direct check
   found 6 unique speakers in the validated set (parking lot).
@@ -321,7 +321,7 @@ the page-count/cost estimate was based on an undercount (now hash-verified: 14,5
 pages actually need paid transcription, not the rough ~18,000-total figure used
 before), and 2 of the 7 exact-duplicate PDF groups had gone completely unnoticed
 (the 410-page `Gojri_lok_kahani` and 275-page `gojri-history` volumes). Also added
-the YouTube ASR consideration and resolved the `PDFs/unlocked/` open question. Model
+the YouTube ASR consideration and resolved the `pdfs/unlocked/` open question. Model
 choice for OCR (Haiku vs Sonnet) is now flagged as a real budget decision requiring
 a test in Stage 1, not an assumption. Next: Stage 0 execution (dedup using the
 verified list, relevance check on the 11 unclear files, confirm priority order),

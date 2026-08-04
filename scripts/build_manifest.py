@@ -20,7 +20,7 @@ from pathlib import Path
 import fitz  # PyMuPDF
 
 ROOT = Path(__file__).resolve().parent.parent
-PDF_DIR = ROOT / "PDFs"
+PDF_DIR = ROOT / "pdfs"
 OUT = ROOT / "data" / "manifest.csv"
 
 # Fonts that indicate Perso-Arabic/Nastaliq typesetting. If a document embeds these,

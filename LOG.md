@@ -544,6 +544,48 @@ as the next test.
 
 ---
 
+---
+
+## 2026-08-04 — DeepSeek-OCR: tried, hit a real dead end (for now)
+
+Wanted to try `deepseek-ai/DeepSeek-OCR` (open-source, MIT-licensed, OCR-specialized
+vision model — first surfaced when researching DeepSeek earlier). Checked properly
+rather than assume it'd just work:
+
+- **No Hugging Face MCP tool available in this session** — checked directly via
+  `ListMcpResourcesTool`; only Firebase and an Indeed connector are actually
+  configured here, despite HF MCP apparently being set up somewhere else.
+- **No official Hugging Face Inference Provider for this model** — its own model
+  page states plainly: "This model isn't deployed by any Inference Provider."
+- **Not on Bedrock either** — Bedrock's DeepSeek offering is limited to
+  `DeepSeek V3.2`/`V3.1`/`R1`, the same text-only chat/reasoning models already
+  confirmed to lack image support. DeepSeek-OCR is a separate project Bedrock
+  doesn't host.
+- **Community Gradio Spaces**: found a working, callable API on
+  `prithivMLmods/DeepSeek-OCR-experimental` (confirmed via `gradio_client`'s
+  `view_api()` — schema loaded cleanly). But actually calling it failed with an
+  opaque server-side `AppError` every time: with and without HF auth (user added
+  `HUGGING_FACE_ACCESS_TOKEN` to `.env` specifically to test this), across two
+  different task modes (`Free OCR`, `Convert to Markdown`). A second Space
+  (`khang119966/DeepSeek-OCR-DEMO`) failed identically; a third
+  (`akhaliq/DeepSeek-OCR`) was outright broken (`RUNTIME_ERROR` state). Checked the
+  working Space's actual source (`app.py`) rather than keep guessing blindly — the
+  OCR function is decorated `@spaces.GPU`, Hugging Face's shared "ZeroGPU"
+  allocation system, which has its own quotas/reliability issues independent of
+  anything on our side. Also worth noting even if it had worked: this demo's API
+  has no field for a custom prompt at all, only fixed built-in task modes - it
+  could never have taken our canonical v1 prompt, so even a successful run
+  wouldn't have been a controlled, comparable data point the way every other model
+  tested has been.
+
+**Conclusion**: not pursuing the free-community-Space route further. The
+self-hosted route (Colab/Kaggle free GPU, full prompt control) discussed earlier
+remains the only way to properly evaluate DeepSeek-OCR for this project, and is a
+real chunk of setup work, not a quick check - shelved as a "maybe later," not
+tested, not ruled out on merit.
+
+---
+
 ## Glossary (grows as new terms come up)
 
 - **Token**: the unit a model reads/writes in and is billed by — roughly a

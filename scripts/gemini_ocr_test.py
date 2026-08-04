@@ -1,6 +1,7 @@
 """
-Quick A/B test: transcribe a gold-set page image with Gemini and print the result,
-for comparison against the existing Claude-drafted transcription in data/gold/images.
+A/B test: transcribe a gold-set page image with Gemini using the shared canonical
+prompt (prompts/ocr_transcription_v1.txt), save the output next to the image as
+<page_id>_<model_tag>.txt, and log the run to data/gold/ocr_runs_log.csv.
 
 Usage:
     py -3 scripts/gemini_ocr_test.py data/gold/images/dict_alif.png
@@ -11,26 +12,16 @@ import sys
 from pathlib import Path
 
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8")
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from dotenv import load_dotenv
 from google import genai
 from google.genai import types
 
-MODEL = "gemini-3.6-flash"
+from ocr_test_common import load_prompt, log_run, output_path
 
-PROMPT = (
-    "Transcribe exactly what is written on this page image. This is Gojri/Urdu "
-    "text in Perso-Arabic (Nastaliq) script, or Devanagari script, or English, "
-    "depending on the page. Rules:\n"
-    "- Transcribe only, do not translate.\n"
-    "- Preserve line breaks and layout order as they appear on the page.\n"
-    "- Pay close attention to diacritics and small marks (dots, nasalization "
-    "strokes) - these are frequently the hardest part to get right.\n"
-    "- If something is a non-text element (illustration, logo, decoration), "
-    "describe it briefly in [brackets] instead of inventing text.\n"
-    "- If a word or mark is genuinely illegible or ambiguous, mark it with "
-    "[unclear: best guess] rather than silently guessing.\n"
-)
+MODEL = "gemini-3.6-flash"
+MODEL_TAG = "gemini_3.6_flash"
 
 
 def main():
@@ -39,17 +30,15 @@ def main():
         sys.exit(1)
 
     load_dotenv()
-    image_path = Path(sys.argv[1])
+    image_path = Path(sys.argv[1]).resolve()
+    page_id = image_path.stem
     client = genai.Client()
 
     response = client.models.generate_content(
         model=MODEL,
         contents=[
-            types.Part.from_bytes(
-                data=image_path.read_bytes(),
-                mime_type="image/png",
-            ),
-            PROMPT,
+            types.Part.from_bytes(data=image_path.read_bytes(), mime_type="image/png"),
+            load_prompt(),
         ],
     )
 
@@ -57,16 +46,16 @@ def main():
     print(response.text)
 
     usage = response.usage_metadata
+    in_tok = usage.prompt_token_count if usage else None
+    out_tok = usage.candidates_token_count if usage else None
+    total_tok = usage.total_token_count if usage else None
     if usage:
-        print(
-            f"\n--- tokens: prompt={usage.prompt_token_count} "
-            f"output={usage.candidates_token_count} "
-            f"total={usage.total_token_count} ---"
-        )
+        print(f"\n--- tokens: prompt={in_tok} output={out_tok} total={total_tok} ---")
 
-    out_path = image_path.with_name(image_path.stem + "_gemini.txt")
+    out_path = output_path(image_path, MODEL_TAG)
     out_path.write_text(response.text, encoding="utf-8")
-    print(f"\n(saved to {out_path})")
+    log_run(page_id, MODEL_TAG, in_tok, out_tok, total_tok, out_path)
+    print(f"\n(saved to {out_path}, run logged)")
 
 
 if __name__ == "__main__":

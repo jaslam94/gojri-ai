@@ -138,6 +138,63 @@ is in place — not being decided now.
 
 ---
 
+---
+
+## 2026-08-04 — Formalizing the comparison: canonical prompt, file naming, run log
+
+Found `prompts/ocr_transcription_v1.txt` (already written, not by me this session) —
+a proper, detailed transcription prompt: explains Gojri-vs-Urdu up front, forbids
+"fixing" spelling toward standard Urdu, defines `[single bracket]` for non-text
+elements vs `[[double bracket]]` for a flagged best-guess on illegible text, handles
+page numbers/headers, blank pages, and un-split spreads. This becomes **the one
+prompt every model gets tested with** — fixes the "no reproducible prompt" gap noted
+above. Re-ran the Gemini test on `dict_alif` with it (my first pass used a weaker,
+improvised prompt) and ran it fresh on `gojri_adbiyaat`.
+
+**File naming, finalized** — every gold page can now have, in `data/gold/images/`:
+- `<id>_sonnet_5_original.txt` — the old, informal first-pass draft (no fixed prompt,
+  read directly in a chat session), kept only where it still exists in git history.
+- `<id>_sonnet_5_corrected.txt` — your hand-corrected gold standard, i.e. the
+  ground truth every model's output gets judged against.
+- `<id>_<model>_<version>.txt` — one per model tested with the canonical prompt,
+  e.g. `dict_alif_gemini_3.6_flash.txt`.
+
+**Recovered `gojri_adbiyaat`'s true original from git history** (`git show
+f19a314:...`, before either correction round) — this one survived because it hadn't
+been touched yet when the earlier `git gc` mistake happened. **`dict_alif`'s
+original is confirmed permanently gone** — it was already corrected before this
+session started, so its pre-correction text only ever lived in the commit that got
+pruned. Only `dict_alif_sonnet_5_corrected.txt` exists for that page; there's no
+`_original` counterpart and there can't be one.
+
+**Sonnet 5 / Haiku 4.5 via chat, not API**: rather than issuing a new Anthropic API
+key, these two will be run manually — a separate chat session per model, each given
+the exact text of `prompts/ocr_transcription_v1.txt` plus the page image, output
+pasted back and saved as `<id>_sonnet_5.txt` / `<id>_haiku_4.5.txt`. Still a fair
+comparison as long as the prompt text is identical every time; the only thing lost
+versus the API route is precise token/cost accounting for those two, which will be
+recorded as "not tracked" in the run log rather than guessed at.
+
+**New shared tooling**: [scripts/ocr_test_common.py](scripts/ocr_test_common.py)
+holds the prompt-loading, output-naming, and run-logging logic shared by every
+per-model test script, so results stay comparable as more models
+(Gemini done, DeepSeek planned) get added.
+[data/gold/ocr_runs_log.csv](data/gold/ocr_runs_log.csv) is a running,
+structured log (timestamp, page, model, prompt version, token counts, output file)
+of every automated test run — the raw material for eventually scoring models
+quantitatively against the gold set, once enough pages are corrected.
+
+**Observation worth tracking**: Gemini's reported `total_tokens` was noticeably
+higher than `input + output` tokens added together (8,272 vs. 2,338 on one run).
+Likely internal "thinking" tokens that get billed but aren't broken out in the
+simple prompt/output counts — matters for the eventual cost math, needs the same
+check on any Gemini "thinking" pricing details before trusting a simple estimate.
+
+Also in progress in parallel, not yet pulled into the model comparison: you
+corrected 3 more gold drafts (`louk_warsti`, `mahatma_gandhi`, `primer_pehli`).
+
+---
+
 ## Glossary (grows as new terms come up)
 
 - **Token**: the unit a model reads/writes in and is billed by — roughly a

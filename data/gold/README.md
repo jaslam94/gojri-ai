@@ -3,32 +3,26 @@
 This folder covers 14 page images (from 12 real pages, 2 of which are two-page
 spreads split into halves). Layout:
 - `images/` — the page images only (`.png`), nothing else.
-- `transcriptions/<page_id>/` — one folder per page, holding every text file for
-  that page: `draft.txt` (your hand-corrected gold standard, the one to edit), plus
-  whatever model outputs have been tested for that page so far, named
-  `<model>_<prompt_version>.txt` (e.g. `gemini_3.6_flash_v1.txt`,
-  `haiku_4.5_v1.txt`). A few pages also have `sonnet_5_original.txt`, the
-  uncorrected first-pass draft kept for before/after comparison.
+- `transcriptions/<page_id>/` — one folder per page. Populated with each model's raw
+  output, named `<model>_<prompt_version>.txt` (e.g. `gemini_3.6_flash_v1.txt`,
+  `haiku_4.5_v1.txt`, `sonnet_5_v1.txt`), produced under the fixed prompt in
+  `prompts/`. **These are Claude-/model-generated only — no single file here is
+  "the" gold standard.**
 
-**`draft.txt` is a starting point, not a finished product** — it was produced by
-Claude reading each image once, and is expected to contain real errors, especially:
-- Diacritics and small marks (dots, nasalization strokes) — the hardest part of
-  Nastaliq to get right and where most mistakes will be.
-- Anywhere marked `[...]` in brackets — these are notes about images or uncertain
-  content, not transcribed text, and need your judgment.
+Earlier this project had one `draft.txt` per page acting as the gold standard, but
+it was produced without a real fixed, documented prompt, so it wasn't a fair
+baseline for comparing models against. Dropped in favor of the model-per-file setup
+above.
 
-## How to correct each one
-1. Open `images/<page_id>.png` and `transcriptions/<page_id>/draft.txt` side by side.
-2. Read the image yourself and fix the text file until it exactly matches what's on
-   the page, character for character.
-3. Leave `[bracketed notes]` as-is if they're accurately describing a non-text
-   element (like an illustration); delete them if they're wrong.
-4. Don't worry about the two `direct_extraction` pages (`hindi_dict`,
-   `quran_translation`) needing the same scrutiny as the others — those came from
-   the PDF's real text layer, not a guess, but a quick check that nothing looks
-   wrong is still worth doing.
+## Correction workflow (revised)
+Correcting is now per model, not per page, and is the user's own process — Claude
+only generates the raw `<model>_<version>.txt` files, nothing else. Correction files
+(however they end up organized — naming convention still open) are added by hand,
+separately, comparing each model's raw output against the source image. This lets
+model outputs be compared not just on raw quality, but on how much correction effort
+each one actually took.
 
-## What's in here (12 pages, grouped by what they test)
+## What's in here (12 pages needing vision OCR, grouped by what they test)
 
 | Files | Tests |
 |---|---|
@@ -42,16 +36,12 @@ Claude reading each image once, and is expected to contain real errors, especial
 | `louk_warsti` | Real scanned page (visible show-through from the other side of the paper), image-only, folk story |
 | `shingar_textbook` | Image-only, clean born-digital textbook page |
 | `primer_pehli` | Children's primer: isolated captioned words + decorative graphics, not paragraphs — a very different layout from everything else |
-| `hindi_dict` | Devanagari, direct extraction check (not vision OCR) |
-| `quran_translation` | Perso-Arabic, direct extraction check (not vision OCR) |
+
+Plus 2 `direct_extraction` pages (`hindi_dict`, `quran_translation`) — already
+correct Unicode pulled straight from the PDF's text layer, not vision-OCR
+candidates, not part of this model comparison.
 
 ## Why this matters (recap)
-Once these are correct, they become the permanent yardstick. Every OCR approach we
-test afterward (Haiku vs Sonnet, the decode-table idea, prompt tweaks) gets scored
-against these exact pages, automatically, so we can tell what's actually better
-instead of guessing from a handful of spot checks.
-
-## Next step once corrected
-Tell me when you've corrected as many as you have time for (doesn't have to be all
-14 at once). I'll assemble the corrected ones into `gold.jsonl` and we move to
-Stage 0's remaining item (corpus/provenance conventions) or into Stage 1.
+Every OCR approach tested (Gemini, Haiku, Sonnet, later the decode-table idea,
+future prompt versions) gets run against these same 12 pages, so quality/cost
+tradeoffs are based on real, comparable outputs instead of a handful of spot checks.

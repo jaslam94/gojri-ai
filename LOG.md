@@ -285,6 +285,31 @@ a second parallel CSV.
 
 ---
 
+---
+
+## 2026-08-04 — Dropped draft.txt as ground truth; wiped all transcriptions
+
+Reconsidered the whole gold-set correction model. `draft.txt` (one file per page,
+treated as "the" gold standard) was produced by Claude reading each image once with
+no real, fixed, documented prompt — the same gap already noted earlier tonight. That
+makes it a shaky baseline to score every model against, and conflates "what one
+model produced" with "the truth."
+
+**New approach**: no single ground-truth file per page. Instead, every model gets
+its own raw output file (`<model>_<version>.txt`), generated under the same fixed
+prompt, and correction happens per model, by hand, separately — comparing each
+model's raw output against the source image rather than against another model's
+output. This also captures a second useful signal beyond raw transcription quality:
+how much correction effort each model's output actually needs.
+
+**Wiped everything** in `data/gold/transcriptions/` — all `draft.txt`,
+`sonnet_5_original.txt`, and the `gemini_3.6_flash_v1/v2.txt` files. All of it is
+still recoverable from git history if needed later; starting genuinely fresh from
+here. Updated `data/gold/README.md` to match. Correction-file naming/organization is
+left to the user's own process, not something Claude generates.
+
+---
+
 ## Glossary (grows as new terms come up)
 
 - **Token**: the unit a model reads/writes in and is billed by — roughly a

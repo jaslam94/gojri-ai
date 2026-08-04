@@ -195,6 +195,22 @@ corrected 3 more gold drafts (`louk_warsti`, `mahatma_gandhi`, `primer_pehli`).
 
 ---
 
+---
+
+## 2026-08-04 — DeepSeek checked, deferred
+
+Checked DeepSeek's own API docs directly before assuming it'd slot into the
+comparison like Gemini did: their general chat API (`deepseek-v4-flash`/`-pro`)
+**does not support image input at all** — so it couldn't have run this test even as
+a paid option. Separately, DeepSeek has released **DeepSeek-OCR** / **DeepSeek-OCR-2**,
+an open-source (MIT-licensed) vision model built specifically for document/image
+transcription — genuinely free either via community-hosted Hugging Face Space demos
+(browser upload, no setup) or by running the open weights yourself on a free
+Colab/Kaggle GPU. **Decision: skip DeepSeek for this round**, revisit later if
+useful. Sticking with Gemini + Sonnet + Haiku for now.
+
+---
+
 ## Glossary (grows as new terms come up)
 
 - **Token**: the unit a model reads/writes in and is billed by — roughly a

@@ -732,12 +732,33 @@ End state: **27 of 27 content lines now word-for-word identical** between Gemini
 and Sonnet's independently-corrected versions of this page. One cosmetic difference
 remains (tab vs. spaces in the header line), left unresolved as genuinely trivial.
 
-**`dict_alif`: mostly converged, 3 items still genuinely open.** Resolved: word
-order is `الف ، ا` (not `ا ،الف`), and `تاں` (not `تان`). **Still unresolved**
-(flagged, not guessed at): placement of the `eg:`/`lpp:` prefix relative to the line
-break (possible RTL-rendering artifact rather than a real model difference), the
-`بدھیکی`/`بدهیکی` heh-type question (a *different* word than the already-resolved
-`ھُدرو`/`هُدرو` case), and `چھاں`/`چھان`.
+**`dict_alif`: now converged down to 2 trivial single-space questions.** Resolved
+across two follow-up rounds:
+- Word order `الف ، ا` (not `ا ،الف`); `تاں` (not `تان`); `چھاں` (not `چھان`).
+- `بدھیکی` (do-chashmi `ھ`), confirmed by you directly. Same letter pair as the
+  already-resolved `ھُدرو`/`هُدرو` case (U+06BE vs U+0647 — verified by pulling
+  exact codepoints, not eyeballing it), now settled on **two separate words on
+  this page**, both correctly do-chashmi. Linguistically this isn't a stylistic
+  choice: do-chashmi heh specifically marks aspiration (`دھ`, `بھ`, `تھ`, `کھ`,
+  `پھ`), a real phonetic feature plain Arabic heh doesn't encode.
+- **`eg:`/`lpp:` prefix placement — checked directly against the source image**,
+  not inferred from the text alone. The `lpp:` line settles it unambiguously: `lpp:`
+  sits at the visual right (read first in the page's right-to-left flow), the Gojri
+  proverb in the middle, `To invite trouble.` at the far left (read last) — and
+  Sonnet's version already matched this exactly, while Gemini's had the order
+  flipped *and* was missing `To invite trouble.` entirely. Same structural logic
+  (a label must precede what it introduces) applies to the `eg:` line and the
+  second `eg: lpp:` occurrence later on the page. Fixed all three spots in Gemini's
+  corrected file to match.
+- Two more spacing questions resolved from the same image check, lower confidence
+  but reasonably clear: `آبش` is one word (not `آ بش`); `چنگا تے` is two words
+  (not `چنگاتے`).
+
+**Still open, genuinely too fine-grained to call from this image's resolution,
+flagged rather than guessed**: whether there's a real space between the headword
+`آپ` and `(aap)` on one entry (every *other* headword on the page has none, which
+leans toward "no space," but this one entry looks different enough in the image to
+not be sure), and one single trailing space before `اپ ھُدرو` on the `خُودرو` entry.
 
 **One heh-confusion case fully settled, worth recording since it's recurred across
 multiple models now**: on the `آپ خُودرو` dictionary entry, do-chashmi heh (`ھ`,

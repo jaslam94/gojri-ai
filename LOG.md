@@ -699,6 +699,129 @@ flow:
 
 ---
 
+## 2026-08-05 — Cross-model correction converges the gold text; Kimi's verdict revised; file convention fixed
+
+**Correction workflow used, worked well**: you hand-corrected Gemini's and Sonnet
+4.6's outputs on both gold pages *independently* (each against the source image,
+without looking at the other model's correction). Comparing the two afterward
+turned out to be a genuinely useful technique, not just a formality — where two
+independently-corrected versions of the same page agree, that's strong evidence
+it's actually right; where they disagree, that's a real remaining ambiguity worth a
+second look at the image, not noise. This is the practical version of the
+**ensembling** idea (independent samples converging on the truth more reliably than
+any single one) that came up when you asked about re-prompting for a second pass —
+see below.
+
+**`gojri_adbiyaat`: fully converged.** Started with 7 real word/diacritic-level
+disagreements between the two corrected versions (not counting pure spacing/line-
+break differences). Resolved all 7 against the source image:
+- `تڑفتا نا` (not `تڑفا نا`), `کچر دو ہلتا` (not `کچڑ دوہلتا`), `پھرنہ ایویں` (not
+  `پھرنا ایویں`) — real word-level fixes, not diacritics.
+- `کچرتک`→`کچر تک` and `گوہوں`→`گو ہوں` — two words, written closely together on
+  the page (a real spacing decision, not visible from the text alone).
+- `چارو کار`→`چاروکار` and `کومار`→`کو مار` — the opposite spacing call on two
+  *other* close-set word pairs. Notable: spacing on tightly-kerned Nastaliq word
+  pairs isn't a consistent rule you can guess at from general knowledge of the
+  script — each pair needed an actual look at the image.
+- Kasra confirmed absent on `پرواز` (Sonnet's corrected version had incorrectly
+  added one).
+- `و: مولوی غلام رسول ڈوئی` confirmed as one line, not two — a line-break question,
+  not a word-content one.
+
+End state: **27 of 27 content lines now word-for-word identical** between Gemini's
+and Sonnet's independently-corrected versions of this page. One cosmetic difference
+remains (tab vs. spaces in the header line), left unresolved as genuinely trivial.
+
+**`dict_alif`: mostly converged, 3 items still genuinely open.** Resolved: word
+order is `الف ، ا` (not `ا ،الف`), and `تاں` (not `تان`). **Still unresolved**
+(flagged, not guessed at): placement of the `eg:`/`lpp:` prefix relative to the line
+break (possible RTL-rendering artifact rather than a real model difference), the
+`بدھیکی`/`بدهیکی` heh-type question (a *different* word than the already-resolved
+`ھُدرو`/`هُدرو` case), and `چھاں`/`چھان`.
+
+**One heh-confusion case fully settled, worth recording since it's recurred across
+multiple models now**: on the `آپ خُودرو` dictionary entry, do-chashmi heh (`ھ`,
+two-eyed heh, marks aspiration) is the correct reading for the trailing `اپ ھُدرو`,
+not plain heh (`ه`/`ہ`). Gemini, Sonnet 4.6, *and* Kimi K2.5 (see below) all
+independently got this specific letter wrong before correction — the clearest single
+piece of evidence yet that this specific ligature is a genuine, repeated model
+weakness, not an isolated slip by one model.
+
+**Kimi K2.5 checked against the now-converged gold text — revises the earlier
+verdict, and not in Kimi's favor.** The 2026-08-04 entry called Kimi "the best
+non-Gemini result so far," but that was based on one overlapping dictionary entry,
+not a full-page comparison against a real, doubly-confirmed gold standard. With one
+now available:
+- **`dict_alif`: still holds up reasonably.** The specific `آپ خُودرو` headword
+  read that the earlier entry praised is still correct. New finding from the full-page
+  diff: a real, repeated **ک (kaf) for گ (gaf) substitution, six times on one
+  page** (`لک`×3 for `لگ`; `چنکا`/`جک`/`چنکو` for `چنگا`/`جگ`/`چنگو`) — systematic,
+  not scattered noise, and not something the earlier single-entry spot-check could
+  have caught.
+- **`gojri_adbiyaat`: substantially worse than the earlier verdict implied.**
+  Real word substitutions throughout, not just dropped diacritics:
+  `عرض` ("plea") misread as `عرش` ("throne") twice, consistently; the recurring
+  nasalized `ں` ending misread almost everywhere (`مِناں`→`منان`,
+  `کھڈیال`→`کڈیاں`, `بھیال`→`بھیاں`); and — notably — Gojri's distinctive `-و`
+  word ending repeatedly normalized toward Urdu's `-ے` (`میرو`→`میرے`,
+  `تیرا`→`تیرے`), which is exactly the failure mode the canonical prompt's rule 3
+  explicitly warns against. Also got two proper nouns/titles wrong (`ڈاکٹر`
+  ["Doctor"] misread as `ذاکر`, a name; `ڈوئی`→`ڈولی`).
+- **Your read, after seeing this**: Kimi isn't right for this comparison. **Decision:
+  Kimi K2.5 shelved** — moved to `transcriptions_archived/` (both pages'
+  `_original.txt`, never corrected, kept for the record like the other shelved
+  models), same treatment as Haiku 4.5/Qwen3-VL/Llama 4 Maverick/Pixtral Large
+  earlier. Not used going forward.
+- **Practical implication, for the record even though Kimi's shelved now**: its
+  quality wasn't uniform across genres — solid dictionary-layout OCR, weak poetry
+  OCR. Worth remembering generally that the 14,761-page
+  workload isn't one genre, so a single averaged verdict per model may not be the
+  right way to pick a model going forward.
+
+**Original-vs-corrected effort, quantified** (line-level diff count, raw model
+output → final corrected text):
+
+| Page | Gemini 3.6 Flash | Sonnet 4.6 |
+|---|---|---|
+| `dict_alif` | ~5 line-edits | ~9 line-edits |
+| `gojri_adbiyaat` | ~14 line-edits | ~14 line-edits |
+
+Gemini needed less correction on `dict_alif` specifically (mostly one typo);
+Sonnet needed a real word swap and a duplicated/misordered entry on top of the same
+diacritic drops. Roughly equal effort on `gojri_adbiyaat` for both, and — more
+interesting than the raw count — both models independently landed on the *same*
+correct reading for several genuinely hard spots (the `ھُدرو` heh, `پھرنہ`) without
+being told, which is a real (if small-sample) positive signal for both.
+
+**Re-prompting / few-shot, discussed, deferred for now.** Simply re-running the
+identical prompt on the same model again isn't a real strategy here — Sonnet runs
+at `temperature=0` (won't meaningfully vary between runs) and Gemini's variation
+(kept at its own default, per the 2026-08-04 entry) is uncontrolled luck, not a
+technique. What *did* work, concretely, is what this session just did by hand:
+comparing independently-corrected outputs from two different models and trusting
+convergence — a real instance of **ensembling**. **Few-shot prompting** (embedding
+1-2 worked image+correct-transcription examples directly in the prompt, distinct
+from both of the above) is a genuinely different idea worth testing once there's
+more corrected gold data to draw a fair example from — **decision: revisit once
+more pages are corrected**, not now, and any test needs the few-shot example to be
+a *different* page than the one being scored, or it's not a real test.
+
+**File convention fixed, going forward**: corrections were being made *in place*
+(overwriting the raw model output), which meant the true original could only be
+recovered via `git show` against the last commit before correction started — worked
+this time only because the raw outputs happened to have just been committed.
+**Changed**: every page/model now gets two separate files —
+`<page>_<model>_<version>_original.txt` (raw, from the automated test scripts,
+never hand-edited — `ocr_test_common.py`'s `output_path()` now enforces the
+`_original` suffix automatically) and `<page>_<model>_<version>_corrected.txt`
+(hand correction, added separately, only once review is actually done). Applied
+retroactively to all 3 active models on both gold pages tested so far — recovered
+the 4 Gemini/Sonnet originals from git history, renamed the corrected files, and
+renamed Kimi's still-uncorrected file to `_original` (it was already the original,
+nothing to split).
+
+---
+
 ## Glossary (grows as new terms come up)
 
 - **Token**: the unit a model reads/writes in and is billed by — roughly a

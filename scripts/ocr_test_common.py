@@ -37,10 +37,17 @@ def load_prompt(version=LATEST_PROMPT_VERSION, echo=True):
 
 
 def output_path(image_path, model_tag, prompt_version=LATEST_PROMPT_VERSION):
+    """Every automated run is raw, uncorrected model output, so it's always saved
+    with an explicit _original suffix. Hand-correcting a page later means saving a
+    separate <...>_corrected.txt copy alongside it - never editing this file in
+    place - so the original model output is never overwritten/lost. (Learned the
+    hard way: earlier corrections were made in place, and the raw originals had to
+    be recovered from git history after the fact.)
+    """
     page_id = image_path.stem
     page_dir = TRANSCRIPTIONS_DIR / page_id
     page_dir.mkdir(parents=True, exist_ok=True)
-    return page_dir / f"{page_id}_{model_tag}_{prompt_version}.txt"
+    return page_dir / f"{page_id}_{model_tag}_{prompt_version}_original.txt"
 
 
 def print_call_settings(model_id, temperature, max_tokens, thinking, extra_settings=None):

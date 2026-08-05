@@ -7,11 +7,16 @@ spreads split into halves). Layout:
   safety padding). **This is what OCR test calls actually use** — cuts image
   tokens substantially on pages with large blank margins (~60% on the densest
   pages). `images/` is kept only for comparison, not used for OCR calls.
-- `transcriptions/<page_id>/` — one folder per page. Populated with each *active*
-  candidate model's raw output, named `<page_id>_<model>_<prompt_version>.txt`
-  (e.g. `dict_alif_gemini_3.6_flash_v1.txt`), produced under the fixed prompt in
-  `prompts/`. **These are model-generated only — no single file here is "the" gold
-  standard.**
+- `transcriptions/<page_id>/` — one folder per page. Each *active* candidate model
+  gets **two files**: `<page_id>_<model>_<prompt_version>_original.txt` (the raw,
+  untouched model output — what the automated test scripts always save, never
+  hand-edited) and `<page_id>_<model>_<prompt_version>_corrected.txt` (your hand
+  correction against the source image, added separately once review is done — not
+  every model has one yet). Keeping both, rather than correcting in place, is
+  deliberate: it preserves a real before/after record of how much correction effort
+  each model's output actually needed, and the raw output is never at risk of being
+  overwritten. (Early on, corrections were made in place and the raw originals had
+  to be recovered from git history — fixed going forward, see `LOG.md`.)
 - `transcriptions_archived/<page_id>/` — same naming, for models that were tested
   and shelved (reasons + concrete examples in `LOG.md`). Kept for the record, not
   deleted, but not part of the active comparison.
@@ -22,12 +27,13 @@ baseline for comparing models against. Dropped in favor of the model-per-file se
 above.
 
 ## Correction workflow (revised)
-Correcting is now per model, not per page, and is the user's own process — Claude
-only generates the raw `<model>_<version>.txt` files, nothing else. Correction files
-(however they end up organized — naming convention still open) are added by hand,
-separately, comparing each model's raw output against the source image. This lets
-model outputs be compared not just on raw quality, but on how much correction effort
-each one actually took.
+Correcting is per model, not per page, and is the user's own process — Claude
+generates the raw `<model>_<version>_original.txt` files; the user adds a
+`<model>_<version>_corrected.txt` copy by hand, comparing each model's raw output
+against the source image. Naming convention is now fixed (see above), not open.
+When two models' corrected outputs on the same page still disagree with each other,
+that's a useful signal in itself — a real remaining ambiguity worth checking against
+the image again, not just noise.
 
 ## What's in here (12 pages needing vision OCR, grouped by what they test)
 
@@ -51,9 +57,12 @@ candidates, not part of this model comparison.
 ## Why this matters (recap)
 Every OCR approach tested gets run against these same 12 pages, so quality/cost
 tradeoffs are based on real, comparable outputs instead of a handful of spot checks.
-Current status (see `LOG.md` for the full, up-to-date picture): Gemini 3.6 Flash,
-Kimi K2.5, and Sonnet 4.6 are active candidates (all three now have outputs on
-`dict_alif` and `gojri_adbiyaat`); Haiku 4.5, Qwen3-VL, Llama 4 Maverick, and
-Pixtral Large were tested and shelved. Sonnet 5 is blocked on an AWS Sales-gated
-access request (see `LOG.md`) — Sonnet 4.6 is standing in for it until that clears.
-The decode-table idea and future prompt versions remain open follow-ups.
+Current status (see `LOG.md` for the full, up-to-date picture): Gemini 3.6 Flash
+and Sonnet 4.6 are the active candidates, both now fully hand-corrected on
+`dict_alif` and `gojri_adbiyaat`, converging to the same reading on almost every
+line — a real gold standard, not just two independent guesses. Haiku 4.5, Qwen3-VL,
+Llama 4 Maverick, Pixtral Large, and now **Kimi K2.5** (checked against the
+converged gold text — solid on dictionary layout, notably weak on poetry, see
+`LOG.md`) were tested and shelved. Sonnet 5 is blocked on an AWS Sales-gated access
+request (see `LOG.md`) — Sonnet 4.6 is standing in for it until that clears. The
+decode-table idea and future prompt versions remain open follow-ups.

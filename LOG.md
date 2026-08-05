@@ -754,11 +754,19 @@ across two follow-up rounds:
   but reasonably clear: `آبش` is one word (not `آ بش`); `چنگا تے` is two words
   (not `چنگاتے`).
 
-**Still open, genuinely too fine-grained to call from this image's resolution,
-flagged rather than guessed**: whether there's a real space between the headword
-`آپ` and `(aap)` on one entry (every *other* headword on the page has none, which
-leans toward "no space," but this one entry looks different enough in the image to
-not be sure), and one single trailing space before `اپ ھُدرو` on the `خُودرو` entry.
+**Both remaining items resolved — turned out to be a scope question, not an
+ambiguity.** Both disputed spaces were between Gojri text and an *English*
+annotation (`آپ` vs `(aap)`; `head-strong.` vs `اپ ھُدرو`), not between two Gojri
+words. **New standing rule, given directly, worth keeping for every future page**:
+spacing around English glosses/transliterations isn't a correction concern —
+only spacing *between Gojri words* carries real meaning and is worth the effort to
+verify against the image. On the actual Gojri content: `آپ` is confirmed one word,
+`اپ ھُدرو` confirmed two words — both files already had this right. **`dict_alif`
+is therefore fully converged**, same as `gojri_adbiyaat`, no content-level
+disagreement left on either gold page tested so far. Files intentionally left as-is
+(differing only in the out-of-scope English-adjacent spacing) rather than forced
+to match, since forcing a false match isn't the goal — not disagreeing on anything
+that matters is.
 
 **One heh-confusion case fully settled, worth recording since it's recurred across
 multiple models now**: on the `آپ خُودرو` dictionary entry, do-chashmi heh (`ھ`,

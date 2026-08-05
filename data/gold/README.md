@@ -33,7 +33,10 @@ generates the raw `<model>_<version>_original.txt` files; the user adds a
 against the source image. Naming convention is now fixed (see above), not open.
 When two models' corrected outputs on the same page still disagree with each other,
 that's a useful signal in itself — a real remaining ambiguity worth checking against
-the image again, not just noise.
+the image again, not just noise. **Exception**: spacing between Gojri text and an
+adjacent *English* gloss/transliteration (e.g. `آپ (aap)` vs `آپ(aap)`) is not worth
+chasing — only spacing *between two Gojri words* carries real meaning and is worth
+resolving against the image.
 
 ## What's in here (12 pages needing vision OCR, grouped by what they test)
 

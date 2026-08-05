@@ -638,6 +638,67 @@ guessing which ones mattered - found and fixed:
 
 ---
 
+## 2026-08-05 — GPT ruled out; Sonnet 5 blocked on AWS Sales; Sonnet 4.6 standing in; CloudWatch logging set up
+
+**GPT considered for the comparison, ruled out.** Checked directly against Bedrock
+(`list-foundation-models`) rather than assuming: the only OpenAI models on Bedrock
+are the open-weight `gpt-oss-120b`/`20b` (+ `-safeguard` variants), which are
+**text-only, no image input modality**. The actual vision-capable GPT models
+(GPT-4o/4.1/5) aren't on Bedrock at all, only via OpenAI's own API or Azure OpenAI.
+Can't do OCR through Bedrock with GPT — skipped.
+
+**Sonnet 5 access — a real saga, still unresolved.** `anthropic.claude-sonnet-5`
+appears in the account's model catalog but every invocation returned
+`AccessDeniedException`, worded differently from the ordinary "model access not
+enabled" error: *"...contact AWS Sales."* Chased this properly rather than assuming
+it was unfixable:
+- AWS retired the old "Model access" console page; access is now self-service via
+  IAM + a one-time `PutUseCaseForModelAccess` API call for Anthropic models.
+- First attempt at that API failed validation repeatedly — turned out `intendedUsers`
+  must be the literal string `"0"`/`"1"`/`"2"` (Internal/External/Both), not a
+  free-text description, per AWS's own SDK docs (not obvious from the API reference
+  alone, which only documents `formData` as an opaque blob).
+- Ran the full documented flow: `ListFoundationModelAgreementOffers` →
+  `PutUseCaseForModelAccess` (corrected schema, succeeded) →
+  `CreateFoundationModelAgreement` → `GetFoundationModelAvailability`. End state:
+  **every status field reports `AVAILABLE`/`AUTHORIZED`**
+  (`agreementAvailability`, `authorizationStatus`, `entitlementAvailability`,
+  `regionAvailability` all green) — yet `Converse` still returns the identical
+  Sales-gated `AccessDeniedException`. Confirms this is a genuine Sales-only gate,
+  not a missed self-service step; the self-service path is fully exhausted.
+- **Decision: emailed AWS Sales** (`aws.amazon.com/contact-us/sales-support`) with
+  the account ID, model ID, and this exact evidence trail. Response pending —
+  **Sonnet 5 is deferred until access clears**, not abandoned.
+- **Standing in: Sonnet 4.6** (`us.anthropic.claude-sonnet-4-6`, cross-region
+  profile — the plain `anthropic.claude-sonnet-4-6` ID fails since it needs
+  provisioned throughput, not on-demand). No access gate, works immediately.
+
+**Ran Sonnet 4.6 on both gold pages, plus filled a gap**: `gojri_adbiyaat` was
+missing a Gemini v1 run (had Kimi only). Both folders now hold exactly 3 files each
+(Kimi K2.5, Gemini 3.6 Flash, Sonnet 4.6, all `_v1`), ready for your review pass.
+Added `sonnet_4.6` to `bedrock_ocr_test.py`'s `MODELS`/`THINKING_NOTES` dicts
+(thinking left off, same as every other model tested, even though Sonnet 4.6 does
+support adaptive-thinking/effort).
+
+**Side quest: AWS account hygiene**, prompted by working through the Sonnet 5 access
+flow:
+- Set up **Bedrock model invocation logging** to CloudWatch (`bedrock-logs-role`,
+  log group `/aws/bedrock/model-invocations`) — hit and fixed two real
+  misconfigurations along the way (trust policy vs. permissions policy pointing at
+  the wrong log group name; the log group not existing yet). Confirmed live via
+  `get-model-invocation-logging-configuration`.
+- Confirmed `ai_agent_user` (the identity all these scripts run as) has **no IAM
+  permissions at all** — deliberately scoped to Bedrock only, confirmed by testing
+  (every `iam:*` call denied). Recommended, and user is trimming, its 9 attached
+  AWS-managed policies down to 2 (`AmazonBedrockFullAccess` +
+  `AmazonBedrockMarketplaceAccess`, the only ones anything this session actually
+  used) — the rest (AgentCore, Web Search, DataZone policies) were unused surface
+  area.
+- User separately cancelled a Sonnet 4.5 subscription by hand (a different tangent
+  from earlier in the session, now moot — no deny policy needed).
+
+---
+
 ## Glossary (grows as new terms come up)
 
 - **Token**: the unit a model reads/writes in and is billed by — roughly a

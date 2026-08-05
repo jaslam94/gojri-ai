@@ -44,6 +44,7 @@ MODELS = {
     "kimi_k2.5": "moonshotai.kimi-k2.5",
     "llama4_maverick": "us.meta.llama4-maverick-17b-instruct-v1:0",
     "pixtral_large": "us.mistral.pixtral-large-2502-v1:0",
+    "sonnet_4.6": "us.anthropic.claude-sonnet-4-6",
 }
 
 THINKING_NOTES = {
@@ -52,6 +53,7 @@ THINKING_NOTES = {
     "kimi_k2.5": "not enabled (no thinking/reasoning field sent)",
     "llama4_maverick": "not enabled (no thinking/reasoning field sent)",
     "pixtral_large": "not enabled (no thinking/reasoning field sent)",
+    "sonnet_4.6": "not enabled (opt-in only; Sonnet 4.6 supports adaptive-thinking/effort but it wasn't requested, consistent with every other model in this comparison)",
 }
 
 

@@ -51,7 +51,9 @@ candidates, not part of this model comparison.
 ## Why this matters (recap)
 Every OCR approach tested gets run against these same 12 pages, so quality/cost
 tradeoffs are based on real, comparable outputs instead of a handful of spot checks.
-Current status (see `LOG.md` for the full, up-to-date picture): Gemini 3.6 Flash and
-Kimi K2.5 are active candidates; Haiku 4.5, Qwen3-VL, Llama 4 Maverick, and Pixtral
-Large were tested and shelved; Sonnet 5 is next; the decode-table idea and future
-prompt versions remain open follow-ups.
+Current status (see `LOG.md` for the full, up-to-date picture): Gemini 3.6 Flash,
+Kimi K2.5, and Sonnet 4.6 are active candidates (all three now have outputs on
+`dict_alif` and `gojri_adbiyaat`); Haiku 4.5, Qwen3-VL, Llama 4 Maverick, and
+Pixtral Large were tested and shelved. Sonnet 5 is blocked on an AWS Sales-gated
+access request (see `LOG.md`) — Sonnet 4.6 is standing in for it until that clears.
+The decode-table idea and future prompt versions remain open follow-ups.

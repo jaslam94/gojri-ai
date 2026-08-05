@@ -303,9 +303,13 @@ number Stage 1's cost estimate should be built on.
      same cropped images and prompt, transcribed both pages correctly — so this is
      a real capability gap on small/dense Nastaliq text for these two specific
      models, not a settings or input-quality issue. Full outputs kept for the
-     record in `data/gold/transcriptions_archived/`. Sonnet 5 (enabled on Bedrock
-     this session) remains the next model to test against Gemini's cost/quality
-     bar, per `LOG.md`.
+     record in `data/gold/transcriptions_archived/`. Sonnet 5 access turned out to
+     be blocked behind an AWS Sales-gated request (full self-service agreement flow
+     completed successfully, invocation still denied — a genuine Sales-only gate,
+     not a missed step; a request is in with AWS Sales, response pending). **Sonnet
+     4.6 is standing in as the active Claude candidate** until that clears, tested
+     against Gemini's and Kimi K2.5's cost/quality bar on both gold pages, per
+     `LOG.md`.
 6. **Tesseract (traditional OCR) considered as an alternative/baseline**: free and
    runs locally, but is a pattern-matching engine with no language understanding, it
    cannot use surrounding context to resolve ambiguous cursive strokes the way a

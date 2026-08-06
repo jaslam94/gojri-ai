@@ -851,6 +851,49 @@ nothing to split).
 
 ---
 
+## 2026-08-06 — kahawat_kosh + gojri_ghazal: raw runs, gojri_ghazal fully converged
+
+Ran Gemini 3.6 Flash and Sonnet 4.6 on the next two gold pages, same v1 prompt.
+`ocr_test_common.py`'s `_original` suffix fix worked as intended - both models'
+raw output on both pages saved correctly with no manual naming needed.
+
+**The in-place-edit mistake recurred on `gojri_ghazal`**, despite the fix - you
+corrected both models' output by editing the `_original.txt` files directly rather
+than saving separate `_corrected.txt` copies. Caught before anything was committed,
+so recovered cleanly: `cp`'d the current (corrected) content to new `_corrected.txt`
+files first, then restored true raw content into `_original.txt` from the last
+commit (`50b15e8`), verified byte-identical after restoring. No data lost, but
+worth noting the convention needs a human habit change, not just a tooling fix - the
+tooling only controls what the *scripts* write, not what gets edited afterward.
+
+**Correction converged in two rounds**, same cross-model-comparison method as the
+first two pages. First round (checked directly against the source image, mix of
+high- and lower-confidence calls): resolved `بیہویں`, `ہویو`, `مہارے` (goal heh,
+not do-chashmi - a *third* distinct heh-pair now seen in this project, see
+Glossary), `ہوگیوتے`, `سینہ باسینہ`, `یا وی ہے` word order, `ہوتو ہے جو` word
+order, `کمیاب`, `تیجویوہ`, `کرکے`, `اپنو`, `گزرن`, `کرلیتا۔`, and `مہر الدین`
+spacing - brought 27 word-level diffs down to 10, with several (`نام`/`نال`,
+`جووی`/`جوی`, `پہچیو`/`پچہیو`, etc.) genuinely too fine to call from the image and
+flagged rather than guessed at.
+
+**Second round, resolved directly by you**: all 9 remaining items, including the
+most interesting one - **`نامل نال` (both words together), not `نام` alone or
+`نال` alone** as either model had it independently. Neither model's correction
+had actually gotten this right; the real reading was a third option neither one
+landed on, which the cross-model-comparison method can't surface by itself (it
+only catches cases where the two disagree, not cases where both are
+independently wrong in different ways) - a real limitation of the method worth
+remembering. Also: the `قمّر`/`قمر` mark turned out not to actually be a tashdid
+(shadda) as I'd assumed from the codepoint alone - you flagged it as "a different
+sign," and the interim call is to drop it until it's properly identified, rather
+than keep guessing at what it actually is.
+
+**`gojri_ghazal` now fully converged - 0 remaining word-level differences**
+between the two corrected files. All three gold pages tested so far
+(`dict_alif`, `gojri_adbiyaat`, `gojri_ghazal`) are now fully converged.
+
+---
+
 ## Glossary (grows as new terms come up)
 
 - **Token**: the unit a model reads/writes in and is billed by — roughly a
@@ -870,3 +913,11 @@ nothing to split).
 - **Radif**: in Urdu/Gojri ghazal poetry, a word or phrase that repeats identically
   at the end of every line/couplet. Relevant to OCR because it's a built-in
   consistency check a model isn't currently using.
+- **The three heh letters**: Nastaliq/Urdu script has three visually-similar but
+  distinct heh characters, all real, separate letters, not stylistic variants:
+  plain Arabic heh (`ه`, U+0647, borrowed from Arabic, no special meaning in
+  Urdu/Gojri), goal heh (`ہ`, U+06C1, the ordinary standalone Urdu heh, e.g. in
+  `وہ`/`یہ`/`ہے`), and do-chashmi heh (`ھ`, U+06BE, "two-eyed heh," marks
+  aspiration - what turns `د` into `دھ`, `ب` into `بھ`, etc.). All three have shown
+  up as genuine correction disputes across the gold-set pages so far - worth
+  checking the exact codepoint, not just eyeballing similar-looking glyphs.

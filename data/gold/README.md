@@ -33,10 +33,15 @@ generates the raw `<model>_<version>_original.txt` files; the user adds a
 against the source image. Naming convention is now fixed (see above), not open.
 When two models' corrected outputs on the same page still disagree with each other,
 that's a useful signal in itself — a real remaining ambiguity worth checking against
-the image again, not just noise. **Exception**: spacing between Gojri text and an
-adjacent *English* gloss/transliteration (e.g. `آپ (aap)` vs `آپ(aap)`) is not worth
-chasing — only spacing *between two Gojri words* carries real meaning and is worth
-resolving against the image.
+the image again, not just noise. **Exceptions** (not worth chasing): spacing
+between Gojri text and an adjacent *English* gloss/transliteration (e.g.
+`آپ (aap)` vs `آپ(aap)`), and spacing around punctuation (`:`, `،`, `۔`) — only
+spacing *between two Gojri words* carries real meaning and is worth resolving
+against the image. **Also worth remembering**: convergence between two models'
+corrections is useful evidence, but not proof — on `gojri_ghazal` and
+`kahawat_kosh` the actual correct reading turned out at least once to match
+*neither* model's independent correction, so full agreement between the two
+doesn't guarantee correctness, just makes an error less likely.
 
 ## What's in here (12 pages needing vision OCR, grouped by what they test)
 
@@ -62,9 +67,9 @@ Every OCR approach tested gets run against these same 12 pages, so quality/cost
 tradeoffs are based on real, comparable outputs instead of a handful of spot checks.
 Current status (see `LOG.md` for the full, up-to-date picture): Gemini 3.6 Flash
 and Sonnet 4.6 are the active candidates, both now fully hand-corrected and fully
-converged on all 3 pages tested so far (`dict_alif`, `gojri_adbiyaat`,
-`gojri_ghazal`) — a real gold standard, not just two independent guesses.
-`kahawat_kosh` has raw output from both models, not yet corrected. Haiku 4.5, Qwen3-VL,
+converged on all 4 pages tested so far (`dict_alif`, `gojri_adbiyaat`,
+`gojri_ghazal`, `kahawat_kosh`) — a real gold standard, not just two independent
+guesses. Haiku 4.5, Qwen3-VL,
 Llama 4 Maverick, Pixtral Large, and now **Kimi K2.5** (checked against the
 converged gold text — solid on dictionary layout, notably weak on poetry, see
 `LOG.md`) were tested and shelved. Sonnet 5 is blocked on an AWS Sales-gated access

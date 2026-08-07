@@ -894,6 +894,54 @@ between the two corrected files. All three gold pages tested so far
 
 ---
 
+## 2026-08-07 — kahawat_kosh corrected and converged; punctuation-spacing rule added
+
+**Same in-place-edit mistake a third time**, on `kahawat_kosh` this round -
+recovered the same way as `gojri_ghazal` (not committed yet, so no data lost;
+`cp`'d current content to `_corrected.txt`, restored true raw content into
+`_original.txt` from commit `50b15e8`, verified byte-identical). This is now a
+consistent pattern across every page corrected since the convention was
+introduced - the tooling fix only controls what the scripts *write*, not what
+gets edited after the fact, so this is a habit thing on the correction side,
+not something further tooling changes can fully prevent by itself.
+
+**New scope rule, extending the earlier English-adjacent-spacing exception**:
+this page's tight two-column proverb-layout typesetting produced a lot of
+disagreement in *punctuation* spacing specifically - space before `:`/`،`/`۔`
+or not - applied consistently by each model but differently from each other.
+19 of the initial 34 word-level diffs were exactly this, no real content
+involved. **Decision: punctuation spacing joins English-adjacent spacing as
+"not a correction concern"** - only spacing between two actual Gojri words
+still matters.
+
+**Real content converged in two rounds.** First round (checked against the
+source image myself): resolved one item confidently (`پک`→`پگ` on the
+`شملومیلو` entry, an internal inconsistency within Gemini's own output - it
+used `پگ` correctly on the two preceding entries - same ک/گ confusion pattern
+already documented from Kimi's `dict_alif` errors). This page's typesetting is
+markedly harder to read at the working image resolution than the previous
+three pages, so the rest (18 items) were flagged rather than guessed at.
+
+**Second round, resolved directly by you.** Notably, the very first entry's
+correct reading (`پُتر اکھوہ پو، دبکار سُناں`) matched *neither* model's
+correction exactly - a third reading combining elements of both, same
+limitation of the cross-model-comparison method already seen on
+`gojri_ghazal`'s `نامل نال` case: convergence between two models is useful
+evidence, but it isn't a proof, and doesn't catch a case where both are wrong
+in different ways. You also distinguished between "is right" (certain) and
+"seems right" (best guess) when answering - worth preserving that distinction
+here rather than flattening it, since a few of the accepted readings
+(`بھاراو`, `پرسیوپرسے ہونو`, `چلاکی`'s counterpart entries, `پروڑو`,
+`شملو میلو`) are lower-confidence calls, not fully verified against the
+source the way the "is right" ones are.
+
+**`kahawat_kosh` now fully converged** (0 real remaining differences, only the
+now-exempted punctuation spacing). All 4 gold pages tested so far (`dict_alif`,
+`gojri_adbiyaat`, `gojri_ghazal`, `kahawat_kosh`) are fully converged between
+Gemini 3.6 Flash and Sonnet 4.6.
+
+---
+
 ## Glossary (grows as new terms come up)
 
 - **Token**: the unit a model reads/writes in and is billed by — roughly a

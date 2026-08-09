@@ -942,6 +942,57 @@ Gemini 3.6 Flash and Sonnet 4.6.
 
 ---
 
+## 2026-08-10 — mahatma_gandhi + kulyate spread run; kulyate_spread_a_right converged
+
+**Ran both models on the next two pages**: `mahatma_gandhi` (illustration +
+caption test) and the `kulyate_spread` two-page spread (`_a_right` + `_b_left`,
+one logical page, two image files). Two things worth flagging from the raw
+outputs, before any correction:
+- **`kulyate_spread_a_right`: the two models transcribed different amounts of
+  content.** Gemini produced 5 stanzas, Sonnet only 4 - missing the opening
+  stanza entirely. Resolved during correction: the extra stanza is real: both
+  corrected files now include it.
+- **`mahatma_gandhi`: Gemini's illustration description echoed the prompt's own
+  example almost verbatim** (prompt example: "a man handing cloth to a kneeling
+  boy, others looking on"; Gemini's output: "...handing cloth to a kneeling
+  person"). Flagged as worth checking against the image directly before
+  trusting it - possible prompt-echo rather than genuine description. Not yet
+  resolved - `mahatma_gandhi` correction is still pending.
+
+**In-place-edit mistake happened a fourth time**, on `kulyate_spread_a_right` -
+same recovery approach as before, but this time the raw output had never been
+committed to git at all (caught the same session it was generated), so
+`git show` wasn't available. **Recovered from the conversation's own tool
+output instead** - the exact raw text was still visible earlier in the
+session, so it was reconstructed from that rather than lost. Sanity-checked the
+reconstruction against the logged token/word counts before trusting it. This
+mistake has now recurred on every single page corrected since the
+`_original`/`_corrected` convention was introduced - worth treating as an
+expected step to check for, not a one-off.
+
+**Real finding, not a disagreement**: neither model's raw output included the
+page's title/attribution header (`کُلیاتِ رانا فضل حسین` / `تالیف: ڈاکٹر جاوید
+راہی`) at all - both models missed it outright, and it was added fresh during
+correction. A case where cross-model comparison couldn't have caught the gap,
+since both models failed identically.
+
+**Correction converged in three short rounds** (image check by me, then two
+rounds of direct answers, distinguishing certain from best-guess as before).
+One fix worth noting: `راہی` vs `راہھی` - Sonnet's version had two different
+heh characters back to back on the well-documented author name **Dr. Javaid
+Rahi** (this project's most-cited compiler, per `CLAUDE.md`) - resolved
+confidently without needing the image, since the correct spelling of a known
+real name isn't genuinely ambiguous. Also settled: the title/attribution
+header is one line with the two phrases at opposite ends (not two lines, not
+literally pipe-separated - `|` was Sonnet's own invented separator, not
+something printed on the page, so replaced with plain spacing instead in both
+files) - a layout detail cross-model agreement alone couldn't have surfaced.
+
+**`kulyate_spread_a_right` now fully converged.** `kulyate_spread_b_left` and
+`mahatma_gandhi` still have raw output only, correction pending.
+
+---
+
 ## Glossary (grows as new terms come up)
 
 - **Token**: the unit a model reads/writes in and is billed by — roughly a

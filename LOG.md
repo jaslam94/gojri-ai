@@ -1037,6 +1037,86 @@ exact wording, for the reason above).
 
 ---
 
+## 2026-08-11 — Two new models spot-checked: Cursor Composer 2.5 in, Groq 4.5 Fast out
+
+**Groq 4.5 Fast tested via pasted output on 2 pages, ruled out.** Word-level
+diff against gold: 38.6% error rate on `gojri_adbiyaat`, 31.9% on
+`gojri_ghazal` - roughly 3-4x worse than Gemini/Sonnet. More important than
+the raw rate: the *kind* of errors. Confidently wrong on proper names,
+repeatedly, with zero hedging - `نذیر`→`ندیم`, `قمر`→`فقر` (twice),
+`راجوروی`→`راجوردی` (twice), and most notably the poem's actual signed
+author `لعل حسین پرواز` came back as `فضل حسین پرواز` - "Rana Fazal Hussain"
+being a real, *different* author's name that appears elsewhere in this exact
+corpus (the `kulyate_spread` pages), which reads like possible cross-
+contamination rather than a reading error. Also: Eastern/Persian numerals
+(`۴۰`) came back as Arabic-Indic (`٢٠`, and wrong besides - misread 40 as
+20), a page header's reading order was reversed, typographic quotes were
+flattened to straight ASCII ones, and the `[[uncertain]]` bracket convention
+was used zero times despite being by far the least accurate output of any
+model tested - the opposite of what you'd want from the model most often
+wrong. **Decision: not pursued further**, no correction done, no files added
+- the pasted-output route doesn't fit the project's file/logging convention
+anyway, and the quality gap was decisive enough not to need it.
+
+**Cursor Composer 2.5**: first checked via pasted output (2 pages), looked
+competitive; then a full file-based run appeared across all 7 corrected
+pages, added directly to the transcriptions folders as `_composer_v1_original.txt`.
+**Caught before trusting it**: the file version is a materially different,
+more diacritic-careful run than what was pasted earlier - not the same data.
+The pasted-text analysis is superseded by the file-based one below.
+
+**Fair comparison, file-based, punctuation-spacing normalized out (same
+exemption already applied to Gemini/Sonnet), `mahatma_gandhi` excluded as
+non-comparable (free-text description, not exact transcription):**
+
+| Page | gold words | Composer | Gemini (raw) | Sonnet (raw) |
+|---|---|---|---|---|
+| `dict_alif` | 108 | **15** | 31 | 21 |
+| `gojri_adbiyaat` | 204 | 34 | **32** | 32 |
+| `gojri_ghazal` | 322 | 52 | 40 | **29** |
+| `kahawat_kosh` | 140 | **30** | 32 | 60 |
+| `kulyate_spread_a_right` | 152 | **37** | 46 | 66 |
+| `kulyate_spread_b_left` | 104 | 18 | **17** | 28 |
+| **Total / rate** | 1030 | **186 (18.1%)** | 198 (19.2%) | 236 (22.9%) |
+
+Composer wins outright on 3 of 6 pages and edges out both established
+candidates in aggregate error rate. Its errors are the same *category* as
+Gemini/Sonnet's raw output - diacritic drops, tight-word-pair spacing, the
+occasional known-hard word - never Groq's garbling or invented proper names.
+It uses `[[uncertain]]` brackets appropriately on genuinely hard spots (e.g.
+`[[پچھّیو]]` on `gojri_ghazal`, the same word every model tested has
+struggled with in some form). **One real pattern worth watching, not yet
+confirmed as systematic**: `آج` appeared 3 times on `gojri_ghazal` where gold
+has `اَج` - the same "normalizing toward standard Urdu instead of Gojri's own
+spelling" failure mode already documented for Kimi's `-و`/`-ے` endings,
+worth checking on more pages before calling it a real tendency.
+
+**All 7 pages corrected**, following the established convention. Since these
+are the *same physical pages* already cross-validated to a converged gold
+text (2 independent models + direct image checks on disputed spots), Composer's
+`_corrected.txt` for the 6 exact-transcription pages was set to match that
+same verified text exactly - there's one true transcription per page, and
+forcing an independent third "correction" pass would just re-derive the same
+answer through more effort, not a different one. Verified byte-identical to
+each page's gold file before committing, and confirmed the raw
+`_composer_v1_original.txt` files were never touched. `mahatma_gandhi`
+handled differently, consistent with how it's been treated throughout: checked
+the actual image directly rather than copy an existing description, since
+Composer's raw output described real, verifiable details (bare-chested man,
+white dhoti, mud-walled room) but never identified the subject as **Mahatma
+Gandhi** specifically, despite that being confirmed true earlier. Minimal
+correction applied - added the identification, kept Composer's own otherwise-
+accurate phrasing rather than overwriting it with Gemini's or Sonnet's wording.
+
+**Practical note, no cost data for Composer or Groq**: both were produced
+outside the project's metered scripts (Composer via Cursor IDE directly, Groq
+via pasted output), so neither has token/pricing data in `ocr_runs_log.csv`
+the way every Bedrock/Gemini call does. If Composer stays in the active
+comparison, that's a real gap before it can be scored on cost the way
+Gemini/Sonnet can.
+
+---
+
 ## Glossary (grows as new terms come up)
 
 - **Token**: the unit a model reads/writes in and is billed by — roughly a

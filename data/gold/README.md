@@ -66,15 +66,19 @@ candidates, not part of this model comparison.
 Every OCR approach tested gets run against these same 12 pages, so quality/cost
 tradeoffs are based on real, comparable outputs instead of a handful of spot checks.
 Current status (see `LOG.md` for the full, up-to-date picture): Gemini 3.6 Flash
-and Sonnet 4.6 are the active candidates. 6 of 12 pages fully corrected:
-`dict_alif`, `gojri_adbiyaat`, `gojri_ghazal`, `kahawat_kosh`,
-`kulyate_spread_a_right`, and `kulyate_spread_b_left` are word-for-word
-converged; `mahatma_gandhi` is corrected but its two illustration descriptions
-stay legitimately different (both independently confirmed true — see `LOG.md`,
-not every task converges to identical wording the way exact transcription
-does). Haiku 4.5, Qwen3-VL,
-Llama 4 Maverick, Pixtral Large, and now **Kimi K2.5** (checked against the
-converged gold text — solid on dictionary layout, notably weak on poetry, see
-`LOG.md`) were tested and shelved. Sonnet 5 is blocked on an AWS Sales-gated access
-request (see `LOG.md`) — Sonnet 4.6 is standing in for it until that clears. The
-decode-table idea and future prompt versions remain open follow-ups.
+and Sonnet 4.6 are the active candidates, and **Cursor Composer 2.5** has
+joined them as a genuine third — file-based run across all 7 corrected pages,
+competitive on error rate (edges out both in aggregate), corrected the same
+way (see below). 7 of 12 pages fully corrected: `dict_alif`, `gojri_adbiyaat`,
+`gojri_ghazal`, `kahawat_kosh`, `kulyate_spread_a_right`, and
+`kulyate_spread_b_left` are word-for-word converged across all three models;
+`mahatma_gandhi` is corrected but its illustration descriptions stay
+legitimately different per model (independently confirmed true — see
+`LOG.md`, not every task converges to identical wording the way exact
+transcription does). Haiku 4.5, Qwen3-VL, Llama 4 Maverick, Pixtral Large,
+Kimi K2.5, and now **Groq 4.5 Fast** (spot-checked via pasted output, ~3-4x
+worse error rate than the active candidates plus repeated wrong proper names
+with zero uncertainty-flagging — see `LOG.md`) were tested and shelved.
+Sonnet 5 is blocked on an AWS Sales-gated access request (see `LOG.md`) —
+Sonnet 4.6 is standing in for it until that clears. The decode-table idea and
+future prompt versions remain open follow-ups.

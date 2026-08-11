@@ -993,6 +993,50 @@ files) - a layout detail cross-model agreement alone couldn't have surfaced.
 
 ---
 
+## 2026-08-11 — mahatma_gandhi + kulyate_spread_b_left corrected
+
+**In-place-edit mistake, fifth recurrence** - same as every page since the
+convention was introduced. This time both files were already committed, so
+recovery was simplest yet: `git show HEAD:path` directly, no history
+archaeology needed. Confirmed by `git diff --stat` showing zero difference
+after restoring.
+
+**`kulyate_spread_b_left` converged in two short rounds.** One fix applied
+without needing the image at all: `راہی`, not `راتھی` - the same author name
+(Dr. Javaid Rahi) already settled with high confidence on the facing page
+(`kulyate_spread_a_right`); Gemini already had it right in this file's own
+header too, so this was purely an internal-consistency call. The header
+line-format question (one line, phrases at opposite ends, no literal `|`)
+was also already settled on the facing page - same book, same layout,
+applied directly rather than re-asked. Two genuine remaining items resolved
+by you (`جِندڑی` not `چندری`, `دِیا` not `دیا` - the diacritic one) plus
+`وچھوڑیئے` not `وچھوڑیے`. **Fully converged.**
+
+**`mahatma_gandhi`: an interesting non-convergence, resolved differently than
+usual.** The two models' illustration descriptions never became identical,
+and that's the right outcome here, not a gap. Gemini's original raw output
+("...handing cloth to a kneeling person") and Sonnet's corrected version
+("...a child reaching up, a woman in a dupatta, others seated and standing")
+both got **independently confirmed as true** against the actual image -
+they're just describing different real details of the same scene, not
+disagreeing about it. This also resolves the earlier worry (2026-08-10 entry)
+that Gemini's description might have been echoing the prompt's own example
+text rather than genuinely describing the page - it wasn't; the detail is
+real. Gemini's file needed zero edits and is legitimately "reviewed and
+correct as originally written," not an overlooked file - first time that's
+happened in this comparison. **Lesson for the eventual cross-page analysis**:
+"the two models' corrected outputs disagree" isn't always a defect signal for
+free-text description tasks (unlike exact transcription) - sometimes it just
+means two true, non-exhaustive descriptions of the same thing, and forcing
+them to match would make one artificially less complete, not more accurate.
+
+**6 of 12 gold pages now fully corrected and converged**: `dict_alif`,
+`gojri_adbiyaat`, `gojri_ghazal`, `kahawat_kosh`, `kulyate_spread_a_right`,
+`kulyate_spread_b_left` (+ `mahatma_gandhi`, converged in substance if not in
+exact wording, for the reason above).
+
+---
+
 ## Glossary (grows as new terms come up)
 
 - **Token**: the unit a model reads/writes in and is billed by — roughly a

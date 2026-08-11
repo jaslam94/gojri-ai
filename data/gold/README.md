@@ -66,11 +66,13 @@ candidates, not part of this model comparison.
 Every OCR approach tested gets run against these same 12 pages, so quality/cost
 tradeoffs are based on real, comparable outputs instead of a handful of spot checks.
 Current status (see `LOG.md` for the full, up-to-date picture): Gemini 3.6 Flash
-and Sonnet 4.6 are the active candidates, fully hand-corrected and fully
-converged on 5 pages so far (`dict_alif`, `gojri_adbiyaat`, `gojri_ghazal`,
-`kahawat_kosh`, `kulyate_spread_a_right`) — a real gold standard, not just two
-independent guesses. `mahatma_gandhi` and `kulyate_spread_b_left` have raw
-output from both models, correction pending. Haiku 4.5, Qwen3-VL,
+and Sonnet 4.6 are the active candidates. 6 of 12 pages fully corrected:
+`dict_alif`, `gojri_adbiyaat`, `gojri_ghazal`, `kahawat_kosh`,
+`kulyate_spread_a_right`, and `kulyate_spread_b_left` are word-for-word
+converged; `mahatma_gandhi` is corrected but its two illustration descriptions
+stay legitimately different (both independently confirmed true — see `LOG.md`,
+not every task converges to identical wording the way exact transcription
+does). Haiku 4.5, Qwen3-VL,
 Llama 4 Maverick, Pixtral Large, and now **Kimi K2.5** (checked against the
 converged gold text — solid on dictionary layout, notably weak on poetry, see
 `LOG.md`) were tested and shelved. Sonnet 5 is blocked on an AWS Sales-gated access

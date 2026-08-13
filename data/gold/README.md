@@ -80,5 +80,9 @@ Kimi K2.5, and now **Groq 4.5 Fast** (spot-checked via pasted output, ~3-4x
 worse error rate than the active candidates plus repeated wrong proper names
 with zero uncertainty-flagging — see `LOG.md`) were tested and shelved.
 Sonnet 5 is blocked on an AWS Sales-gated access request (see `LOG.md`) —
-Sonnet 4.6 is standing in for it until that clears. The decode-table idea and
-future prompt versions remain open follow-ups.
+Sonnet 4.6 is standing in for it until that clears. The remaining 5 pages
+(`nazir_spread_a_right`, `nazir_spread_b_left`, `louk_warsti`,
+`shingar_textbook`, `primer_pehli`) now have Gemini + Sonnet + Composer v1
+originals and first-pass `_corrected.txt` files (2026-08-13), but are **not
+yet fully converged** — a short list of image-check items is in `LOG.md`.
+The decode-table idea and future prompt versions remain open follow-ups.

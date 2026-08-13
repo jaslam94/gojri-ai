@@ -1117,6 +1117,114 @@ Gemini/Sonnet can.
 
 ---
 
+## 2026-08-13 — Remaining 5 gold pages: Composer v1 originals only
+
+The 7 already-corrected pages had Composer files; the other 5 vision-OCR gold
+pages did not. Ran Composer 2.5 on them with the same frozen `v1` prompt
+(`prompts/ocr_transcription_v1.txt`) so the comparison stays apples-to-apples
+with Gemini/Sonnet's existing v1 runs. Saved as
+`<page>_composer_v1_original.txt` only — no `_corrected.txt` yet, and do not
+edit these in place.
+
+| Page | What it tests | Notes from this raw run |
+|---|---|---|
+| `nazir_spread_a_right` | Second poetry spread, legacy_8bit | Full page: header, title `یاد کراؤں تم نا`, 14 lines with radif `کتنی`, page 139 |
+| `nazir_spread_b_left` | Same spread, lots of true blank | 5 continuing lines, then blank + star ornament, page 140 — the "don't invent content" test |
+| `louk_warsti` | Real scan, show-through | Show-through ignored. One flagged word: `[[لمی]]` on the last line |
+| `shingar_textbook` | Image-only textbook | Two story paragraphs + footer `21 ساتویں کی گوجری کتاب` |
+| `primer_pehli` | Children's primer, captioned pictures | Letter `خ` with four captioned photos; Gojri `خربوزو` (not Urdu `خربوزہ`) kept as written |
+
+**Not done in this Composer-only pass:** Gemini and Sonnet had not been run
+yet. Superseded the same day by the next entry, which ran both and started
+first-pass correction. Step 0.4 (corpus layout / provenance conventions) is
+also still open.
+
+---
+
+## 2026-08-13 — Remaining 5 pages: Gemini + Sonnet run, first-pass corrections
+
+Same day as the Composer-only originals above. Ran Gemini 3.6 Flash and
+Sonnet 4.6 on all 5 remaining images via the metered scripts (`v1` prompt,
+cropped images), then first-pass corrected all three models against
+`data/gold/images_cropped/`. Raw `_original.txt` files were never edited.
+Logged in `ocr_runs_log.csv` (2026-08-13T15:21–15:23 UTC).
+
+This is **first-pass, not fully converged**. Remaining items below need a
+native-speaker image check, same as the earlier pages. Convergence between
+models is evidence, not proof.
+
+### What the models did, page by page
+
+**`nazir_spread_a_right` (page 139, poetry, radif `کتنی`).** Header is one
+line, opposite ends, no invented `|`. Author is `ڈاکٹر جاوید راہی`. Footer
+has no comma between `آرٹ` and `کلچر` (unlike the kulyate books, which do).
+Sonnet garbled the header (`نذمیر`, `راتی`). Gemini split the header onto
+two lines. Composer got the header layout right. Applied first-pass:
+`تھارا`, `جمالؔ`, `بدھائی`, `بُزرگی`, `چاننی`, `ازمائی` (plain alif, not
+`آزمائی`), `ہم نا سُن` then `ہم ناں سُن کے`, `انھاں وِچ`, `جرگا`, `لالچ`,
+`پھسائی`.
+
+**`nazir_spread_b_left` (page 140, the blank-space test).** All three models
+passed: 5 continuing lines, then blank, then a star ornament, page 140, same
+footer. Nobody invented body text in the empty region. Applied: `بڈیائی`,
+`کرامتاں`, `بگائی`, `کول`, `پھسائی`, `نذیرؔ سکو`. Gemini invented
+`ہڈیائی`/`بگوائی`; Sonnet `بُدیائی`/`کون`/`بھسائی`. Composer was closest
+and was the only one to mark the takhallus on `نذیرؔ`.
+
+**`louk_warsti` (page 99, real scan, show-through).** All three ignored the
+bleed-through, which is the point of this page. Heading `م` then
+`ماترے : دوجی ماں`. Applied: `جہڑی اس را ہے۔`, `اُس گی` / `لڑکاں گی`,
+`میٹرا`, `وے لڑکا`, `تھو دے`, `نا جائز`, `اسنو`, `ور لمی`, `کرلاوے`.
+Composer flagged `[[لمی]]`. Gemini/Sonnet both used `گی`; Composer used `کی`.
+
+**`shingar_textbook` (page 21, image-only textbook).** Two story paragraphs
+plus a designed footer. Sonnet garbled the opening (`جیرا نگی`, duplicated
+`تم`) and dropped `پکو` before `یقین ہے`. Gemini's body was usable; its
+footer was scrambled (`سمتیں`, wrong order). Composer was closest on the
+body. Applied footer: `21 ستویں کی گوجری کتاب` (Gojri `ستویں`, not Urdu
+`ساتویں`) and `دی جموں اینڈ کشمیر سٹیٹ بورڈ آف سکول ایجوکیشن`. Kept
+`ٹھگ گی آواز` (all three models) pending image confirmation of `گی` vs `کی`.
+
+**`primer_pehli` (page 16, letter `خ`).** Captioned photos, not paragraphs.
+Labels: `خرگوش`, `خچّر` (shadda on che), `خربوزو` (Gojri `-و`, not Urdu
+`خربوزہ`), `خوبانی`. Note starts `نوٹ: اُپر دِتی وی شکلاں کی پچھان...`.
+Footer uses Western `16`, not Eastern `١٦` (Sonnet used Eastern).
+Illustration descriptions stay per-model, same rule as `mahatma_gandhi`.
+
+**Composer Urdu-normalization, now seen twice not once.** On this primer
+page Composer wrote `تاکہ` and `پہچان` where the page has Gojri `تانجے` and
+`پچھان`. That is the same "normalize toward standard Urdu" tendency first
+flagged as `آج` vs gold `اَج` on `gojri_ghazal`. No longer a one-off. Gemini
+had `اَپر` (zabar) where the page has `اُپر` (pesh), a related diacritic
+swap. First-pass gold uses `تانجے`, `پچھان`, `اُپر`, and `کنّی کنّی`
+(shadda on noon; Composer/Sonnet had `کئی کئی`, Gemini `کتني کتنی`).
+
+### Remaining items for native-speaker image check
+
+Do not treat these pages as converged until these are answered against the
+image, not by majority vote:
+
+1. `nazir_a`: `جمالؔ` vs `جمالؑ`
+2. `nazir_a`: `ازمائی` vs `آزمائی`
+3. `nazir_a` line 8 vs 9: `ہم نا سُن` / `ہم ناں سُن` (plain noon vs noon-ghunna, and whether the two lines match)
+4. `nazir_b`: `سکو` vs `سِکو`
+5. `nazir_b`: is the takhallus mark on the last-line `نذیرؔ` (Composer yes, Gemini/Sonnet no)
+6. `louk`: `کی` vs `گی` (`اُس گی زنانی`, `لڑکاں گی`)
+7. `louk`: `میترا` vs `میٹرا`
+8. `louk`: `اسنو` vs `اسو`
+9. `shingar`: `ٹھگ گی آواز` vs `ٹھگ کی آواز`
+10. `shingar`: `دِتو` vs `دِتّو`; `ہووے` vs `ہوے`; `لے سکتو` vs `لے سکو`
+11. `primer`: confirm `کنّی کنّی` (vs `کئی کئی` / `کتني کتنی`)
+
+Once those are settled, make all three `_corrected.txt` files byte-identical
+on the exact-transcription pages (primer illustration notes may still differ)
+and then the 12-page cross-model analysis can run.
+
+Composer still has no cost/token rows in `ocr_runs_log.csv`. Sonnet 5 still
+Sales-gated. Step 0.4 still open.
+
+---
+
 ## Glossary (grows as new terms come up)
 
 - **Token**: the unit a model reads/writes in and is billed by — roughly a

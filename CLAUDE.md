@@ -476,7 +476,12 @@ collections are correctly counted.
 
 ## Status
 Stage 0 in progress (Aug 2026): manifest built and its classification errors caught
-and fixed on the same day, before any bulk spend. Remaining Stage 0 work: build the
-OCR gold set (Step 0.3) and finalize corpus/provenance conventions (Step 0.4). See
-`plans/STAGE-0.md` for the full implementation plan and `ROADMAP.md` for the staged
-project plan and parking lot.
+and fixed on the same day, before any bulk spend. Gold-set Step 0.3: 7 of 12
+vision-OCR pages fully corrected (`dict_alif`, `gojri_adbiyaat`, `gojri_ghazal`,
+`kahawat_kosh`, `kulyate_spread_a_right`, `kulyate_spread_b_left`, plus
+`mahatma_gandhi` in substance). Remaining 5 pages
+(`nazir_spread_a_right`/`_b_left`, `louk_warsti`, `shingar_textbook`,
+`primer_pehli`) have Gemini 3.6 Flash + Sonnet 4.6 + Composer 2.5 v1 originals
+and first-pass corrections as of 2026-08-13, not yet fully converged (remaining
+image-check items in `LOG.md`). Step 0.4 (corpus layout / provenance conventions)
+is still open. See `plans/STAGE-0.md` and `LOG.md`.

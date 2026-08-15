@@ -1225,6 +1225,270 @@ Sales-gated. Step 0.4 still open.
 
 ---
 
+## 2026-08-14 — Prompt v2 rewritten for one-shot Gemini/Sonnet
+
+The earlier `prompts/ocr_transcription_v2.txt` (2026-08-04) was deleted on
+purpose. It had useful layout rules (no skip/repeat on dictionary lines,
+numerals as printed, show-through, two-column pairs) but the gold-set work
+since then showed failure modes v1 never named, and the old numeral rule
+once pushed Gemini to read headword alif as digit `۱`.
+
+New v2 is still one-shot. Second pass the same day, before any Gemini/Sonnet
+re-run: the first draft had put gold-set answers into the prompt itself
+(`خربوزو`, `پچھان`, `تانجے`, `اَج`, `لڑکا`/`لیو دے`, Western `16` vs
+Eastern `١٦`, and the primer/mahatma illustration examples). That would have
+contaminated the pages we are about to score. Those strings are gone. The
+rules stay as patterns: do not rewrite Gojri as Urdu; keep pesh/kasra/zabar/
+shadda/noon-ghunna as printed; the three heh letters; honorific marks; word
+spacing from the visible gap; letter `ا` is not digit `۱`; headers as one
+line with no invented `|`; banner footers; captions on pictures are text;
+poetry refrain is a check against the image, not a reason to force two lines
+identical. Also restored: no invented sentences, no placeholder letters,
+kaf vs gaf, labelled-picture reading order, names letter-by-letter.
+`scripts/ocr_test_common.py` already defaults to `v2`.
+
+Gemini and Sonnet v1 originals were removed on `nazir_spread_*`,
+`shingar_textbook`, and `primer_pehli` so those pages can be re-run under
+this prompt only. `louk_warsti` still has v1 Gemini/Sonnet originals.
+Composer v1 files were left in place (chat pipeline, not this prompt bump).
+
+---
+
+## 2026-08-15 — Nazir spread gold files; first scored pages under new gold rule
+
+There is no `nazir_spread_a_left`. The left half is `nazir_spread_b_left`.
+
+You image-checked both halves. Gold is now one file per page:
+`nazir_spread_a_right_gold.txt` and `nazir_spread_b_left_gold.txt`, copied
+from your edits to the Composer `_corrected.txt` files (those corrected
+copies remain as the working notes you edited).
+
+Your gold fixes vs the assistant first-pass: header takhallus `نذیرؔ`;
+`جمالؔ` confirmed (mark on `ل`); `بِچ` not `وِچ`; `جِرگا`; and on the
+left half, diacritics the first-pass had dropped (`مِلے`, `کَدھ`, `بَهلا`,
+`کُھو`, `سُچی`, `سِکو`). Composer v1 original already had `سِکو`; the
+first-pass "correction" had removed the kasra. That is why this spread's
+first-pass looked worse than the earlier converged pages.
+
+Word error vs gold (whitespace collapsed, punctuation spacing ignored,
+`[[...]]` unwrapped, `[blank]`/`[illustration]` lines not counted):
+
+| Page | gold words | Composer v1 | Gemini v2 API | Sonnet 4.6 v2 API | Sonnet 5 CC v2 |
+|---|---|---|---|---|---|
+| `nazir_spread_a_right` | 190 | **3.7%** | 10.5% | 11.1% | 11.6% |
+| `nazir_spread_b_left` | 79 | **7.6%** | 11.4% | 16.5% | 16.5% |
+
+Composer v1 is chat-with-notes, v1 prompt. Gemini/Sonnet 4.6 are one-shot
+API, v2 prompt. Sonnet 5 CC is chat-with-notes, v2 prompt, and this
+session may have seen LOG words. Do not read the table as a fair four-way
+model rank.
+
+---
+
+## 2026-08-15 — Direct-extraction pages removed from gold images
+
+`hindi_dict` and `quran_translation` are good-text PDFs. They were in the
+gold image folders only as an extraction check, not as vision-OCR pages.
+Removed `data/gold/images/hindi_dict.png`,
+`data/gold/images/quran_translation.png`, and
+`data/gold/images_cropped/quran_translation.png`. Dropped those rows from
+`candidates.csv` and from `scripts/build_gold_candidates.py` so a re-render
+does not put them back. Source PDFs stay in `pdfs/`. Gold images are now
+the 12 vision-OCR pages only.
+
+---
+
+## 2026-08-15 — shingar_textbook gold
+
+You image-checked `shingar_textbook_composer_v1_corrected.txt`. Gold is
+`shingar_textbook_gold.txt`. Fixes vs the assistant first-pass: `مِناں`,
+`سمجھ گے` / `لاہ گے` / `ہو گے` (not `کے`), `دِتی` / `چِر` / `ہوے` (not
+`ہووے`), footer `ستمیں` not `ستویں`. `ٹھگ گی آواز` stays `گی`.
+
+Word error vs gold (same rules as nazir). No Sonnet 5 CC file: that chat
+skipped this page.
+
+| Page | gold words | Composer v1 | Gemini v2 API | Sonnet 4.6 v2 API |
+|---|---|---|---|---|
+| `shingar_textbook` | 224 | **4.9%** | 18.3% | 20.1% |
+
+Both APIs put the footer in `[badge:]` / `[footer ...]` notes, so those
+words were missing from the scored text. Composer kept the footer as
+printed text and was closer on body spelling, but still wrote Urdu-ish
+`ساتویں` for gold `ستمیں`.
+
+---
+
+## 2026-08-15 — louk_warsti and primer_pehli gold
+
+You had already image-checked both Composer `_corrected.txt` files. They
+were not copied to `_gold.txt` until now. Gold is
+`louk_warsti_gold.txt` and `primer_pehli_gold.txt`.
+
+Louk vs first-pass: `اسو` not `اسنو`; `تُوں` with pesh; `لمّی` with shadda.
+`گی` and `میٹرا` stay as you had them.
+
+Primer vs first-pass: `بُھوم` (pesh). Labels stay `خربوزو`, `خچّر`,
+`پچھان`, `تانجے`, `کنّی کنّی`. Picture notes are not scored.
+
+Word error vs gold (same rules; picture lines skipped):
+
+| Page | gold words | Composer v1 | Gemini v1 | Gemini v2 API | Sonnet 4.6 v1 | Sonnet 4.6 v2 API | Sonnet 5 CC v2 |
+|---|---|---|---|---|---|---|---|
+| `louk_warsti` | 114 | **8.8%** | 13.2% | 15.8% | 26.3% | 28.1% | (skipped) |
+| `primer_pehli` | 50 | **12.0%** | — | 16.0% | — | 28.0% | 44.0% |
+
+v2 did not help the APIs on `louk_warsti` (slightly worse than v1). Sonnet
+still splits Gojri words. Composer still rewrote primer `پچھان`/`تانجے` as
+Urdu `پہچان`/`تاکہ`. Sonnet 5 CC scrambled the primer note and footer order.
+
+The five remaining-page gold files are now: nazir both halves, shingar,
+louk, primer.
+
+---
+
+## 2026-08-15 — First six gold files re-checked; full bake-off vs originals
+
+You re-checked `_gold.txt` for `dict_alif`, `gojri_adbiyaat`, `gojri_ghazal`,
+`kahawat_kosh`, `kulyate_spread_a_right`, and `kulyate_spread_b_left` against
+the cropped images. Main gold edits vs the earlier Composer-corrected copies:
+takhallus `ؔ` on poet and compiler names; kasra on `آبِش` and `وِچ`;
+`نحس` not `نخس`; `ڈاہڈی`; `کجھ` / `مھارے` / `جے وہ خود` on the ghazal
+essay; proverb word joins (`پڑدورکھنو`, `لاڑلو پُوت`). Gold is yours. The
+earlier log note that used `مہارے` (goal heh) is superseded on this page by
+`مھارے` in gold.
+
+Then scored every active `*_original.txt` against current gold with
+`scripts/score_gold.py`. Rules: collapse whitespace; ignore spacing around
+`: ، ۔`; unwrap `[[...]]`; skip whole lines that are only a bracket note
+(`[illustration:]`, `[photo:]`, `[badge:]`, `[blank]`, and similar). That last
+rule means a footer wrapped in `[badge:]` counts as **missing printed text**,
+which is the correct penalty.
+
+**Fairness (do not skip this).** Composer 2.5 and Sonnet 5 Claude Code are
+chat runs with project notes and extra looks. Gemini 3.6 Flash and Sonnet 4.6
+are one-shot API. Prompt is mixed: first six API pages are v1; nazir, shingar,
+louk, primer are v2 (louk still also has v1). Sonnet 5 CC covers only 6 of 12
+pages and this chat may have seen gold words. Chat WER is a quality ceiling,
+not a bulk-pipeline rank.
+
+**Word error, latest prompt per page for APIs (1790 gold words across 12 pages):**
+
+| Page | gold words | Composer v1 chat | Gemini latest API | Sonnet 4.6 latest API | Sonnet 5 CC |
+|---|---|---|---|---|---|
+| `dict_alif` | 118 | **11.9%** | 25.4% v1 | 19.5% v1 | — |
+| `gojri_adbiyaat` | 220 | 18.2% | **17.7%** v1 | **17.7%** v1 | — |
+| `gojri_ghazal` | 346 | 14.2% | **12.4%** v1 | 13.3% v1 | 31.2% |
+| `kahawat_kosh` | 182 | **15.9%** | 19.8% v1 | 35.2% v1 | 50.5% |
+| `kulyate_spread_a_right` | 154 | **24.0%** | 30.5% v1 | 42.9% v1 | — |
+| `kulyate_spread_b_left` | 106 | 17.9% | **17.0%** v1 | 26.4% v1 | — |
+| `mahatma_gandhi` | 7 | **0%** | **0%** v1 | **0%** v1 | **0%** |
+| `nazir_spread_a_right` | 190 | **3.7%** | 10.5% v2 | 11.1% v2 | 11.6% |
+| `nazir_spread_b_left` | 79 | **7.6%** | 11.4% v2 | 16.5% v2 | 16.5% |
+| `shingar_textbook` | 224 | **4.9%** | 18.3% v2 | 20.1% v2 | — |
+| `louk_warsti` | 114 | **8.8%** | 15.8% v2 (v1 was 13.2%) | 28.1% v2 (v1 was 26.3%) | — |
+| `primer_pehli` | 50 | **12.0%** | 16.0% v2 | 30.0% v2 | 44.0% |
+| **Pooled** | **1790** | **12.7% chat** | **17.3% one-shot** | **21.9% one-shot** | 30.1% on 6 pages only |
+
+Gemini 3.6 Flash is the best **one-shot API** on this gold set. It wins or ties
+Sonnet 4.6 on 11 of 12 pages. Sonnet 4.6 wins only `dict_alif`. Composer chat
+is still lower error on most pages, but that setup is not the bulk job.
+
+**Where each model is strong**
+
+- **Gemini 3.6 Flash (one-shot):** Best scalable reading of dense essay
+  (`gojri_ghazal` 12.4%, beats Composer on that page). Keeps two-column proverb
+  pairs in row order. On `kulyate_spread_b_left` almost all remaining error is
+  dropped diacritics (16 of 18 errors), not wrong letters. Primer labels
+  `خربوزو` stay Gojri; caption text is kept. Illustration pages: printed
+  caption and page number match gold; it does not invent body text.
+- **Sonnet 4.6 (one-shot):** Slightly better than Gemini on the mixed
+  Nastaliq+English dictionary page. Honorifics and some diacritics appear when
+  it does not split the line. Does not invent a second story on
+  `mahatma_gandhi`.
+- **Composer 2.5 (chat):** Lowest pooled WER. Reads banner footers as real
+  text (`ستمیں کی گوجری کتاب`), not `[badge:]`. Fewest missing words (8 vs
+  Gemini 50 / Sonnet 86 on the latest-API mix). Strong on nazir and shingar
+  body spelling. Useful as a **gold-draft** helper, not as the paid bulk model.
+- **Sonnet 5 Claude Code (chat):** Usable on nazir (11.6% / 16.5%), close to
+  Sonnet 4.6 API. Not usable as evidence for bulk Sonnet 5: incomplete set,
+  possible gold leak, 31%+ on the ghazal essay and 44% on the primer.
+
+**Where each model lacks**
+
+- **All models:** Drop takhallus `ؔ` on names unless a human already pushed
+  them (Composer still dropped most of them in the raw original). Drop pesh /
+  kasra / zabar / shadda on poetry. Confuse the three heh letters on a few
+  words (`هور` / `ھدرو` / `بَهلا`). Dictionary mixed-script lines inflate WER
+  because English glosses glue to Gojri tokens.
+- **Gemini:** Mixes RTL order on some dictionary `eg:` / `lpp:` lines and
+  drops the English tail (`To invite trouble`). Puts shingar footer inside
+  `[badge:]` and writes Urdu `ساتویں` for gold `ستمیں`. Primer still
+  Urdu-normalizes `پچھان` → `پہچان` and splits `تانجے`. v2 did not help
+  `louk_warsti` (worse than v1).
+- **Sonnet 4.6:** Splits Gojri words (`پر سیو`, `چَھٹنا` pieces, primer
+  `تا نَجے`). Highest missing-word count: on `kulyate_spread_a_right` it
+  skipped the header and the first stanza (35 missing words). Worst on
+  two-column `kahawat_kosh` (35.2%): letter errors plus extra split tokens.
+  Footer still wrapped as `[footer ... badge]`. Primer puts `خ` only inside an
+  illustration note and writes `کئی کئی` for `کنّی کنّی`.
+- **Composer:** Rewrites Gojri toward Urdu on the primer (`پہچان`, `تاکہ`,
+  `کئی کئی`). Still misses `ؔ`. Extra tokens on dictionary lines from
+  different wrapping, not from a second invented paragraph.
+- **Sonnet 5 CC:** Reverses primer footer order. Scrambles the primer note
+  (`پچھان اُنجے تانئے` / `تا نئچے`). Large deletions on `gojri_ghazal` and
+  `kahawat_kosh`.
+
+**Prompt v2 vs v1:** On `louk_warsti`, the only page with both API versions
+kept, v2 is slightly worse for both Gemini and Sonnet. Do not treat the longer
+prompt as a proven win. Do not bake gold-page answers into a v3 prompt.
+
+**Provisional bulk choice:** Gemini 3.6 Flash, cropped images, current v2
+prompt until a v3 trial is scored. Keep Sonnet 4.6 off the default path
+(higher error and higher Bedrock cost). Composer remains the gold-draft
+tool. Human spot-check is still required, especially dictionaries, two-column
+pages, and poetry diacritics. Re-run Gemini/Sonnet v2 on the six v1-only pages
+before claiming a prompt-controlled 12-page API rank.
+
+---
+
+## 2026-08-15 — Bulk vision OCR paused; dual-model agreement is not enough
+
+You are not confident in Gemini for bulk work and cannot review 14,761 pages.
+That constraint stands. 17.3% one-shot word error would poison a preservation
+corpus if accepted unreviewed.
+
+Gemini vs Sonnet 4.6 on gold (independent alignment of each hyp to gold): they
+write the same token on 77.6% of gold words. Of those agreements, 5.0% are
+still wrong (69 of 1,389). Shared fluent mistakes (dropped `ؔ`, Urdu-like
+spelling, missing marks) are the silent failure. The other 22.4% of words
+disagree and would still need a person. Poetry spreads are worse (about 12–15%
+of agreements wrong). Dual-model filtering cuts work. It does not remove it.
+
+**Decision:** pause bulk vision OCR. Keep the 12 gold pages as the yardstick.
+Next OCR experiment is the decode-table spike on font-encoded PDFs. Image-only
+pages (~1,281) still need vision later. Usable text that does not wait on OCR:
+FLI corpus, good-text PDFs (including the Quran translation), Common Voice.
+
+Closest public neighbours: BaltiVoice (ASR gold split, not OCR);
+UTRNet/UTRSet-Real (11k human-labelled Urdu lines); Kashmiri InPage-to-Unicode
+then KS-LIT-3M / KS-PRET-5M (mapping table, not vision per page); Sindhi and
+IndicPhotoOCR gold sets are mostly synthetic lines or scene-text photos.
+
+---
+
+## 2026-08-15 — One gold file per page; per-model `_corrected.txt` removed
+
+Gold is now `transcriptions/<page_id>/<page_id>_gold.txt` only. Copied the
+settled Composer (or existing) gold text onto the seven earlier pages that
+did not yet have `_gold.txt`. Deleted every `*_corrected.txt` under
+`transcriptions/` (28 files). Raw `*_original.txt` files were not touched.
+Docs updated: `data/gold/README.md`, `scripts/ocr_test_common.py`,
+`CLAUDE.md` Status, `plans/STAGE-0.md`, `plans/STAGE-1-TEST-BATCH.md`,
+`ROADMAP.md`. Score a model by comparing its original to `_gold.txt`.
+
+---
+
 ## Glossary (grows as new terms come up)
 
 - **Token**: the unit a model reads/writes in and is billed by — roughly a
@@ -1252,3 +1516,12 @@ Sales-gated. Step 0.4 still open.
   aspiration - what turns `د` into `دھ`, `ب` into `بھ`, etc.). All three have shown
   up as genuine correction disputes across the gold-set pages so far - worth
   checking the exact codepoint, not just eyeballing similar-looking glyphs.
+- **Gold set**: a small set of pages whose text a human has already confirmed
+  against the image. Used only to score OCR methods (word error / character
+  error), never as training data. Ours is 12 vision-OCR pages.
+- **Word error rate (WER)**: share of words that are wrong, missing, or extra
+  compared with gold, after light punctuation-spacing normalisation. 17% WER
+  means about 17 of every 100 gold words do not match.
+- **Decode table**: a lookup from each (font, codepoint) pair in a
+  font-encoded PDF to the real Unicode letters that glyph represents. If the
+  table is right, decoding is free and does not hallucinate.

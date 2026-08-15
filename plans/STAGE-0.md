@@ -74,8 +74,10 @@ quality at all, only form opinions about it.
 - Pages are rendered to PNG at zoom 2 into `data/gold/images/`.
 - A starter transcription is produced for each so the user is **correcting, not
   typing from scratch**, which is far faster and less error-prone.
-- User reviews each one against the image and fixes it until it is exactly right.
-- Result: `data/gold/gold.jsonl`, pairs of (page image, verified correct text).
+- User reviews each one against the image and writes one
+  `data/gold/transcriptions/<page_id>/<page_id>_gold.txt` until it is exactly
+  right. Raw model outputs stay in `*_original.txt` and are never edited.
+- Result: one gold text per page, used to score every OCR method.
 
 This set is then never used for training, only for measuring. Every OCR approach we
 try (Haiku, Sonnet, Tesseract, decode table) gets scored against these same pages,
@@ -83,17 +85,16 @@ using character error rate, so comparisons are apples to apples.
 
 **Success check**: 20+ pages the user has personally confirmed are letter-perfect.
 
-**Progress (Aug 2026)**: `scripts/build_gold_candidates.py` selected 12 pages (14
-images, 2 are two-page spreads) spanning every hard case found in triage: PUA
-scheme, legacy_8bit scheme, image-only (including one real scan with visible paper
-show-through), a mixed-script dictionary page, a two-column proverb layout, a
-children's-primer layout with isolated captioned words, a near-blank page, and a
-page that's almost entirely illustration. Draft transcriptions produced for all 14
-(12 by vision reading, 2 by direct extraction since those files are already correct
-Unicode). Sitting in `data/gold/` awaiting the user's correction pass, see
-`data/gold/README.md` for instructions. Count is 12 pages rather than the ~20-30
-originally proposed — reasonable first pass prioritizing diversity of hard cases;
-can extend later if the eval set proves too small to distinguish methods reliably.
+**Progress (Aug 2026)**: `scripts/build_gold_candidates.py` selected 12 vision-OCR
+images (2 are two-page-spread halves) spanning every hard case found in triage.
+Direct-extraction pages (`hindi_dict`, `quran_translation`) were dropped from the
+gold image folders. Each vision page has one `_gold.txt` (user-checked; first six
+re-checked 2026-08-15). Score with `scripts/score_gold.py`. Working set is 12
+images rather than the ~20-30 originally proposed. Can extend later if the eval
+set is too small. One-shot bake-off: Gemini 3.6 Flash 17.3% pooled WER, Sonnet
+4.6 21.9%. **Bulk vision OCR is paused** (no capacity for page-by-page review;
+error rate is too high to accept unreviewed). Next: decode-table spike, scored
+on this gold set. Details in `data/gold/README.md` and `LOG.md`.
 
 ---
 
@@ -112,10 +113,11 @@ Small but worth settling before data starts flowing:
 ---
 
 ## What Stage 0 does *not* do
-- No model training, no OCR at scale, no AWS spend.
-- No file deletion.
-- No decision yet on Haiku vs Sonnet vs decode table; Stage 0 only builds the
-  measuring stick that will settle that question in Stage 1.
+- No model training, no OCR at scale, no AWS spend on bulk vision pages.
+- No file deletion of source PDFs.
+- Gold-set bake-off (Aug 2026) ranked one-shot models and paused bulk vision
+  OCR. The remaining OCR experiment is the decode-table spike, still scored
+  on the same gold pages.
 
 ## Definition of done
 1. `data/manifest.csv` exists, reconciles with known figures, and correctly

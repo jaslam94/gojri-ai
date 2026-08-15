@@ -322,10 +322,11 @@ number Stage 1's cost estimate should be built on.
    the page, since it's completing patterns rather than only matching shapes.
    Tesseract fails visibly (garbled/blank) when unsure; an LLM can fail silently and
    confidently. This is exactly why step 8 (human spot-checking) isn't optional.
-8. Since there's no independent ground truth to check accuracy against, quality
-   control means the user (native speaker) spot-checking a sample of transcribed
-   pages against the source images, not an automated accuracy score, and this check
-   specifically needs to watch for confident-but-wrong text, not just typos.
+8. The 12-page gold set is now that independent ground truth for scoring. It is
+   not a substitute for checking bulk output. Vision-LLM OCR can still fail
+   silently, so bulk vision transcription stays paused until a method (decode
+   table, or a much better model) beats gold without needing a person on every
+   page.
 
 ### The decode-table idea — highest-upside experiment, worth testing before bulk spend
 **Premise**: the broken PDFs are not random noise, they are a *deterministic
@@ -343,10 +344,15 @@ and with zero hallucination risk, instead of paying per page forever.
 - No ready-made public mapping table for these specific NOORIN/Batool fonts was
   found in searching, so this would mean building one, not downloading one.
 
-**How it would work**: vision-transcribe a modest "training set" of pages, extract
-the parallel (font, codepoint) sequence from the same pages, align the two, and
-learn the mapping. Then apply the learned table to decode all remaining pages
-deterministically at zero marginal cost.
+**How it would work**: extract the (font, codepoint) sequence from font-encoded
+pages, align it against known Unicode (the gold pages first, then any later
+trusted text), and learn the mapping. Then apply the table to remaining pages
+at zero marginal cost. Kashmiri InPage-to-Unicode work (KS-LIT-3M / KS-PRET-5M)
+is the closest public neighbour: mapping table first, not vision per page.
+
+The original sketch used extra vision-transcribed pages as the parallel text.
+Gold pages already give a small, trusted parallel. That is the first alignment
+set to try.
 
 **Honest risks, this is a research bet not a sure thing:**
 - Alignment is the hard part: right-to-left text, one glyph mapping to a *sequence*
@@ -475,13 +481,14 @@ earlier rough sense of it) now that the Devanagari dictionary and rescued poetry
 collections are correctly counted.
 
 ## Status
-Stage 0 in progress (Aug 2026): manifest built and its classification errors caught
-and fixed on the same day, before any bulk spend. Gold-set Step 0.3: 7 of 12
-vision-OCR pages fully corrected (`dict_alif`, `gojri_adbiyaat`, `gojri_ghazal`,
-`kahawat_kosh`, `kulyate_spread_a_right`, `kulyate_spread_b_left`, plus
-`mahatma_gandhi` in substance). Remaining 5 pages
-(`nazir_spread_a_right`/`_b_left`, `louk_warsti`, `shingar_textbook`,
-`primer_pehli`) have Gemini 3.6 Flash + Sonnet 4.6 + Composer 2.5 v1 originals
-and first-pass corrections as of 2026-08-13, not yet fully converged (remaining
-image-check items in `LOG.md`). Step 0.4 (corpus layout / provenance conventions)
-is still open. See `plans/STAGE-0.md` and `LOG.md`.
+Stage 0 in progress (Aug 2026). Manifest is built. Gold-set Step 0.3 is done for
+the working set of 12 vision-OCR pages (one `_gold.txt` each, first six
+re-checked 2026-08-15). Score with `py -3 scripts/score_gold.py`. One-shot
+bake-off: Gemini 3.6 Flash 17.3% pooled word error, Sonnet 4.6 21.9%. Composer
+chat is lower error but is not a bulk pipeline. Dual-model agreement still
+shares a wrong word on about 5% of agreed tokens. **Bulk vision OCR is paused:**
+the user cannot review 14,761 pages, and 17% word error would poison the corpus.
+Next OCR work is the decode-table spike on font-encoded PDFs, scored on this
+gold set. Direct-extraction pages were removed from the gold image folders.
+Step 0.4 (corpus layout / provenance) is still open. See `plans/STAGE-0.md`,
+`data/gold/README.md`, and `LOG.md`.

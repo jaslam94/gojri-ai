@@ -38,8 +38,9 @@ there is nothing to measure against. Fix, and it belongs in Stage 0 because it m
 exist *before* the things it measures:
 - **OCR gold set**: pick ~20-30 pages spanning the different document types (PUA
   scheme, ASCII scheme, image-only, dictionary layout, poetry layout). The user
-  hand-corrects those to perfectly accurate text, once. That becomes the permanent
-  yardstick for every OCR method we try, measured by character error rate.
+  hand-corrects those to perfectly accurate text, once, as one
+  `transcriptions/<page>/<page>_gold.txt` per page. That becomes the permanent
+  yardstick for every OCR method we try, measured by character or word error rate.
 - **ASR eval set**: already exists, Common Voice ships a `test.tsv` split. Just do
   not train on it.
 - **Translation eval set**: hold out a portion of the real Gojri-Urdu pairs from
@@ -86,8 +87,10 @@ next one still earns its cost. This pairs with the tiering already defined in St
   encoding scheme, and they were nearly discarded. Meanwhile `the-gujjars-vol-1/3/4/5/6`
   really are English prose (verified: Calibri font, readable English). Check each file
   by its embedded font names, not by character statistics.
-- **Build the OCR gold set** (see "Two gaps" above): ~20-30 hand-corrected pages
-  spanning all document types, to serve as the permanent yardstick for OCR quality.
+- **Build the OCR gold set** (see "Two gaps" above): hand-corrected pages
+  spanning document types, to serve as the permanent yardstick for OCR quality.
+  **Progress (Aug 2026):** working set is 12 vision pages with `_gold.txt`.
+  Bake-off scored. Bulk vision OCR paused. Decode-table spike is next.
   This is the single highest-value piece of human effort in the whole project, because
   every later OCR decision depends on being able to measure.
 - Output of this stage: a deduped, correctly-triaged file list, sorted into the
@@ -95,10 +98,11 @@ next one still earns its cost. This pairs with the tiering already defined in St
   set, so Stage 1 starts on the highest-value material with a way to measure results.
 
 ## Stage 1: Text extraction (OCR)
-Turn the 92 PDFs into a clean, correct Unicode Gojri text corpus using the
-vision-transcription approach we already tested successfully (render each page as an
-image, have a vision AI model read and transcribe it, this fixes both the
-font-encoding problem and the missing-text-layer problem at once).
+Turn the in-scope PDFs into clean Unicode Gojri text. Vision transcription was
+the first validated path (render page, ask a vision model). **Aug 2026:** the
+gold-set bake-off showed one-shot vision error is too high to run unreviewed,
+so bulk vision OCR is paused. The decode-table spike is the next experiment
+for font-encoded pages. Image-only pages still need vision later.
 
 Confirmed breakdown after inspection: 4 files already have good text (no work
 needed, and this bucket includes the huge 717-page Quran translation, so that
@@ -169,7 +173,9 @@ earlier rougher estimate that undercounted the total.
   character mapping, multiple tables needed for the multiple encoding schemes), so
   timebox it, but the payoff is asymmetric: success saves ~$90 and removes the
   biggest quality risk, failure costs a day and we fall back to the already-validated
-  vision approach. Full analysis in `CLAUDE.md`.
+  vision approach. Full analysis in `CLAUDE.md`. **Status (Aug 2026):** gold-set
+  bake-off completed; bulk vision OCR paused. This spike is now the next OCR
+  experiment, not a side bet after a Gemini bulk run.
 
 ## Stage 2: Speech recognition (ASR)
 Fine-tune an open speech-recognition model (Whisper) on the existing Gojri audio,
@@ -322,7 +328,9 @@ pages actually need paid transcription, not the rough ~18,000-total figure used
 before), and 2 of the 7 exact-duplicate PDF groups had gone completely unnoticed
 (the 410-page `Gojri_lok_kahani` and 275-page `gojri-history` volumes). Also added
 the YouTube ASR consideration and resolved the `pdfs/unlocked/` open question. Model
-choice for OCR (Haiku vs Sonnet) is now flagged as a real budget decision requiring
-a test in Stage 1, not an assumption. Next: Stage 0 execution (dedup using the
+choice for OCR was flagged as a real budget decision requiring a gold-set test.
+That test (Aug 2026) puts Gemini 3.6 Flash ahead of Sonnet 4.6 on one-shot word
+error (17.3% vs 21.9%). Haiku 4.5 is shelved. Bulk vision OCR is paused. Next OCR
+work is the decode-table spike. Stage 0 execution (dedup using the
 verified list, relevance check on the 11 unclear files, confirm priority order),
 then detailed per-stage implementation plans, starting with Stage 1's test batch.

@@ -11,5 +11,3 @@ nazir_spread_b_left,javaidrahi-blog/gojri-kalam-e-nazir-ahmad-nazir-nazir-ed-by-
 louk_warsti,Gujjar_Qabila_Ki_Louk_Warsti_Dictionary.pdf,100,data/gold/images_cropped/louk_warsti.png,"image_only, tier1, folklore dictionary, no text layer at all",vision_ocr
 shingar_textbook,GOJRI_TEXT_BOOK_Series_SHINGAR_for_class.pdf,21,data/gold/images_cropped/shingar_textbook.png,"image_only, tier2, school textbook (previously validated)",vision_ocr
 primer_pehli,GUJJARS_GOJRI_KI_PEHLI_KITAB_Gojri_Prime.pdf,20,data/gold/images_cropped/primer_pehli.png,"image_only, tier2, children's primer, likely simpler/larger typography",vision_ocr
-hindi_dict,anjumshanasi/Gojri-Hindi-English-Dictionary.pdf,81,data/gold/images_cropped/hindi_dict.png,"good_text, Devanagari script -- tests direct EXTRACTION fidelity, not vision OCR",direct_extraction
-quran_translation,QURANIC_TRANSLATION_in_GOJRI_by_Dr_Rafiq.pdf,100,data/gold/images_cropped/quran_translation.png,"good_text, Perso-Arabic -- tests direct EXTRACTION fidelity, not vision OCR",direct_extraction

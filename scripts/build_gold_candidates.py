@@ -55,10 +55,6 @@ CANDIDATES = [
      "image_only, tier2, school textbook (previously validated)"),
     ("primer_pehli", "GUJJARS_GOJRI_KI_PEHLI_KITAB_Gojri_Prime.pdf", 20, False,
      "image_only, tier2, children's primer, likely simpler/larger typography"),
-    ("hindi_dict", "anjumshanasi/Gojri-Hindi-English-Dictionary.pdf", 81, False,
-     "good_text, Devanagari script -- tests direct EXTRACTION fidelity, not vision OCR"),
-    ("quran_translation", "QURANIC_TRANSLATION_in_GOJRI_by_Dr_Rafiq.pdf", 100, False,
-     "good_text, Perso-Arabic -- tests direct EXTRACTION fidelity, not vision OCR"),
 ]
 
 
@@ -74,15 +70,6 @@ def render_page(pdf_rel, page_num_1idx, out_stem):
     real_page = idx + 1
     doc.close()
     return out_path, real_page
-
-
-def extract_direct_text(pdf_rel, page_num_1idx):
-    """For good_text files: pull out what's already there, for the extraction check."""
-    doc = fitz.open(PDF_DIR / pdf_rel)
-    idx = min(page_num_1idx - 1, len(doc) - 1)
-    text = doc[idx].get_text()
-    doc.close()
-    return text
 
 
 def main():
@@ -114,11 +101,10 @@ def main():
             print(f"[spread] {cid}: {pdf_rel} p{page_num} -> 2 images")
         else:
             path, real_page = render_page(pdf_rel, page_num, cid)
-            check_type = "direct_extraction" if cid in ("hindi_dict", "quran_translation") else "vision_ocr"
             rows.append({
                 "id": cid, "source_pdf": pdf_rel, "page_1idx": real_page,
                 "image": path.relative_to(ROOT).as_posix(),
-                "note": note, "check_type": check_type,
+                "note": note, "check_type": "vision_ocr",
             })
             print(f"[single] {cid}: {pdf_rel} p{real_page} -> {path.name}")
 

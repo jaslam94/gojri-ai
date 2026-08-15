@@ -1,5 +1,15 @@
 # Handoff: Run the real OCR test batch via AWS Bedrock
 
+> **Status update (2026-08-15): gold scoring is in place. Bulk vision OCR is
+> paused.** Haiku 4.5 and the other cheap vision models were tested and shelved
+> (`LOG.md`). Best one-shot API on the 12-page gold set is Gemini 3.6 Flash
+> (17.3% WER) vs Sonnet 4.6 (21.9%). That is not good enough to run unreviewed
+> on 14,761 pages. Next OCR experiment is the decode-table spike. Score with
+> `py -3 scripts/score_gold.py`. Output path is
+> `transcriptions/<page>/<page>_<model>_<version>_original.txt`. Do not write
+> `_corrected.txt`. Early rows in `ocr_runs_log.csv` still point at archived
+> filenames; the files themselves live under `transcriptions_archived/`.
+>
 > **Status update (2026-08-05): this plan has been executed and substantially
 > extended since it was written. Read `LOG.md`'s 2026-08-04/05 entries for the full,
 > current picture before acting on anything below** — several specifics here are now
@@ -8,18 +18,17 @@
 >   `data/gold/images/{id}.png` — cropping margins cut image tokens ~60% on the
 >   densest pages, with originals kept for comparison. `data/gold/candidates.csv`
 >   now points at the cropped versions.
-> - Output files are named `{id}_{model}_{version}.txt` under
+> - Output files are named `{id}_{model}_{version}_original.txt` under
 >   `data/gold/transcriptions/<page_id>/`, not `data/gold/images/{id}_{model}.txt`.
 > - Every call now logs exact temperature/max_tokens/thinking settings to
 >   `data/gold/ocr_runs_log.csv`, not just token counts - settings were found to be
 >   completely unconfigured in the first pass, which mattered.
-> - The model roster grew well beyond Haiku/Sonnet: Gemini 3.6 Flash and Kimi K2.5
->   are the current active candidates; Haiku 4.5, Qwen3-VL, Llama 4 Maverick, and
->   Pixtral Large were all tested and shelved (reasons + concrete examples in
->   `LOG.md`); Sonnet 5 is tested next; DeepSeek-OCR has no working free API path
->   found so far (also in `LOG.md`).
-> - There's no single gold-standard `draft.txt` anymore - see `data/gold/README.md`
->   for the current (revised) correction workflow.
+> - The model roster grew well beyond Haiku/Sonnet: Gemini 3.6 Flash is the
+>   current default one-shot candidate; Kimi K2.5, Haiku 4.5, Qwen3-VL, Llama 4
+>   Maverick, and Pixtral Large were tested and shelved (reasons in `LOG.md`).
+>   Sonnet 5 on Bedrock is still Sales-gated. DeepSeek-OCR has no working free
+>   API path found so far.
+> - Gold is one `<page>_gold.txt` per folder. See `data/gold/README.md`.
 >
 > The sections below are kept for historical/methodology reference (the AWS
 > Bedrock setup notes, request-format background, and cost-math framing are still
@@ -57,25 +66,18 @@ this project. Read it before running anything so you understand why each rule
 exists.
 
 ## The images to process
-List is in `data/gold/candidates.csv`. Of the 14 images there:
-- **12 need this test** (`check_type == vision_ocr`): `dict_alif`, `kahawat_kosh`,
-  `gojri_adbiyaat`, `gojri_ghazal`, `mahatma_gandhi`, `kulyate_spread_a_right`,
-  `kulyate_spread_b_left`, `nazir_spread_a_right`, `nazir_spread_b_left`,
-  `louk_warsti`, `shingar_textbook`, `primer_pehli`.
-- **2 do NOT need this test** (`check_type == direct_extraction`): `hindi_dict`,
-  `quran_translation`. These are already correct Unicode text pulled directly from
-  the PDF, not vision OCR candidates. Skip them.
+List is in `data/gold/candidates.csv`. All 12 images there need this test
+(`check_type == vision_ocr`): `dict_alif`, `kahawat_kosh`, `gojri_adbiyaat`,
+`gojri_ghazal`, `mahatma_gandhi`, `kulyate_spread_a_right`,
+`kulyate_spread_b_left`, `nazir_spread_a_right`, `nazir_spread_b_left`,
+`louk_warsti`, `shingar_textbook`, `primer_pehli`. Direct-extraction pages
+(`hindi_dict`, `quran_translation`) are not in the gold image folders.
 
-Images are at `data/gold/images/{id}.png`, already rendered at the correct zoom
-level (zoom 2 — do not re-render at a different zoom, zoom 3 was tested and
-confirmed to waste tokens for no quality gain, see `CLAUDE.md`).
+Images for OCR calls are at `data/gold/images_cropped/{id}.png` (zoom 2).
+`data/gold/images/` is the uncropped render, for comparison only.
 
-**Ignore any `*_gemini_3.6_flash.txt`, `*_sonnet_5_original.txt`, or
-`*_sonnet_5_corrected.txt` / `*_corrected.txt` files already sitting next to
-`dict_alif` and `gojri_adbiyaat`.** Those were produced with an earlier, less
-complete version of the prompt before this session's guardrail additions. They are
-not representative of what v1 will produce and should not be treated as already-done
-work. Regenerate both of those two pages fresh under v1 like the other 10.
+**Ignore leftover `*_corrected.txt` names in old notes.** Gold is now one
+`<page_id>_gold.txt` per folder. Raw model output is `*_original.txt` only.
 
 ## AWS Bedrock setup (already verified working this session)
 - **Region: `us-east-1`.**
@@ -153,13 +155,15 @@ already in `CLAUDE.md`, since those were themselves estimates pending this exact
 verification. Report the corrected total for both models.
 
 ## What this task does NOT include
-- No quality scoring yet (character error rate against the gold set) — the user is
-  still hand-correcting the gold set's draft transcriptions. That comparison happens
-  once corrections are done; don't build a scorer as part of this task unless asked.
+- No quality scoring in that original test-batch task. Gold is now
+  `transcriptions/<page>/<page>_gold.txt`. Score `*_original.txt` against it
+  with `py -3 scripts/score_gold.py`. Provisional bulk model from that score:
+  Gemini 3.6 Flash. Sonnet 4.6 is not the default.
 - No bulk run across the full PDF collection. This is 12 pages only.
-- No decision-making about which model to use for the bulk run — that's a
-  conversation to have with the user once real cost and (later) real quality numbers
-  exist for both.
+- No decision-making about which model to use for the bulk run was in the
+  original 12-page Bedrock task. The   2026-08-15 gold bake-off now gives a
+  ranking (Gemini 3.6 Flash best one-shot) and a stop: bulk vision OCR is paused.
+  Next is the decode-table spike, scored on the same gold pages.
 
 ## Report back
 Once done: the 24 output files, the CSV of token usage, and the extrapolated cost

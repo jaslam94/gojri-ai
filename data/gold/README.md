@@ -1,88 +1,100 @@
-# OCR Gold Set — Correction Instructions
+# OCR Gold Set
 
-This folder covers 14 page images (from 12 real pages, 2 of which are two-page
-spreads split into halves). Layout:
+This folder covers 12 vision-OCR page images (from 10 PDF pages, 2 of which
+are two-page spreads split into halves). Layout:
+
 - `images/` — the original page images (`.png`), rendered straight from the PDFs.
 - `images_cropped/` — same images cropped to their content bounding box (+50px
-  safety padding). **This is what OCR test calls actually use** — cuts image
-  tokens substantially on pages with large blank margins (~60% on the densest
-  pages). `images/` is kept only for comparison, not used for OCR calls.
-- `transcriptions/<page_id>/` — one folder per page. Each *active* candidate model
-  gets **two files**: `<page_id>_<model>_<prompt_version>_original.txt` (the raw,
-  untouched model output — what the automated test scripts always save, never
-  hand-edited) and `<page_id>_<model>_<prompt_version>_corrected.txt` (your hand
-  correction against the source image, added separately once review is done — not
-  every model has one yet). Keeping both, rather than correcting in place, is
-  deliberate: it preserves a real before/after record of how much correction effort
-  each model's output actually needed, and the raw output is never at risk of being
-  overwritten. (Early on, corrections were made in place and the raw originals had
-  to be recovered from git history — fixed going forward, see `LOG.md`.)
-- `transcriptions_archived/<page_id>/` — same naming, for models that were tested
-  and shelved (reasons + concrete examples in `LOG.md`). Kept for the record, not
-  deleted, but not part of the active comparison.
+  safety padding). **This is what OCR test calls actually use.** `images/` is
+  kept only for comparison.
+- `transcriptions/<page_id>/` — one folder per page:
+  - `<page_id>_gold.txt` — the single source of truth. You check this against
+    the cropped image. There is one gold file per page, not one per model.
+  - `<page_id>_<model>_<prompt_version>_original.txt` — raw model output.
+    Scripts always save this suffix. Never edit these files.
+- `transcriptions_archived/<page_id>/` — models that were tested and shelved
+  (reasons in `LOG.md`). Not part of the active comparison.
+- `ocr_runs_log.csv` — token/cost log for scripted API runs.
 
-Earlier this project had one `draft.txt` per page acting as the gold standard, but
-it was produced without a real fixed, documented prompt, so it wasn't a fair
-baseline for comparing models against. Dropped in favor of the model-per-file setup
-above.
+Direct-extraction pages (`hindi_dict`, `quran_translation`) are not in the
+image folders. Those PDFs already have a correct text layer. Source PDFs stay
+in `pdfs/`.
 
-## Correction workflow (revised)
-Correcting is per model, not per page, and is the user's own process — Claude
-generates the raw `<model>_<version>_original.txt` files; the user adds a
-`<model>_<version>_corrected.txt` copy by hand, comparing each model's raw output
-against the source image. Naming convention is now fixed (see above), not open.
-When two models' corrected outputs on the same page still disagree with each other,
-that's a useful signal in itself — a real remaining ambiguity worth checking against
-the image again, not just noise. **Exceptions** (not worth chasing): spacing
-between Gojri text and an adjacent *English* gloss/transliteration (e.g.
-`آپ (aap)` vs `آپ(aap)`), and spacing around punctuation (`:`, `،`, `۔`) — only
-spacing *between two Gojri words* carries real meaning and is worth resolving
-against the image. **Also worth remembering**: convergence between two models'
-corrections is useful evidence, but not proof — on `gojri_ghazal` and
-`kahawat_kosh` the actual correct reading turned out at least once to match
-*neither* model's independent correction, so full agreement between the two
-doesn't guarantee correctness, just makes an error less likely.
+## How to score a model
 
-## What's in here (12 pages needing vision OCR, grouped by what they test)
+You edit only `_gold.txt`, against the image. Then each `*_original.txt` is
+compared to that gold file. Do not make a corrected copy per model.
+
+Run `py -3 scripts/score_gold.py` from the repo root. It prints word error
+and a coarse error mix (diacritic, honorific/takhallus, heh, missing, extra,
+letter/word). Dictionary pages mix English and Nastaliq on one line, so word
+error there is noisier than on poetry.
+
+**Not real errors** (do not chase these in gold): spacing between Gojri text
+and an adjacent English gloss (`آپ (aap)` vs `آپ(aap)`), and spacing around
+punctuation (`:`, `،`, `۔`). Only spacing between two Gojri words matters.
+Illustration notes (`[illustration: ...]`, `[photo: ...]`) need not match
+word for word across models; score the printed text. If a model wraps a
+**printed** header or footer in `[badge:]` / `[footer:]`, those words are
+missing from the scored text. That is a real error.
+
+Agreement between models is evidence, not proof. On `gojri_ghazal` and
+`kahawat_kosh` the true reading matched neither model's first guess at least
+once. Always check the image.
+
+## Bake-off result (Aug 2026, after the first-six gold re-check)
+
+Pooled word error on 12 pages (1790 scored gold words). **One-shot API** is
+the bulk-pipeline comparison. Chat numbers are a ceiling, not a fair rank.
+
+| Setup | Pooled WER | Role |
+|---|---|---|
+| Composer 2.5 chat, prompt v1 | 12.7% | Gold-draft helper only |
+| Gemini 3.6 Flash API, latest prompt per page | **17.3%** | Best one-shot on this set |
+| Sonnet 4.6 API, latest prompt per page | 21.9% | Worse, and more expensive on Bedrock |
+| Sonnet 5 Claude Code chat (6 pages) | 30.1% | Incomplete; possible gold leak |
+
+Gemini wins or ties Sonnet 4.6 on 11 of 12 pages. Sonnet wins only
+`dict_alif`. Composer chat is lower error on most pages because it is not
+one-shot. Full table and failure modes: `LOG.md` (2026-08-15 bake-off).
+Shelved models stay under `transcriptions_archived/`.
+
+**Use for bulk transcription (provisional):** none. Gemini 3.6 Flash is the
+best one-shot API here, but bulk vision OCR is paused until a method can run
+without a person on every page. Spot-check remains required for any vision
+output you do keep. Do not use Haiku 4.5, Qwen3-VL, or the other archived
+models.
+
+**Next prompt trial (do not edit v2 until scored):** keep banner footers as
+plain text, never `[badge:]`; keep takhallus `ؔ`; do not rewrite Gojri labels
+as Urdu (`پچھان`, `تانجے`, `کنّی`); do not skip the first stanza of a poem.
+Do not put gold-page answers into the prompt. Re-run the six v1-only API
+pages under v2 (or v3) before treating prompt version as a controlled factor.
+
+## Pages (what each tests)
 
 | Files | Tests |
 |---|---|
-| `dict_alif` | Dictionary layout, PUA scheme, mixed Nastaliq+English on one page |
+| `dict_alif` | Dictionary layout, PUA scheme, mixed Nastaliq+English |
 | `kahawat_kosh` | Two-column proverb layout, PUA scheme |
-| `gojri_adbiyaat` | Dense literary prose, PUA scheme, multiple poem excerpts with author names |
+| `gojri_adbiyaat` | Dense literary prose, PUA scheme |
 | `gojri_ghazal` | Dense justified essay prose, PUA scheme |
-| `mahatma_gandhi` | Mostly a full-page illustration + one caption line — tests that the method doesn't invent text that isn't there |
-| `kulyate_spread_a_right` + `_b_left` | Two-page spread poetry, legacy_8bit scheme (the scheme found late in triage) |
-| `nazir_spread_a_right` + `_b_left` | Second spread example; the left half has a lot of true blank space, another "don't invent content" test |
-| `louk_warsti` | Real scanned page (visible show-through from the other side of the paper), image-only, folk story |
-| `shingar_textbook` | Image-only, clean born-digital textbook page |
-| `primer_pehli` | Children's primer: isolated captioned words + decorative graphics, not paragraphs — a very different layout from everything else |
+| `mahatma_gandhi` | Full-page illustration + one caption; do not invent text |
+| `kulyate_spread_a_right` + `_b_left` | Spread poetry, legacy_8bit scheme |
+| `nazir_spread_a_right` + `_b_left` | Second spread; left half has true blank space |
+| `louk_warsti` | Real scan with paper show-through, image-only |
+| `shingar_textbook` | Image-only textbook page |
+| `primer_pehli` | Children's primer: captioned words + graphics |
 
-Plus 2 `direct_extraction` pages (`hindi_dict`, `quran_translation`) — already
-correct Unicode pulled straight from the PDF's text layer, not vision-OCR
-candidates, not part of this model comparison.
+## Status
 
-## Why this matters (recap)
-Every OCR approach tested gets run against these same 12 pages, so quality/cost
-tradeoffs are based on real, comparable outputs instead of a handful of spot checks.
-Current status (see `LOG.md` for the full, up-to-date picture): Gemini 3.6 Flash
-and Sonnet 4.6 are the active candidates, and **Cursor Composer 2.5** has
-joined them as a genuine third — file-based run across all 7 corrected pages,
-competitive on error rate (edges out both in aggregate), corrected the same
-way (see below). 7 of 12 pages fully corrected: `dict_alif`, `gojri_adbiyaat`,
-`gojri_ghazal`, `kahawat_kosh`, `kulyate_spread_a_right`, and
-`kulyate_spread_b_left` are word-for-word converged across all three models;
-`mahatma_gandhi` is corrected but its illustration descriptions stay
-legitimately different per model (independently confirmed true — see
-`LOG.md`, not every task converges to identical wording the way exact
-transcription does). Haiku 4.5, Qwen3-VL, Llama 4 Maverick, Pixtral Large,
-Kimi K2.5, and now **Groq 4.5 Fast** (spot-checked via pasted output, ~3-4x
-worse error rate than the active candidates plus repeated wrong proper names
-with zero uncertainty-flagging — see `LOG.md`) were tested and shelved.
-Sonnet 5 is blocked on an AWS Sales-gated access request (see `LOG.md`) —
-Sonnet 4.6 is standing in for it until that clears. The remaining 5 pages
-(`nazir_spread_a_right`, `nazir_spread_b_left`, `louk_warsti`,
-`shingar_textbook`, `primer_pehli`) now have Gemini + Sonnet + Composer v1
-originals and first-pass `_corrected.txt` files (2026-08-13), but are **not
-yet fully converged** — a short list of image-check items is in `LOG.md`.
-The decode-table idea and future prompt versions remain open follow-ups.
+All 12 pages have a `_gold.txt` file (Aug 2026). You re-checked the first six
+against the image. Active originals: Gemini 3.6 Flash, Sonnet 4.6 (API, v1
+and/or v2 by page), Composer 2.5 (chat, v1). Some pages also have Sonnet 5
+Claude Code chat originals (`sonnet_5_cc_v2`). Chat is not a one-shot API
+run. **Bulk vision OCR is paused.** Gemini is the best one-shot API on this set
+(pooled WER 17.3% vs Sonnet 4.6 at 21.9%) but 17% word error without a human
+check is not acceptable for the corpus. Dual-model agreement still shares a
+wrong word on about 5% of agreed tokens. Next OCR work is the decode-table
+spike. Score with `py -3 scripts/score_gold.py`. Shelved models live under
+`transcriptions_archived/`. See `LOG.md`.

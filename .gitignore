@@ -22,3 +22,13 @@ venv/
 .DS_Store
 Thumbs.db
 .vscode/
+
+# Decode-table glyph crops (regenerable from PDFs)
+data/decode/_glyph_crops/
+data/decode/out/
+data/decode/_tmp_*
+data/decode/transfer_decode.log
+data/decode/quran_gid_unknown.json
+
+# Extracted Unicode from PDFs / local corpus copies (regenerable)
+data/extracted/

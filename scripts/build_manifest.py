@@ -70,6 +70,7 @@ def analyse(pdf_path):
     """Extract every fact we need about one PDF."""
     rec = {
         "pages": 0, "arabic": 0, "devanagari": 0, "pua": 0, "latin": 0,
+        "garbage": 0, "presentation": 0, "replacement": 0,
         "total_chars": 0, "fonts": [], "text_sample": "", "error": "",
         "landscape": 0,
     }
@@ -112,8 +113,19 @@ def analyse(pdf_path):
                 rec["devanagari"] += 1
             elif 0xE000 <= cp <= 0xF8FF:
                 rec["pua"] += 1
+            elif cp in (0xFFFD, 0xFFFF):
+                rec["replacement"] += 1
+            elif 0xFB50 <= cp <= 0xFDFF or 0xFE70 <= cp <= 0xFEFF:
+                rec["presentation"] += 1
             elif ch.isascii() and ch.isalpha():
                 rec["latin"] += 1
+            elif not ch.isascii():
+                # Skip punctuation that English PDFs use (quotes, dashes).
+                if 0x00A0 <= cp <= 0x00FF or 0x2000 <= cp <= 0x206F:
+                    continue
+                # Wrong-script leftovers from a broken ToUnicode CMap
+                # (e.g. UrduTypesetting → Buhid / Latin-extended / IPA).
+                rec["garbage"] += 1
 
     doc.close()
     rec["fonts"] = [name for name, _ in fonts.most_common()]
@@ -147,6 +159,18 @@ def classify(rec):
     # Almost no extractable text at all -> the page is an image.
     if rec["total_chars"] < 30:
         return "image_only", "none", "none", 0
+
+    # Broken ToUnicode: some real Arabic letters exist, but many glyphs map
+    # to unrelated BMP codepoints. The Gojri Quran translation is this case
+    # (UrduTypesetting / ArabicTypesetting). Do not apply this to PUA books.
+    typesetting = any(
+        "urdutypesetting" in f.lower() or "arabictypesetting" in f.lower()
+        for f in rec["fonts"]
+    )
+    if typesetting and rec["pua"] < 20 and (
+        rec["garbage"] > 40 or rec["replacement"] > 40
+    ):
+        return "bad_text", "broken_tounicode", "legacy_encoded", int(english)
 
     # Real Perso-Arabic Unicode already present: nothing to fix.
     if rec["arabic"] > 20 and rec["arabic"] >= rec["pua"]:
@@ -232,6 +256,7 @@ def main():
             "devanagari_chars": rec["devanagari"],
             "pua_chars": rec["pua"],
             "latin_chars": rec["latin"],
+            "garbage_chars": rec["garbage"],
             "fonts": "; ".join(rec["fonts"][:6]),
             "error": rec["error"],
         }
@@ -295,6 +320,13 @@ def summary(rows):
         n = sum(1 for r in rows if sel(r))
         if n:
             print(f"  {s:15s} {n:3d} files  {pages(sel):6d} pages")
+
+    print("\nBy encoding scheme (deduped, primary copies only):")
+    schemes = sorted({r["encoding_scheme"] for r in rows})
+    for sch in schemes:
+        sel = lambda r, s=sch: primary(r) and r["encoding_scheme"] == s
+        print(f"  {sch:18s} {sum(1 for r in rows if sel(r)):3d} files  "
+              f"{pages(sel):6d} pages")
 
     needs_ocr = lambda r: primary(r) and r["in_scope"] == 1 and r["needs_ocr"] == 1
     print(f"\nPAGES NEEDING OCR (in-scope, deduped): {pages(needs_ocr)}")

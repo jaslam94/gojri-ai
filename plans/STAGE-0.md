@@ -25,7 +25,7 @@ Columns:
 | `dup_group` | id shared by byte-identical files, blank if unique |
 | `is_primary` | 1 for the copy we keep, 0 for redundant copies |
 | `category` | `good_text` / `bad_text` / `image_only` / `unclear` |
-| `encoding_scheme` | `clean_unicode` / `pua` / `ascii_legacy` / `none` |
+| `encoding_scheme` | `clean_unicode` / `pua` / `legacy_8bit` / `broken_tounicode` / `none` |
 | `script_evidence` | `nastaliq_fonts` / `latin_only` |
 | `likely_english` | 1 if real readable English detected |
 | `in_scope` | 1 if it belongs in the Gojri corpus |

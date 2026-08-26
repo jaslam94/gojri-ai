@@ -1,0 +1,151 @@
+{
+  "updated": "2026-08-26T13:53:19.054357+00:00",
+  "books": [
+    {
+      "path": "anjumshanasi/Aks-e-Jamal.pdf",
+      "slug": "aks-e-jamal",
+      "pages": 121,
+      "pages_done": 121,
+      "complete": true,
+      "mapped_pct": 92.8
+    },
+    {
+      "path": "anjumshanasi/Anjum-Shanasi.pdf",
+      "slug": "anjum-shanasi",
+      "pages": 364,
+      "pages_done": 364,
+      "complete": true,
+      "mapped_pct": 95.5
+    },
+    {
+      "path": "anjumshanasi/Banjara.pdf",
+      "slug": "banjara",
+      "pages": 496,
+      "pages_done": 496,
+      "complete": true,
+      "mapped_pct": 96.5
+    },
+    {
+      "path": "anjumshanasi/Chitti-Mitti.pdf",
+      "slug": "chitti-mitti",
+      "pages": 144,
+      "pages_done": 144,
+      "complete": true,
+      "mapped_pct": 96.3
+    },
+    {
+      "path": "anjumshanasi/Dil-Darya.pdf",
+      "slug": "dil-darya",
+      "pages": 220,
+      "pages_done": 220,
+      "complete": true,
+      "mapped_pct": 97.2
+    },
+    {
+      "path": "anjumshanasi/G-Grammar.pdf",
+      "slug": "g-grammar",
+      "pages": 120,
+      "pages_done": 120,
+      "complete": true,
+      "mapped_pct": 96.7
+    },
+    {
+      "path": "anjumshanasi/G-Kashmiri-Dictionary.pdf",
+      "slug": "g-kashmiri-dictionary",
+      "pages": 456,
+      "pages_done": 456,
+      "complete": true,
+      "mapped_pct": 87.3
+    },
+    {
+      "path": "anjumshanasi/Gojri-Adbiyaat.pdf",
+      "slug": "gojri-adbiyaat",
+      "pages": 528,
+      "pages_done": 528,
+      "complete": true,
+      "mapped_pct": 95.6
+    },
+    {
+      "path": "anjumshanasi/Gojri-Afsana.pdf",
+      "slug": "gojri-afsana",
+      "pages": 223,
+      "pages_done": 223,
+      "complete": true,
+      "mapped_pct": 95.3
+    },
+    {
+      "path": "anjumshanasi/Gojri-Drama.pdf",
+      "slug": "gojri-drama",
+      "pages": 320,
+      "pages_done": 320,
+      "complete": true,
+      "mapped_pct": 96.4
+    },
+    {
+      "path": "anjumshanasi/Gojri-Ghazal.pdf",
+      "slug": "gojri-ghazal",
+      "pages": 209,
+      "pages_done": 209,
+      "complete": true,
+      "mapped_pct": 95.8
+    },
+    {
+      "path": "anjumshanasi/Gojri-Nasriyaat.pdf",
+      "slug": "gojri-nasriyaat",
+      "pages": 532,
+      "pages_done": 532,
+      "complete": true,
+      "mapped_pct": 95.9
+    },
+    {
+      "path": "anjumshanasi/Gojri-Sheryaat.pdf",
+      "slug": "gojri-sheryaat",
+      "pages": 500,
+      "pages_done": 500,
+      "complete": true,
+      "mapped_pct": 95.9
+    },
+    {
+      "path": "anjumshanasi/Khawab-Jazeerey.pdf",
+      "slug": "khawab-jazeerey",
+      "pages": 125,
+      "pages_done": 125,
+      "complete": true,
+      "mapped_pct": 92.1
+    },
+    {
+      "path": "anjumshanasi/Qadim-Gojri.pdf",
+      "slug": "qadim-gojri",
+      "pages": 152,
+      "pages_done": 152,
+      "complete": true,
+      "mapped_pct": 95.5
+    },
+    {
+      "path": "anjumshanasi/Zanbeel.pdf",
+      "slug": "zanbeel",
+      "pages": 180,
+      "pages_done": 180,
+      "complete": true,
+      "mapped_pct": 94.9
+    },
+    {
+      "path": "javaidrahi-blog/gojri-adab-ki-tariekh.pdf",
+      "slug": "gojri-adab-ki-tariekh",
+      "pages": 270,
+      "pages_done": 270,
+      "complete": true,
+      "mapped_pct": 95.0
+    }
+  ],
+  "last_batch": [
+    {
+      "path": "javaidrahi-blog/gojri-adab-ki-tariekh.pdf",
+      "slug": "gojri-adab-ki-tariekh",
+      "pages": 270,
+      "pages_before": 54,
+      "pages_after": 270,
+      "complete": true
+    }
+  ]
+}

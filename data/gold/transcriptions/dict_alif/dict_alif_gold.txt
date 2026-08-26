@@ -21,5 +21,5 @@ lpp: آبلائے گل لگ ، نھیں لگتی تے تاں وی لگ To invite
 آپس(aapas)prep.Amongst;alongwith;in company of;with;within.
 آپسی(aapsi)adj.Mutual;joint;conjoint;shared;common;reciprocal.
 آپنا(aapna)adj.Subjective;personal;individual;own;ours;mine.
-eg: lpp: آپنا مارکے وی چھاں سٹیں ،یا، آپنا مار کے چھاں سٹیں، پرایا دھُپ
+eg: lpp: آپنا مار کے وی چھاں سٹیں ،یا، آپنا مار کے چھاں سٹیں، پرایا دھُپ
 آپنو(aapnu)nm/adj:Private;personal;one's own.

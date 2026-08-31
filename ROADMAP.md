@@ -101,7 +101,9 @@ next one still earns its cost. This pairs with the tiering already defined in St
 Turn the in-scope PDFs into clean Unicode Gojri text. Vision transcription was
 the first validated path (render page, ask a vision model). **Aug 2026:** the
 gold-set bake-off showed one-shot vision error is too high to run unreviewed,
-so bulk vision OCR is paused. The decode-table spike is the next experiment
+so bulk vision OCR is paused. The NOORIN decode-table spike **failed validation**
+(Aug 2026, 98.8% word error on Kahawat page 28) and was abandoned. Vision OCR
+(Gemini API) is the path for font-encoded pages.
 for font-encoded pages. Image-only pages still need vision later.
 
 Confirmed breakdown after inspection: 4 files already have good text (no work

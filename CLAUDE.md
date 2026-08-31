@@ -380,6 +380,14 @@ available for the rest of the project. If it fails, we lose a day and fall back 
 vision transcription, which is already validated. Asymmetric payoff, so test it
 before committing bulk spend, not after.
 
+**Outcome (Aug 2026): NOORIN spike failed validation and is abandoned.** We built
+a 2,149-key table on Kahawat-Kosh with 100% census key coverage, but decoded text
+was wrong: page 28 **98.8% word error** vs OCR ground truth, page 59 gold **98.9%**
+word error. Key coverage does not mean correct Unicode. All NOORIN scripts, seeds,
+and decode output were removed. Summary: `data/archive/noorin-decode-spike/README.md`.
+**Corpus path for font-encoded PDFs is vision OCR**, not glyph decode. Batool and
+Quran GID decode remain in the repo but are paused and not validated at book scale.
+
 ### ASR (speech recognition)
 - Fine-tuning OpenAI Whisper is the standard low-resource approach. Literature
   (BaltiVoice and others) suggests roughly 15-20 hours of labeled audio gives a usable,
@@ -500,7 +508,11 @@ bake-off: Gemini 3.6 Flash 17.3% pooled word error, Sonnet 4.6 21.9%. Composer
 chat is lower error but is not a bulk pipeline. Dual-model agreement still
 shares a wrong word on about 5% of agreed tokens. **Bulk vision OCR is paused:**
 the user cannot review 15,478 pages, and 17% word error would poison the corpus.
-OCR decode work is on branch `feat/decode-table`. Batool PUA table is in
+
+**NOORIN decode-table path abandoned (Aug 2026).** See
+`data/archive/noorin-decode-spike/README.md`. Do not rebuild NOORIN tables.
+
+**Paused (not validated at book scale):** Batool PUA table is in
 `data/decode/batool_pua_seed.json` (160 codes). This Gojri-English
 dictionary is one 498-page file (`Gojri-English-Dictionary.pdf`). Body
 pages 25-498 have **zero unknown** Batool codes. Front pages 1-24 are
@@ -508,122 +520,10 @@ mostly English; 3 Batool codes on those pages are still unmapped.
 `Concise_Gojri_English_Dictionary_by_Dr_R.pdf` is the same 24-page front
 matter, not a second volume. Decode with
 `py -3 scripts/decode_batool.py 1 498`. Neighbor rules make page 25 letter
-forms match `dict_alif_gold.txt` (`آبلائے`, `نھیں`, `مهارو`, `ھُدرو`).
-Output is local under `data/decode/out/` (gitignored). NOORIN seed is
-`data/decode/noorin_pua_seed.json` (**2,149 keys, complete**). Book-wide census:
-`py -3 scripts/census_noorin.py 1 169`. Unique keys 2,149; table covers all.
-**Mapped instances 100.0%** (80,638). **Zero unknown keys** on pages 1–169.
-Page 50 still has zero unknown keys. Decode with
-`py -3 scripts/decode_noorin_flow.py` on PUA NOORIN books. Kahawat-Kosh
-(`Kahawat-Kosh.pdf`, 169 pages) is the reference book for this table.
-Transfer scan: `py -3 scripts/census_noorin_transfer.py` writes
-`data/decode/noorin_transfer.csv`. On 44 primary PUA books: **17 books >=90%**
-mapped instances (typical Anjumshanasi poetry/prose 95–97%), **1 book 87%**
-(G-Kashmiri-Dictionary), **16 books <1%** (Javaid Rahi dict parts use
-Latin-range NOORIN codes, not PUA `F0xx`), **10 books 0%** (legacy_8bit/TT*
-fonts). Bulk decode for books >=87%:
-`py -3 scripts/census_noorin_transfer.py --decode --min-pct 87` →
-`data/decode/out/<slug>/`. Use `--skip-census --batch-size 1` to resume
-without re-scanning; `--skip-existing` on `decode_noorin_flow.py` skips
-pages already written. Progress file:
-`data/decode/transfer_decode_progress.json`. **All 17 transferable books
-decoded** (Aug 2026).
-High-count
-base fills include `عا`, `ٹا`, `تھو`, `چڑ`, `ش`, `گی`, `قد`, `لو`,
-`نیا`/`دنیا`, `ہونو`, isolated `ز`, `خا`, `سے`, `ئیے`, `بی`, `پنے`,
-isolated `خ`, isolated `چ`, `مند`, `ھو`, `سیا`, isolated `ف`, `تیر`,
-`ینی`/`دینی`, `بنا`, `مصیبت`, `پیا`/`روپیا`, `بچو`/`بچوں`, `منہ`,
-`یکھ`/`دیکھ کے`, `مد`/`مدد`, `ریب`/`غریب`, `بغیر`, `مید`/`امید`/`میدان`,
-`رضی`/`غرضی`, `شش`/`کوشش`, `بند`, `کنڈ`, `بہا`, `گما`, `گیو`, `پے`,
-`بھو`, `کیو`/`کیوں`, `رہنو`, `تھا`/`تھاں`, `سوچ`, `شو`, `پا`/`پار`,
-`ضا`/`رضا`, `تک`, `مت`/`ہمت`, `مطلب`, `بھی`, `ع`/`غ`, isolated `ق`/`شوق`,
-`لت`, `گئی`, `تھی`, `ج`, `بجھار`, `جلد`, `محنت`, `حد`, `سد`, `ض`, `گھی`, `ل`/`لیا`, `شکر`, `دشمن`, `بچ`/`بچا`, `ٹھنڈ`/`چھوڑ`, `لینo`, `سر`, `و`, `د`, `ر`, `نو`, `کن`, `کہیں`, `F0D7`+`F026`/`F027`→`در`, `ھ`/`ھیان`, `دے`, `پئی`, `طرح`, `س`, `طا`, `ہم`, `چ`, `ٹھ`, `تیا`, `ٹھا`/`اٹھا`, `سمجھ`, `ق`, `یر`, `جد`, `فی`. Neighbor rules:
-`NOORIN13:F0A8` (ا+ے→س, ر+ے→ہ), `NOORIN08:F081` (ر+ے→empty, ل+ں→ا),
-`NOORIN09:F051` (default ٹھنڈ; next F07D→چھوڑ),
-`NOORIN04:F058` (default بچ; next F0C6→بچا),
-`NOORIN12:F0E2` (next F07B→بال), `NOORIN12:F07B` (prev F0E2→وں; next F07D→گھڑے; next F02C→گھڑیں; else گھڑی),
-`NOORIN12:F0BE` (next یار→لیا), `NOORIN14:F07A` (line-start ر; after گما→ن/نو; after کی→ہنڈ; after F031 before ،→ ہنڈی; after ر before د/کو→empty),
-`NOORIN81:F0A2` (empty before F07A/ھ; حا+…→ضر ہ; بعد F022→ضرر ; 0 leftovers), `NOORIN14:F0F7` (joiner; 0 placeholders), `NOORIN10:F072` (after کی/کو→ہی; before F0F7→ا; after نے→اک; 0 placeholders),
-`NOORIN04:F0DB` (0 decode placeholders: prior batch plus p154 F098+…→بیری; p128 F04A+…→ب; p22 F041+…→empty),
-`NOORIN08:F04A` (next F0DB→سخت), `NOORIN01:F09D` (after NOORIN57:F05A before F041→و),
-flat `NOORIN27:F098` (نیچی), `NOORIN17:F041` (کر), `NOORIN05:F035` (پکی),
-`NOORIN34:F023` (context: after د/یا → شمنی or دشمنی), `NOORIN01:F099` (before F023 → د; after F063 → یا),
-`NOORIN16:F023`/`NOORIN01:F07B`/`NOORIN81:F07B` (خواہ مخواہ: F81→خو, F07B↔F023→اہ, F023→مخو),
-`NOORIN06:F05E` (after F032→ٹھو گاٹھوری; after F09F→ھو; سو/نا+کرن→ٹھو; F0D1/F0D1→empty; جوٹھو/جھوٹو/رٹھو/اٹھو/ٹھوڈی/ٹھوکرے جا; line-start before س→جھوٹو ا; line-start before :→ھو; after F065→ھوا; 0 leftovers),
-`NOORIN12:F042`/`NOORIN57:F031` (F031 before F042→بو; F042 flat لیں),
-`NOORIN82:F074` (after ھ→ویہ; after ۔/سا/و/ما/پ/د/نا or line-start→یہ; after ج→ی; 0 leftovers),
-flat `NOORIN01:F09F` (ڈ), flat `NOORIN26:F032` (گا), flat `NOORIN89:F031` (نجھی),
-flat `NOORIN14:F0B7` (ھ; د+ے→ھیان), flat `NOORIN18:F0A9` (پئی; after آپ→ اپنی), flat `NOORIN01:F062` (طرح), flat `NOORIN08:F053` (س before طرح),
-`NOORIN82:F040` (after کھا→د/دے; after تے→دے; 0 leftovers), `NOORIN12:F076` (گھاٹو/گھا/گھ/گھائی/گھوڑو/ک; F05E after→ٹ; F0F0 after→empty; 0 leftovers),
-flat `NOORIN81:F0A4` (طا), flat `NOORIN48:F0EB` (ہم), flat `NOORIN57:F024` (چ), flat `NOORIN57:F04A` (ٹھ),
-flat `NOORIN82:F071` (ایک), flat `NOORIN63:F0F0` (من; prev F068 next *:F06A→ں), flat `NOORIN08:F06A` (اس; prev F083→سکو; prev F037→اسکو; prev+next F05A→اسکو), flat `NOORIN06:F06A` (اس),
-flat `NOORIN16:F078` (میا), flat `NOORIN12:F043` (لیو), flat `NOORIN82:F087` (قا), `NOORIN83:F0DE` (empty joiner; next F02E→بل, F03E→پل, F04C→تل, F054→ٹل/اٹل after F05A),
-flat `NOORIN81:F09C` (صد; next F063→یا; next F0B8→قہ), `NOORIN82:F09A` (کڑ; next F0EC→کڑی; next F07B→کھڑ), `NOORIN56:F0DF` (اصو/اصولی/اصولو/صورت/صور; F0E0/F0DF after→empty),
-flat `NOORIN85:F0BB` (تیا), flat `NOORIN06:F056` (ٹھا; F051/F05A before→ا), flat `NOORIN52:F099` (سمجھ; F057 after→آ),
-flat `NOORIN48:F0DE` (ق after F0D8; کھ+ل/ڑ/و by next), flat `NOORIN81:F061` (یر; F05A before→empty; F02C after→یںپ),
-flat `NOORIN81:F05D` (جد; F068→ید; F09E→کہ; F07A after→جدو), flat `NOORIN08:F04A` (س; F0DB after→سخت), flat `NOORIN63:F0B0` (فی), flat `NOORIN56:F0DD` (صل; F05A before→اصل; F071 before→حاصل),
-flat `NOORIN05:F056` (پھل after کو/گو; و after نا+کھا، comma+کی، گا، line-start),
-flat `NOORIN01:F0A7` (ر), `NOORIN06:F06E` (و; prev F07D→لئے),
-flat `NOORIN27:F076` (نقصان; prev F04A→پنو نقصان; F079 after→empty),
-`NOORIN05:F06E` (تباہی after F084; تباہ+بر after F07B+ز; else تباہ; F084 after→empty),
-flat `NOORIN81:F06C` (چر; next F0F0→چڑ; F02C after→یںپ; F021 after→بی),
-flat `NOORIN44:F041` (لگنی), flat `NOORIN22:F0AA` (پہلا),
-`NOORIN81:F0A7` (طر; after خا→تر خاطر; before طرح→دی), flat `NOORIN63:F0DD` (لم),
-flat `NOORIN17:F0D2` (لحاظ; F070/F06F after→empty), flat `NOORIN15:F0C9` (لکھ),
-flat `NOORIN81:F064` (جگ; F0E0 before→ے after ت/ج else empty),
-`NOORIN08:F094` (ے/سنی after د; سنی before : or after گل; empty before سنائی), `NOORIN25:F05B` (بیگا before نی; بن/bنا/بیگا line-start; گ before نا/و), `NOORIN43:F092` (نین default; نیند after کی/اپنی; ا after ج before کر; F059 after→د), `NOORIN21:F053` (نے default; نبھا after پئی), `NOORIN08:F096` (سہارے/ھک/سہارہ/و; empty after سے), `NOORIN57:F076` (سڑ default; ر after کو; ھ in کتھ; empty before یار), `NOORIN17:F081` (ھی default; تھی after F026/در), `NOORIN08:F0E8` (ش/شیر/یر/ک/ر/وں by context; شیر proverbs), `NOORIN57:F021` (ب default; بی after ڈ/چر; ے/ی/س/ہ by prev; duplicate empty), `NOORIN25:F0A9` (ے after ک/کی/و; ی after نہ; بھی after ں; F079 after→empty), `NOORIN13:F0FA` (نماز after کے; اں after ریںپ; ے after کی; گ after (), `NOORIN01:F071` (empty joiner; ت after F0E7), `NOORIN81:F099` (ڑ/ڈ/د before ف; duplicate empty), `NOORIN09:F09A` (ے/بلا/ا/و by context), `NOORIN82:F02D` (ند after ر; ں after ما), `NOORIN54:F02A` (ے before ک; empty before رکھ after F07A/F03A/F0CF/F0A7), `NOORIN05:F061` (empty joiner; پیدا when F071/F081/F035 in window), flat `NOORIN56:F0CD` (empty joiner after دے), flat `NOORIN09:F0F9` (empty line-start joiner), `NOORIN01:F09D` (empty; F05A+F041→و; گھی→ڈال; F021→و), `NOORIN14:F0D7` (ے after اپنوروپ; نا+F021→ی; نا+F056→ں; empty before ں after ددھا), `NOORIN05:F0DF` (پھر/تنگ before کرنو; full-row F0F4 context via `base_keys_before_full_row`), `NOORIN57:F060` (empty; F077+F071→چن), `NOORIN43:F0C3` (و after ہون/کرن; empty before ۔), `NOORIN05:F051` (empty joiner; پھر; چ in وچ; و/ی context), `NOORIN19:F03E` (ب/پ/د/ھ/ہ/و/ں by colon context), `NOORIN82:F07E` (ق in حقدار/قرض; empty before بتا), `NOORIN29:F068` (ں after ما; ے after مدد; ی after مصیبت; else empty), `NOORIN61:F0CE` (دین before F07B; دے after comma; ے in دینیت دے; ھ in لتھ; ھیل in پھیلنو; F07B empty after F0CE), `NOORIN01:F05E` (empty joiner; ٹ after گھا in گھاٹ نہیں), `NOORIN08:F0F1` (ے/د/ دے by context; colon joiner), `NOORIN15:F02E` (empty joiner after پ in پنی/پے), `NOORIN10:F088` (ی in ایں/ساکھیء; عاء/اء titles; ب in بے; empty before کڑھا/شکر; F059 empty after non-ی F088), `NOORIN16:F08C` (ر after F07A in ترہ; else empty), `NOORIN67:F0F0` (flat empty joiner), `NOORIN04:F0EA` (ی in کوئی; ا in پراں; دھ in دھلاو; else empty), `NOORIN10:F0B4` (ہ line-start/after F043; ئ before F060 after کو/ئے; F060→ی helper), `NOORIN43:F042` (ا line-start; م after F0BB; else empty), `NOORIN89:F036` (ے before ۔ after F067/F0C8; else empty), `NOORIN12:F031` (ا before F056; else empty), `NOORIN05:F05E` (ا in با; ی in کسی; else empty), flat `NOORIN82:F0B5` (empty joiner), `NOORIN16:F07E` (ہ in رہے/رہے ہیں/کم رہ; ے after ں/ک; empty after comma/شرمسار; F021→ے helper), `NOORIN07:F0EC` (ے line-start/after یار; else empty), `NOORIN10:F028` (ے in کہنی/رکے; else empty), flat `NOORIN82:F037` (ی after ت before اچا; else empty), flat `NOORIN17:F05E` (empty before کد), flat `NOORIN13:F0C3` (empty joiner), flat `NOORIN81:F0AD` (empty after ک/د), flat `NOORIN08:F073` (empty before م/ہمت), `NOORIN10:F0D2` (و after ر before لا/د/گہنو; else empty), flat `NOORIN63:F0D3` (empty after لا), `NOORIN32:F061` (ی/ں/نی/ے line-end inflections), flat `NOORIN57:F073` (empty joiner), flat `NOORIN12:F0D6` (empty after ھ), flat `NOORIN18:F09E` (empty before پدے), flat `NOORIN81:F057` (empty in کور/بایار), flat `NOORIN07:F0ED` (empty joiner), `NOORIN12:F0BF` (ے after کر; else empty), flat `NOORIN89:F05A` (empty before ج/بی/F06F), flat `NOORIN10:F047` (empty joiner), `NOORIN14:F068` (ی/ں/ا before F0E8/نا/گلانی; else empty), `NOORIN11:F048` (ا/و before ں/ھ/ک; empty after مقامتو), `NOORIN15:F059` (ے after ھ; empty after سو), `NOORIN05:F063` (یر default; empty joiner; یر after F045/F056/F07D/F0F2), flat `NOORIN04:F0E9` (empty joiner), `NOORIN04:F0CE` (ں after سو), `NOORIN20:F06E` (و after :), `NOORIN63:F0F3` (د after ز/ر; else empty), `NOORIN57:F063` (ڑ after مو; و after ھ; else empty), `NOORIN81:F0B8` (ا in باں; ب in کثریب/بہونو/برباد; else empty), `NOORIN63:F0AF` (ی after طر/ما; else empty), flat `NOORIN15:F0F5` (ت before ھ), `NOORIN81:F02F` (وں/توں/ں/کی by context; else empty), `NOORIN59:F0EB` (after لا: ھ/ر/ہ/ب/آ by next; empty before ت), `NOORIN13:F052` (after غ: ر/ا/ت/ھ by next; empty after ع before ک), `NOORIN12:F041` (ر after ک before تو; else empty), `NOORIN57:F027` (ں after ما before کے; ر after : before ر; else empty), `NOORIN19:F034` (گ line-start before ین; ے after کو/کی before ین; ے after ں before نہ; else empty), `NOORIN08:F065` (ے in کالے; و in نالوں; ے after کر before نے; ت before F050; else empty), `NOORIN14:F091` (د after بھا; ے/و after ک by context; else empty), `NOORIN10:F05D` (ی in را before ک; else empty), `NOORIN56:F0FA` (ھ after د; ی after ت/: before ک; ر after کھ before ر; else empty), `NOORIN12:F06B` (پ after آپ before F07B; ے after کی before F085; ی after د before F07B; ے after ل before F061; else empty), flat `NOORIN63:F0BE` (empty joiner), `NOORIN12:F024` (ے after بھا before ،; else empty), `NOORIN09:F0E5` (ے after گھر/پلاء/کے; ن in بنائے; ر in رہے; ا in ڈرانی; else empty), `NOORIN32:F05F` (ئی after کو; ہ after کا before ھ; ت in سوتری; ں in آنیاں; ہم line-start; else empty), `NOORIN14:F0DC` (ے after د/مد; ے before ناداد after :), `NOORIN04:F0DA` (ی line-start; ئی after کو; ے/یا/ھ/ی/empty by context), `NOORIN04:F0B9` (گ in رنگ; ف in فردر; ا/ڑ/empty by context), `NOORIN08:F092` (ھ/ہ after د; empty after ناداد), `NOORIN21:F088` (و in ھو;اں/پ/ا/یو/empty by context), `NOORIN24:F02C` (ک/س; ا+ئ/ک+ی pairs), `NOORIN20:F082` (ش in بارش; ی/ڑ/ب/ے/و by context), `NOORIN21:F075` (ے/ؤ/ا/ز/و/ہ/ن/empty by context), `NOORIN51:F096` (ا before ت; ے in کیے; else empty), `NOORIN53:F036` (ی/ہ/ا in ایک/کہہ/کا), flat `NOORIN22:F041` (ھ after F08A), `NOORIN01:F0AF` (ز before ندگی; ہ before نگ; empty line-start before :), `NOORIN52:F0F2` (ب in پنجابر; پ before ڈر; ہ in کھاوہ; else empty), `NOORIN82:F0AD` (ا in مار; ی before یار; else empty), flat `NOORIN07:F086` (empty index marker), `NOORIN57:F06A` (ھ in تھکنو; د after : in د دینو; else empty), `NOORIN81:F0B2` (ئی in کوئی; ب in بشوں; ہ in بہش; else empty), `NOORIN81:F02E` (بل after F0DE; rule in F02E block), `NOORIN82:F0A6` (ہ/ت/کو/empty by context), `NOORIN81:F077` (ف in فر; ش/ح/شر in شرم/حرمت; else empty),
-`NOORIN82:F038` (after ک→ھ/و or قبل ای→رنگ; after با/F0AF/ڈ/ڈر/د/ر/کا+مند→نگ; 0 leftovers),
-`NOORIN29:F04F` (ہ after ر; ے after ک), `NOORIN15:F0CF` (و in وت/کیوں/مو; empty before لائکرننی), `NOORIN07:F0A7` (و/یں/ی/ح/ں/space by gloss), `NOORIN26:F0CF` (و in یاروں/ماوے; ں in آپوں; else empty), flat `NOORIN69:F085` (۔), `NOORIN23:F074` (اپ/ے by context), `NOORIN28:F0F1` (،/space joiner in glosses), `NOORIN35:F0C6` (ب/ے/ن/space by context), `NOORIN11:F051` (ے/space joiner), `NOORIN41:F032` (و/ے/ت by context),
-flat `NOORIN06:F0E5` (ے), `NOORIN08:F03F` (ا/ے/و/space by colon context), `NOORIN30:F044` (ے after ک), `NOORIN81:F093` (ے after ر), `NOORIN19:F049` (ا/وں/ک/اں by proverb gloss), `NOORIN41:F0AF` (empty before ہون), flat `NOORIN31:F06F` (و), flat `NOORIN08:F0B0` (،), `NOORIN63:F0B5` (ٹ after مو), `NOORIN18:F02B` (ا line-start; empty in چھوک/ہتھک), `NOORIN26:F083` (و in جگوں/سبوں), `NOORIN09:F096` (space/comma joiner), `NOORIN50:F071` (ھ/ی/ے/space in Urdu gloss), flat `NOORIN04:F0AB` (ے), flat `NOORIN04:F0B6` (۔), `NOORIN04:F02A` (ے/ی by context), flat `NOORIN01:F032/F039/F031/F030` (empty English index markers), `NOORIN54:F0AB` (ے before ک),
-flat `NOORIN24:F0D6` (ر in گوجر/ڈر), `NOORIN12:F0F4` (ر in گوجر/لاڑ; ڑ after ڈر), `NOORIN57:F062` (ی after ،; و after ک; ہ in رہ; empty joiner), `NOORIN11:F037` (ی in بھائی/گل; ے/ئ/ھ by context), `NOORIN16:F07D` (غ headers; ک/ڑ/ے by context), flat `NOORIN01:F0AD` (ے Urdu gloss), `NOORIN39:F0C6` (ل/پ/ن/ے by context), `NOORIN13:F033` (و/ے/empty joiner), `NOORIN15:F02B` (ڑ/ے by context), `NOORIN66:F04F` (اں in ماں; empty after کو),
-flat `NOORIN74:F0A2` (ں), `NOORIN57:F05F` (کی/لارہنو/نہیں by next), `NOORIN04:F0B3` (زھز/ھ/پ by neighbor), `NOORIN11:F0A7` (ن/ں/نا), `NOORIN14:F045` (اک/ک/ے/ھ/ں/ر by context), `NOORIN01:F021` (ے joiner; empty after F057+F028), `NOORIN48:F0F6` (ے/ت/ں/ک/آ by prev), `NOORIN06:F029` (ھ/ر/ت/ی by context), `NOORIN10:F08F` (ریب; قد before F08A), `NOORIN56:F0DC` (فر/کر by next),
-`NOORIN08:F06D` (ر/ہ/گ/ھ by context), `NOORIN76:F027` (ک/ر by neighbor), `NOORIN17:F0E1` (ے/ن/ف/ھ by context), flat `NOORIN61:F08C` (۔), `NOORIN06:F0E4` (ے/ھ/و after آپ), `NOORIN57:F042` (یر/دی/ال/ون), `NOORIN73:F0EE` (بول/ھ/ر/خ by next), `NOORIN16:F06E` (ما/کی after F0E7), `NOORIN22:F098` (ے/ب by context), `NOORIN57:F077` (و/ت/ع/ے),
-`NOORIN41:F0B1` (ے/ر/ہ), flat `NOORIN82:F05E` (نا after F059), `NOORIN05:F0B7` (ک in رکقماز; ے in سیرے), `NOORIN57:F05E` (ت/ی/و/د/ا), `NOORIN05:F0EA` (ھ after F05A+F07A; empty line-start), `NOORIN13:F0E6` (ے/ی/ا), `NOORIN11:F06D` (ی/ھ/ے/ب/ں), `NOORIN57:F064` (ے/و after F0CE), `NOORIN15:F050` (ی/و/ا/ے/ن by next), `NOORIN05:F082` (ر/ی by neighbor),
-`NOORIN17:F097` (ب in تباہی; ھ in رددھاچڑانو), `NOORIN08:F0BA` (ک/ر by neighbor), flat `NOORIN82:F095` (ن), `NOORIN76:F084` (و/ں), `NOORIN58:F0ED` (ل/ہ/empty), `NOORIN10:F029` (و/ے/ک), flat `NOORIN10:F0E2` (د in ددھاکر), `NOORIN17:F083` (ند/ک/ر), `NOORIN31:F083` (ہ/ں/ئ),
-flat `NOORIN48:F0E9` (ش in خوش/خورش/فخور), `NOORIN16:F0B2` (د/ر/ڈ), `NOORIN05:F099` (ے/ا), `NOORIN19:F0C2` (ے/ر/د), `NOORIN13:F076` (ے after F08A/F09B), `NOORIN10:F0C9` (ں/ے), `NOORIN14:F033` (ر after F021), flat `NOORIN32:F085` (ب), `NOORIN63:F031` (ر/ز/ے), `NOORIN82:F041` (ل/ں/ہ),
-`NOORIN51:F0EF` (م/ت/ی/و/ہ/ر), flat `NOORIN07:F051` (ے), flat `NOORIN08:F07C` (ے), flat `NOORIN10:F0CB` (ر in ڈرر/شرر), `NOORIN11:F030` (ے/ر/ن), `NOORIN11:F04F` (ا/ہ/ی), `NOORIN29:F05B` (ے/ت/ہ/ب), `NOORIN63:F0DE` (ے/ر), flat `NOORIN34:F024` (ق), flat `NOORIN83:F0CB` (۔),
-`NOORIN05:F048` (رت/ے/: by context; 0 leftovers), `NOORIN14:F0B4` (ھ/ر/م; 0 leftovers),
-`NOORIN25:F043`/`NOORIN41:F041`/`NOORIN56:F0CC`/`NOORIN09:F0BF`/`NOORIN82:F096`/`NOORIN13:F036`/`NOORIN04:F04F`/`NOORIN05:F06B` (batches 73; 0 leftovers each),
-flat `NOORIN07:F0AA` (رے), `NOORIN11:F02B`/`NOORIN64:F0D8`/`NOORIN49:F061`/`NOORIN81:F054`/`NOORIN57:F03F`/`NOORIN22:F056`/`NOORIN05:F064`/`NOORIN10:F0F3`/`NOORIN25:F0EB` (batch 74; 0 leftovers),
-flat `NOORIN19:F046` (ک), `NOORIN41:F09B`/`NOORIN13:F0BB`/`NOORIN38:F0BD`/`NOORIN06:F028`/`NOORIN07:F0DC`/`NOORIN06:F04C`/`NOORIN15:F0DB`/`NOORIN14:F099`/`NOORIN07:F068` (batch 75; 0 leftovers),
-`NOORIN75:F084`/`NOORIN12:F0F9`/`NOORIN14:F02D`/`NOORIN32:F06C`/`NOORIN14:F039`/`NOORIN10:F0B7`/`NOORIN06:F07C`/`NOORIN04:F0B4`/`NOORIN26:F07B`/`NOORIN57:F0B7` (batch 76; 0 leftovers),
-`NOORIN01:F03F`/`NOORIN10:F0BE`/`NOORIN26:F024`/`NOORIN10:F094`/`NOORIN01:F05F`/`NOORIN27:F04D`/`NOORIN82:F065`/`NOORIN16:F0C8`/`NOORIN15:F032`/`NOORIN08:F0E0` (batch 77; 0 leftovers),
-flat `NOORIN49:F08D` (ک), `NOORIN23:F0F0`/`NOORIN70:F052`/`NOORIN26:F031`/`NOORIN17:F040`/`NOORIN15:F041`/`NOORIN06:F0C3`/`NOORIN72:F0B4`/`NOORIN10:F0C0`/`NOORIN14:F0E2` (batch 78; 0 leftovers),
-flat `NOORIN81:F094` (ر), flat `NOORIN45:F096` (ں), `NOORIN01:F0A3`/`NOORIN37:F057`/`NOORIN18:F085`/`NOORIN10:F03D`/`NOORIN01:F036`/`NOORIN57:F057`/`NOORIN59:F0F5`/`NOORIN82:F069` (batch 79; 0 leftovers),
-`NOORIN28:F0F8`/`NOORIN18:F076`/`NOORIN11:F097`/`NOORIN13:F0B1`/`NOORIN57:F058`/`NOORIN81:F072`/`NOORIN81:F081`/`NOORIN04:F0BE`/`NOORIN14:F0C4`/`NOORIN12:F0CB` (batch 80; 0 leftovers),
-`NOORIN89:F07A` through `NOORIN12:F038` (batches 81–95; 105 keys, 7 per batch, n=4 each; 0 leftovers),
-`NOORIN08:F04D` through `NOORIN82:F085` (batches 96–115; 120 keys, 6 per batch, n≤4 each; 0 leftovers),
-`NOORIN30:F048` through `NOORIN14:F060` (batches 116–135; 140 keys, 7 per batch, n≤4 each; 0 leftovers),
-`NOORIN11:F074` through `NOORIN85:F0B8` (batches 166–195; 150 keys, 5 per batch, n≤3 each; 0 leftovers),
-`NOORIN30:F046` through `NOORIN89:F030` (batches 196–230; 175 keys, 5 per batch, n≤3 each; 0 leftovers),
-`NOORIN09:F09D` through `NOORIN17:F0EB` (batches 136–165; 150 keys, 5 per batch, n≤4 each; 0 leftovers),
-`NOORIN34:F023` (شمنی/دشمنی; patched), `NOORIN07:F0B8`/`NOORIN01:F06D`/`NOORIN15:F0D3`/`NOORIN04:F068`/`NOORIN16:F0A3`/`NOORIN16:F056`/`NOORIN11:F046`/`NOORIN11:F0DC`/`NOORIN56:F089` (batch 65; 0 leftovers),
-`NOORIN15:F0D0`/`NOORIN10:F051`/`NOORIN05:F0E2`/`NOORIN13:F0E0`/`NOORIN14:F0BC`/`NOORIN07:F098`/`NOORIN03:F0F9`/`NOORIN13:F02B`/`NOORIN29:F0F8`/`NOORIN10:F0E7` (batch 66; 0 leftovers),
-`NOORIN13:F024`/`NOORIN59:F0EC`/`NOORIN14:F07D` (کہ/لا patched)/`NOORIN36:F0D2`/`NOORIN81:F06E`/`NOORIN14:F02E`/`NOORIN41:F0AB`/`NOORIN05:F04D`/`NOORIN06:F090`/`NOORIN08:F032` (batch 67; 0 leftovers),
-`NOORIN11:F0CE`/`NOORIN82:F0A5`/`NOORIN25:F05A`/`NOORIN15:F0C7`/`NOORIN72:F0A2`/`NOORIN05:F044`/`NOORIN06:F060`/`NOORIN22:F040`/`NOORIN15:F089`/`NOORIN12:F03F` (batch 68; 0 leftovers),
-`NOORIN82:F0B4`/`NOORIN27:F095`/`NOORIN48:F0EF`/`NOORIN17:F03E`/`NOORIN10:F072` (patched)/`NOORIN01:F072`/`NOORIN81:F03A`/`NOORIN83:F0CD`/`NOORIN53:F0CC`/`NOORIN67:F028` (batch 69; 0 leftovers),
-`NOORIN12:F0F2`/`NOORIN10:F0CF`/`NOORIN16:F0CB`/`NOORIN05:F059`/`NOORIN81:F0B0`/`NOORIN05:F0EF`/`NOORIN08:F043`/`NOORIN08:F0D1`/`NOORIN57:F040`/`NOORIN19:F054` (batch 70; 0 leftovers),
-`NOORIN14:F078`/`NOORIN16:F0BE`/`NOORIN04:F07A`/`NOORIN29:F0C8`/`NOORIN15:F0E8`/`NOORIN07:F04B`/`NOORIN14:F0AF`/`NOORIN13:F0B6`/`NOORIN15:F027`/`NOORIN12:F0DC` (batch 71; 0 leftovers),
-`NOORIN27:F028`/`NOORIN02:F073`/`NOORIN08:F090`/`NOORIN14:F084`/`NOORIN55:F0E5`/`NOORIN50:F0F4`/`NOORIN46:F037`/`NOORIN04:F0F7`/`NOORIN10:F0B8`/`NOORIN54:F0CB` (batch 72; 0 leftovers),
-all unmapped `NOORIN86:*` overlays empty (nuqta). All `NOORIC`/`NOORIC01` overlays in Kahawat-Kosh map to empty (131 keys).
-Dump with `py -3 scripts/dump_noorin_lines.py 50`. Do not mix with Batool.
-Clean-text extract: `py -3 scripts/extract_clean_text.py` writes
-`data/extracted/` (gitignored) plus `provenance.jsonl`. The FLI corpus
-copy is real Gojri Unicode. Remaining `good_text` PDFs: 4 files, 1,473
-pages (3 English Islamic studies; 1 Devanagari dictionary with mixed
-GurbaniHindi Latin glosses). The Quran translation is **not** clean
-Unicode. Scheme `broken_tounicode`. `get_text` on page 17 is unreadable
-(Buhid / Latin-extended stand-ins for joining UrduTypesetting glyphs).
-The extract folder was deleted. Next path for that book is a GID decode
-table against the embedded `UrduTypesetting` subset (927 glyphs, no
-cmap), or vision OCR. Javaid Rahi dictionary parts use NOORIN
-with Latin-range codes, not PUA `F0xx`, so the Kahawat table does not
-transfer (<1% on Javaid Rahi dict parts; Latin-range codes). Same-scheme
-PUA transfer works on Anjumshanasi books: typical 95–97%, Aks-e-Jamal
-92.8% book-wide. Full scan: `py -3 scripts/census_noorin_transfer.py`.
-Decode PUA NOORIN books with
-`py -3 scripts/decode_noorin_flow.py PDF START END` or bulk
-`py -3 scripts/census_noorin_transfer.py --decode --min-pct 87`.
+forms match `dict_alif_gold.txt` on sample checks only. Do not use Batool
+decode output for corpus until scored on gold at book scale.
+
+The Quran GID table is `data/decode/quran_gid_seed.json` (570 keys).
 The Quran GID table is `data/decode/quran_gid_seed.json` (570 keys).
 Key is `FONT:GID` from `get_texttrace`. Zero-width Arabic letters
 are nuqta overlays; the decoder names the next host glyph.

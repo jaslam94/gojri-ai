@@ -93,8 +93,11 @@ re-checked 2026-08-15). Score with `scripts/score_gold.py`. Working set is 12
 images rather than the ~20-30 originally proposed. Can extend later if the eval
 set is too small. One-shot bake-off: Gemini 3.6 Flash 17.3% pooled WER, Sonnet
 4.6 21.9%. **Bulk vision OCR is paused** (no capacity for page-by-page review;
-error rate is too high to accept unreviewed). Next: decode-table spike, scored
-on this gold set. Details in `data/gold/README.md` and `LOG.md`.
+error rate is too high to accept unreviewed). **NOORIN decode-table spike
+abandoned (Aug 2026)** after page 28 failed validation (98.8% word error vs
+OCR). Next: Step 0.4 corpus layout, extract good-text PDFs, replan vision OCR.
+Details in `data/gold/README.md`, `data/archive/noorin-decode-spike/README.md`,
+and `LOG.md`.
 
 ---
 
@@ -116,8 +119,7 @@ Small but worth settling before data starts flowing:
 - No model training, no OCR at scale, no AWS spend on bulk vision pages.
 - No file deletion of source PDFs.
 - Gold-set bake-off (Aug 2026) ranked one-shot models and paused bulk vision
-  OCR. The remaining OCR experiment is the decode-table spike, still scored
-  on the same gold pages.
+  OCR. NOORIN decode-table spike failed validation and was abandoned Aug 2026.
 
 ## Definition of done
 1. `data/manifest.csv` exists, reconciles with known figures, and correctly

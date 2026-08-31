@@ -23,13 +23,16 @@ interruption or a dramatic pause. Keep this rule unless the user cancels it.
 - The user is a native Gojri and Urdu speaker, fluent in English, and a Gujjar.
   Use that skill for labels, translation checks, and dialect judgement.
 - Research and agree before writing pipeline code. The project is still in
-  planning except for Stage 0 tools and the decode-table spike.
+  planning except for Stage 0 tools (manifest, gold set, extract scripts).
 - Run Python as `py -3`.
 - Do not commit unless the user asks.
 - Journal experiments in `LOG.md`. Keep `CLAUDE.md` Status current.
 
-## Decode-table work (current)
+## Decode-table work
 
-Font-encoded PDFs need a lookup table per (font family, scheme). Do not mix
-Batool, NOORIN, and TT* maps. Image-only PDFs stay out of this path. Bulk
-vision OCR stays paused.
+**NOORIN decode is abandoned (Aug 2026).** Do not rebuild NOORIN tables or
+scripts. See `data/archive/noorin-decode-spike/README.md`.
+
+Batool and Quran GID decode scripts remain but are **paused** and not
+validated at book scale. **Bulk vision OCR stays paused** until we replan
+OCR (likely Gemini API, Tier 1 first).

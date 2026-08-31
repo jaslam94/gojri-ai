@@ -3866,7 +3866,29 @@ Poetry lines partly readable but word order and spacing are unreliable.
 **G-Kashmiri-Dictionary p50:** twenty-two placeholders. Gojri headwords and
 Urdu gloss partly OK; English gloss line is corrupted (`conta5i0ner`).
 
-**Conclusion:** Kahawat decode is production-quality for that book. Transferred
-books match census placeholder rates (~3–13% unmapped keys) but output also
-needs space insertion, header stripping, and book-specific layout rules before
-corpus use. Bulk vision OCR stays paused.
+## 2026-08-31 — NOORIN decode abandoned
+
+User spot-checked Kahawat-Kosh page 28 against a page screenshot. Decoded text
+did not match the printed page. OCR ground truth vs decode:
+
+- Page 28: **98.8% word error** (166 ref words, 164 errors)
+- Page 59 vs human gold: **98.9% word error**
+
+Example (entry 1): OCR headword `اکھ کانی چنگی، راہ کا نومندو` vs decode
+`ر کھکانیچ،کررکاومندھ`.
+
+**Root cause:** census "100% key coverage" only means every `(font,code)` has a
+table entry. It does not mean the decoded Unicode matches the page. Neighbor rules
+removed `[NOORIN:xx]` placeholders but produced wrong letters.
+
+**Decision:** abandon NOORIN decode-table path. Removed NOORIN scripts, seeds,
+transfer CSV, progress JSON, and all local `data/decode/out/` files (~6,350
+pages). Archive note: `data/archive/noorin-decode-spike/README.md`.
+
+Batool and Quran GID decode remain in repo but are paused. Corpus path for
+font-encoded PDFs is vision OCR.
+
+**Corrects** the 2026-08-26 spot-check conclusion that called Kahawat decode
+"production-quality." That was wrong. Placeholder count was a misleading metric.
+
+---

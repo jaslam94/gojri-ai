@@ -2,7 +2,6 @@
 pretty_name: Gojri Devanagari–Nastaliq Lexicon
 language:
   - gju
-language_details: Gojri (ISO 639-3: gju). Not Urdu.
 license: other
 license_name: derivative-of-copyrighted-dictionary
 license_link: LICENSE.md

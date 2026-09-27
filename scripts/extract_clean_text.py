@@ -1,7 +1,10 @@
-"""Extract already-correct Unicode from good-text PDFs and copy the FLI corpus.
+"""Extract already-correct Unicode from good-text PDFs in scope.
 
 Writes page files, one concatenated book file, and a provenance JSONL.
 Output is local under data/extracted/ (gitignored). Re-run overwrites.
+
+Does not copy the FLI literature corpus. That lives only under
+datasets/Gojri Language Corpus/ and is not duplicated here.
 
   py -3 scripts/extract_clean_text.py
 """
@@ -20,7 +23,6 @@ import fitz
 ROOT = Path(__file__).resolve().parent.parent
 PDF_DIR = ROOT / "pdfs"
 MANIFEST = ROOT / "data" / "manifest.csv"
-FLI_DIR = ROOT / "datasets" / "Gojri Language Corpus"
 OUT = ROOT / "data" / "extracted"
 PROV = OUT / "provenance.jsonl"
 
@@ -110,33 +112,6 @@ def extract_pdf(rel: str, script_found: str) -> dict:
     return rec
 
 
-def copy_fli() -> list[dict]:
-    dest = OUT / "fli-corpus"
-    dest.mkdir(parents=True, exist_ok=True)
-    recs = []
-    for src in sorted(FLI_DIR.glob("*.txt")):
-        text = src.read_text(encoding="utf-8")
-        n_ffff = text.count("\uffff")
-        out = dest / src.name
-        shutil.copy2(src, out)
-        rec = {
-            "source": src.relative_to(ROOT).as_posix(),
-            "method": "copy_utf8",
-            "encoding_scheme": "clean_unicode",
-            "script_found": "perso_arabic",
-            "pages": 1,
-            "chars": len(text),
-            "words": len(text.split()),
-            "u_ffff": n_ffff,
-            "out_file": out.relative_to(ROOT).as_posix(),
-        }
-        recs.append(rec)
-        print(
-            f"copied {src.name} ({rec['words']} words, U+FFFF={n_ffff})"
-        )
-    return recs
-
-
 def main() -> None:
     sys.stdout.reconfigure(encoding="utf-8")
     if not PDF_DIR.is_dir():
@@ -153,8 +128,12 @@ def main() -> None:
     if not targets:
         sys.exit("no clean-unicode primary PDFs in the manifest")
     OUT.mkdir(parents=True, exist_ok=True)
+    # Drop obsolete FLI duplicate folder if a prior run left it.
+    fli_dup = OUT / "fli-corpus"
+    if fli_dup.exists():
+        shutil.rmtree(fli_dup)
+        print("removed obsolete data/extracted/fli-corpus/")
     recs = []
-    recs.extend(copy_fli())
     for r in targets:
         recs.append(extract_pdf(r["path"], r["script_found"]))
     PROV.write_text(

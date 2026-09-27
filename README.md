@@ -13,13 +13,18 @@ purpose of this project is to learn the speech and NLP domain while building
 something useful for Gojri. Nothing here claims to be finished. Contributions
 are welcome.
 
-## Public datasets
+## Public datasets (Hugging Face)
 
-| Dataset | Link |
-|---------|------|
-| Devanagari ↔ Nastaliq lexicon | https://huggingface.co/datasets/junaidaslam/gojri-devanagari-nastaliq-lexicon |
-| Nastaliq OCR gold set + bake-off | https://huggingface.co/datasets/junaidaslam/gojri-nastaliq-ocr-gold |
-| Gojri print PDF collection (research mirror) | https://huggingface.co/datasets/junaidaslam/gojri-print-pdf-collection |
+These live on Hugging Face under [junaidaslam](https://huggingface.co/junaidaslam):
+
+| Dataset | Hugging Face |
+|---------|--------------|
+| Devanagari ↔ Nastaliq lexicon | [gojri-devanagari-nastaliq-lexicon](https://huggingface.co/datasets/junaidaslam/gojri-devanagari-nastaliq-lexicon) |
+| Nastaliq OCR gold set + bake-off | [gojri-nastaliq-ocr-gold](https://huggingface.co/datasets/junaidaslam/gojri-nastaliq-ocr-gold) |
+| Gojri print PDF collection (research mirror) | [gojri-print-pdf-collection](https://huggingface.co/datasets/junaidaslam/gojri-print-pdf-collection) |
+
+Repo code, notes, and local third-party source notes stay on GitHub. The packaged
+datasets above are on Hugging Face.
 
 ## Local data you may already have
 

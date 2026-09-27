@@ -54,16 +54,19 @@ configs:
 
 # Gojri Devanagari–Nastaliq Lexicon
 
-Script-conversion lexicon for **Gojri** (also spelled Gujari; ISO 639-3: `gju`).
+A small lexicon that maps **Gojri** headwords from Devanagari to Nastaliq
+(ISO 639-3: `gju`).
+
+This is experimental work, done for the love of Gojri and to help the language
+appear more honestly in AI and NLP. It is not a finished dictionary product.
+Contributions and corrections from speakers and researchers are very welcome.
 
 The language of this dataset is **Gojri**, not Urdu and not Hindi.
 
 Each row maps a **Devanagari headword** from a published Gojri dictionary to a
 **Gojri Nastaliq** (Perso-Arabic) form. Optional Roman transliteration and a short
-English gloss come from the same source line.
-
-This dataset supports Gojri NLP: orthography tools, OCR/ASR lexicon checks, and
-future translation work. It is **not** a re-publication of the full dictionary text.
+English gloss come from the same source line. This is **not** a re-publication of
+the full dictionary text.
 
 ## Source attribution (required)
 
@@ -231,6 +234,12 @@ Summary:
                by Ms. Ruksana Sadiq}
 }
 ```
+
+## Contributions
+
+If you speak Gojri or work with Nastaliq text, please help improve this lexicon.
+Corrections to `nastaliq` forms, more human-verified rows, and clearer notes are
+all useful. Open an issue or pull request on GitHub.
 
 ## Contact
 

@@ -22,6 +22,10 @@ venv/
 .DS_Store
 Thumbs.db
 .vscode/
+.cursor/
+
+# Local Hugging Face staging (upload only; not source of truth)
+data/ocr-gold-publish/
 
 # Decode-table glyph crops (regenerable from PDFs)
 data/decode/_glyph_crops/

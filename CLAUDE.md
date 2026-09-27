@@ -551,4 +551,11 @@ see `data/manifest.csv` error notes. FLI literature texts stay only under
 Hugging Face upload steps: `data/lexicon/README.md`, `data/lexicon/PUBLISH.md`.
 Published: `https://huggingface.co/datasets/junaidaslam/gojri-devanagari-nastaliq-lexicon`.
 Pipeline: `scripts/dict_translit_*.py`, `prompts/devanagari_to_gojri_nastaliq_v1.txt`.
+
+**OCR gold set published (Sep 2026):** cropped images, gold text, and bake-off
+results (Gemini 3.6 Flash 17.1% pooled WER vs Sonnet 4.6 22.0%; Composer chat
+12.6% as a non-API baseline).
+`https://huggingface.co/datasets/junaidaslam/gojri-nastaliq-ocr-gold`.
+See `data/gold/README.md` and `data/gold/bakeoff_results.csv`.
+
 See `plans/STAGE-0.md`, `data/gold/README.md`, and `LOG.md`.

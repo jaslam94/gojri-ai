@@ -5,36 +5,92 @@ language:
   - ur
   - hi
 license: other
+license_name: derivative-of-copyrighted-dictionary
+license_link: LICENSE.md
 task_categories:
   - translation
-  - text2text-generation
+  - other
 tags:
   - gojri
   - gujari
+  - gju
   - nastaliq
+  - perso-arabic
   - devanagari
   - dictionary
+  - lexicon
   - low-resource
   - indo-aryan
+  - orthography
+  - script-conversion
 size_categories:
   - 1K<n<10K
+dataset_info:
+  features:
+    - name: entry_id
+      dtype: string
+    - name: page
+      dtype: int32
+    - name: line
+      dtype: int32
+    - name: devanagari
+      dtype: string
+    - name: roman
+      dtype: string
+    - name: nastaliq
+      dtype: string
+    - name: english_gloss
+      dtype: string
+    - name: quality
+      dtype: string
+configs:
+  - config_name: default
+    data_files:
+      - split: train
+        path: gojri_lexicon_final.tsv
+  - config_name: human_verified
+    data_files:
+      - split: train
+        path: gojri_lexicon_human_verified.tsv
 ---
 
 # Gojri Devanagari–Nastaliq Lexicon
 
-Script conversion lexicon for **Gojri** (ISO 639-3: `gju`).
+Script-conversion lexicon for **Gojri / Gujari** (ISO 639-3: `gju`).
 
-Each row maps a dictionary **Devanagari headword** to a **Gojri Nastaliq** form.
-Optional Roman and short English gloss fields come from the source dictionary line.
+Each row maps a **Devanagari headword** from a published Gojri dictionary to a
+**Gojri Nastaliq** (Perso-Arabic) form. Optional Roman transliteration and a short
+English gloss come from the same source line.
 
-## Files in this folder
+This dataset supports Gojri NLP: orthography tools, OCR/ASR lexicon checks, and
+future translation work. It is **not** a re-publication of the full dictionary text.
 
-| File | Rows | Use |
-|------|-----:|-----|
-| `gojri_lexicon_final.tsv` | 1,862 | Full public lexicon (upload this) |
-| `gojri_lexicon_human_verified.tsv` | 50 | Higher-trust subset only |
+## Source attribution (required)
+
+This lexicon is a **derived script-conversion resource** built from headwords in:
+
+> Anjum, Rafique, and Ruksana Sadiq. *Concise Gojri–English–Hindi Dictionary*.
+> Educational Publishing House / J K Anjuman Taraqi Gojri Adab, New Delhi.
+> ISBN **978-81-19225-29-3**. Compilation: Prof. (Dr.) Rafique Anjum (D.Phil).
+> Composition and vetting: Ms. Ruksana Sadiq (M.Phil). © All rights reserved
+> by the original rights holders.
+
+Local PDF file used for extraction:
+`anjumshanasi/Gojri-Hindi-English-Dictionary.pdf` (458 pages; MD5
+`dbcf6814f1b19a111f8bb3955e341b11` in the gojri-ai project manifest).
+
+**Please cite both this dataset and the original dictionary** in any publication
+or redistribution that uses these headwords. See [Citation](#citation) and
+[License](#license).
+
+## Dataset files
+
+| File | Rows | Description |
+|------|-----:|-------------|
+| `gojri_lexicon_final.tsv` | 1,862 | Full lexicon (default split) |
+| `gojri_lexicon_human_verified.tsv` | 50 | Native-speaker verified subset |
+| `LICENSE.md` | — | Derivative / rights notice |
 | `README.md` | — | This dataset card |
-| `PUBLISH.md` | — | Hugging Face upload steps |
 
 ## Language
 
@@ -42,7 +98,8 @@ Optional Roman and short English gloss fields come from the source dictionary li
 |-------|--------|
 | Language | Gojri / Gujari |
 | ISO 639-3 | `gju` |
-| Scripts | Devanagari (source), Perso-Arabic Nastaliq (target) |
+| Source script | Devanagari |
+| Target script | Perso-Arabic Nastaliq |
 
 Gojri shares script and much vocabulary with Urdu, but it is its own language.
 Spellings follow **Gojri** print practice where it differs from Urdu.
@@ -51,14 +108,14 @@ Spellings follow **Gojri** print practice where it differs from Urdu.
 
 | Column | Description |
 |--------|-------------|
-| `entry_id` | Stable id, e.g. `p0019:L14` (page + line) |
-| `page` | Source PDF page number |
+| `entry_id` | Stable id, e.g. `p0019:L14` (source page + line) |
+| `page` | Page number in the source PDF |
 | `line` | Line number in the page extract |
 | `devanagari` | Headword in Devanagari |
 | `roman` | Optional Latin form from the dictionary |
-| `nastaliq` | Gojri Nastaliq headword (main field) |
+| `nastaliq` | Gojri Nastaliq headword (**main field**) |
 | `english_gloss` | Short English gloss snippet when present |
-| `quality` | See table below |
+| `quality` | Trust tag (see below) |
 
 ### Quality tags
 
@@ -68,17 +125,14 @@ Spellings follow **Gojri** print practice where it differs from Urdu.
 | `pass2_refined` | 299 | Pass 2 changed Pass 1 |
 | `pass1_kept` | 1,513 | Pass 1 kept as correct Gojri Nastaliq |
 
-Only **50** rows are human-verified. Treat other rows as useful drafts.
+Only **50** rows are human-verified so far. Treat other rows as useful drafts.
 Spot-check before training-critical use.
 
 ## How it was built
 
-1. Extract clean Unicode text from `Gojri-Hindi-English-Dictionary.pdf`
-   (Devanagari; no OCR needed for this PDF).
-2. **Pass 1:** Aksharamukha `Devanagari → Urdu` (local), short vowels removed
-   (`scripts/dict_translit_pass1.py`).
-3. **Pass 2:** Gojri orthography refinement using project rules in
-   `prompts/devanagari_to_gojri_nastaliq_v1.txt`:
+1. Extract clean Unicode text from the Devanagari dictionary PDF (no OCR needed).
+2. **Pass 1:** Aksharamukha `Devanagari → Urdu` (local), short vowels removed.
+3. **Pass 2:** Gojri orthography refinement:
    - Keep Pass 1 when already correct.
    - Map न and ण to standard `ن` (U+0646). Never use `ݨ` (U+0768).
    - Prefer Gojri endings (e.g. final `و`) when needed.
@@ -88,7 +142,25 @@ Spot-check before training-critical use.
 
 Known verified correction: Devanagari `अंगणू` → Nastaliq `انگنو` (not `انگݨو`).
 
-## Load example
+Pipeline code lives in the [gojri-ai](https://github.com/jaslam94/gojri-ai) repository
+(`scripts/dict_translit_*.py`, `prompts/devanagari_to_gojri_nastaliq_v1.txt`).
+
+## Load
+
+```python
+from datasets import load_dataset
+
+ds = load_dataset("junaidaslam/gojri-devanagari-nastaliq-lexicon")
+print(ds["train"][0])
+
+# Higher-trust subset only
+gold = load_dataset(
+    "junaidaslam/gojri-devanagari-nastaliq-lexicon",
+    name="human_verified",
+)
+```
+
+Or load the TSV directly:
 
 ```python
 from datasets import load_dataset
@@ -98,58 +170,68 @@ ds = load_dataset(
     data_files="gojri_lexicon_final.tsv",
     delimiter="\t",
 )
-print(ds["train"][0])
-```
-
-After you publish on Hugging Face, replace with:
-
-```python
-ds = load_dataset("YOUR_HF_USERNAME/gojri-devanagari-nastaliq-lexicon")
 ```
 
 ## Intended use
 
-- Lexicon / dictionary lookup Devanagari ↔ Nastaliq for Gojri
-- Seed data for orthography tools and translation experiments
+- Devanagari ↔ Nastaliq headword lookup for Gojri
+- Seed data for orthography / transliteration tools
 - Support checks for OCR and ASR (not a speech dataset)
 
-## Limitations
+## Limitations and non-goals
 
 - Not a full bilingual dictionary of every sense and gloss.
 - Includes some single-letter alphabet rows from early dictionary pages.
 - Most rows are not yet human-verified.
-- Original dictionary copyright still applies to the source book. This release is
-  a **script-conversion derivative** of headwords. Check rights before commercial use.
+- Does **not** redistribute full page text, examples, or the copyrighted book PDF.
 - Separate from the FLI Gojri Literature Corpus (CC-BY-NC-4.0) and from Mozilla
   Common Voice Gujari audio.
 
-## Source
+## License
 
-Derived from headwords in the Devanagari **Gojri–Hindi–English Dictionary** in the
-gojri-ai PDF collection (`Gojri-Hindi-English-Dictionary.pdf`, 458 pages).
+See [`LICENSE.md`](LICENSE.md).
 
-Pipeline scripts (tracked in this repo): `scripts/dict_translit_*.py`,
-`prompts/devanagari_to_gojri_nastaliq_v1.txt`.
+Summary:
+
+- The **original dictionary** remains © All rights reserved (Anjum / Sadiq /
+  Educational Publishing House / J K Anjuman Taraqi Gojri Adab).
+- This release is a **script-conversion derivative of headwords** for language
+  preservation and research. It does not grant rights to the original book.
+- Users must retain attribution to the original authors and to this dataset.
+- For commercial reuse of dictionary content beyond this headword conversion,
+  contact the original rights holders.
 
 ## Citation
 
+### This dataset
+
 ```bibtex
-@misc{gojri_devanagari_nastaliq_lexicon,
-  title        = {Gojri Devanagari--Nastaliq Lexicon},
-  author       = {{Gojri AI Project}},
-  year         = {2026},
-  howpublished = {Hugging Face Datasets / project repository},
-  note         = {Derived headword script conversion; 50 rows human-verified}
+@dataset{gojri_devanagari_nastaliq_lexicon_2026,
+  title     = {Gojri Devanagari--Nastaliq Lexicon},
+  author    = {Aslam, Junaid},
+  year      = {2026},
+  publisher = {Hugging Face},
+  url       = {https://huggingface.co/datasets/junaidaslam/gojri-devanagari-nastaliq-lexicon},
+  note      = {Script-conversion derivative of headwords from Anjum and Sadiq,
+               Concise Gojri--English--Hindi Dictionary; 50 rows human-verified}
 }
 ```
 
-## License
+### Original source dictionary (required)
 
-Set the Hugging Face license field when you create the repo.
+```bibtex
+@book{anjum_sadiq_gojri_dictionary,
+  title     = {Concise Gojri--English--Hindi Dictionary},
+  author    = {Anjum, Rafique and Sadiq, Ruksana},
+  publisher = {Educational Publishing House / J K Anjuman Taraqi Gojri Adab},
+  address   = {New Delhi},
+  isbn      = {978-81-19225-29-3},
+  note      = {Compilation by Prof. (Dr.) Rafique Anjum; composition and vetting
+               by Ms. Ruksana Sadiq}
+}
+```
 
-Suggested default if your rights review allows it:
+## Contact
 
-- **CC-BY-4.0** (attribution required), with a note that the source dictionary
-  remains under its own copyright.
-
-Do not mark as public domain unless you confirm that is allowed.
+Dataset maintainer: [junaidaslam](https://huggingface.co/junaidaslam).
+Project repository: [jaslam94/gojri-ai](https://github.com/jaslam94/gojri-ai).

@@ -29,7 +29,10 @@ can help grow text and speech resources for Gojri.
 This project aims to build **Gojri ASR** and a **Gojri LLM**, in the same spirit
 as community Pashto work such as **Katib** (speech recognition) and **Qehwa**
 (language model). The work is experimental. It is done for the love of the
-language and for fairer representation in AI and NLP. Contributions are welcome.
+language and for fairer representation in AI and NLP. The maintainer is a
+software engineer who learns by intuition and experiment; one purpose of this
+collection is to learn the domain while growing usable Gojri data.
+Contributions are welcome.
 
 ## Important rights note
 

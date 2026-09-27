@@ -7,7 +7,9 @@ the project knows the source and license.
 
 Long-term goal of the project: build Gojri ASR and a Gojri LLM in the same
 spirit as community Pashto work such as **Katib** (ASR) and **Qehwa** (LLM).
-This folder is part of that road: speech and text we can learn from locally.
+The maintainer is a software engineer who learns by intuition and experiment;
+learning speech and NLP is part of why this work exists. This folder is part
+of that road: speech and text we can learn from locally.
 
 ## 1. Gojri Literature Corpus (text)
 

@@ -6,8 +6,12 @@ in AI and NLP.
 The long-term aim is a **Gojri ASR** system and a **Gojri LLM**, in the same
 spirit as community Pashto projects such as **Katib** (speech recognition) and
 **Qehwa** (language model). This is early work. It is done for the love of the
-language and for fairer representation in tech. Nothing here claims to be
-finished. Contributions are welcome.
+language and for fairer representation in tech.
+
+I am a software engineer. I learn best by intuition and by trying things. One
+purpose of this project is to learn the speech and NLP domain while building
+something useful for Gojri. Nothing here claims to be finished. Contributions
+are welcome.
 
 ## Public datasets
 

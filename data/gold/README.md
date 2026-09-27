@@ -3,7 +3,9 @@
 Twelve carefully checked Gojri Nastaliq page images for OCR experiments.
 
 This work is experimental. It exists because Gojri deserves better support in
-AI and NLP. Contributions are welcome.
+AI and NLP. The maintainer is a software engineer who learns by intuition and
+experiment; this gold set is also practice in the OCR and NLP domain.
+Contributions are welcome.
 
 **Published copy:**
 https://huggingface.co/datasets/junaidaslam/gojri-nastaliq-ocr-gold

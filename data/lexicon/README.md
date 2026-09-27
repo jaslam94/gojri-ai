@@ -58,8 +58,10 @@ A small lexicon that maps **Gojri** headwords from Devanagari to Nastaliq
 (ISO 639-3: `gju`).
 
 This is experimental work, done for the love of Gojri and to help the language
-appear more honestly in AI and NLP. It is not a finished dictionary product.
-Contributions and corrections from speakers and researchers are very welcome.
+appear more honestly in AI and NLP. The maintainer is a software engineer who
+learns by intuition and experiment; building this is also a way to learn speech
+and NLP. It is not a finished dictionary product. Contributions and corrections
+from speakers and researchers are very welcome.
 
 The language of this dataset is **Gojri**, not Urdu and not Hindi.
 

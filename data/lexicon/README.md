@@ -2,8 +2,7 @@
 pretty_name: Gojri Devanagari–Nastaliq Lexicon
 language:
   - gju
-  - ur
-  - hi
+language_details: Gojri (ISO 639-3: gju). Not Urdu.
 license: other
 license_name: derivative-of-copyrighted-dictionary
 license_link: LICENSE.md
@@ -56,7 +55,9 @@ configs:
 
 # Gojri Devanagari–Nastaliq Lexicon
 
-Script-conversion lexicon for **Gojri / Gujari** (ISO 639-3: `gju`).
+Script-conversion lexicon for **Gojri** (also spelled Gujari; ISO 639-3: `gju`).
+
+The language of this dataset is **Gojri**, not Urdu and not Hindi.
 
 Each row maps a **Devanagari headword** from a published Gojri dictionary to a
 **Gojri Nastaliq** (Perso-Arabic) form. Optional Roman transliteration and a short
@@ -96,13 +97,14 @@ or redistribution that uses these headwords. See [Citation](#citation) and
 
 | Field | Value |
 |-------|--------|
-| Language | Gojri / Gujari |
+| Language | **Gojri** (Gujari) |
 | ISO 639-3 | `gju` |
 | Source script | Devanagari |
 | Target script | Perso-Arabic Nastaliq |
 
-Gojri shares script and much vocabulary with Urdu, but it is its own language.
-Spellings follow **Gojri** print practice where it differs from Urdu.
+Gojri is an Indo-Aryan language. It shares script and some vocabulary with Urdu,
+but it is **not** a dialect of Urdu. Spellings in this lexicon follow **Gojri**
+print practice.
 
 ## Columns
 

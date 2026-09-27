@@ -524,7 +524,6 @@ forms match `dict_alif_gold.txt` on sample checks only. Do not use Batool
 decode output for corpus until scored on gold at book scale.
 
 The Quran GID table is `data/decode/quran_gid_seed.json` (570 keys).
-The Quran GID table is `data/decode/quran_gid_seed.json` (570 keys).
 Key is `FONT:GID` from `get_texttrace`. Zero-width Arabic letters
 are nuqta overlays; the decoder names the next host glyph.
 Do not copy this table onto Batool or NOORIN. Decode with
@@ -538,6 +537,17 @@ still mix in one cluster. Arabic ayahs still have placeholders.
 `rawdict` crashes on this PDF. Do not use `get_text`.
 `AGENTS.md` is the Cursor agent brief; it points at this file for project
 facts.
-Direct-extraction pages were removed from the gold image folders. Step 0.4
-(corpus layout / provenance) is still open. See `plans/STAGE-0.md`,
-`data/gold/README.md`, and `LOG.md`.
+Direct-extraction pages were removed from the gold image folders. **Step 0.4
+run (Sep 2026):** `py -3 scripts/extract_clean_text.py` wrote
+`data/extracted/` (gitignored) and `provenance.jsonl` — 11 FLI files + the
+Devanagari `Gojri-Hindi-English-Dictionary.pdf` (458 pages). Several English
+`good_text` / history PDFs were removed from scope by the user (Sep 2026);
+see `data/manifest.csv` error notes. FLI corpus copy is under
+`data/extracted/fli-corpus/`.
+
+**Devanagari → Gojri Nastaliq lexicon (Sep 2026):** tracked deliverable in
+`data/lexicon/` — `gojri_lexicon_final.tsv` (1,862 headwords) plus
+`gojri_lexicon_human_verified.tsv` (50 speaker-checked rows). Dataset card and
+Hugging Face upload steps: `data/lexicon/README.md`, `data/lexicon/PUBLISH.md`.
+Pipeline: `scripts/dict_translit_*.py`, `prompts/devanagari_to_gojri_nastaliq_v1.txt`.
+See `plans/STAGE-0.md`, `data/gold/README.md`, and `LOG.md`.

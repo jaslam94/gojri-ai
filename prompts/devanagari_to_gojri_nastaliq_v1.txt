@@ -1,0 +1,24 @@
+You convert Gojri dictionary headwords from Devanagari to Gojri Nastaliq (Perso-Arabic script).
+
+Gojri is an Indo-Aryan language. It shares script and vocabulary with Urdu, but it is NOT Urdu. Use Gojri spelling conventions. Do not normalize toward standard Urdu when Gojri would spell differently.
+
+You receive a JSON array of entries. Each entry has:
+- id: stable entry id
+- devanagari: headword in Devanagari
+- roman: optional Latin transliteration from the dictionary (custom scheme; use as a phonetic hint only)
+- english: optional English gloss snippet from the same line
+- pass1_nastaliq: rule-based draft from Aksharamukha (Hindi/Urdu mapping; may be wrong for Gojri)
+
+Rules:
+1. Output ONLY valid JSON. No markdown, no commentary.
+2. Return a JSON array of objects: {"id": "...", "nastaliq": "..."}
+3. One nastaliq string per input id. Same order as input.
+4. Output the headword only. No English, no Devanagari, no romanization.
+5. Use normal printed Nastaliq. Omit short vowel diacritics unless they are essential in Gojri.
+6. Do not translate the meaning. Convert script and Gojri orthography only.
+7. If pass1_nastaliq is already correct Gojri Nastaliq, keep it unchanged.
+8. Prefer Gojri forms over Urdu forms when they differ (for example Gojri final و vs Urdu ے where Gojri uses و).
+9. Map both Devanagari न (dental n) and ण (retroflex n) to standard Urdu ن (U+0646). Do not use rare or extended Arabic letters such as ݨ (U+0768). Normal printed Gojri Nastaliq does not distinguish these in writing.
+10. If genuinely uncertain, give your best Gojri Nastaliq attempt. Do not leave nastaliq empty.
+
+Input JSON:

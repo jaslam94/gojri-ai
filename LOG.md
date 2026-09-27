@@ -8,6 +8,73 @@ first time they show up, then get added to the Glossary at the bottom.
 
 ---
 
+## 2026-09-27 — Lexicon packaged for public publish (tracked under data/lexicon/)
+
+**Canonical files (committed to git):**
+
+| Path | Content |
+|------|---------|
+| `data/lexicon/gojri_lexicon_final.tsv` | 1,862 Devanagari ↔ Nastaliq headwords |
+| `data/lexicon/gojri_lexicon_human_verified.tsv` | 50 speaker-checked rows |
+| `data/lexicon/README.md` | Hugging Face dataset card |
+| `data/lexicon/PUBLISH.md` | Upload include/exclude + CLI steps |
+
+**Kept pipeline (tracked):** `scripts/dict_translit_common.py`,
+`dict_translit_pass1.py`, `dict_translit_pass2.py` (API; quota-limited),
+`dict_translit_verify_batch.py`, `prompts/devanagari_to_gojri_nastaliq_v1.txt`.
+
+**Removed temporary:** `dict_translit_pass2_local.py`,
+`dict_translit_pass2_gemini_engine.py`, `build_full_verified_lexicon.py`,
+provisional rule-script TSVs under `data/extracted/.../translit/`.
+
+**Still gitignored scratch:** Pass 1/2 work files under
+`data/extracted/.../translit/` (not the public deliverable).
+
+**Quality in final TSV:** 50 `human_verified`, 299 `pass2_refined`, 1,513
+`pass1_kept`. Zero empty Nastaliq. Zero `ݨ`.
+
+**Next (user):** upload `data/lexicon/` to Hugging Face per `PUBLISH.md`.
+
+---
+
+## 2026-09-02 — Devanagari dictionary → Nastaliq: two-pass pipeline (Aksharamukha + Gemini)
+
+**Goal:** convert Devanagari headwords from `Gojri-Hindi-English-Dictionary.pdf` extract
+to Gojri Nastaliq using a hybrid pipeline (rule draft, then AI refinement).
+
+**Pass 1 (Aksharamukha):** `scripts/dict_translit_pass1.py`
+- Parses Devanagari headword lines from `data/extracted/clean-pdf/gojri-hindi-english-dictionary/page-*.txt`
+- Converts with Aksharamukha `Devanagari → Urdu`, `post_options=['UrduRemoveShortVowels']`
+- Output: `data/extracted/.../translit/pass1_aksharamukha.tsv`
+- Full run: **1,863 entries** from **414 pages** (~12s, local, free)
+
+**Pass 2 (Gemini):** `scripts/dict_translit_pass2.py`
+- Reads pass-1 TSV; sends batches of 20 to `gemini-3.6-flash` with
+  `prompts/devanagari_to_gojri_nastaliq_v1.txt` (Gojri-not-Urdu rules, pass-1 as hint)
+- Output: `pass2_gemini.tsv` with `nastaliq_pass2` column
+- Pilot page 19 (22 entries): pass-2 mostly matched pass-1; one change
+  `अंगणू` `انگنو` → `انگݨو` (Gemini used ڱ for ण). Needs user verification.
+- First API call hit 503 (high demand); retries added; second run succeeded.
+
+**2026-09-06 — User verified `अंगणू` → `انگنو` (not `انگݨو`).** Devanagari ण
+(retroflex n) maps to standard ن in Gojri Nastaliq. Gemini wrongly used rare letter
+ݨ (U+0768). Prompt updated: rule 9 forbids extended Arabic letters; keep pass1 when
+correct.
+
+**Shared parser:** `scripts/dict_translit_common.py`
+
+**Not in scope yet:** Latin-only headwords (many pages like page 49); single-letter
+pronunciation guide rows (`क`, `ख`) parsed as entries — filter later if needed.
+
+**Next:** skip full pass-2 run for now. User verified `अंगणू` = `انگنو` (pass 1 correct;
+pass 2 wrong). Page 19 pilot: 1/22 diffs, that diff was wrong. **50-word verification
+batch** from pass 1: pages 19, 31, 167 → `translit/pass_verify_batch01.tsv`
+(`py -3 scripts/dict_translit_verify_batch.py`). Fill `nastaliq_verified` and
+`verify_status` (pending/ok/fixed/skip). Re-run pass 2 only on rows where roman or
+meaning suggests pass 1 is wrong.
+
+---
+
 ## 2026-08-03 — GitHub setup: keeping large/licensed data out of git
 
 Set up the repo to be pushed to GitHub. Found `PDFs/` (834MB) and the Common Voice
@@ -3890,5 +3957,47 @@ font-encoded PDFs is vision OCR.
 
 **Corrects** the 2026-08-26 spot-check conclusion that called Kahawat decode
 "production-quality." That was wrong. Placeholder count was a misleading metric.
+
+---
+
+## 2026-09-01 — Step 0.4: clean-text extraction run
+
+Ran `py -3 scripts/extract_clean_text.py`. Output under `data/extracted/`
+(gitignored).
+
+**FLI corpus:** 11 files copied to `data/extracted/fli-corpus/`. 82 total
+`U+FFFF` in files 08–11 (counts per file in `provenance.jsonl`).
+
+**PDFs extracted (4 books, 1,473 pages):**
+
+| Book | Pages | Chars | Note |
+|---|---|---|---|
+| Gojri-Hindi-English-Dictionary | 458 | 815,555 | Devanagari Gojri + glosses |
+| Essential-Book | 498 | 698,829 | Sample p25/p100: English |
+| ABC-Islamic-Studies | 401 | 557,333 | English Islamic studies |
+| Revival-of-Islam | 116 | 175,917 | English |
+
+**Provenance:** `data/extracted/provenance.jsonl` (15 records).
+
+**Pending:** user spot-check Devanagari dictionary; FLI files 08–11 for U+FFFF.
+
+**User removed `ABC-Islamic-Studies.pdf` (Sep 2026):** ~95% English Islamic
+studies content; embedded Arabic quotes broken in `get_text()`; not useful for
+Gojri corpus. PDF deleted; extract folder removed. Manifest: `in_scope=0`,
+`tier=9`.
+
+**User removed `Essential-Book.pdf` (Sep 2026):** same — mostly English Islamic
+studies, not Gojri corpus. PDF and extract deleted. Manifest `in_scope=0`,
+`tier=9`. `Revival-of-Islam.pdf` still on disk if dropped later.
+
+**User removed `Revival-of-Islam.pdf` (Sep 2026):** same bucket — English
+Islamic studies, not Gojri corpus. PDF and extract deleted. Manifest `in_scope=0`,
+`tier=9`. All three English `good_text` PDFs now dropped. Clean extract corpus
+is Devanagari dictionary (458 pages) + FLI only.
+
+**User removed all tier-9 English PDFs from disk (Sep 2026):** 10 files total —
+ABC-Islamic-Studies, Essential-Book, Revival-of-Islam, Islam-in-the-Modern-World,
+Revisiting-Islam, and Gujjars history vols 1/3/4/5/6. Manifest rows kept with
+`removed_by_user_sep2026`. Gojri-titled books (primers, folklore, etc.) unchanged.
 
 ---

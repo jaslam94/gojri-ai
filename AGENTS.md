@@ -23,10 +23,17 @@ interruption or a dramatic pause. Keep this rule unless the user cancels it.
 - The user is a native Gojri and Urdu speaker, fluent in English, and a Gujjar.
   Use that skill for labels, translation checks, and dialect judgement.
 - Research and agree before writing pipeline code. The project is still in
-  planning except for Stage 0 tools (manifest, gold set, extract scripts).
+  planning except for Stage 0 tools (manifest, gold set, extract scripts,
+  Devanagari lexicon pipeline).
 - Run Python as `py -3`.
 - Do not commit unless the user asks.
 - Journal experiments in `LOG.md`. Keep `CLAUDE.md` Status current.
+
+## Lexicon deliverable
+
+Public Devanagari ↔ Gojri Nastaliq lexicon lives in **`data/lexicon/`**
+(tracked). Do not publish full PDF page dumps from `data/extracted/` (gitignored).
+Upload steps: `data/lexicon/PUBLISH.md`.
 
 ## Decode-table work
 

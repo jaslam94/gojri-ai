@@ -1,0 +1,51 @@
+entry_id	page	line	devanagari	roman	nastaliq	english_gloss	quality
+p0019:L6	19	6	अंग	ang	انگ	Limb	human_verified
+p0019:L7	19	7	अंग आणू		انگ آنو		human_verified
+p0019:L8	19	8	अंगणू	angnu	انگنو	1	human_verified
+p0019:L10	19	10	अंगळ	angal	انگل	1	human_verified
+p0019:L13	19	13	अंगळी	angli	انگلی	Finger	human_verified
+p0019:L14	19	14	अंग्रेज़	angrez	انگریز	Englishman	human_verified
+p0019:L15	19	15	अंग्रेज़ी	angrezi	انگریزی	The English language;British	human_verified
+p0019:L16	19	16	अंगरो	angro	انگرو	n:Rod;bar;pole;goad;stick	human_verified
+p0019:L17	19	17	अंगार	angaar	انگار	Ember	human_verified
+p0019:L18	19	18	अंगी	angi	انگی	Bodice	human_verified
+p0019:L19	19	19	अंगीठी	angeeThi	انگیٹھی	Heater	human_verified
+p0019:L20	19	20	अंगूठी	angooThi	انگوٹھی	Finger ring	human_verified
+p0019:L21	19	21	अंगूठो	angooTho	انگوٹھو	Thumb	human_verified
+p0019:L22	19	22	अंगूर	angoor	انگور	n:Sapling;sprout;bud	human_verified
+p0019:L23	19	23	अंगूरनू	angoornu	انگورنو	Sprout	human_verified
+p0019:L24	19	24	अंगो	ango	انگو	Coat	human_verified
+p0019:L25	19	25	अंगोछो	angochho	انگوچھو	Wound sepsis/infection	human_verified
+p0019:L26	19	26	अंगोड़ी	angorhi	انگوڑی	Core of a nut	human_verified
+p0019:L27	19	27	अंघळेटनू	angleTnu	انگھلیٹنو	Tending to fall asleep	human_verified
+p0019:L28	19	28	अंघा	anghaa	انگھا	Joints; junction between bones; limbs	human_verified
+p0019:L29	19	29	अंज	anj	انج		human_verified
+p0019:L31	19	31	अंजाम	anjaam	انجام	Result	human_verified
+p0031:L8	31	8	अलफ़	aLaf	الف	1	human_verified
+p0031:L10	31	10	अलफ़		الفِی	nf A small baby-sized shroud	human_verified
+p0031:L11	31	11	अलफ़ो	aLfo	الفو	Shroud;A cloth used to wrape a dead body	human_verified
+p0031:L13	31	13	अलबेलो	aLbeLo	البیلو	Lively	human_verified
+p0031:L17	31	17	अळस	alas	الس	Lethargy;weariness;fatigue;laziness	human_verified
+p0031:L25	31	25	अलांघणू	aLangnu	الانگھنو		human_verified
+p0031:L27	31	27	अल्लाह	aLah	اللہ	n:Allah,the almighty	human_verified
+p0031:L28	31	28	अल्लाह लोक		اللہ لوک		human_verified
+p0031:L31	31	31	अल्लो	aLo	الّو	Half baked;unripe;raw;unhealed	human_verified
+p0167:L3	167	3	ज़ामन	zaamaN	ضامن	adj:Security	human_verified
+p0167:L4	167	4	ज़ामनी	zaamNi	ضامنی	Security	human_verified
+p0167:L5	167	5	ज़ाया	zaaya	ضائع	adj	human_verified
+p0167:L6	167	6	ज़ार	zaar	زار	Mourner	human_verified
+p0167:L7	167	7	ज़ारी	zaari	زاری	Wailing	human_verified
+p0167:L8	167	8	ज़ालम	zaaLam	ظالم	adj	human_verified
+p0167:L9	167	9	ज़ाहमत	zahmat	زحمت	Difficulty	human_verified
+p0167:L10	167	10	ज़ािहद	zaahid	زاہد	adj	human_verified
+p0167:L11	167	11	ज़ािहर	zaaher	ظاہر	adj	human_verified
+p0167:L12	167	12	ज़ािहरी	zaaheri	ظاہری	Apparent	human_verified
+p0167:L13	167	13	िज़क्र	zikar	ذکر	n:Recital	human_verified
+p0167:L14	167	14	िजच्ची	zichi	زچی	Obstinacy	human_verified
+p0167:L15	167	15	िज़द	zid	ضد	nf:Obstinacy	human_verified
+p0167:L16	167	16	िज़द्दी	zidi	ضدی	Stubborn	human_verified
+p0167:L17	167	17	िज़ंदगानी	zind gaaNi	زندگانی	Life	human_verified
+p0167:L18	167	18	िज़ंदगी	zindgi	زندگی	Life	human_verified
+p0167:L19	167	19	िजंदो	zindo	زندو	Alive	human_verified
+p0167:L20	167	20	िज़ंदा िदल	zindadiL	زندہ دل	Active	human_verified
+p0167:L21	167	21	एक ऐसा व्यि		ایک ऐसा وی		human_verified

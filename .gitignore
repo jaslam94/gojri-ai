@@ -26,6 +26,7 @@ Thumbs.db
 
 # Local Hugging Face staging (upload only; not source of truth)
 data/ocr-gold-publish/
+data/pdf-corpus-publish/
 
 # Decode-table glyph crops (regenerable from PDFs)
 data/decode/_glyph_crops/

@@ -558,4 +558,15 @@ results (Gemini 3.6 Flash 17.1% pooled WER vs Sonnet 4.6 22.0%; Composer chat
 `https://huggingface.co/datasets/junaidaslam/gojri-nastaliq-ocr-gold`.
 See `data/gold/README.md` and `data/gold/bakeoff_results.csv`.
 
+**PDF research mirror (Sep 2026):** in-scope print PDFs with per-file credits on
+Hugging Face (`junaidaslam/gojri-print-pdf-collection`). See
+`data/pdf-corpus/CREDITS.tsv` and `LICENSE.md`. Original book copyright remains
+with authors/publishers.
+
+**Local third-party datasets:** documented in `datasets/README.md` (FLI literature
+via Mozilla Data Collective; Common Voice Gujari). Not re-published from GitHub
+as our own dumps.
+
+**Project aim:** Gojri ASR and Gojri LLM (same spirit as Pashto Katib / Qehwa).
+
 See `plans/STAGE-0.md`, `data/gold/README.md`, and `LOG.md`.

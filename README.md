@@ -1,51 +1,63 @@
 # Gojri AI
 
 Experimental work to help **Gojri** (گوجری, ISO 639-3: `gju`) show up properly
-in AI, NLP, and related tech.
+in AI and NLP.
 
-This project is run for the love of the language: OCR, speech, and language
-models for a community language that is still barely present in mainstream AI.
-Nothing here claims to be finished or production-ready. We learn in public,
-document mistakes, and welcome help.
+The long-term aim is a **Gojri ASR** system and a **Gojri LLM**, in the same
+spirit as community Pashto projects such as **Katib** (speech recognition) and
+**Qehwa** (language model). This is early work. It is done for the love of the
+language and for fairer representation in tech. Nothing here claims to be
+finished. Contributions are welcome.
 
 ## Public datasets
 
 | Dataset | Link |
 |---------|------|
 | Devanagari ↔ Nastaliq lexicon | https://huggingface.co/datasets/junaidaslam/gojri-devanagari-nastaliq-lexicon |
-| Nastaliq OCR gold set (12 pages) + model bake-off | https://huggingface.co/datasets/junaidaslam/gojri-nastaliq-ocr-gold |
+| Nastaliq OCR gold set + bake-off | https://huggingface.co/datasets/junaidaslam/gojri-nastaliq-ocr-gold |
+| Gojri print PDF collection (research mirror) | https://huggingface.co/datasets/junaidaslam/gojri-print-pdf-collection |
+
+## Local data you may already have
+
+Under `datasets/` we keep third-party material for training experiments. See
+`datasets/README.md` for where it came from:
+
+- **Gojri Literature Corpus** (FLI via Mozilla Data Collective, CC-BY-NC-4.0)
+- **Common Voice Gujari** speech (Mozilla Common Voice 26.0)
+
+Those are not re-uploaded as our own corpora from this GitHub repo. Please keep
+their original licenses and terms.
 
 ## What lives in this repo
 
-- Stage 0 research notes and experiment log (`CLAUDE.md`, `LOG.md`, `ROADMAP.md`)
-- PDF catalog (`data/manifest.csv`)
-- OCR gold images and transcriptions (`data/gold/`)
+- Research notes and experiment log (`CLAUDE.md`, `LOG.md`, `ROADMAP.md`)
+- PDF catalog (`data/manifest.csv`) and per-file credits (`data/pdf-corpus/`)
+- OCR gold set (`data/gold/`)
 - Lexicon deliverable (`data/lexicon/`)
-- Small scripts for extract, scoring, and transliteration (`scripts/`)
+- Scripts for extract, scoring, and transliteration (`scripts/`)
 
-Large source PDFs and Common Voice audio stay local (see `.gitignore`). They are
-not re-hosted here.
+Large PDFs stay local under `pdfs/` (gitignored) and are mirrored on Hugging Face
+with credits. Common Voice audio clips stay gitignored.
 
 ## Status (short)
 
-- Lexicon: published on Hugging Face
-- OCR gold + bake-off: published on Hugging Face
-- Bulk vision OCR of the full PDF collection: **paused** (error rate still too high without human review)
-- ASR / LLM fine-tuning: planned later
+- Lexicon, OCR gold, and PDF research mirror: on Hugging Face
+- Bulk vision OCR of every page: paused until quality is safer
+- ASR / LLM fine-tuning: the goal ahead
 
 ## Contributions
 
 If you speak Gojri, work on OCR or speech, or want to help with data checks,
 please open an issue or pull request. Native-speaker review, cleaner gold pages,
-and better tooling all matter.
+better credits, and rights-cleared books all help.
 
-Please keep changes focused. Prefer discussion before large new pipelines.
+Please keep changes focused. Prefer a short discussion before large new pipelines.
 
 ## License notes
 
 - Code and our packaging: see files in each folder
 - Lexicon: derivative of Anjum & Sadiq’s dictionary; see `data/lexicon/LICENSE.md`
-- OCR gold images: short book excerpts for research; see the HF dataset card
+- OCR gold / PDF collection: third-party content remains with original rights holders
 
 ## Contact
 

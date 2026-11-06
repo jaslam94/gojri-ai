@@ -12,6 +12,8 @@ user reviewed. The reference text for it is `text_fix` in `data/synth/real_pairs
 | `sm_qaari/qaari_pages_entry.py`, `launch_qaari_pages.py` | Run Qaari on whole gold pages (its intended input) as one SageMaker job. |
 | `sm_trocr/trocr_entry.py`, `launch_trocr.py` | Run TrOCR-style Urdu models from Hugging Face on the crops (safetensors only; 2 image forms x 2 decoding settings). |
 | `utrnet_gold.py` | UTRNet-Large on the 12 gold pages with a line splitter that uses only the page image (no PDF glyph boxes). Needs the UTRNet clone and weights (see `scripts/utrnet_arabic_eval.py`). |
+| `dump_script_chunks.py` | Cuts labeled Arabic-script and Latin chunks from real dictionary lines (truth from PDF glyph boxes). |
+| `eval_script_tesseract.py` | Tests Tesseract (English) as a script detector and as an English reader on those chunks. |
 | `score_gold_letters.py` | Arabic-letter error of every `*_original.txt` OCR run on the 12 gold pages. Spaces, Latin letters and short vowels are ignored. |
 
 The launch scripts need the environment variable `SAGEMAKER_ROLE_ARN`. Do not commit it.
@@ -77,3 +79,19 @@ Qaari writes Urdu-like text with invented words and loops until the token limit 
 UTRNet-Large is the only tested model that reads Gojri Nastaliq well (2.1% on dictionary Arabic runs, 2.8% on the
 10 clean gold pages). It cannot read English (85.6% error on English runs), and its page score depends on the line
 splitter. Next step: a script detector that sends Arabic runs to UTRNet and English runs to an English reader.
+
+## Script detector, first test (2026-11-06)
+
+Data: 3,457 chunks from 1,500 real dictionary lines (1,863 Arabic-script, 1,594 Latin). The chunk edges come from
+the PDF glyph boxes, so this tests the classifier only, not the finding of edges on a scanned page.
+Tesseract 5.5 (English, `--psm 7`) is already installed on the machine (`C:\Program Files\Tesseract-OCR`).
+
+- English reading: character error 0.1% (16 of 12,931 characters) on 300 Latin chunks.
+- Confidence alone (mean word confidence >= 70 means Latin): 93.2% accuracy on a balanced sample of 600; 92.4% on a
+  second sample of 800. Confidence is low for correctly read lines full of dictionary punctuation such as `(tarhi)nf:Stiffness;rigidity`.
+- Rule "Latin if Tesseract returns at least 15 characters, or confidence >= 80": chosen on sample A (99.3%), then
+  98.8% on sample B (8 Arabic chunks called Latin, 2 Latin chunks called Arabic out of 800). The two samples are
+  random draws from the same 3,457 chunks and can overlap, so B is not fully independent.
+
+Open problem: on a scanned page the script boundaries inside a line are not known. A complete pipeline must find them
+(for example from Tesseract word boxes) before chunks reach UTRNet.

@@ -143,23 +143,14 @@ def map_code(
         return None
     prev = _neighbor_letter(run, pua_map, i, -1)
     nxt = _neighbor_letter(run, pua_map, i, 1)
-    prev_text = prev[2] if prev else ""
-    next_text = nxt[2] if nxt else ""
     next_key = nxt[1] if nxt else ""
 
+    # F0F1+F031 is one ئے shape. The alef of آبلائے sits in the lam-alef glyph
+    # F0A1, so ائے is never emitted here (user check: دوئے has no alef).
     if key == "F031" and prev and prev[1] == "F0F1":
         return None
     if key == "F0F1" and next_key == "F031":
-        if prev_text.startswith("ا") or prev_text.startswith("آ"):
-            return "ئے"
-        return "ائے"
-    if key == "F060":
-        if prev_text.startswith("ن") and next_text.startswith("ی"):
-            return "ھ"
-        if prev_text.startswith("م") and next_text.startswith("ا"):
-            return "ه"
-    if key == "F061" and next_text.startswith("د"):
-        return "ھ"
+        return "ئے"
     return base
 
 

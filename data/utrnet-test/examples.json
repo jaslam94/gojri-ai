@@ -1,0 +1,83 @@
+{
+ "page-0026:L7": {
+  "group": "exact, short",
+  "image": "examples/p0026_L7.png",
+  "reference_arabic": "آپھرنو",
+  "utrnet_pad0": "آپھرنو",
+  "utrnet_pad6": "آپھرنو",
+  "crnn_baseline_whole_line": "پھپرنو",
+  "crnn_new_whole_line": "آھپرنو"
+ },
+ "page-0035:L15": {
+  "group": "exact, medium",
+  "image": "examples/p0035_L15.png",
+  "reference_arabic": "اجھاںاجھوں،اجھے",
+  "utrnet_pad0": "اجھاںاجھوں،اجھے",
+  "utrnet_pad6": "واجھاںاجھوں،اجھے۔",
+  "crnn_baseline_whole_line": "اجاںاجی،جھوں",
+  "crnn_new_whole_line": "اجاںاھ،جھ"
+ },
+ "page-0316:L9": {
+  "group": "exact, longest",
+  "image": "examples/p0316_L9.png",
+  "reference_arabic": "لکھیںلکھیںراتہجرکیںپھکاسنجھسبیلاعظیم",
+  "utrnet_pad0": "لکھیںلکھیںراتہجرکیںپھکاسنجھسبیلاعظیم",
+  "utrnet_pad6": "لکھیںلکھیںراتہجرکیںپھکاسنجھسبیلاعظیم",
+  "crnn_baseline_whole_line": "ایابھککھیگھکیکھکھاےں",
+  "crnn_new_whole_line": "خاتکھکیکیکوکھیکیکیکای"
+ },
+ "page-0164:L24": {
+  "group": "example page-0164:L24",
+  "image": "examples/p0164_L24.png",
+  "reference_arabic": "ریتی",
+  "utrnet_pad0": "دیتی",
+  "utrnet_pad6": "ریتی۔",
+  "crnn_baseline_whole_line": "درتی",
+  "crnn_new_whole_line": "رت"
+ },
+ "page-0227:L3": {
+  "group": "example page-0227:L3",
+  "image": "examples/p0227_L3.png",
+  "reference_arabic": "حرصنوہینسرنو",
+  "utrnet_pad0": "جرصنوھینسرنو",
+  "utrnet_pad6": "اجرصنوھینسرنو۔",
+  "crnn_baseline_whole_line": "حرنومھیرنو",
+  "crnn_new_whole_line": "حرسنوھیرن"
+ },
+ "page-0215:L15": {
+  "group": "example page-0215:L15",
+  "image": "examples/p0215_L15.png",
+  "reference_arabic": "چونک",
+  "utrnet_pad0": "چونک",
+  "utrnet_pad6": "اچونگ",
+  "crnn_baseline_whole_line": "چوک",
+  "crnn_new_whole_line": "چنک"
+ },
+ "page-0087:L7": {
+  "group": "example page-0087:L7",
+  "image": "examples/p0087_L7.png",
+  "reference_arabic": "بیٹھک",
+  "utrnet_pad0": "بیٹھا",
+  "utrnet_pad6": "ابیٹھک",
+  "crnn_baseline_whole_line": "بیٹک",
+  "crnn_new_whole_line": "بھیٹک"
+ },
+ "page-0050:L2": {
+  "group": "example page-0050:L2",
+  "image": "examples/p0050_L2.png",
+  "reference_arabic": "امبکےہیٹھامبنیہہوتو،امبچوسناکہباتپچھنی",
+  "utrnet_pad0": "امبکےھیٹھامبنيہھوتو،امبچوسناکہباتپچھنی",
+  "utrnet_pad6": "امبکےھیٹھامبنيہھوتو،امبچوسناکہباتپچھنی",
+  "crnn_baseline_whole_line": "اپپکیپی،جینےسےکےکای",
+  "crnn_new_whole_line": "ماپھیکیتیچیسکےککےپھ"
+ },
+ "page-0066:L9": {
+  "group": "example page-0066:L9",
+  "image": "examples/p0066_L9.png",
+  "reference_arabic": "بٹکو",
+  "utrnet_pad0": "بٹکو",
+  "utrnet_pad6": "ابٹکو",
+  "crnn_baseline_whole_line": "بٹکو",
+  "crnn_new_whole_line": "بٹکو"
+ }
+}

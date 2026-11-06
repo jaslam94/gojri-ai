@@ -1,0 +1,58 @@
+{
+ "utrnet_pad0": {
+  "errors": 29,
+  "letters": 1400,
+  "error_pct": 2.1,
+  "lines_exact": 178,
+  "lines": 200
+ },
+ "utrnet_pad2": {
+  "errors": 39,
+  "letters": 1400,
+  "error_pct": 2.8,
+  "lines_exact": 168,
+  "lines": 200
+ },
+ "utrnet_pad6": {
+  "errors": 152,
+  "letters": 1400,
+  "error_pct": 10.9,
+  "lines_exact": 69,
+  "lines": 200
+ },
+ "utrnet_whole_line": {
+  "errors": 3101,
+  "letters": 1400,
+  "error_pct": 221.5,
+  "lines_exact": 1,
+  "lines": 200
+ },
+ "crnn_baseline_whole_line": {
+  "errors": 496,
+  "letters": 1400,
+  "error_pct": 35.4,
+  "lines_exact": 49,
+  "lines": 200
+ },
+ "crnn_baseline_arabic_runs_pad0": {
+  "errors": 926,
+  "letters": 1400,
+  "error_pct": 66.1,
+  "lines_exact": 7,
+  "lines": 200
+ },
+ "crnn_new_whole_line": {
+  "errors": 505,
+  "letters": 1400,
+  "error_pct": 36.1,
+  "lines_exact": 60,
+  "lines": 200
+ },
+ "crnn_new_arabic_runs_pad0": {
+  "errors": 894,
+  "letters": 1400,
+  "error_pct": 63.9,
+  "lines_exact": 7,
+  "lines": 200
+ }
+}

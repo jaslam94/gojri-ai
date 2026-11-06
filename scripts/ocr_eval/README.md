@@ -14,6 +14,10 @@ user reviewed. The reference text for it is `text_fix` in `data/synth/real_pairs
 | `utrnet_gold.py` | UTRNet-Large on the 12 gold pages with a line splitter that uses only the page image (no PDF glyph boxes). Needs the UTRNet clone and weights (see `scripts/utrnet_arabic_eval.py`). |
 | `dump_script_chunks.py` | Cuts labeled Arabic-script and Latin chunks from real dictionary lines (truth from PDF glyph boxes). |
 | `eval_script_tesseract.py` | Tests Tesseract (English) as a script detector and as an English reader on those chunks. |
+| `ocrlib.py` | Shared pieces: UTRNet reader, Tesseract reader, row and chunk splitting, `LineReader`, page-mode helpers. |
+| `build_segmenter_data.py`, `sm_seg/`, `launch_segnet.py` | Build per-column script labels (Arabic / English / gap) from PDF glyph boxes and train SegNet on SageMaker. |
+| `eval_line_reader.py` | Mixed-script line reader on the 200 dictionary lines without PDF glyph boxes (`--segnet` for SegNet). |
+| `ocr_page.py` | The full page pipeline (see below). |
 | `score_gold_letters.py` | Arabic-letter error of every `*_original.txt` OCR run on the 12 gold pages. Spaces, Latin letters and short vowels are ignored. |
 
 The launch scripts need the environment variable `SAGEMAKER_ROLE_ARN`. Do not commit it.
@@ -95,3 +99,47 @@ Tesseract 5.5 (English, `--psm 7`) is already installed on the machine (`C:\Prog
 
 Open problem: on a scanned page the script boundaries inside a line are not known. A complete pipeline must find them
 (for example from Tesseract word boxes) before chunks reach UTRNet.
+
+## Full page pipeline (2026-11-06)
+
+`ocr_page.py`: rows from the page image, then a page-level mode, then the readers.
+1. SegNet (3 MB CNN) labels every pixel column of a text line as gap, Arabic script or English. It was trained on
+   10,112 lines: 6,612 real dictionary lines (labels from PDF glyph boxes, only pages without a reviewed line) and
+   3,500 synthetic pure-Arabic story lines. Test (200 reviewed lines): 99.24% of columns right; 22 Arabic columns
+   called English and 96 English columns called Arabic, of about 19,000 and 134,000.
+2. Page mode: SegNet English runs are checked with Tesseract (at least 6 English letters). If confirmed English covers
+   at least 15% of the text width the page is `mixed`, else `arabic`. Measured shares: `dict_alif` 75.6%, every other
+   gold page 2.7% or less.
+3. `arabic` mode: each row is read by UTRNet alone (chunks of at most 11 x row height, joined right to left).
+   `mixed` mode: SegNet runs, Arabic runs by UTRNet, English runs by Tesseract; run text is written left to right.
+   An English run that Tesseract cannot confirm (3 or more letters) becomes Arabic.
+
+SegNet weights: `s3://gojri-ai-sagemaker-data/ocr-eval/models/segnet_v2.pt` (not in the repo).
+
+| Test | Arabic-letter error | English character error |
+|---|---|---|
+| 200 dictionary lines, SegNet v1, no PDF glyph boxes (UTRNet with PDF boxes: 2.1%) | 2.3% (32 of 1,400; 173 lines exact) | 0.7% (61 of 9,370) |
+| 12 gold pages, first try (Tesseract word boxes) | not scored (200-line version: 90.6% Arabic, 38.0% English) | |
+| 12 gold pages, SegNet v1 on every page | 29.8% pooled | 40.3% |
+| 12 gold pages, SegNet v2 on every page | 28.6% pooled | 31.9% |
+| **12 gold pages, final (page mode)** | **3.6% pooled (222 of 6,253)** | 6.7% pooled (only `dict_alif` has English: 3.9%) |
+| 12 gold pages, UTRNet alone (v2 splitter) | 7.0% | |
+| 8 gold pages Gemini was scored on: final pipeline / Gemini 3.6 Flash | 2.7% / 3.1% | `dict_alif`: 3.9% / 2.6% |
+
+Final per page (Arabic-letter error): dict_alif 6.0%, gojri_adbiyaat 3.3%, gojri_ghazal 1.2%, kahawat_kosh 0.9%,
+kulyate_spread_a_right 5.7%, kulyate_spread_b_left 4.2%, louk_warsti 0.8%, mahatma_gandhi 0.0%,
+nazir_spread_a_right 1.4%, nazir_spread_b_left 2.0%, primer_pehli 28.3%, shingar_textbook 5.9%.
+Gemini is better on `kulyate_spread_b_left` (0.3%) and `dict_alif` (5.2% Arabic, 2.6% English).
+
+What went wrong on the way, and the lessons:
+- A first training run used labels that a PIL call had collapsed to one value per line (a 1-D array became a 1 pixel wide
+  image). The net learned nothing. Always look at label shares and one overlay before training.
+- Joining the pieces of one right-to-left sentence from left to right gave many order errors. Consecutive spans of one
+  script are one run.
+- SegNet trained on dictionary lines only labelled 3% to 25% of each pure-Arabic row as English. Adding synthetic
+  pure-Arabic lines did not fix it. Tesseract confirmation of English runs and the page-level mode did.
+
+Caveats: the gold pages guided these design steps (the span merge, the 6-letter check, the page mode), so 3.6% is a
+development number. The mode threshold (15%) lies in an empty gap between the measured shares, but only one gold page
+is a dictionary page. SegNet knows one dictionary's layout and font. The English reader depends on page resolution
+(gold images are about 700 px wide). A new book needs a fresh test before any claim.

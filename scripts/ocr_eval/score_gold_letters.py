@@ -2,7 +2,8 @@
 
 Same normalisation as scripts/utrnet_arabic_eval.py: NFC, short-vowel marks removed, only Arabic-block
 characters kept, ك=ک and ه=ہ folded (ھ stays separate). Error = Levenshtein distance of the whole page
-string / number of gold letters. Run: py -3 -X utf8 scripts/ocr_eval/score_gold_letters.py
+string / number of gold letters. Add --latin to score the English (non-Arabic, non-space) characters instead.
+Run: py -3 -X utf8 scripts/ocr_eval/score_gold_letters.py [--latin] [run tags...]
 """
 import re
 import sys
@@ -21,9 +22,20 @@ def arabic(s):
     return "".join(ARAB.findall(MARKS.sub("", unicodedata.normalize("NFC", s)))).translate(FOLD)
 
 
+LATIN_MODE = "--latin" in sys.argv
+if LATIN_MODE:
+    sys.argv.remove("--latin")
+
+
+def latin(s):
+    """Non-Arabic, non-space characters (English words, digits, brackets), case kept."""
+    s = MARKS.sub("", unicodedata.normalize("NFC", s))
+    return "".join(c for c in s if not ARAB.match(c) and not c.isspace())
+
+
 def prep(path):
     lines = [l.strip() for l in path.read_text(encoding="utf-8").splitlines() if l.strip() and not SKIP.match(l.strip())]
-    return arabic(" ".join(lines))
+    return latin(" ".join(lines)) if LATIN_MODE else arabic(" ".join(lines))
 
 
 def ed(a, b):

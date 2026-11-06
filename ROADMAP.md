@@ -256,14 +256,14 @@ get lost:
   and the Urdu-translation file), likely a lost Gojri-specific diacritic mark that
   standard Urdu doesn't use. Needs investigating and fixing before those 4 files are
   used for real training, not blocking anything right now.
-- **11 "unclear" PDFs — RESOLVED (Aug 2026, Stage 0 execution)**: rebuilt the
+- **11 "unclear" PDFs: RESOLVED (Aug 2026, Stage 0 execution)**: rebuilt the
   manifest classifying by script-in-text instead of English-word-counting. Result: 6
   files (~1,290 pages) were genuine Gojri content in a third legacy encoding scheme
   and are now correctly in scope; `Gojri-Hindi-English-Dictionary.pdf` (458 pages) is
   Devanagari, not English, and is likely the single most valuable document in the
   collection; only 7 files (4,192 pages) are genuinely out-of-scope English prose.
   Full detail in `CLAUDE.md`.
-- **Two-page-spread PDFs — RESOLVED (Aug 2026)**: 26 files, 6,295 pages, have a
+- **Two-page-spread PDFs: RESOLVED (Aug 2026)**: 26 files, 6,295 pages, have a
   single PDF page containing two physical book pages side by side. Decision: split
   each into two images at the exact geometric horizontal center, implemented in
   `scripts/split_spread.py`. Verified this is safe, not just convenient: measured

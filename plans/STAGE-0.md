@@ -1,4 +1,4 @@
-# Stage 0: Data Hygiene — Implementation Plan
+# Stage 0: Data Hygiene: Implementation Plan
 
 **Goal**: end up knowing exactly what data we have, which files are worth processing,
 in what order, and with a way to measure OCR quality. Nothing here trains a model.
@@ -10,7 +10,7 @@ unrecoverable and disk space is not our constraint.
 
 ---
 
-## Step 0.1 — Build the manifest (the single source of truth)
+## Step 0.1: Build the manifest (the single source of truth)
 
 Produce `data/manifest.csv`: one row per PDF, with every fact we've established,
 so no future step has to re-derive them (and so we stop getting different numbers
@@ -42,7 +42,7 @@ needing OCR). Any mismatch means one of the two is wrong and must be resolved.
 
 ---
 
-## Step 0.2 — Fix the triage errors the strategy review found
+## Step 0.2: Fix the triage errors the strategy review found
 
 Two known problems to correct, both driven by the manifest:
 
@@ -62,7 +62,7 @@ Two known problems to correct, both driven by the manifest:
 
 ---
 
-## Step 0.3 — Build the OCR gold set (the yardstick)
+## Step 0.3: Build the OCR gold set (the yardstick)
 
 The highest-value human work in the project. Without it we cannot measure OCR
 quality at all, only form opinions about it.
@@ -101,7 +101,7 @@ and `LOG.md`.
 
 ---
 
-## Step 0.4 — Decide the corpus layout and conventions
+## Step 0.4: Decide the corpus layout and conventions
 
 Small but worth settling before data starts flowing:
 - Folder layout for extracted text, one `.txt` per source book, plus a JSONL with

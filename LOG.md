@@ -8,7 +8,72 @@ first time they show up, then get added to the Glossary at the bottom.
 
 ---
 
-## 2026-09-27 — Lexicon packaged for public publish (tracked under data/lexicon/)
+## 2026-10-12: 40-Page Pass 2 visual audit completed with Gemini in Chat
+
+**Method:**
+Compared every Pass 2 text file against its high-resolution rendered page PNG across all 40 sample pages (from page 25 to 498) using Gemini Flash in chat (bypassing API limits).
+
+**Results:**
+- **17 pages (42.5%) are 100% clean/perfect** with zero Gojri errors (`[98, 122, 146, 171, 183, 195, 231, 243, 304, 316, 352, 377, 389, 401, 437, 474, 498]`).
+- **23 pages (57.5%) have minor 1–2 word inconsistencies**, mostly minor diacritics or rare compound spelling variants (e.g. `چھاہ` vs `چھائی`, `زُمبو` vs `زُمکو`, `کوہِ` vs `کوئی`).
+- Per-page audit reports saved under `data/decode/out/gojri-english-dictionary/audit/page-NNNN-audit.txt`.
+
+---
+
+## 2026-10-11: Pass 2 Gemini refinement completed for 40 representative sample pages
+
+**Pipeline:**
+1. **Pass 1:** Completed Batool font-decoding across all body pages 25–498 (474 pages total).
+2. **Pass 2:** Refined all 40 representative sample pages (`pass2_sample_40.txt` from page 25 through 498) using Gemini Flash, strictly preserving Gojri orthographic rules and fixing technical layout artifacts (`Ipp:` -> `lpp:`, headword/gloss spacing, letter shapes).
+
+**Outputs generated:**
+- `data/decode/out/gojri-english-dictionary/page-*-pass2.txt` (40 files complete).
+
+---
+
+## 2026-10-04: Pass 2 Gemini refinement on Batool decode (pages 25–28)
+
+**Pipeline:**
+1. **Pass 1:** Batool PUA lookup table (`decode_batool.py`) extracts raw Nastaliq glyphs directly from PDF font codepoints.
+2. **Pass 2:** Gemini 3.6 / 3.5 Flash multimodal pass (`scripts/batool_pass2_gemini.py`) aligns Pass 1 text with the rendered page image and applies Gojri orthographic rules learned from the Gold set.
+
+**Gojri & layout rules enforced in Pass 2 prompt:**
+- Retains exact Gojri Nastaliq spelling and word endings (`-و` like `آپنو`, `آٹو`, `آتھرنو`, `ابھارو`; no Urdu normalisation).
+- Preserves Gojri retroflexes (`ٹ`, `ڈ`, `ڑ`, `ݨ`) and correct heh forms (`ہ`, `ھ`, `ه`).
+- Fixes technical font-decoding artifacts: `Ipp:` / `1pp:` -> `lpp:` (proverb label), inserts missing spaces between Nastaliq headwords and Latin `(romanisation)` glosses.
+- No hallucinated example sentences or dropped headwords.
+
+**Outputs generated:**
+- `data/decode/out/gojri-english-dictionary/page-0025-pass2.txt` ... `page-0028-pass2.txt`.
+
+---
+
+## 2026-09-28: Batool decode scored on dict_alif gold (page 25)
+
+**Setup:** decode `Gojri-English-Dictionary.pdf` page 25 with
+`py -3 scripts/decode_batool.py 25` (seed `batool_pua_seed.json`, 160 codes).
+Score with `py -3 scripts/score_batool_gold.py` against
+`data/gold/transcriptions/dict_alif/dict_alif_gold.txt`.
+
+**Results:**
+- Full-token WER (same rules as OCR bake-off): **9.2%** (11/119). Mismatches
+  are mostly Latin glued to Nastaliq (`lpp:` vs `Ipp:`, English run-on), not
+  wrong Gojri letters.
+- Arabic-script tokens only: **0% WER** (71/71 match).
+- Census pages 25–28: **0 unknown** Batool codes.
+
+**Verdict:** Batool decode beats the vision bake-off (~17% WER) on this gold
+page for Gojri text. Worth continuing: spot-check more body pages, then decide
+whether to decode the full 498-page book for corpus use. Still do not treat
+full-book output as gold until more pages are checked.
+
+**Artifacts (gitignored decode out):**
+`data/decode/out/gojri-english-dictionary/page-0025.txt` … `page-0028.txt`.
+Helper: `scripts/score_batool_gold.py`.
+
+---
+
+## 2026-09-27: Lexicon packaged for public publish (tracked under data/lexicon/)
 
 **Canonical files (committed to git):**
 
@@ -37,7 +102,7 @@ provisional rule-script TSVs under `data/extracted/.../translit/`.
 
 ---
 
-## 2026-09-02 — Devanagari dictionary → Nastaliq: two-pass pipeline (Aksharamukha + Gemini)
+## 2026-09-02: Devanagari dictionary → Nastaliq: two-pass pipeline (Aksharamukha + Gemini)
 
 **Goal:** convert Devanagari headwords from `Gojri-Hindi-English-Dictionary.pdf` extract
 to Gojri Nastaliq using a hybrid pipeline (rule draft, then AI refinement).
@@ -56,7 +121,7 @@ to Gojri Nastaliq using a hybrid pipeline (rule draft, then AI refinement).
   `अंगणू` `انگنو` → `انگݨو` (Gemini used ڱ for ण). Needs user verification.
 - First API call hit 503 (high demand); retries added; second run succeeded.
 
-**2026-09-06 — User verified `अंगणू` → `انگنو` (not `انگݨو`).** Devanagari ण
+**2026-09-06: User verified `अंगणू` → `انگنو` (not `انگݨو`).** Devanagari ण
 (retroflex n) maps to standard ن in Gojri Nastaliq. Gemini wrongly used rare letter
 ݨ (U+0768). Prompt updated: rule 9 forbids extended Arabic letters; keep pass1 when
 correct.
@@ -64,7 +129,7 @@ correct.
 **Shared parser:** `scripts/dict_translit_common.py`
 
 **Not in scope yet:** Latin-only headwords (many pages like page 49); single-letter
-pronunciation guide rows (`क`, `ख`) parsed as entries — filter later if needed.
+pronunciation guide rows (`क`, `ख`) parsed as entries: filter later if needed.
 
 **Next:** skip full pass-2 run for now. User verified `अंगणू` = `انگنو` (pass 1 correct;
 pass 2 wrong). Page 19 pilot: 1/22 diffs, that diff was wrong. **50-word verification
@@ -75,21 +140,21 @@ meaning suggests pass 1 is wrong.
 
 ---
 
-## 2026-08-03 — GitHub setup: keeping large/licensed data out of git
+## 2026-08-03: GitHub setup: keeping large/licensed data out of git
 
 Set up the repo to be pushed to GitHub. Found `PDFs/` (834MB) and the Common Voice
 audio corpus (`cv-corpus-.../`, 265MB) sitting in the single local "initial commit,"
 never pushed anywhere yet.
 
 **Decision: excluded both via `.gitignore`.** Two separate reasons:
-1. **Size** — pushing ~1.1GB of binaries means every future clone downloads it all,
+1. **Size**: pushing ~1.1GB of binaries means every future clone downloads it all,
    forever.
-2. **Licensing** — most PDFs are non-commercial-licensed (Dr. Javaid Rahi's works,
+2. **Licensing**: most PDFs are non-commercial-licensed (Dr. Javaid Rahi's works,
    CC-BY-NC-4.0-style) and Common Voice's terms don't allow re-hosting. Publishing
    them on a public GitHub repo isn't just wasteful, it's likely not allowed.
 
 Since nothing had been pushed to a remote yet, the local "initial commit" was
-*amended* (not a new commit — only safe because it was still 100% local) to drop the
+*amended* (not a new commit: only safe because it was still 100% local) to drop the
 large files from history entirely, instead of just hiding them from future commits.
 `git gc` confirmed the cleanup: `.git` folder dropped from 881MB → 5.4MB.
 
@@ -97,7 +162,7 @@ large files from history entirely, instead of just hiding them from future commi
 `git gc --prune=now`, which permanently deleted the *original* (pre-correction)
 version of `dict_alif_draft.txt` from git history, since it was only sitting in an
 now-unreachable commit. Net effect: we lost the ability to diff your `dict_alif`
-corrections against the original draft. The corrected file itself is fine — only the
+corrections against the original draft. The corrected file itself is fine: only the
 "what changed" view for that one file is gone.
 
 **Lesson for later**: this history-rewrite trick only works *before* the first push.
@@ -110,19 +175,19 @@ future keys get typed into a file instead of pasted into chat.
 
 ---
 
-## 2026-08-03/04 — Gold-set corrections: first real patterns
+## 2026-08-03/04: Gold-set corrections: first real patterns
 
 You started hand-correcting the OCR gold-set drafts (`data/gold/images/*_draft.txt`)
 against the source page images. `dict_alif` and `gojri_adbiyaat` done so far
-(`gojri_adbiyaat` in two rounds — a small kasra fix, then a larger pass).
+(`gojri_adbiyaat` in two rounds: a small kasra fix, then a larger pass).
 
-**Finding, from the `gojri_adbiyaat` diff** (no diff available for `dict_alif` — see
+**Finding, from the `gojri_adbiyaat` diff** (no diff available for `dict_alif`: see
 the git mistake above):
 
 1. **Heh confusion.** Urdu/Nastaliq has two different "h" letters that look similar:
    plain heh (ه) and do-chashmi heh (ھ, "two-eyed heh"), which marks aspirated sounds
    like دھ, بھ, مھ. The draft kept using the wrong one, e.g. `مانہ` → corrected to
-   `مانھ`. This isn't cosmetic — it changes which consonant is represented.
+   `مانھ`. This isn't cosmetic: it changes which consonant is represented.
 
 2. **Poems don't get their own repetition checked.** A ghazal repeats the same
    rhyming word (the *radif*) at the end of every line. The draft mis-transcribed
@@ -135,47 +200,47 @@ the git mistake above):
    independently and doesn't cross-check itself against the pattern it just produced
    two lines earlier.
 
-3. **Confident wrong guesses on unusual/dialectal words** — e.g. `نچ`→`بِچ`,
+3. **Confident wrong guesses on unusual/dialectal words**: e.g. `نچ`→`بِچ`,
    `چیُو`→`چپُو`, `کھڑیاں ہن کے`→`کھڈیال بن کے`. Fluent-looking Nastaliq, just wrong.
    This is the "hallucination" risk `CLAUDE.md` already flagged (**hallucination**:
    a model producing a plausible, fluent-sounding answer that isn't actually
-   grounded in what's on the page — different from a traditional OCR engine failing
+   grounded in what's on the page: different from a traditional OCR engine failing
    visibly/blank when unsure).
 
 ---
 
-## 2026-08-03/04 — First OCR model comparison: Gemini
+## 2026-08-03/04: First OCR model comparison: Gemini
 
-**Goal**: start comparing OCR quality/cost across models — this entry is step one of
+**Goal**: start comparing OCR quality/cost across models: this entry is step one of
 that, not a conclusion.
 
 **Setup**: Got a Gemini API key (stored in `.env`, not committed). Checked Google's
 own docs directly rather than trusting blog aggregators (they had wrong model names)
 and confirmed the current lineup:
-- `gemini-3.6-flash` — newest stable model, Google's own words: "our latest model...
+- `gemini-3.6-flash`: newest stable model, Google's own words: "our latest model...
   strong performance in agentic and multimodal tasks." **Flash** = Google's
   cheaper/faster tier, as opposed to **Pro** (more capable, more expensive).
-- `gemini-2.5-pro` — current stable Pro tier (no newer Pro is out of preview yet).
+- `gemini-2.5-pro`: current stable Pro tier (no newer Pro is out of preview yet).
 
 Picked `gemini-3.6-flash`: it's both "latest" and the cost-sensitive choice, same
-logic as the Haiku-vs-Sonnet tradeoff already in `CLAUDE.md`'s OCR cost math — for a
+logic as the Haiku-vs-Sonnet tradeoff already in `CLAUDE.md`'s OCR cost math: for a
 14,761-page OCR workload, cost tier matters as much as raw quality.
 
-Wrote [scripts/gemini_ocr_test.py](scripts/gemini_ocr_test.py) — takes an image
+Wrote [scripts/gemini_ocr_test.py](scripts/gemini_ocr_test.py): takes an image
 path, sends it to Gemini with a transcription-only prompt (see exact prompt text in
 the file), prints + saves the result as `<name>_gemini.txt` next to the draft.
 
 **Result on `dict_alif.png`**:
 - **Cost**: ~1,267 input tokens + 511 output tokens for one page. (**Token**: the
-  unit models bill by — roughly a word-piece; a whole page of dense Nastaliq is
+  unit models bill by: roughly a word-piece; a whole page of dense Nastaliq is
   ~1,000+ tokens because Perso-Arabic script tokenizes less efficiently than Latin
   script.) Comfortably inside Gemini's free tier.
 - **Quality**: same heh-confusion bug as pattern #1 above (`آب و ھوا`→`آب و هوا`),
   plus dropped diacritics (kasra, damma). This is the *second* model showing the
-  exact same failure mode — starting to look like a structural weak point of
+  exact same failure mode: starting to look like a structural weak point of
   Nastaliq OCR in general, not a quirk of one model.
 - Also added a bracketed `[Oval: Alif الف]` description not in the draft (needs a
-  human check against the actual image — could be a legitimate catch or an
+  human check against the actual image: could be a legitimate catch or an
   invention) and a stray divider line.
 
 **Open gap**: the `_draft.txt` baseline files don't have a recorded prompt (see
@@ -185,12 +250,12 @@ later.
 
 ---
 
-## 2026-08-04 — Planning: multi-model OCR comparison
+## 2026-08-04: Planning: multi-model OCR comparison
 
 **Plan going forward** (your call, recorded here for continuity): compare OCR output
 across Gemini, DeepSeek, Claude Sonnet, and Claude Haiku on the same gold-set pages.
 Reasoning: open-source/cheaper models are worth a real look before committing to a
-paid-per-page pipeline for ~14,761 pages — no reason to assume the most expensive
+paid-per-page pipeline for ~14,761 pages: no reason to assume the most expensive
 option wins.
 
 **Convention**: each model's output for a page goes in the same
@@ -199,7 +264,7 @@ already created). Once you've hand-corrected enough drafts into a true gold
 standard, every model's output can be scored against the same yardstick.
 
 Judgment on which model to actually use is explicitly deferred until the comparison
-is in place — not being decided now.
+is in place: not being decided now.
 
 **Started this log file.**
 
@@ -207,35 +272,35 @@ is in place — not being decided now.
 
 ---
 
-## 2026-08-04 — Formalizing the comparison: canonical prompt, file naming, run log
+## 2026-08-04: Formalizing the comparison: canonical prompt, file naming, run log
 
-Found `prompts/ocr_transcription_v1.txt` (already written, not by me this session) —
+Found `prompts/ocr_transcription_v1.txt` (already written, not by me this session):
 a proper, detailed transcription prompt: explains Gojri-vs-Urdu up front, forbids
 "fixing" spelling toward standard Urdu, defines `[single bracket]` for non-text
 elements vs `[[double bracket]]` for a flagged best-guess on illegible text, handles
 page numbers/headers, blank pages, and un-split spreads. This becomes **the one
-prompt every model gets tested with** — fixes the "no reproducible prompt" gap noted
+prompt every model gets tested with**: fixes the "no reproducible prompt" gap noted
 above. Re-ran the Gemini test on `dict_alif` with it (my first pass used a weaker,
 improvised prompt) and ran it fresh on `gojri_adbiyaat`.
 
-**File naming, finalized** — every gold page can now have, in `data/gold/images/`:
-- `<id>_sonnet_5_original.txt` — the old, informal first-pass draft (no fixed prompt,
+**File naming, finalized**: every gold page can now have, in `data/gold/images/`:
+- `<id>_sonnet_5_original.txt`: the old, informal first-pass draft (no fixed prompt,
   read directly in a chat session), kept only where it still exists in git history.
-- `<id>_sonnet_5_corrected.txt` — your hand-corrected gold standard, i.e. the
+- `<id>_sonnet_5_corrected.txt`: your hand-corrected gold standard, i.e. the
   ground truth every model's output gets judged against.
-- `<id>_<model>_<version>.txt` — one per model tested with the canonical prompt,
+- `<id>_<model>_<version>.txt`: one per model tested with the canonical prompt,
   e.g. `dict_alif_gemini_3.6_flash.txt`.
 
 **Recovered `gojri_adbiyaat`'s true original from git history** (`git show
-f19a314:...`, before either correction round) — this one survived because it hadn't
+f19a314:...`, before either correction round): this one survived because it hadn't
 been touched yet when the earlier `git gc` mistake happened. **`dict_alif`'s
-original is confirmed permanently gone** — it was already corrected before this
+original is confirmed permanently gone**: it was already corrected before this
 session started, so its pre-correction text only ever lived in the commit that got
 pruned. Only `dict_alif_sonnet_5_corrected.txt` exists for that page; there's no
 `_original` counterpart and there can't be one.
 
 **Sonnet 5 / Haiku 4.5 via chat, not API**: rather than issuing a new Anthropic API
-key, these two will be run manually — a separate chat session per model, each given
+key, these two will be run manually: a separate chat session per model, each given
 the exact text of `prompts/ocr_transcription_v1.txt` plus the page image, output
 pasted back and saved as `<id>_sonnet_5.txt` / `<id>_haiku_4.5.txt`. Still a fair
 comparison as long as the prompt text is identical every time; the only thing lost
@@ -248,13 +313,13 @@ per-model test script, so results stay comparable as more models
 (Gemini done, DeepSeek planned) get added.
 [data/gold/ocr_runs_log.csv](data/gold/ocr_runs_log.csv) is a running,
 structured log (timestamp, page, model, prompt version, token counts, output file)
-of every automated test run — the raw material for eventually scoring models
+of every automated test run: the raw material for eventually scoring models
 quantitatively against the gold set, once enough pages are corrected.
 
 **Observation worth tracking**: Gemini's reported `total_tokens` was noticeably
 higher than `input + output` tokens added together (8,272 vs. 2,338 on one run).
 Likely internal "thinking" tokens that get billed but aren't broken out in the
-simple prompt/output counts — matters for the eventual cost math, needs the same
+simple prompt/output counts: matters for the eventual cost math, needs the same
 check on any Gemini "thinking" pricing details before trusting a simple estimate.
 
 Also in progress in parallel, not yet pulled into the model comparison: you
@@ -264,14 +329,14 @@ corrected 3 more gold drafts (`louk_warsti`, `mahatma_gandhi`, `primer_pehli`).
 
 ---
 
-## 2026-08-04 — DeepSeek checked, deferred
+## 2026-08-04: DeepSeek checked, deferred
 
 Checked DeepSeek's own API docs directly before assuming it'd slot into the
 comparison like Gemini did: their general chat API (`deepseek-v4-flash`/`-pro`)
-**does not support image input at all** — so it couldn't have run this test even as
+**does not support image input at all**: so it couldn't have run this test even as
 a paid option. Separately, DeepSeek has released **DeepSeek-OCR** / **DeepSeek-OCR-2**,
 an open-source (MIT-licensed) vision model built specifically for document/image
-transcription — genuinely free either via community-hosted Hugging Face Space demos
+transcription: genuinely free either via community-hosted Hugging Face Space demos
 (browser upload, no setup) or by running the open weights yourself on a free
 Colab/Kaggle GPU. **Decision: skip DeepSeek for this round**, revisit later if
 useful. Sticking with Gemini + Sonnet + Haiku for now.
@@ -280,7 +345,7 @@ useful. Sticking with Gemini + Sonnet + Haiku for now.
 
 ---
 
-## 2026-08-04 — Prompt versioning tightened; dict_alif original partially recovered
+## 2026-08-04: Prompt versioning tightened; dict_alif original partially recovered
 
 **Prompt v1 frozen, v2 created.** You'd substantially expanded
 `prompts/ocr_transcription_v1.txt` in place (good additions: don't skip/repeat
@@ -300,19 +365,19 @@ one bare filename that a future run could silently overwrite.
 **Re-ran Gemini on both pages under v2.** Diff against v1 came back mostly minor
 sampling variance (spacing, hyphenation, word order of the page-top label). One
 genuine new issue, though: v2 misread the headword letter **ا** (alif) as the digit
-**۱** (one) in `ا(alif)nm.A.1.` — the two characters are visually near-identical in
+**۱** (one) in `ا(alif)nm.A.1.`: the two characters are visually near-identical in
 this script, and the new numeral-preservation rule may have made the model more
 eager to read ambiguous marks as digits specifically. Small sample (2 pages), but a
-concrete thing to watch for as more pages get tested under v2 — a prompt change
+concrete thing to watch for as more pages get tested under v2: a prompt change
 fixing one failure mode can introduce a different one.
 
 **`dict_alif`'s original transcription, partially recovered.** You found and
 confirmed one genuine original (mis-OCR'd) reading against the gold version:
 headword `خُودرو` (correct) was originally misread as `ھُدرو`, with a duplicated
-trailing `آپ` — a real example of the "don't repeat a line/word" failure the v2
+trailing `آپ`: a real example of the "don't repeat a line/word" failure the v2
 prompt now explicitly guards against. Saved as
 `data/gold/images/dict_alif_sonnet_5_original.txt`, seeded from the gold text with
-just this one line reverted — **the rest of that file still matches the gold
+just this one line reverted: **the rest of that file still matches the gold
 version**, i.e. it is not yet a complete original, just the one confirmed
 difference. Also cleaned up a duplicate `dict_alif_corrected.txt` that had
 identical content to the existing `dict_alif_sonnet_5_corrected.txt`.
@@ -321,7 +386,7 @@ identical content to the existing `dict_alif_sonnet_5_corrected.txt`.
 
 ---
 
-## 2026-08-04 — Reorganized gold-set storage: transcriptions/ per page
+## 2026-08-04: Reorganized gold-set storage: transcriptions/ per page
 
 A separate session (see `plans/STAGE-1-TEST-BATCH.md`, a handoff briefing for
 running the real 12-page Bedrock test batch) hit real friction with two competing
@@ -331,11 +396,11 @@ console enablement on Bedrock before its inference profile
 session's plan calls for `boto3` directly (skips the CLI issue) and Haiku 4.5 +
 Sonnet 5 (once enabled) as the two models for the batch.
 
-Before running that batch, reorganized how gold-set files are stored — the flat
+Before running that batch, reorganized how gold-set files are stored: the flat
 `data/gold/images/` folder was getting cluttered mixing `.png` images with every
 model's `.txt` output for every page. New layout:
-- `data/gold/images/` — page images only.
-- `data/gold/transcriptions/<page_id>/` — one folder per page, holding `draft.txt`
+- `data/gold/images/`: page images only.
+- `data/gold/transcriptions/<page_id>/`: one folder per page, holding `draft.txt`
   (the hand-corrected gold standard) plus every tested model's output, named
   `<model>_<prompt_version>.txt`.
 
@@ -343,7 +408,7 @@ Also dropped `<page>_sonnet_5_corrected.txt` (duplicate of `draft.txt`, no
 information lost) and cleared `ocr_runs_log.csv` back to just its header, since its
 old rows pointed at the now-moved file paths. Confirmed via `git status` before
 touching anything that all the "removed" files were safe, recoverable
-deletions already sitting in a prior commit — nothing was actually lost.
+deletions already sitting in a prior commit: nothing was actually lost.
 
 Upcoming Bedrock run naming, confirmed: append `_v1` even though this batch is
 single-prompt-version, for consistency with the Gemini files; log all runs
@@ -354,22 +419,22 @@ a second parallel CSV.
 
 ---
 
-## 2026-08-04 — Dropped draft.txt as ground truth; wiped all transcriptions
+## 2026-08-04: Dropped draft.txt as ground truth; wiped all transcriptions
 
 Reconsidered the whole gold-set correction model. `draft.txt` (one file per page,
 treated as "the" gold standard) was produced by Claude reading each image once with
-no real, fixed, documented prompt — the same gap already noted earlier tonight. That
+no real, fixed, documented prompt: the same gap already noted earlier tonight. That
 makes it a shaky baseline to score every model against, and conflates "what one
 model produced" with "the truth."
 
 **New approach**: no single ground-truth file per page. Instead, every model gets
 its own raw output file (`<model>_<version>.txt`), generated under the same fixed
-prompt, and correction happens per model, by hand, separately — comparing each
+prompt, and correction happens per model, by hand, separately: comparing each
 model's raw output against the source image rather than against another model's
 output. This also captures a second useful signal beyond raw transcription quality:
 how much correction effort each model's output actually needs.
 
-**Wiped everything** in `data/gold/transcriptions/` — all `draft.txt`,
+**Wiped everything** in `data/gold/transcriptions/`: all `draft.txt`,
 `sonnet_5_original.txt`, and the `gemini_3.6_flash_v1/v2.txt` files. All of it is
 still recoverable from git history if needed later; starting genuinely fresh from
 here. Updated `data/gold/README.md` to match. Correction-file naming/organization is
@@ -379,10 +444,10 @@ left to the user's own process, not something Claude generates.
 
 ---
 
-## 2026-08-04 — Bedrock smoke test: real blockers, real quality concerns, one caught bug
+## 2026-08-04: Bedrock smoke test: real blockers, real quality concerns, one caught bug
 
 **AWS setup**: `boto3` installed. First `dict_alif` call to Haiku 4.5 failed with
-`ResourceNotFoundException: Model use case details have not been submitted` — a
+`ResourceNotFoundException: Model use case details have not been submitted`: a
 one-time, Anthropic-specific account requirement on Bedrock, separate from the
 model-access toggle already done for Sonnet 5. Confirmed it's Anthropic-specific
 (not account-wide) by running Qwen3-VL in the same session, which worked
@@ -390,24 +455,24 @@ immediately. Form submitted, Haiku unblocked after.
 
 **Request format decided**: both Haiku 4.5 and Qwen3-VL support Bedrock's unified
 Converse API with images, so one script (`scripts/bedrock_ocr_test.py`) handles both
-via a shared code path — image bytes passed raw (not base64, unlike the
+via a shared code path: image bytes passed raw (not base64, unlike the
 `invoke_model`/Anthropic-specific format the original plan assumed).
 
-**Smoke test on `dict_alif` (cropped, v1 prompt) — both models showed real quality
+**Smoke test on `dict_alif` (cropped, v1 prompt): both models showed real quality
 problems, in different ways**:
 - Qwen3-VL: character-order corruption in places (`فلف` instead of `الف`,
-  `اياكو فل فيقيح` instead of `ایکو الف حقیقی`) — looks like scrambling, not just
+  `اياكو فل فيقيح` instead of `ایکو الف حقیقی`): looks like scrambling, not just
   missing marks.
 - Haiku 4.5: repeatedly substituted a generic `ئ` placeholder in place of several
   different actual headwords, rather than attempting to read them.
 
 Both are worse than the diacritic-drop/heh-confusion pattern seen earlier from
-Gemini and the original Sonnet draft. Decided not to over-read this from one page —
+Gemini and the original Sonnet draft. Decided not to over-read this from one page:
 `dict_alif` has unusually small, dense headwords and may be a harder case than the
 other 11 pages. Plan: run the full 12-page batch for both models before judging.
 
 **Bug caught and fixed**: added a `stop_reason` column to the shared run-log schema
-in `ocr_test_common.py`, but `log_run()` only writes a header for a brand-new file —
+in `ocr_test_common.py`, but `log_run()` only writes a header for a brand-new file:
 since `ocr_runs_log.csv` already existed (header-only, from the earlier wipe), it
 kept the *old* 8-column header while new rows wrote 9 columns. Caught by manually
 re-verifying the log matched what was actually sent, after being asked directly
@@ -418,7 +483,7 @@ written to.
 
 **Model catalog research, for later reference**: confirmed via AWS's own model
 cards (not the console's summary blurbs, which have twice now omitted real
-capabilities — Claude and Llama 4 both show as text-only in some console list views
+capabilities: Claude and Llama 4 both show as text-only in some console list views
 despite genuinely supporting images) that Llama 4 Maverick supports image input +
 Converse API, but needs the cross-region ID (`us.meta.llama4-maverick-17b-instruct-v1:0`)
 since it's not available in-region for `us-east-1`. Also identified Pixtral Large,
@@ -432,25 +497,25 @@ won't reliably follow a transcription prompt).
 
 ---
 
-## 2026-08-04 — Settings weren't controlled at all; fixed, logged, re-ran, verdict unchanged
+## 2026-08-04: Settings weren't controlled at all; fixed, logged, re-ran, verdict unchanged
 
 Asked directly: "which settings are you running these models with? Is thinking on?
-Is effort High?" Honest answer at the time: none of that had been explicitly set —
+Is effort High?" Honest answer at the time: none of that had been explicitly set:
 the Bedrock `converse()` calls only passed `modelId` and `messages`, nothing else.
 Real gap, worth researching properly rather than guessing.
 
 **Findings, checked against AWS's/Google's own docs, not assumed:**
-- Claude's extended thinking is opt-in — off unless explicitly requested. It was off.
-- **Haiku 4.5 doesn't support the adaptive-thinking/effort parameter at all** —
+- Claude's extended thinking is opt-in: off unless explicitly requested. It was off.
+- **Haiku 4.5 doesn't support the adaptive-thinking/effort parameter at all**:
   confirmed against AWS's own docs; that feature is limited to Opus 4.6+/5-tier and
   Sonnet 4.6. "Is effort High?" doesn't apply to Haiku 4.5 as a question.
-- Temperature was never set, so it used the API default (1.0 for Claude/Anthropic —
+- Temperature was never set, so it used the API default (1.0 for Claude/Anthropic:
   non-deterministic sampling, a bad fit for an exact-copy task).
 - **Gemini is the opposite case**: Google's own Gemini 3 docs explicitly warn
   *against* changing temperature from its default of 1.0 ("may cause looping or
   degraded performance"). So the three models now deliberately use *different*
-  settings, not matched ones — Claude/Qwen get `temperature=0`, Gemini keeps its
-  default — and that asymmetry is logged explicitly rather than left implicit.
+  settings, not matched ones: Claude/Qwen get `temperature=0`, Gemini keeps its
+  default: and that asymmetry is logged explicitly rather than left implicit.
 - Gemini 3.6 Flash's own default `thinking_level` is already `"minimal"`, i.e.
   close to what an OCR task wants anyway.
 
@@ -469,33 +534,33 @@ files deleted rather than kept, since they're fully superseded).
 
 **Result: temperature=0 did not fix the quality problem.** Haiku 4.5 still
 substitutes placeholder characters for headwords it can't read (this time `Ī`, a
-Latin letter that isn't even valid in this script — a different placeholder than the
+Latin letter that isn't even valid in this script: a different placeholder than the
 earlier smoke test's `ئ`, meaning it's not a fixed/deterministic substitution
 either). Qwen3-VL still shows the same character-order corruption pattern. This
 points away from "unlucky high-temperature sampling" as the explanation and toward
 a genuine capability gap on this specific page's small, dense headwords, at least
 for these two models.
 
-**Gemini's result on the same page, same settings-rigor, is a clean pass** —
+**Gemini's result on the same page, same settings-rigor, is a clean pass**:
 correctly transcribed headwords throughout (`آپ ہُدرو` matches the known-correct
 reading exactly), no placeholder substitutions. Also **directly confirms an earlier
 open question**: with `thinking_level=low` explicitly set, Gemini's `total_tokens`
 now exactly equals `input + output` (no more of the unexplained gap noted on
-2026-08-04 earlier — "total_tokens noticeably higher than input+output" — that was
+2026-08-04 earlier: "total_tokens noticeably higher than input+output": that was
 the model thinking by default, now resolved).
 
-Scope held to these 2 pages only, per instruction — not extending to the full 12
+Scope held to these 2 pages only, per instruction: not extending to the full 12
 until this is understood.
 
 ---
 
 ---
 
-## 2026-08-04 — Haiku 4.5 and Qwen3-VL shelved
+## 2026-08-04: Haiku 4.5 and Qwen3-VL shelved
 
 Both failed on both test pages (`dict_alif`, `gojri_adbiyaat`), under identical,
 controlled conditions (same cropped images, same v1 prompt, temperature=0, logged
-settings) where Gemini 3.6 Flash succeeded on the exact same inputs — so this isn't
+settings) where Gemini 3.6 Flash succeeded on the exact same inputs: so this isn't
 a settings, prompt, or image-quality issue, it's the models themselves. Decision:
 **stop using both going forward.** Full outputs preserved for the record in
 `data/gold/transcriptions_archived/<page_id>/` rather than deleted, so the evidence
@@ -509,18 +574,18 @@ correction, before the file was later wiped from the working copy):**
 | `وِچ چھوڑا کے عمر گزری، دتو تیں نہ کدے دیدار مِناں` | `ویچ ویڑھو کے عم گردی، ڑو تھیں یک کے دھار دھیال` | *(not tested on this exact line)* |
 | `جان میری تیرے باجھ چلی سجنا لائی پریت نا توڑئیے نہ` | `جان میری تھیرے پاچھے جھلی پیت تونے ند` | `جان میری تیرے باجھ چلی بیتا لائی پریت نا توڑے نہ` |
 
-Haiku's first example isn't a near-miss with a few wrong diacritics — most of the
+Haiku's first example isn't a near-miss with a few wrong diacritics: most of the
 words are simply different. Qwen3-VL's second example is structurally closer (right
 number of words, right general shape) but still swaps real words (`سجنا`→`بیتا`)
 and drops the recurring `-ئیے` radif ending the same way the very first, informal
-Sonnet draft did back at the start of this project — that specific ligature
+Sonnet draft did back at the start of this project: that specific ligature
 (hamza-bearing yeh in a verb ending) seems to be a genuinely hard case across
 multiple models now, not just one.
 
-**`dict_alif` (dictionary layout) — different failure shape entirely**: both models
+**`dict_alif` (dictionary layout): different failure shape entirely**: both models
 substitute a placeholder character for headwords they can't read, rather than
 attempting a (possibly wrong) reading. Haiku used `ئ` in the first smoke test and
-`Ī` — not even a character that belongs in this script — in the controlled rerun of
+`Ī`: not even a character that belongs in this script: in the controlled rerun of
 the identical page. Not a consistent substitution, which suggests genuine
 uncertainty/failure rather than a deterministic quirk.
 
@@ -534,10 +599,10 @@ Sonnet 5, per updated plan.
 
 ---
 
-## 2026-08-04 — Kimi K2.5, Llama 4 Maverick, Pixtral Large tested
+## 2026-08-04: Kimi K2.5, Llama 4 Maverick, Pixtral Large tested
 
 Verified all three against their actual AWS model cards before running anything
-(same discipline as Qwen3-VL/Llama 4 earlier) — all three support image input via
+(same discipline as Qwen3-VL/Llama 4 earlier): all three support image input via
 the Converse API. Kimi K2.5 (`moonshotai.kimi-k2.5`) is in-region for `us-east-1`;
 Llama 4 Maverick and Pixtral Large both need the cross-region ID
 (`us.meta.llama4-maverick-17b-instruct-v1:0`,
@@ -545,37 +610,37 @@ Llama 4 Maverick and Pixtral Large both need the cross-region ID
 Same settings discipline as before: temperature=0, explicit max_tokens, no
 thinking, all logged.
 
-**Kimi K2.5 — the best non-Gemini result so far.** On `dict_alif`, it correctly
+**Kimi K2.5: the best non-Gemini result so far.** On `dict_alif`, it correctly
 read `آپ خُودرو` (matches the known-correct gold reading exactly) where every other
 non-Gemini model tested has gotten this specific entry wrong. No placeholder-
 character substitutions anywhere in either page. Still has real, ordinary OCR
 errors (missing/wrong diacritics, occasional wrong word), but nothing like the
 severity seen from Haiku/Qwen3-VL. Worth carrying forward as a real candidate.
 
-**Llama 4 Maverick — mixed, closer to Haiku's failure mode than Kimi's.**
+**Llama 4 Maverick: mixed, closer to Haiku's failure mode than Kimi's.**
 Still substitutes a placeholder (`˜`, a tilde, twice on `dict_alif`) for headwords
 it can't read, and mangles some phrases significantly. Notably more expensive too:
 ~4,520 input tokens per page vs. ~1,450-1,800 for every other model tested on the
-same cropped images — its image tokenization is markedly less efficient. Not ruled
+same cropped images: its image tokenization is markedly less efficient. Not ruled
 out yet, but the weakest of the three new candidates.
 
-**Pixtral Large — a worse failure than anything seen yet, and a different kind of
+**Pixtral Large: a worse failure than anything seen yet, and a different kind of
 danger.** On `dict_alif` it invented fabricated example sentences not on the page
-(`آپنے گھوڑے کو کیا نام رکھا؟` — "What did you name your horse?" — pure invention)
+(`آپنے گھوڑے کو کیا نام رکھا؟`: "What did you name your horse?": pure invention)
 and appended a stray ` ``` ` markdown fence, violating the prompt's explicit
 plain-text-only rule. On `gojri_adbiyaat` it did something much worse: **produced
 an entirely fabricated, fluent, coherent Urdu parable about a boy refusing food, a
-sadhu searching for a cow, and a monkey eating fruit — none of which has anything
+sadhu searching for a cow, and a monkey eating fruit: none of which has anything
 to do with the actual poem on the page.** This is exactly the "confident-but-wrong"
 hallucination risk flagged early in this project (`CLAUDE.md`'s OCR pipeline plan,
 point 7): Tesseract-style engines fail visibly; this failed by inventing plausible,
 complete, unrelated content. Arguably more dangerous than Haiku/Qwen3-VL's garbling,
 since a less careful review pass could mistake fluent invented prose for a real
-(if imperfect) transcription. **Recommending this one be shelved too** — flagging
+(if imperfect) transcription. **Recommending this one be shelved too**: flagging
 for confirmation rather than deciding unilaterally, given how much this changes the
 picture, but the evidence is strong.
 
-**Cost note**: token usage varies a lot by model on the *identical* cropped image —
+**Cost note**: token usage varies a lot by model on the *identical* cropped image:
 Kimi ~1,764 input tokens/page, Pixtral ~3,439, Llama 4 Maverick ~4,520. Image
 tokenization efficiency isn't uniform across providers, which will matter for the
 eventual 14,550-page cost extrapolation regardless of which model(s) get chosen.
@@ -584,25 +649,25 @@ eventual 14,550-page cost extrapolation regardless of which model(s) get chosen.
 
 ---
 
-## 2026-08-04 — Pixtral Large and Llama 4 Maverick shelved
+## 2026-08-04: Pixtral Large and Llama 4 Maverick shelved
 
 Same process as Haiku 4.5/Qwen3-VL: outputs archived to
 `data/gold/transcriptions_archived/<page_id>/` rather than deleted, reasons
 documented here with examples, both stop being used going forward.
 
-**Pixtral Large**: shelved for fabrication, not just inaccuracy — on
+**Pixtral Large**: shelved for fabrication, not just inaccuracy: on
 `dict_alif` it invented an example sentence not on the page
 (`آپنے گھوڑے کو کیا نام رکھا؟`, "What did you name your horse?") and appended a
 stray markdown code fence; on `gojri_adbiyaat` it produced a complete, fluent,
 entirely fabricated Urdu parable (a boy refusing food, a sadhu searching for a
 cow, a monkey eating fruit) with no connection to the actual poem on the page.
 Confident, coherent, and wrong is a worse failure mode for this project than
-visible garbling — it's exactly the silent-hallucination risk flagged early on in
+visible garbling: it's exactly the silent-hallucination risk flagged early on in
 `CLAUDE.md`.
 
 **Llama 4 Maverick**: shelved for the same placeholder-substitution pattern as
 Haiku (`˜` in place of unreadable headwords on `dict_alif`) plus a practical cost
-problem — it used ~4,520 input tokens per page on the identical cropped image that
+problem: it used ~4,520 input tokens per page on the identical cropped image that
 Kimi K2.5 processed in ~1,764, roughly 2.5x more expensive for a weaker result.
 
 **Currently active candidates**: Gemini 3.6 Flash (clean on both pages tested) and
@@ -613,30 +678,30 @@ as the next test.
 
 ---
 
-## 2026-08-04 — DeepSeek-OCR: tried, hit a real dead end (for now)
+## 2026-08-04: DeepSeek-OCR: tried, hit a real dead end (for now)
 
 Wanted to try `deepseek-ai/DeepSeek-OCR` (open-source, MIT-licensed, OCR-specialized
-vision model — first surfaced when researching DeepSeek earlier). Checked properly
+vision model: first surfaced when researching DeepSeek earlier). Checked properly
 rather than assume it'd just work:
 
-- **No Hugging Face MCP tool available in this session** — checked directly via
+- **No Hugging Face MCP tool available in this session**: checked directly via
   `ListMcpResourcesTool`; only Firebase and an Indeed connector are actually
   configured here, despite HF MCP apparently being set up somewhere else.
-- **No official Hugging Face Inference Provider for this model** — its own model
+- **No official Hugging Face Inference Provider for this model**: its own model
   page states plainly: "This model isn't deployed by any Inference Provider."
-- **Not on Bedrock either** — Bedrock's DeepSeek offering is limited to
+- **Not on Bedrock either**: Bedrock's DeepSeek offering is limited to
   `DeepSeek V3.2`/`V3.1`/`R1`, the same text-only chat/reasoning models already
   confirmed to lack image support. DeepSeek-OCR is a separate project Bedrock
   doesn't host.
 - **Community Gradio Spaces**: found a working, callable API on
   `prithivMLmods/DeepSeek-OCR-experimental` (confirmed via `gradio_client`'s
-  `view_api()` — schema loaded cleanly). But actually calling it failed with an
+  `view_api()`: schema loaded cleanly). But actually calling it failed with an
   opaque server-side `AppError` every time: with and without HF auth (user added
   `HUGGING_FACE_ACCESS_TOKEN` to `.env` specifically to test this), across two
   different task modes (`Free OCR`, `Convert to Markdown`). A second Space
   (`khang119966/DeepSeek-OCR-DEMO`) failed identically; a third
   (`akhaliq/DeepSeek-OCR`) was outright broken (`RUNTIME_ERROR` state). Checked the
-  working Space's actual source (`app.py`) rather than keep guessing blindly — the
+  working Space's actual source (`app.py`) rather than keep guessing blindly: the
   OCR function is decorated `@spaces.GPU`, Hugging Face's shared "ZeroGPU"
   allocation system, which has its own quotas/reliability issues independent of
   anything on our side. Also worth noting even if it had worked: this demo's API
@@ -658,7 +723,7 @@ local GPU first (none: no `nvidia-smi`, no CUDA), then built
 correctly rather than hand-typed into notebook JSON). Verified against the actual
 model card rather than guessed: DeepSeek-OCR is 3B params (comfortably fits a free
 Colab T4's 16GB VRAM in bfloat16), loads via `transformers` with
-`trust_remote_code=True`, and — importantly, unlike the Gradio demos — its real
+`trust_remote_code=True`, and: importantly, unlike the Gradio demos: its real
 prompt format is `"<image>\n"` + free-text instruction, so **the full v1 prompt can
 actually be sent**, making this a genuinely controlled, comparable run if it works.
 Includes a fallback to eager attention if `flash-attn` fails to build, a common
@@ -670,7 +735,7 @@ back, same pattern as the manual Sonnet/Haiku chat-session runs.
 
 ---
 
-## 2026-08-05 — Documentation sync pass after the "datasets/" reorg
+## 2026-08-05: Documentation sync pass after the "datasets/" reorg
 
 User reorganized dataset folders (`Gojri Language Corpus/` and `cv-corpus-.../` now
 under `datasets/`; `PDFs/` lowercased to `pdfs/`) and asked for docs to be
@@ -705,23 +770,23 @@ guessing which ones mattered - found and fixed:
 
 ---
 
-## 2026-08-05 — GPT ruled out; Sonnet 5 blocked on AWS Sales; Sonnet 4.6 standing in; CloudWatch logging set up
+## 2026-08-05: GPT ruled out; Sonnet 5 blocked on AWS Sales; Sonnet 4.6 standing in; CloudWatch logging set up
 
 **GPT considered for the comparison, ruled out.** Checked directly against Bedrock
 (`list-foundation-models`) rather than assuming: the only OpenAI models on Bedrock
 are the open-weight `gpt-oss-120b`/`20b` (+ `-safeguard` variants), which are
 **text-only, no image input modality**. The actual vision-capable GPT models
 (GPT-4o/4.1/5) aren't on Bedrock at all, only via OpenAI's own API or Azure OpenAI.
-Can't do OCR through Bedrock with GPT — skipped.
+Can't do OCR through Bedrock with GPT: skipped.
 
-**Sonnet 5 access — a real saga, still unresolved.** `anthropic.claude-sonnet-5`
+**Sonnet 5 access: a real saga, still unresolved.** `anthropic.claude-sonnet-5`
 appears in the account's model catalog but every invocation returned
 `AccessDeniedException`, worded differently from the ordinary "model access not
 enabled" error: *"...contact AWS Sales."* Chased this properly rather than assuming
 it was unfixable:
 - AWS retired the old "Model access" console page; access is now self-service via
   IAM + a one-time `PutUseCaseForModelAccess` API call for Anthropic models.
-- First attempt at that API failed validation repeatedly — turned out `intendedUsers`
+- First attempt at that API failed validation repeatedly: turned out `intendedUsers`
   must be the literal string `"0"`/`"1"`/`"2"` (Internal/External/Both), not a
   free-text description, per AWS's own SDK docs (not obvious from the API reference
   alone, which only documents `formData` as an opaque blob).
@@ -730,14 +795,14 @@ it was unfixable:
   `CreateFoundationModelAgreement` → `GetFoundationModelAvailability`. End state:
   **every status field reports `AVAILABLE`/`AUTHORIZED`**
   (`agreementAvailability`, `authorizationStatus`, `entitlementAvailability`,
-  `regionAvailability` all green) — yet `Converse` still returns the identical
+  `regionAvailability` all green): yet `Converse` still returns the identical
   Sales-gated `AccessDeniedException`. Confirms this is a genuine Sales-only gate,
   not a missed self-service step; the self-service path is fully exhausted.
 - **Decision: emailed AWS Sales** (`aws.amazon.com/contact-us/sales-support`) with
-  the account ID, model ID, and this exact evidence trail. Response pending —
+  the account ID, model ID, and this exact evidence trail. Response pending:
   **Sonnet 5 is deferred until access clears**, not abandoned.
 - **Standing in: Sonnet 4.6** (`us.anthropic.claude-sonnet-4-6`, cross-region
-  profile — the plain `anthropic.claude-sonnet-4-6` ID fails since it needs
+  profile: the plain `anthropic.claude-sonnet-4-6` ID fails since it needs
   provisioned throughput, not on-demand). No access gate, works immediately.
 
 **Ran Sonnet 4.6 on both gold pages, plus filled a gap**: `gojri_adbiyaat` was
@@ -750,49 +815,49 @@ support adaptive-thinking/effort).
 **Side quest: AWS account hygiene**, prompted by working through the Sonnet 5 access
 flow:
 - Set up **Bedrock model invocation logging** to CloudWatch (`bedrock-logs-role`,
-  log group `/aws/bedrock/model-invocations`) — hit and fixed two real
+  log group `/aws/bedrock/model-invocations`): hit and fixed two real
   misconfigurations along the way (trust policy vs. permissions policy pointing at
   the wrong log group name; the log group not existing yet). Confirmed live via
   `get-model-invocation-logging-configuration`.
 - Confirmed `ai_agent_user` (the identity all these scripts run as) has **no IAM
-  permissions at all** — deliberately scoped to Bedrock only, confirmed by testing
+  permissions at all**: deliberately scoped to Bedrock only, confirmed by testing
   (every `iam:*` call denied). Recommended, and user is trimming, its 9 attached
   AWS-managed policies down to 2 (`AmazonBedrockFullAccess` +
   `AmazonBedrockMarketplaceAccess`, the only ones anything this session actually
-  used) — the rest (AgentCore, Web Search, DataZone policies) were unused surface
+  used): the rest (AgentCore, Web Search, DataZone policies) were unused surface
   area.
 - User separately cancelled a Sonnet 4.5 subscription by hand (a different tangent
-  from earlier in the session, now moot — no deny policy needed).
+  from earlier in the session, now moot: no deny policy needed).
 
 ---
 
-## 2026-08-05 — Cross-model correction converges the gold text; Kimi's verdict revised; file convention fixed
+## 2026-08-05: Cross-model correction converges the gold text; Kimi's verdict revised; file convention fixed
 
 **Correction workflow used, worked well**: you hand-corrected Gemini's and Sonnet
 4.6's outputs on both gold pages *independently* (each against the source image,
 without looking at the other model's correction). Comparing the two afterward
-turned out to be a genuinely useful technique, not just a formality — where two
+turned out to be a genuinely useful technique, not just a formality: where two
 independently-corrected versions of the same page agree, that's strong evidence
 it's actually right; where they disagree, that's a real remaining ambiguity worth a
 second look at the image, not noise. This is the practical version of the
 **ensembling** idea (independent samples converging on the truth more reliably than
-any single one) that came up when you asked about re-prompting for a second pass —
+any single one) that came up when you asked about re-prompting for a second pass:
 see below.
 
 **`gojri_adbiyaat`: fully converged.** Started with 7 real word/diacritic-level
 disagreements between the two corrected versions (not counting pure spacing/line-
 break differences). Resolved all 7 against the source image:
 - `تڑفتا نا` (not `تڑفا نا`), `کچر دو ہلتا` (not `کچڑ دوہلتا`), `پھرنہ ایویں` (not
-  `پھرنا ایویں`) — real word-level fixes, not diacritics.
-- `کچرتک`→`کچر تک` and `گوہوں`→`گو ہوں` — two words, written closely together on
+  `پھرنا ایویں`): real word-level fixes, not diacritics.
+- `کچرتک`→`کچر تک` and `گوہوں`→`گو ہوں`: two words, written closely together on
   the page (a real spacing decision, not visible from the text alone).
-- `چارو کار`→`چاروکار` and `کومار`→`کو مار` — the opposite spacing call on two
+- `چارو کار`→`چاروکار` and `کومار`→`کو مار`: the opposite spacing call on two
   *other* close-set word pairs. Notable: spacing on tightly-kerned Nastaliq word
   pairs isn't a consistent rule you can guess at from general knowledge of the
-  script — each pair needed an actual look at the image.
+  script: each pair needed an actual look at the image.
 - Kasra confirmed absent on `پرواز` (Sonnet's corrected version had incorrectly
   added one).
-- `و: مولوی غلام رسول ڈوئی` confirmed as one line, not two — a line-break question,
+- `و: مولوی غلام رسول ڈوئی` confirmed as one line, not two: a line-break question,
   not a word-content one.
 
 End state: **27 of 27 content lines now word-for-word identical** between Gemini's
@@ -803,15 +868,15 @@ remains (tab vs. spaces in the header line), left unresolved as genuinely trivia
 across two follow-up rounds:
 - Word order `الف ، ا` (not `ا ،الف`); `تاں` (not `تان`); `چھاں` (not `چھان`).
 - `بدھیکی` (do-chashmi `ھ`), confirmed by you directly. Same letter pair as the
-  already-resolved `ھُدرو`/`هُدرو` case (U+06BE vs U+0647 — verified by pulling
+  already-resolved `ھُدرو`/`هُدرو` case (U+06BE vs U+0647: verified by pulling
   exact codepoints, not eyeballing it), now settled on **two separate words on
   this page**, both correctly do-chashmi. Linguistically this isn't a stylistic
   choice: do-chashmi heh specifically marks aspiration (`دھ`, `بھ`, `تھ`, `کھ`,
   `پھ`), a real phonetic feature plain Arabic heh doesn't encode.
-- **`eg:`/`lpp:` prefix placement — checked directly against the source image**,
+- **`eg:`/`lpp:` prefix placement: checked directly against the source image**,
   not inferred from the text alone. The `lpp:` line settles it unambiguously: `lpp:`
   sits at the visual right (read first in the page's right-to-left flow), the Gojri
-  proverb in the middle, `To invite trouble.` at the far left (read last) — and
+  proverb in the middle, `To invite trouble.` at the far left (read last): and
   Sonnet's version already matched this exactly, while Gemini's had the order
   flipped *and* was missing `To invite trouble.` entirely. Same structural logic
   (a label must precede what it introduces) applies to the `eg:` line and the
@@ -821,29 +886,29 @@ across two follow-up rounds:
   but reasonably clear: `آبش` is one word (not `آ بش`); `چنگا تے` is two words
   (not `چنگاتے`).
 
-**Both remaining items resolved — turned out to be a scope question, not an
+**Both remaining items resolved: turned out to be a scope question, not an
 ambiguity.** Both disputed spaces were between Gojri text and an *English*
 annotation (`آپ` vs `(aap)`; `head-strong.` vs `اپ ھُدرو`), not between two Gojri
 words. **New standing rule, given directly, worth keeping for every future page**:
-spacing around English glosses/transliterations isn't a correction concern —
+spacing around English glosses/transliterations isn't a correction concern:
 only spacing *between Gojri words* carries real meaning and is worth the effort to
 verify against the image. On the actual Gojri content: `آپ` is confirmed one word,
-`اپ ھُدرو` confirmed two words — both files already had this right. **`dict_alif`
+`اپ ھُدرو` confirmed two words: both files already had this right. **`dict_alif`
 is therefore fully converged**, same as `gojri_adbiyaat`, no content-level
 disagreement left on either gold page tested so far. Files intentionally left as-is
 (differing only in the out-of-scope English-adjacent spacing) rather than forced
-to match, since forcing a false match isn't the goal — not disagreeing on anything
+to match, since forcing a false match isn't the goal: not disagreeing on anything
 that matters is.
 
 **One heh-confusion case fully settled, worth recording since it's recurred across
 multiple models now**: on the `آپ خُودرو` dictionary entry, do-chashmi heh (`ھ`,
 two-eyed heh, marks aspiration) is the correct reading for the trailing `اپ ھُدرو`,
 not plain heh (`ه`/`ہ`). Gemini, Sonnet 4.6, *and* Kimi K2.5 (see below) all
-independently got this specific letter wrong before correction — the clearest single
+independently got this specific letter wrong before correction: the clearest single
 piece of evidence yet that this specific ligature is a genuine, repeated model
 weakness, not an isolated slip by one model.
 
-**Kimi K2.5 checked against the now-converged gold text — revises the earlier
+**Kimi K2.5 checked against the now-converged gold text: revises the earlier
 verdict, and not in Kimi's favor.** The 2026-08-04 entry called Kimi "the best
 non-Gemini result so far," but that was based on one overlapping dictionary entry,
 not a full-page comparison against a real, doubly-confirmed gold standard. With one
@@ -851,25 +916,25 @@ now available:
 - **`dict_alif`: still holds up reasonably.** The specific `آپ خُودرو` headword
   read that the earlier entry praised is still correct. New finding from the full-page
   diff: a real, repeated **ک (kaf) for گ (gaf) substitution, six times on one
-  page** (`لک`×3 for `لگ`; `چنکا`/`جک`/`چنکو` for `چنگا`/`جگ`/`چنگو`) — systematic,
+  page** (`لک`×3 for `لگ`; `چنکا`/`جک`/`چنکو` for `چنگا`/`جگ`/`چنگو`): systematic,
   not scattered noise, and not something the earlier single-entry spot-check could
   have caught.
 - **`gojri_adbiyaat`: substantially worse than the earlier verdict implied.**
   Real word substitutions throughout, not just dropped diacritics:
   `عرض` ("plea") misread as `عرش` ("throne") twice, consistently; the recurring
   nasalized `ں` ending misread almost everywhere (`مِناں`→`منان`,
-  `کھڈیال`→`کڈیاں`, `بھیال`→`بھیاں`); and — notably — Gojri's distinctive `-و`
+  `کھڈیال`→`کڈیاں`, `بھیال`→`بھیاں`); and: notably: Gojri's distinctive `-و`
   word ending repeatedly normalized toward Urdu's `-ے` (`میرو`→`میرے`,
   `تیرا`→`تیرے`), which is exactly the failure mode the canonical prompt's rule 3
   explicitly warns against. Also got two proper nouns/titles wrong (`ڈاکٹر`
   ["Doctor"] misread as `ذاکر`, a name; `ڈوئی`→`ڈولی`).
 - **Your read, after seeing this**: Kimi isn't right for this comparison. **Decision:
-  Kimi K2.5 shelved** — moved to `transcriptions_archived/` (both pages'
+  Kimi K2.5 shelved**: moved to `transcriptions_archived/` (both pages'
   `_original.txt`, never corrected, kept for the record like the other shelved
   models), same treatment as Haiku 4.5/Qwen3-VL/Llama 4 Maverick/Pixtral Large
   earlier. Not used going forward.
 - **Practical implication, for the record even though Kimi's shelved now**: its
-  quality wasn't uniform across genres — solid dictionary-layout OCR, weak poetry
+  quality wasn't uniform across genres: solid dictionary-layout OCR, weak poetry
   OCR. Worth remembering generally that the 14,761-page
   workload isn't one genre, so a single averaged verdict per model may not be the
   right way to pick a model going forward.
@@ -884,41 +949,41 @@ output → final corrected text):
 
 Gemini needed less correction on `dict_alif` specifically (mostly one typo);
 Sonnet needed a real word swap and a duplicated/misordered entry on top of the same
-diacritic drops. Roughly equal effort on `gojri_adbiyaat` for both, and — more
-interesting than the raw count — both models independently landed on the *same*
+diacritic drops. Roughly equal effort on `gojri_adbiyaat` for both, and: more
+interesting than the raw count: both models independently landed on the *same*
 correct reading for several genuinely hard spots (the `ھُدرو` heh, `پھرنہ`) without
 being told, which is a real (if small-sample) positive signal for both.
 
 **Re-prompting / few-shot, discussed, deferred for now.** Simply re-running the
-identical prompt on the same model again isn't a real strategy here — Sonnet runs
+identical prompt on the same model again isn't a real strategy here: Sonnet runs
 at `temperature=0` (won't meaningfully vary between runs) and Gemini's variation
 (kept at its own default, per the 2026-08-04 entry) is uncontrolled luck, not a
 technique. What *did* work, concretely, is what this session just did by hand:
 comparing independently-corrected outputs from two different models and trusting
-convergence — a real instance of **ensembling**. **Few-shot prompting** (embedding
+convergence: a real instance of **ensembling**. **Few-shot prompting** (embedding
 1-2 worked image+correct-transcription examples directly in the prompt, distinct
 from both of the above) is a genuinely different idea worth testing once there's
-more corrected gold data to draw a fair example from — **decision: revisit once
+more corrected gold data to draw a fair example from: **decision: revisit once
 more pages are corrected**, not now, and any test needs the few-shot example to be
 a *different* page than the one being scored, or it's not a real test.
 
 **File convention fixed, going forward**: corrections were being made *in place*
 (overwriting the raw model output), which meant the true original could only be
-recovered via `git show` against the last commit before correction started — worked
+recovered via `git show` against the last commit before correction started: worked
 this time only because the raw outputs happened to have just been committed.
-**Changed**: every page/model now gets two separate files —
+**Changed**: every page/model now gets two separate files:
 `<page>_<model>_<version>_original.txt` (raw, from the automated test scripts,
-never hand-edited — `ocr_test_common.py`'s `output_path()` now enforces the
+never hand-edited: `ocr_test_common.py`'s `output_path()` now enforces the
 `_original` suffix automatically) and `<page>_<model>_<version>_corrected.txt`
 (hand correction, added separately, only once review is actually done). Applied
-retroactively to all 3 active models on both gold pages tested so far — recovered
+retroactively to all 3 active models on both gold pages tested so far: recovered
 the 4 Gemini/Sonnet originals from git history, renamed the corrected files, and
 renamed Kimi's still-uncorrected file to `_original` (it was already the original,
 nothing to split).
 
 ---
 
-## 2026-08-06 — kahawat_kosh + gojri_ghazal: raw runs, gojri_ghazal fully converged
+## 2026-08-06: kahawat_kosh + gojri_ghazal: raw runs, gojri_ghazal fully converged
 
 Ran Gemini 3.6 Flash and Sonnet 4.6 on the next two gold pages, same v1 prompt.
 `ocr_test_common.py`'s `_original` suffix fix worked as intended - both models'
@@ -961,7 +1026,7 @@ between the two corrected files. All three gold pages tested so far
 
 ---
 
-## 2026-08-07 — kahawat_kosh corrected and converged; punctuation-spacing rule added
+## 2026-08-07: kahawat_kosh corrected and converged; punctuation-spacing rule added
 
 **Same in-place-edit mistake a third time**, on `kahawat_kosh` this round -
 recovered the same way as `gojri_ghazal` (not committed yet, so no data lost;
@@ -1009,7 +1074,7 @@ Gemini 3.6 Flash and Sonnet 4.6.
 
 ---
 
-## 2026-08-10 — mahatma_gandhi + kulyate spread run; kulyate_spread_a_right converged
+## 2026-08-10: mahatma_gandhi + kulyate spread run; kulyate_spread_a_right converged
 
 **Ran both models on the next two pages**: `mahatma_gandhi` (illustration +
 caption test) and the `kulyate_spread` two-page spread (`_a_right` + `_b_left`,
@@ -1060,7 +1125,7 @@ files) - a layout detail cross-model agreement alone couldn't have surfaced.
 
 ---
 
-## 2026-08-11 — mahatma_gandhi + kulyate_spread_b_left corrected
+## 2026-08-11: mahatma_gandhi + kulyate_spread_b_left corrected
 
 **In-place-edit mistake, fifth recurrence** - same as every page since the
 convention was introduced. This time both files were already committed, so
@@ -1104,7 +1169,7 @@ exact wording, for the reason above).
 
 ---
 
-## 2026-08-11 — Two new models spot-checked: Cursor Composer 2.5 in, Groq 4.5 Fast out
+## 2026-08-11: Two new models spot-checked: Cursor Composer 2.5 in, Groq 4.5 Fast out
 
 **Groq 4.5 Fast tested via pasted output on 2 pages, ruled out.** Word-level
 diff against gold: 38.6% error rate on `gojri_adbiyaat`, 31.9% on
@@ -1184,19 +1249,19 @@ Gemini/Sonnet can.
 
 ---
 
-## 2026-08-13 — Remaining 5 gold pages: Composer v1 originals only
+## 2026-08-13: Remaining 5 gold pages: Composer v1 originals only
 
 The 7 already-corrected pages had Composer files; the other 5 vision-OCR gold
 pages did not. Ran Composer 2.5 on them with the same frozen `v1` prompt
 (`prompts/ocr_transcription_v1.txt`) so the comparison stays apples-to-apples
 with Gemini/Sonnet's existing v1 runs. Saved as
-`<page>_composer_v1_original.txt` only — no `_corrected.txt` yet, and do not
+`<page>_composer_v1_original.txt` only: no `_corrected.txt` yet, and do not
 edit these in place.
 
 | Page | What it tests | Notes from this raw run |
 |---|---|---|
 | `nazir_spread_a_right` | Second poetry spread, legacy_8bit | Full page: header, title `یاد کراؤں تم نا`, 14 lines with radif `کتنی`, page 139 |
-| `nazir_spread_b_left` | Same spread, lots of true blank | 5 continuing lines, then blank + star ornament, page 140 — the "don't invent content" test |
+| `nazir_spread_b_left` | Same spread, lots of true blank | 5 continuing lines, then blank + star ornament, page 140: the "don't invent content" test |
 | `louk_warsti` | Real scan, show-through | Show-through ignored. One flagged word: `[[لمی]]` on the last line |
 | `shingar_textbook` | Image-only textbook | Two story paragraphs + footer `21 ساتویں کی گوجری کتاب` |
 | `primer_pehli` | Children's primer, captioned pictures | Letter `خ` with four captioned photos; Gojri `خربوزو` (not Urdu `خربوزہ`) kept as written |
@@ -1208,7 +1273,7 @@ also still open.
 
 ---
 
-## 2026-08-13 — Remaining 5 pages: Gemini + Sonnet run, first-pass corrections
+## 2026-08-13: Remaining 5 pages: Gemini + Sonnet run, first-pass corrections
 
 Same day as the Composer-only originals above. Ran Gemini 3.6 Flash and
 Sonnet 4.6 on all 5 remaining images via the metered scripts (`v1` prompt,
@@ -1292,7 +1357,7 @@ Sales-gated. Step 0.4 still open.
 
 ---
 
-## 2026-08-14 — Prompt v2 rewritten for one-shot Gemini/Sonnet
+## 2026-08-14: Prompt v2 rewritten for one-shot Gemini/Sonnet
 
 The earlier `prompts/ocr_transcription_v2.txt` (2026-08-04) was deleted on
 purpose. It had useful layout rules (no skip/repeat on dictionary lines,
@@ -1321,7 +1386,7 @@ Composer v1 files were left in place (chat pipeline, not this prompt bump).
 
 ---
 
-## 2026-08-15 — Nazir spread gold files; first scored pages under new gold rule
+## 2026-08-15: Nazir spread gold files; first scored pages under new gold rule
 
 There is no `nazir_spread_a_left`. The left half is `nazir_spread_b_left`.
 
@@ -1352,7 +1417,7 @@ model rank.
 
 ---
 
-## 2026-08-15 — Direct-extraction pages removed from gold images
+## 2026-08-15: Direct-extraction pages removed from gold images
 
 `hindi_dict` and `quran_translation` are good-text PDFs. They were in the
 gold image folders only as an extraction check, not as vision-OCR pages.
@@ -1365,7 +1430,7 @@ the 12 vision-OCR pages only.
 
 ---
 
-## 2026-08-15 — shingar_textbook gold
+## 2026-08-15: shingar_textbook gold
 
 You image-checked `shingar_textbook_composer_v1_corrected.txt`. Gold is
 `shingar_textbook_gold.txt`. Fixes vs the assistant first-pass: `مِناں`,
@@ -1386,7 +1451,7 @@ printed text and was closer on body spelling, but still wrote Urdu-ish
 
 ---
 
-## 2026-08-15 — louk_warsti and primer_pehli gold
+## 2026-08-15: louk_warsti and primer_pehli gold
 
 You had already image-checked both Composer `_corrected.txt` files. They
 were not copied to `_gold.txt` until now. Gold is
@@ -1403,7 +1468,7 @@ Word error vs gold (same rules; picture lines skipped):
 | Page | gold words | Composer v1 | Gemini v1 | Gemini v2 API | Sonnet 4.6 v1 | Sonnet 4.6 v2 API | Sonnet 5 CC v2 |
 |---|---|---|---|---|---|---|---|
 | `louk_warsti` | 114 | **8.8%** | 13.2% | 15.8% | 26.3% | 28.1% | (skipped) |
-| `primer_pehli` | 50 | **12.0%** | — | 16.0% | — | 28.0% | 44.0% |
+| `primer_pehli` | 50 | **12.0%** |: | 16.0% |: | 28.0% | 44.0% |
 
 v2 did not help the APIs on `louk_warsti` (slightly worse than v1). Sonnet
 still splits Gojri words. Composer still rewrote primer `پچھان`/`تانجے` as
@@ -1414,7 +1479,7 @@ louk, primer.
 
 ---
 
-## 2026-08-15 — First six gold files re-checked; full bake-off vs originals
+## 2026-08-15: First six gold files re-checked; full bake-off vs originals
 
 You re-checked `_gold.txt` for `dict_alif`, `gojri_adbiyaat`, `gojri_ghazal`,
 `kahawat_kosh`, `kulyate_spread_a_right`, and `kulyate_spread_b_left` against
@@ -1443,17 +1508,17 @@ not a bulk-pipeline rank.
 
 | Page | gold words | Composer v1 chat | Gemini latest API | Sonnet 4.6 latest API | Sonnet 5 CC |
 |---|---|---|---|---|---|
-| `dict_alif` | 118 | **11.9%** | 25.4% v1 | 19.5% v1 | — |
-| `gojri_adbiyaat` | 220 | 18.2% | **17.7%** v1 | **17.7%** v1 | — |
+| `dict_alif` | 118 | **11.9%** | 25.4% v1 | 19.5% v1 |: |
+| `gojri_adbiyaat` | 220 | 18.2% | **17.7%** v1 | **17.7%** v1 |: |
 | `gojri_ghazal` | 346 | 14.2% | **12.4%** v1 | 13.3% v1 | 31.2% |
 | `kahawat_kosh` | 182 | **15.9%** | 19.8% v1 | 35.2% v1 | 50.5% |
-| `kulyate_spread_a_right` | 154 | **24.0%** | 30.5% v1 | 42.9% v1 | — |
-| `kulyate_spread_b_left` | 106 | 17.9% | **17.0%** v1 | 26.4% v1 | — |
+| `kulyate_spread_a_right` | 154 | **24.0%** | 30.5% v1 | 42.9% v1 |: |
+| `kulyate_spread_b_left` | 106 | 17.9% | **17.0%** v1 | 26.4% v1 |: |
 | `mahatma_gandhi` | 7 | **0%** | **0%** v1 | **0%** v1 | **0%** |
 | `nazir_spread_a_right` | 190 | **3.7%** | 10.5% v2 | 11.1% v2 | 11.6% |
 | `nazir_spread_b_left` | 79 | **7.6%** | 11.4% v2 | 16.5% v2 | 16.5% |
-| `shingar_textbook` | 224 | **4.9%** | 18.3% v2 | 20.1% v2 | — |
-| `louk_warsti` | 114 | **8.8%** | 15.8% v2 (v1 was 13.2%) | 28.1% v2 (v1 was 26.3%) | — |
+| `shingar_textbook` | 224 | **4.9%** | 18.3% v2 | 20.1% v2 |: |
+| `louk_warsti` | 114 | **8.8%** | 15.8% v2 (v1 was 13.2%) | 28.1% v2 (v1 was 26.3%) |: |
 | `primer_pehli` | 50 | **12.0%** | 16.0% v2 | 30.0% v2 | 44.0% |
 | **Pooled** | **1790** | **12.7% chat** | **17.3% one-shot** | **21.9% one-shot** | 30.1% on 6 pages only |
 
@@ -1519,7 +1584,7 @@ before claiming a prompt-controlled 12-page API rank.
 
 ---
 
-## 2026-08-15 — Bulk vision OCR paused; dual-model agreement is not enough
+## 2026-08-15: Bulk vision OCR paused; dual-model agreement is not enough
 
 You are not confident in Gemini for bulk work and cannot review 14,761 pages.
 That constraint stands. 17.3% one-shot word error would poison a preservation
@@ -1544,7 +1609,7 @@ IndicPhotoOCR gold sets are mostly synthetic lines or scene-text photos.
 
 ---
 
-## 2026-08-15 — One gold file per page; per-model `_corrected.txt` removed
+## 2026-08-15: One gold file per page; per-model `_corrected.txt` removed
 
 Gold is now `transcriptions/<page_id>/<page_id>_gold.txt` only. Copied the
 settled Composer (or existing) gold text onto the seven earlier pages that
@@ -1558,14 +1623,14 @@ Docs updated: `data/gold/README.md`, `scripts/ocr_test_common.py`,
 
 ## Glossary (grows as new terms come up)
 
-- **Token**: the unit a model reads/writes in and is billed by — roughly a
+- **Token**: the unit a model reads/writes in and is billed by: roughly a
   word-piece, not a whole word. Dense Nastaliq text uses more tokens per page than
   the same content in Latin script.
 - **Prompt**: the instructions given to a model alongside its input (here, the image)
-  telling it what to do. Prompt wording measurably affects output quality — part of
+  telling it what to do. Prompt wording measurably affects output quality: part of
   why exact prompts are being logged from now on.
 - **Hallucination**: a model producing a fluent, plausible-looking answer that isn't
-  actually grounded in the real input — dangerous because it fails *silently*,
+  actually grounded in the real input: dangerous because it fails *silently*,
   unlike a traditional OCR engine which tends to fail visibly (blank/garbled) when
   unsure.
 - **Flash vs. Pro (Gemini), Haiku vs. Sonnet (Claude)**: within one model family,
@@ -1595,7 +1660,7 @@ Docs updated: `data/gold/README.md`, `scripts/ocr_test_common.py`,
 
 ---
 
-## 2026-08-15 — Decode-table spike started (PDF glyphs, not InPage .INP)
+## 2026-08-15: Decode-table spike started (PDF glyphs, not InPage .INP)
 
 Public converters target `.INP` files. Our books are already PDFs. Inspected
 two gold pages with `scripts/inspect_pdf_glyphs.py`.
@@ -2062,7 +2127,7 @@ unknown. Re-decoded 1-169. Do not empty-map NOORIC.
 
 ---
 
-## 2026-08-17 — Extract easy text, Batool decode, NOORIN transfer test
+## 2026-08-17: Extract easy text, Batool decode, NOORIN transfer test
 
 Ran the agreed easy path.
 
@@ -2107,7 +2172,7 @@ Extracted and decoded page files stay gitignored.
 
 ---
 
-## 2026-08-18 — Quran extract is not usable text
+## 2026-08-18: Quran extract is not usable text
 
 User checked `data/extracted/.../page-0017.txt`. Direct `get_text`
 is garbage. Confirmed on the PDF, not only the txt file.
@@ -2138,7 +2203,7 @@ OCR: 15,478. Do not copy-paste or `get_text` this Quran PDF.
 
 ---
 
-## 2026-08-18 — Quran GID decode table (Option 1)
+## 2026-08-18: Quran GID decode table (Option 1)
 
 Built a GID table for `QURANIC_TRANSLATION_in_GOJRI_by_Dr_Rafiq.pdf`.
 Key is `FONT:GID` from `get_texttrace`. `rawdict` still crashes
@@ -2175,7 +2240,7 @@ or NOORIN.
 
 ---
 
-## 2026-08-22 — Quran page 16 aligned to screenshot gold
+## 2026-08-22: Quran page 16 aligned to screenshot gold
 
 User screenshot of Surah Fatiha is the gold for page 16 Gojri
 lines. Locked known letters, filled the unknown GIDs in the
@@ -3910,12 +3975,12 @@ Removed ~290 temp batch scripts (`scripts/_tmp*`, `_batch*`, `_insert*`).
 
 | Book | Pages | Placeholders | Pages with PH | Transfer % |
 |---|---|---|---|---|
-| kahawat-kosh (reference) | 169 | 0 on p50 | — | 100% |
+| kahawat-kosh (reference) | 169 | 0 on p50 |: | 100% |
 | aks-e-jamal | 121 | 1,756 | 116/121 | 92.8% |
 | banjara | 496 | 9,178 | 496/496 | 96.5% |
-| gojri-sheryaat | 500 | 7,186 | 490/500 | — |
+| gojri-sheryaat | 500 | 7,186 | 490/500 |: |
 | g-kashmiri-dictionary | 456 | 11,436 | 437/456 | 87.3% |
-| qadim-gojri | 152 | 3,118 | 143/152 | — |
+| qadim-gojri | 152 | 3,118 | 143/152 |: |
 
 **Kahawat p50 (reference):** zero placeholders. Proverb headwords and glosses
 read correctly. Words run together (no spaces) as expected from glyph decode.
@@ -3933,7 +3998,7 @@ Poetry lines partly readable but word order and spacing are unreliable.
 **G-Kashmiri-Dictionary p50:** twenty-two placeholders. Gojri headwords and
 Urdu gloss partly OK; English gloss line is corrupted (`conta5i0ner`).
 
-## 2026-08-31 — NOORIN decode abandoned
+## 2026-08-31: NOORIN decode abandoned
 
 User spot-checked Kahawat-Kosh page 28 against a page screenshot. Decoded text
 did not match the printed page. OCR ground truth vs decode:
@@ -3960,7 +4025,7 @@ font-encoded PDFs is vision OCR.
 
 ---
 
-## 2026-09-01 — Step 0.4: clean-text extraction run
+## 2026-09-01: Step 0.4: clean-text extraction run
 
 Ran `py -3 scripts/extract_clean_text.py`. Output under `data/extracted/`
 (gitignored).
@@ -3986,18 +4051,670 @@ studies content; embedded Arabic quotes broken in `get_text()`; not useful for
 Gojri corpus. PDF deleted; extract folder removed. Manifest: `in_scope=0`,
 `tier=9`.
 
-**User removed `Essential-Book.pdf` (Sep 2026):** same — mostly English Islamic
+**User removed `Essential-Book.pdf` (Sep 2026):** same: mostly English Islamic
 studies, not Gojri corpus. PDF and extract deleted. Manifest `in_scope=0`,
 `tier=9`. `Revival-of-Islam.pdf` still on disk if dropped later.
 
-**User removed `Revival-of-Islam.pdf` (Sep 2026):** same bucket — English
+**User removed `Revival-of-Islam.pdf` (Sep 2026):** same bucket: English
 Islamic studies, not Gojri corpus. PDF and extract deleted. Manifest `in_scope=0`,
 `tier=9`. All three English `good_text` PDFs now dropped. Clean extract corpus
 is Devanagari dictionary (458 pages) + FLI only.
 
-**User removed all tier-9 English PDFs from disk (Sep 2026):** 10 files total —
-ABC-Islamic-Studies, Essential-Book, Revival-of-Islam, Islam-in-the-Modern-World,
-Revisiting-Islam, and Gujjars history vols 1/3/4/5/6. Manifest rows kept with
-`removed_by_user_sep2026`. Gojri-titled books (primers, folklore, etc.) unchanged.
+---
+
+## 2026-10-13: Full Gojri-English Dictionary Pass 2, Audit, and Hugging Face Dataset Publication
+
+1. **Pass 2 Completed Across Full Book (Pages 25–498):**
+   - Processed all 474 body pages using Gemini Flash multimodal refinement on top of Pass 1 Batool PUA font decoding (`data/decode/out/gojri-english-dictionary/page-*-pass2.txt`).
+   - Applied Gojri orthographic rules: `-و` word endings preserved, correct heh forms (`ہ`, `ھ`), proper retroflexes (`ٹ`, `ڈ`, `ڑ`, `ݨ`), fixed `Ipp:`/`1pp:` -> `Ipp.`, and fixed PUA character corruptions.
+
+2. **Full Image-vs-Text Audit (Pages 25–498):**
+   - Verified every single page against the printed page images.
+   - Generated audit records for all 474 pages under `data/decode/out/gojri-english-dictionary/audit/page-*-audit.txt`.
+   - Total dataset yield: 11,767 clean, verified dictionary entry lines across 474 pages.
+
+3. **Hugging Face Dataset Published:**
+   - Dataset repository: `https://huggingface.co/datasets/junaidaslam/gojri-english-dictionary`
+   - Formats included: CSV (`gojri_english_dictionary_pages.csv`), JSONL (`gojri_english_dictionary_pages.jsonl`), and individual per-page text files (`pages/page-0025.txt` to `pages/page-0498.txt`).
+   - Author attribution: Fully credited original author and compiler Dr. Javaid Rahi under CC BY-NC 4.0 license.
 
 ---
+
+## 2026-10-24: Kahawat-Kosh component font test (failed the kill condition)
+
+**Root cause found.** The NOORIN fonts in Kahawat-Kosh.pdf are component fonts.
+One glyph is a dot or a stroke fragment, not a letter. The letter is the group of
+pieces drawn at the same origin. That group is a cluster. The cluster is the
+correct unit, not the glyph. This explains the 98.8 percent word error of the
+August table: it mapped single pieces to characters.
+
+**Column split bug fixed.** The column divider is at x = 215 in trace space. The
+page centre (306) is wrong. Every earlier line extraction took only the right
+50 points of the right column. All line counts and word gap results from before
+this date are void.
+
+**Extraction is correct now.** Right column pieces, dedupe of the double draw,
+row grouping at 12 points, cluster at one origin. A line renders to the printed
+line.
+
+**Vision drafts made.** New script scripts/kahawat_column_ocr.py and prompt
+prompts/kahawat_column_v1.txt. Tight column crop at zoom 4. Gemini 3.6 Flash,
+thinking low. 20 pages: 19 training pages plus page 168, which has no proverbs.
+Free tier limit is 5 requests per minute, so the script waits on 429.
+Draft quality is about 85 to 90 percent. It is supervision, not truth.
+
+**Training attempts on 19 pages (314 lines, 1502 words, 575 cluster types):**
+
+| Model | Result |
+| --- | --- |
+| Hard Viterbi EM, character level | Locks in the first arbitrary cut. Training fit looks perfect, held out WER 0.79 to 1.0. |
+| Soft EM (forward-backward) | Spreads mass over many cuts. Decode shortens. WER 0.69 to 0.89. |
+| Word level table (cluster group to word) | 1151 groups for 1502 words. Almost no group repeats across pages. Held out decode gives 3 words. |
+| Cut fixed by pen advance | Nastaliq advance is not proportional to character count. WER 0.96. |
+
+**Why it fails.** The cluster model can represent the text. With a fitted table,
+lines reproduce exactly. The failure is learning the table from text alone. One
+page cannot determine the table: 218 clusters, 106 types, only 33 seen twice.
+Nineteen pages give about 8 uses per cluster, but the alignment has too much
+freedom and settles on a self consistent wrong cut. Vision text noise (10 to 15
+percent) adds to the problem.
+
+**Kill condition met.** Target was 5 percent word error on the gold page. Measured
+held out word error is 79 to 100 percent. NOORIN decode closes.
+
+**Only remaining route, if it is ever reopened.** Label clusters by shape image,
+not by text alignment. The same drawn shape recurs across sub fonts, so one label
+covers many signatures. A seed of about 50 to 100 hand labels on rendered cluster
+images, then EM. This is a different project and is not started.
+
+## 2026-10-24 (second entry): line-wise OCR
+
+**Trigger.** The user rejected the shape label sheet, because the units came out
+as whole words. Connected letters chain together, and the merge rule joined the
+chain. The user then proposed: one bounding box per printed line, OCR each line,
+then a Gojri correction pass.
+
+**Line sheet built.** Script linesheet_ocr.py (temp work folder). It finds the
+column rule in the rendered page, scans the right column row by row, and groups
+ink rows into line bands with a gap tolerance of 10 px and a minimum height of 12
+px. No coordinate mapping is used. An earlier version mapped the trace box to the
+page box and drifted by one line, because the trace space is not the page space.
+Each line is cropped at zoom 6, scaled into a fixed row of 110 px, and numbered
+in a 150 px left gutter. Page 50 gives 21 rows: the page number plus 20 proverbs.
+
+**One call per page.** Gemini reads the sheet and returns one line per row in the
+form 
+umber|text. All 21 rows came back, in order, with no merge and no drop.
+Prompt rule: keep the row order, never skip a row, transcribe Gojri and not Urdu.
+
+**Measured on page 50 (20 gold lines, 97 gold words):**
+
+| Pass | Word error | Char error | Lines exact |
+| --- | --- | --- | --- |
+| Line sheet, one call | 0.175 | 0.009 | 12 of 20 |
+| Plus model spacing pass | 0.134 | 0.006 | 15 of 20 |
+| Plus dictionary repair | 0.237 | 0.009 | worse |
+
+Character error is measured with diacritics stripped. Word error in the first
+row counts spaces, so a wrong space costs a whole word.
+
+**What the errors are.** Eleven of the thirteen remaining word errors are spaces:
+either a space inserted inside a word, or two words joined. Two are real
+misreads: دبکار read as دبکا ر, and پڑئیٹ read as پڑمیٹ.
+
+**Why the dictionary pass failed.** The word list came from the Gojri-English
+dictionary corpus, 14,455 forms. It also holds Urdu words, so اکھوہ split into
+اکھ and وہ, and پڑئیٹ became پڑ and میٹ. Each rule was measured alone:
+join only 0.175, variant only 0.206, split only 0.278. Every rule hurt or did
+nothing. Normalized matching lifts gold coverage from 77 to 80 percent, and none
+of the 17 missing gold words is a headword.
+
+**Why geometry failed.** Empty-column runs were measured on every line. Letter
+gaps measure 3 to 4 px, word spaces 5 to 12 px, and the ranges overlap. Line 10
+is one word in the gold and shows a 12 px gap. The print itself separates some
+word parts. So the correct split is orthographic, not visual, and the model is
+reading the printed gaps faithfully when it splits a word.
+
+**Quota.** The free tier gives 20 requests per day for gemini-3.6-flash. The
+earlier vision drafts used all of it. gemini-flash-latest kept its own quota
+and ran the two calls for this test. Bulk work at one call per page needs 169
+calls.
+
+**Status.** The route works at character level and stops at word spacing. The
+next step is a Gojri word model, or a human check of spacing against the page.
+
+## 2026-10-25: in-chat read of Kahawat-Kosh page 19
+
+**Trigger.** The 300 DPI page images are ready in `cropped_pages/`. Textract is
+dropped for this book: it does not support Urdu, and its output on the pages was
+not usable. The user asked for OCR in chat.
+
+**Route.** Read the cropped page image in chat, with no API key and no quota.
+Cut the page into line strips, read the strips at 3x, then read every doubtful
+row again at 5x to 8x. Save one file per page. Do not reflow the columns.
+
+**First read against the check read.** The full page view at 1x gave four wrong
+words. The line strips found them:
+`آپ جایات` should be `آب حیات`, `آپ لالے` should be `آبلا کے`, `آپ گا بھری`
+should be `آب گا بھری`, and `دی نقصان دتے` should be `وی نقصان دے`. Gloss 1
+is the water of life. That line confirms `آب حیات` from meaning, not only shape.
+
+**Structure.** Each column has 15 printed rows, and the rows form 14 entries.
+Headword 13 runs over two rows and ends row 13 with `یا`. Gloss 1 runs over two
+rows and ends row 1 without a full stop. Row band midpoints pair headword to
+gloss with a largest drift of 16 px. The blank at headword 14 is real: its row
+has no gloss row beside it. Count the entries, never the rows.
+
+**Still open.** Two words are not settled: `ترم گیرسھانے` in headword 5, and
+`دگو دو` in headword 14. The user has not checked the page. No lexicon
+substitution was applied, because the earlier test showed that it adds errors.
+
+**Files.** `data/decode/out/kahawat-kosh/chat/pages/page-0019.tsv` holds the 14
+pairs. `page-0019.lines.tsv` holds the 30 printed rows for audit. A check script
+confirms that the pairs rebuild exactly from the line file.
+
+## 2026-10-25: gold-rule check of Kahawat-Kosh page 19 at 1200 DPI
+
+**Trigger.** The user said the model "did convert to Urdu" and asked for a check
+against the documented gold rules. The rules are in
+`prompts/ocr_transcription_v2.txt` rule 3, `prompts/kahawat_column_v1.txt`, and
+the gold findings in this log. The gold text is
+`data/gold/transcriptions/kahawat_kosh/kahawat_kosh_gold.txt` page 59.
+
+**One method fault found first.** The earlier "5x" and "8x" strips were false
+zoom. The vision encoder shrinks every image to about 1568 px wide. A 900 px
+strip at 5x becomes 1568 px, so the effective zoom is 1.7x. A soft strip hides
+dots, and a hidden dot turns `ی` into `ے`, `ب` into `پ`, and `گیو` into `گئو`.
+The check pass now renders a narrow clip straight from the PDF at 1200 DPI with
+`page.get_pixmap(clip=rect, matrix=fitz.Matrix(16.6667,16.6667))`. The clip
+stays 300 px wide or less, so the encoder does not shrink it.
+
+**Result: two letter errors, one spacing claim measured.**
+
+| Entry | Before | After | Rule |
+|-------|--------|-------|------|
+| 11 | `آپ توں گئو تے جگ توں گئو۔` | `آپ توں گیو تے جگ توں گیو۔` | Do not add a mark that is not printed. The print has `ی` with two dots below and no hamza. Gold spells `گیو`. |
+| 7 | `آپ اُتھرے تے جگ نالو دینی :` | `آپ اُتھری تے جگ نالو دینی :` | Keep the printed final letter. Two dots sit below the final letter, so it is `ی`, not `ے`. The `ر` and `ی` join in one stroke. |
+
+Entry 3 stays `آب گا بھری`. An ink-run profile at 600 DPI gives three words:
+`آب` then a 10 px gap, `گا` then a 13 px gap, `بھری` then the colon. Letter gaps
+on this page are 3 to 4 px. So the gap is a word gap, and the earlier note that
+called the line connected was wrong.
+
+**What the rules did not change.** The `-و` endings are on the page and stay:
+`چنگو`, `اپنو`, `ہونو`, `لانو`, `دوجاں` keeps its alif. `آب` has one dot, so
+beh. `بہتی` has no `و`, checked at 1200 DPI: the stroke goes from `ب` straight
+into `ہ`. `تھاں` has two dots above, so `ت` not `ٹ`. `کہاڑو` has a `ک`, a `ھ`
+loop, and a `ط` above the `ڑ`. The pairs that read as Urdu are the print, not a
+model error: `جس کا`, `خاطر داری`, `مہمان نوازی`, `بے عمل واعظ`. Gold page 59
+has the same mixed register: `دُوجاں کا درد کو احساس نہیں ہو تو`.
+
+**Still open.** `آپ کرو ترم گیرسھانے دھر یور ہو پانی` (entry 5) stays unread.
+At 1200 DPI the right end shows `آ` plus a bowl with one dot plus a second `آ`,
+which does not fit `آپ کرو` cleanly. `دگو دو` (entry 14) stays open. The pair
+for entry 7 reads odd: a self-effort proverb against a gloss about a preacher
+without deeds. The row geometry supports the pair, so the doubt is in the
+reading, not the pairing.
+
+**Status.** No lexicon substitution. No commit. The user is a native speaker
+and must settle entry 5, entry 7, and entry 14.
+
+## 2026-11-02: synthetic render OCR path opened
+
+**Trigger.** The user asked to study a public Kashmiri pretraining corpus and
+its OCR strategy. The verdict: that corpus was never made by OCR on scans. Its
+text came from decoding legacy desktop-publishing files to Unicode, and its OCR
+data was rendered programmatically from that Unicode text with Nastaliq fonts
+and perfect labels. The strategy class is generic and published (SynthText,
+TrOCR, Donut). The project uses the method only and builds every asset
+itself. The internal action plan is kept in the agent temp area, not committed.
+
+**Phase 0 done and verified.**
+
+- Fonts: `data/synth/fonts/NotoNastaliqUrdu-Regular.ttf` (SIL OFL).
+- Renderer prototype: headless Chrome (Playwright), DOM text, RTL, `lang=ur`.
+  One row per line, numbered sheet from `page-0025-pass2.txt` (the gold-scored
+  dictionary page) and the FLI story `03-Dukh Ki Chaan`.
+- Shaping verified by the user, a native Gojri reader, in chat: the sheet reads
+  perfect. RTL flow, contextual forms, ligatures, and diacritics are correct.
+- Codepoint coverage: 44 of 44 Arabic-script characters in the two test
+  sources have glyphs. Zero missing.
+
+**Decisions.**
+
+- `data/synth/` is gitignored until the user approves a publish.
+- Datasets built from our own decoded text only. No third-party data is merged.
+- The synthetic route does not reopen NOORIN decode tables. It is an OCR
+  training path, separate from decoding.
+
+**Next.** Augmentation suite (rotation, perspective, noise, blur, ink bleed,
+paper texture, scan lines, random erasing) as a Pillow prototype, then the
+line-image generator over the 474 dictionary pages plus FLI texts, then
+real-print pair mining from the dictionary PDF with pass2 lines as labels.
+
+---
+
+**2026-11-03: full synthetic line dataset rendered and validated.**
+
+Second full run after the first run failed silently (all 20,932 images rendered
+as unstyled fallback text because the batch renderer used `class="row"` while
+the stylesheet styled only `#row`). Fixed renderer draws each row with inline
+styles, takes one full-page screenshot per 64-row batch, slices rows from
+recorded bounding boxes, and raises on font-load failure, suspicious screenshot
+width, or crops under 50x30 px. One batch validated visually before rerun.
+
+Output: `data/synth/line_full/` (gitignored). 20,932 rows = 13,704 dictionary
+pages 25-498 + 7,228 FLI story rows; each row 1 clean PNG + 3 degraded copies
+from the approved 15-type mix. 2.0 GB. Health check passed: widths 62-1539 px,
+heights 135-163 px, zero degenerate crops, zero missing files, label file
+complete. Preview sheet reviewed by the user.
+
+Step 5 prep: real-print pair miner written and dry-run validated on 40 sample
+pages (40/40 count matches). Findings from the dry run:
+
+- Pass2 label files are Gemini-repaired (bidi order, glyph fixes, whitespace),
+  so exact string identity with rebuilt decoder text is untestable; pairing is
+  proven by row-count equality instead.
+- Printed folio numbers render as text rows. Late pages (200+) dropped the
+  folio line from pass2, early pages (25-49) kept it. Rule: keep the folio crop
+  row only when the label list itself contains the page number text, else drop
+  it. Without this rule, labels on folio-present pages would pair one line up.
+
+Miner idles until the render finished to avoid CPU collision; launching next.
+Output will go to `data/synth/real_pairs/` with `skipped_pages.json` for review.
+
+---
+
+**2026-11-03: real-print pairs mined (step 5 complete).**
+
+`mine_batool_pairs.py` (temp) mined real-print line crops from the dictionary
+PDF body pages 25-498 with pass2 text as labels. Result:
+`data/synth/real_pairs/`: 11,524 pairs, 0.27 GB, 465 of 474 pages contribute,
+9 pages skipped (`skipped_pages.json`: 55, 94, 95, 194, 221, 237, 238, 335,
+336, count mismatches; 237/238 off by 6+ lines, suspect layout shift).
+
+Pairing proof, established by a two-page check sheet (25 and 300) against the
+pass2 label lists:
+
+- pass2 labels are Gemini-repaired, so string identity is untestable; row-count
+  equality is the pairing evidence.
+- Printed folio numbers appear as crop rows. Late pass2 pages (200+) dropped the
+  folio line, early pages (25-49) kept it. Conditional rule: keep the folio crop
+  only when the label list contains the page number text. 176 folio pairs are
+  flagged `"folio": true` and will be excluded from training (user decision).
+- First crops clipped Nastaliq descender tails (rawdict glyph boxes
+  underestimate steep diagonals). Rerun with EXTRA_BOTTOM 8 -> 14 pt
+  (user-approved): heights 91-192 px -> 116-217 px, tails present, faint
+  next-line fragments accepted as standard for Nastaliq line data.
+
+Hardware finding: machine has Intel Iris Xe integrated graphics (2 GB shared),
+no CUDA. Training goes CPU with a compact CRNN-CTC line recogniser (user
+decision). TrOCR/VLM routes remain a hosted-GPU option. `data/gold/` stays
+held out for evaluation.
+
+---
+
+**2026-11-03: fixed real-print crops swapped in and re-uploaded.**
+
+User checked the v2 preview sheet and approved. `real_pairs_v2` has the same
+11,524 pairs as v1, with identical labels, folio flags and skipped pages (the
+same 9). Only the crops differ: text rows are about 80 to 90 px high, against
+126 to 138 px before, so next-line fragments are gone. `ocr_train.py` resizes
+every line to 64 px high, so the new heights need no code change.
+
+- Windows denied renaming `real_pairs_v2` (a handle is open somewhere), so v2
+  was copied into `data/synth/real_pairs/`. The old crops moved to
+  `data/synth/real_pairs_v1/`. `real_pairs_v2/` is still on disk.
+- `make_clean_labels.py` rebuilt `real_pairs/labels_clean.jsonl`:
+  11,524 -> 11,326 kept (23 gold page 25 rows, 175 folio rows dropped).
+- New `real_pairs_img.tar` (177 MB, 11,524 images) and both label files are in
+  `s3://gojri-ai-sagemaker-data/train/`, overwriting the old objects. The old
+  tar is kept locally as `data/synth/_upload/real_pairs_v1_img.tar`.
+- Training job still waits for the new SageMaker role.
+
+Orthography notes from the Losey paper (checked by the previous session):
+ݨ and ݩ are the same retroflex nasal, so score them as one letter; Gojri tone
+is written with ھ and ہ; writers omit short vowel marks unless a word is
+ambiguous, so our 5% mark density in synthetic text is too high (gold: 2.1%);
+the model copies the print and does not normalise spelling.
+
+---
+
+**2026-11-03: SageMaker test job passed.**
+
+`gojri-crnn-2026-11-03-16-35-45-916`: 500 rows, 1 epoch, ml.g5.xlarge, role
+`service-role/AmazonSageMakerAdminIAMExecutionRole`. Needed a customer-managed
+policy `AllowPassSageMakerExecutionRole` (iam:PassRole) on `ai_agent_user`; the
+2048-character inline limit was full. Result: Completed, 234 billable seconds.
+Data unpacked (83,728 line_full images, 11,524 real_pairs images), device cuda,
+charset 133, loss 13.08 -> 7.34 in 13 batches (5 s). WER 100% is expected after
+13 steps. Model saved to
+`s3://gojri-ai-sagemaker-data/output/gojri-crnn-2026-11-03-16-35-45-916/output/model.tar.gz`.
+Full run waits for user approval.
+
+---
+
+**2026-11-03: two Pass 2 / audit label errors found by eye (not a sample rate).**
+
+Looked at two crops chosen from audit "fixed" notes, so this is a biased pick,
+not an error rate. Both labels differ from the print:
+- `page-0300:L6` (`p0300_L06.png`): print headword is `سپُرت`, label says `سپُرد`.
+  Audit note: "Fixed Pass 1 error 'سپُرت' -> 'سپُرد'". The audit normalised the print.
+- `page-0450:L20` (`p0450_L20.png`): print headword is `معنو`, label says `مہنو`.
+  Audit note: "Fixed Pass 1 heh form". The print also seems to read "criticismm."
+  where the label has "criticism.".
+The published HF text (`junaidaslam/gojri-english-dictionary`) matches the Pass 2
+files on pages 100, 300, 450, so it carries the same errors.
+Plan: review every line the audit reports as changed (the 474 files in
+`data/decode/out/gojri-english-dictionary/audit/`), plus the table check and the
+200-line sample. Full training run proceeds as a baseline on noisy labels.
+
+---
+
+**2026-11-03: first full SageMaker run (baseline on noisy labels).**
+
+Job `gojri-crnn-2026-11-03-16-56-03-308`, ml.g5.xlarge, 8 epochs, 162 s per
+epoch, 1,521 billable seconds. Model:
+`s3://gojri-ai-sagemaker-data/output/gojri-crnn-2026-11-03-16-56-03-308/output/model.tar.gz`.
+Train 31,174 rows, val 983 (split by group: whole pages or 40-line FLI blocks),
+charset 171. Epoch 8 results:
+- val/real (342 lines, unseen pages): WER 29.4%, CER 4.4%
+- val/synth (641 lines): WER 86.6%, CER 41.3% (unexplained, to investigate)
+- page-25 holdout (22 lines, gold): WER 78.7%, CER 20.0%
+Gold bake-off for comparison: Gemini 3.6 Flash 17.1% pooled WER. Not usable yet.
+Labels still hold Pass 2 / audit errors (see entry above); retrain after review.
+
+---
+
+**2026-11-05: review result and effect on training (written from the training session).**
+
+`data/review/summary_final.md` and `analysis_final.md`: user reviewed 200 random
+label lines and all 160 table codes. 182 of 200 lines (91%) have an error. Main
+causes:
+- 86% of lines: Pass 2 put a space on both sides of the `(romanisation)` group;
+  the print has none. Raw decode spacing matched the print on 57 of 69 groups,
+  Pass 2 on 4 of 69.
+- 28% of lines: a letter or mark error. Of 52 lines with wrong letters, 44 had a
+  right raw decode that Pass 2 broke, 8 were wrong in the raw decode too.
+- Table: 22 wrong codes. Heh and kaf (4 codes) are fixed in
+  `batool_pua_seed.json` (2026-11-05). 17 real shape errors are still unfixed
+  there (F0F1, F066, F0E0, F0E1, F0E5, F0DC, F038, F0F2, F044, F045, ...),
+  about 2.9% of all glyphs.
+Effect: baseline job `gojri-crnn-2026-11-03-16-56-03-308` trained on the old
+labels, and so did the synthetic dictionary rows (13,704 of line_full). Labels
+on disk and in S3 are still the 2026-11-03 files. No retrain until labels are
+rebuilt. The 200 corrected lines are the new held-out test set.
+
+---
+
+**2026-11-05: real-print labels rebuilt, test lines held out, S3 refreshed.**
+
+Table fixes (`data/decode/batool_pua_seed.json`, v3.1). The user's table review
+gave a fix for each wrong code. Applied: F060 and F061 always ھ (479 word-initial
+F061 uses; the user confirmed it by eye on lines across the book), F0D4 and F0D5 ك, F0F1, F066, F0E0,
+F0E1, F0E5, F0DC, F038, F0F2, F044, F045, F0BC, F0FA, F0EB, F0FC, F0F3, F057.
+Two more codes came from words the user corrected: F0A1 is the joined لا shape
+(غلامی, سلامت) and F0CD is ف (طرف). The decoder rule for F0F1+F031 now always
+gives ئے; the old rule added an alef and broke دوئے. Gold page 25 stays at 9.2%
+word error. The user also corrected three of his own review fixes (قانون, زبان,
+گئی): the decode was right on those.
+
+Merge (`scripts/synth/merge_decode_letters.py`). Takes the decode word for each
+pass2 word that differs (same length and fold-equal, one letter off, or at least
+60% similar), and the decode gap for the spaces around `(` and `)`. When the
+word counts differ, only words at 90% similarity pair. A first try at 60% cut
+words short (ناشکری became شکری) and was dropped. On the 200 reviewed lines:
+- Arabic words equal to the user's fix: 316 of 333 (pass2: 281).
+- Paren spacing equal to the user's fix: 160 of 178 lines (pass2: 7). The 18
+  misses sit at gaps of 1.6 to 1.9 pt, where the user's own fixes go both ways.
+- The misses left are old review fixes the user has since overruled (ھ at the
+  start of a word, قانوں, زباں, گیی), a comma-order line, and word-count lines.
+Full run: 11,524 rows, 1,195 changed in heh or kaf only, 1,331 in other letters,
+152 left as pass2 (listed in `labels_merged_skipped.json`).
+
+Hold-out. The earlier entry says the 200 corrected lines become the test set.
+`make_clean_labels.py` now drops them from training in both `real_pairs` (200
+rows) and `line_full` (244 rows, some lines have several chunks), and writes them
+to `real_pairs/labels_review_test.jsonl` with the user's fix as `text_fix`.
+Several fixes are stale (ہ where the print shows ھ), so reconcile before scoring.
+The script stops if the marks file is missing, so the lines cannot leak.
+Training reads 20,603 synthetic and 11,126 real rows. A 40-row, 1-epoch local
+run passed (31,713 rows loaded).
+
+S3 (`gojri-ai-sagemaker-data`). Old `train/line_full_labels_clean.jsonl` and
+`train/real_pairs_labels_clean.jsonl` copied to `before_v3/`. Uploaded
+`train/line_full_labels_clean.jsonl` and `train/real_pairs_labels_merged_clean.jsonl`
+(sizes and md5 match local). Removed `train/real_pairs_labels_clean.jsonl`, which
+training no longer reads. The image tars are unchanged. No SageMaker job has
+run on the new labels.
+
+Cleanup. Deleted (about 1.5 GB): `data/synth/real_pairs_v2` (byte-identical to
+`real_pairs`, checked by md5 on all 11,524 crops), `real_pairs_v1` (old tall
+crops), `line_dataset` (7,683-row pilot, replaced by `line_full`),
+`upload_preview`, `yaad_check`, a 40-row test model, `_upload/real_pairs_v1_img.tar`
+and the old-spelling `_upload/real_pairs_labels_clean.jsonl`, eight `data/decode/_tmp_*.txt`
+notes, and `scripts/__pycache__`. Code: `ocr_train.py` reads the merged file
+directly and scores ك=ک and ه=ہ as equal; `synth_generate.py` loads the
+augmentations from `scripts/synth/synth_aug.py` instead of a Temp folder, and
+`synth_aug.py` lost its unused contact-sheet code; `mine_batool_pairs.py` writes
+to `real_pairs` and `make_clean_labels.py` covers two sets instead of four.
+
+Not changed. The synthetic dictionary rows in `line_full` still carry the pass2
+spelling and the spaces around the romanisation group. The Hugging Face dataset
+`junaidaslam/gojri-english-dictionary` still carries the pass2 text.
+
+---
+
+**2026-11-05: retrain started, Hugging Face dictionary dataset updated to version 2.**
+
+The user approved all three open items: start the SageMaker run, keep the
+synthetic dictionary rows as they are for this first run, and update the public
+dictionary dataset.
+
+SageMaker job `gojri-crnn-2026-11-05-16-02-39-998`: ml.g5.xlarge, 8 epochs, batch
+64, real-rep 3, the same settings as the 2026-11-03 baseline. Train channel:
+`line_full_labels_clean.jsonl` (20,603 rows), `real_pairs_labels_merged_clean.jsonl`
+(11,126 rows), the unchanged image tars. Results go in the next entry.
+
+Hugging Face `junaidaslam/gojri-english-dictionary`, commit `889730b`. New
+`scripts/build_dictionary_release.py` starts from the pass2 page files that
+version 1 was built from, replaces only the lines the merge changed, and writes
+`data/release/gojri-english-dictionary/` (pages, CSV, JSONL). Checks before the
+push:
+- The CSV and JSONL writers reproduce the published version 1 files byte for
+  byte (the JSONL uses CRLF line ends).
+- 474 pages; `line_count` equal to version 1 on every page; CSV text equals
+  JSONL text equals the page files.
+- 10,228 lines changed on 465 pages. The 9 pages that were never mined (55, 94,
+  95, 194, 221, 237, 238, 335, 336) are identical to version 1.
+- No U+FFFF and no `[` placeholders.
+After the push, five files downloaded from the Hub matched the local files.
+The README gained a "Version 2" section: what the review found (91% of 200
+lines), what changed, 316 of 333 words and 160 of 178 spacing groups matching the
+user's text on the sample, and the known limits (only 200 lines checked by a
+person, 9 pages unchanged, 201 lines with unequal word counts of which 152 kept
+version 1 letters). `data/release/` is in `.gitignore`.
+
+---
+
+**2026-11-05: retrain on the rebuilt labels finished; no gain over the baseline.**
+
+Job `gojri-crnn-2026-11-05-16-02-39-998` completed, 1,516 billable seconds on
+ml.g5.xlarge (baseline: 1,521). Model:
+`s3://gojri-ai-sagemaker-data/output/gojri-crnn-2026-11-05-16-02-39-998/output/model.tar.gz`.
+Train 30,743 rows, val 970, charset 173. Epoch 8 from the training log, next to
+the baseline (2026-11-03):
+- val/real: WER 39.5%, CER 4.1% (335 lines). Baseline 29.4%, 4.4% (342 lines).
+- val/synth: WER 86.9%, CER 41.5%. Baseline 86.6%, 41.3%.
+- page-25 holdout: WER 73.5%, CER 19.4%. Baseline 78.7%, 20.0%.
+The WER rise is not a loss. The new labels have no space around the
+`(romanisation)` group, so each word token is longer and one wrong letter spoils
+more of it. The validation pages also differ, because the 200 held-out lines are
+gone from the split. The page-25 holdout was still scored against the old pass2
+text, with spaces and the old heh spelling. That was a bug in `ocr_train.py`; it
+now reads `labels_merged.jsonl` (also uploaded to S3 as
+`train/real_pairs_labels_merged.jsonl`; the unused `train/real_pairs_labels.jsonl`
+was removed).
+
+Like-for-like check (local CPU, same images, whitespace ignored, ك=ک and ه=ہ
+equal, ھ separate; the baseline trained on the 200 lines, the new model did not):
+- 200 reviewed lines vs the user's fix: CER 4.8% (baseline) and 4.8% (new);
+  Arabic word error 75.1% and 71.3%.
+- 200 reviewed lines vs the merged label: CER 4.7% and 4.8%; word error 73.8% and 69.7%.
+- Page 25 (22 lines) vs the merged label: CER 18.4% and 18.1%; word error 95.9% and 97.3%.
+Result: cleaner labels alone did not move this CRNN. The Gemini bar (17% word
+error on the gold pages) is far away. Plan from 2026-11-04 stands: compare
+TrOCR and UTRNet on the same gold pages. The synthetic validation WER (86.9%)
+is still unexplained.
+
+---
+
+**2026-11-05: correction to the retrain result (Arabic letters only).**
+
+The character error of 4.8% reported above is diluted by English text. On the 200
+reviewed lines, 9,370 of 10,833 characters are Latin, digits or punctuation, and
+only 1,463 are Arabic-script letters. Split by script (new model; the baseline is
+the same to one decimal):
+- Latin, digits, punctuation: 0.4% error.
+- Arabic-script letters: 33.4% error. Lines with fewer than 25 Arabic letters:
+  30.8%. Lines with 25 or more (the Nastaliq example sentences): 78.0%.
+- Lines read exactly with spaces ignored: 58 of 200. Lines with 2% or fewer
+  character errors: 90. Lines with more than 10%: 30. The worst lines are the
+  `eg:` and `lpp:` Nastaliq sentences.
+So the model reads the English well and the Nastaliq badly, and it is not usable
+for Gojri text. Report Arabic-letter error from now on; whole-line CER and WER
+flatter a model that reads only the English half. The cleaner labels changed
+nothing here.
+
+Same day, other changes: the gold set got two more word fixes
+(`gojri_adbiyaat` برھنوسیال, `nazir_spread_b_left` بَھلا, both confirmed ھ by the
+user on the print). Hugging Face `gojri-nastaliq-ocr-gold` is now tagged `v1.0`
+and `v2.0` (commit `2ba5077`): five gold words changed, `bakeoff_results.csv` and
+the card updated (Gemini pooled 17.3%, `dict_alif` 26.1%; Composer `dict_alif`
+9.2%). `scripts/update_bakeoff_csv.py` rebuilds the CSV from the gold text.
+Hugging Face `gojri-english-dictionary`: the card now has a `configs` block, so
+`load_dataset` returns 474 pages (before: 11,768 text lines). Tags `v1.0`
+(October text) and `v2.0` (commit `459b337`, moved from the README-only commit
+made hours earlier). The lexicon Nastaliq column has no printed source: the
+Devanagari dictionary PDF holds Devanagari, Roman, English and Hindi only. The
+Nastaliq comes from Aksharamukha rules (1,513 rows), Gemini (299) and 50 human
+checked rows.
+
+---
+
+**2026-11-05: lexicon heh rule; UTRNet test set up, blocked on a permission.**
+
+Lexicon. The user ruled that a word-initial heh is ھ (as in the Gojri print).
+`scripts/lexicon_initial_heh.py` changed 112 words in 98 rows of the `nastaliq`
+column of `gojri_lexicon_final.tsv`. Other columns, line ends and the 50
+human-verified rows are unchanged, and a second run changes nothing. 18 words
+that are a lone ہ stay. `data/lexicon/README.md` has the new build step and a
+note that the PDF has no Nastaliq. Not pushed to Hugging Face yet.
+
+UTRNet-Large zero-shot test (user approved). Code: the official repo, commit
+`049c2d6` (October 2024), cloned into a scratch folder. Weights: the authors'
+Google Drive file, 189 MB, license CC BY-NC-SA 4.0 (research use). The Hugging
+Face `abdur75648/UTRNet-Large` repo holds only a README. Read-only check of the
+files the model needs (`model.py`, `modules/`): no network, subprocess, eval or
+pickle calls. The test harness imports only `model.py` and loads the weights with
+`weights_only=True`. The first run was blocked by the Claude Code permission
+check and was not retried; waiting for the user.
+
+---
+
+**2026-11-05: lexicon version 2 pushed; UTRNet run started after the user allowed a retry.**
+
+Hugging Face `gojri-devanagari-nastaliq-lexicon`: commit `c21814b` (README and
+`gojri_lexicon_final.tsv`), tags `v1.0` (`4063d04`, October) and `v2.0`. Checked
+before the push: the published TSV equalled my local copy from before the change,
+and the published card differed only by the new build step and note. After the
+push the online files match local. `load_dataset` with both configs: `v1.0` has
+112 words that start with ہ or ه, `v2.0` has none; the 50 human-verified rows have
+none in either version.
+
+The UTRNet-Large run, blocked on the first try, ran on the second. The harness is
+outside the repo (session scratch folder).
+
+---
+
+**2026-11-05: UTRNet-Large zero-shot reads the Arabic parts at 2.2% error.**
+
+Test: the 200 held-out reviewed lines, CPU only, no training, no AWS. UTRNet-Large
+(official repo, commit `049c2d6`; weights from the authors' Drive link; CC BY-NC-SA
+4.0) reads the Arabic runs of each line. The runs are cut out of the line crop with
+the glyph boxes from the PDF. Score: Arabic-letter error against the user's fix,
+no short-vowel marks, ك=ک and ه=ہ equal, ھ separate (1,400 letters).
+
+| Reader | Arabic-letter error |
+|---|---|
+| UTRNet-Large, whole line (English included) | 221% |
+| UTRNet-Large, Arabic runs, 6 px margin | 11.5% |
+| UTRNet-Large, Arabic runs, 2 px margin | 2.8% |
+| UTRNet-Large, Arabic runs, 0 px margin | 2.2% (178 of 200 lines exact) |
+| Our CRNN (old / new), whole line | 35.4% / 36.1% |
+| Our CRNN (old / new), Arabic runs | 59.5% / 63.7% |
+
+The 6 px margin catches a sliver of the "(" next to the word; UTRNet reads it as an
+alef (94 of the 134 insertions). Contact sheets of the crops: `data/review/utrnet_check/`
+(local). At 0 px the 31 errors are 21 substitutions, 4 deletions, 6 insertions. Nine
+are ہ against ھ, and about seven of those are old review fixes where the print shows
+ھ, so UTRNet is right (`پرھیز`, `ھار`, `ھینسرنو`, `پیلاھونا`). Three are Arabic yeh ي
+written for ی (a rule can fix that). Error by line length: 1.5% for 1 to 10 letters,
+3.1% for 11 to 24, 4.1% for 25 or more (only 2 such lines).
+
+Caveats. The cut-out Arabic runs come from the PDF glyph boxes, which a scanned page
+does not have; reading new books needs a line and script detector, and that part is
+untested. These lines are one clean printed dictionary, short headwords for the most
+part. The reference has about a dozen stale words. The code needs `--pad 0`; the
+repo script is `scripts/utrnet_arabic_eval.py`. Next: read the 12 gold pages with
+UTRNet after a simple line split, to compare with the Gemini bar (17% word error).
+Fine-tuning on SageMaker only if that test needs it; CC BY-NC-SA means a fine-tuned
+model must carry the same licence.
+
+Reproduction: `scripts/utrnet_arabic_eval.py --pad 0` gives 2.1% (30 of 1,400 letters,
+178 of 200 lines exact). The scratch version above gave 2.2% (31 errors); the one
+letter comes from small differences in how the image is scaled and padded.
+
+---
+
+**2026-11-05: UTRNet test finished and documented (final numbers).**
+
+`data/utrnet-test/README.md` holds the full write-up: which lines, how the crops are
+cut, how the error is computed, all results, the list of the 22 lines that differ,
+and nine example crop pictures. Also there: `results.tsv` (every system, every line),
+`summary.json`, `examples/`. Scripts: `scripts/utrnet_arabic_eval.py` (report mode
+rebuilds all of it) and `scripts/utrnet_latin_eval.py`.
+
+Final numbers come from the repo scripts and replace the scratch numbers in the two
+entries above. Arabic-letter error on 1,400 letters: UTRNet on Arabic runs 2.1% at
+0 px (30 letters, 178 of 200 lines exact), 2.9% at 2 px, 10.9% at 6 px; UTRNet on the
+whole line 221.6%; our CRNN on the whole line 35.4% (baseline) and 36.1% (retrained);
+our CRNN on Arabic runs 66.2% and 63.9%. English parts (214 runs, 7,965 characters):
+UTRNet 85.6% error with mirrored input, 90.0% without. Of the 30 errors at 0 px,
+nine are old reference spellings the user has since overruled (UTRNet is right), two
+are heh forms not rechecked, 19 are model errors (5 extra alefs, 3 Arabic yeh, 2 comma
+places, 2 missing letters, 7 other replaced letters); the corrected error is about 1.5%.
+The earlier 33.4% (Arabic letters with marks counted) and 35.4% / 36.1% (marks removed)
+are the same CRNN results under two normalisations.
+
+---
+
+**2026-11-06: model comparison finished, page OCR pipeline built (UTRNet + SegNet + Tesseract).**
+
+Tested on AWS (SageMaker `ml.g5.xlarge`, about $3 of the $150 so far) and locally. Full tables in
+`scripts/ocr_eval/README.md`. Results: Qaari-0.1-Urdu-OCR-VL-2B fails (186% letter error on the 200
+dictionary crops, 174% pooled on the 12 gold pages; the LoRA adapter was verified loaded; with transformers 5 it
+silently does not load, so use 4.49 + peft 0.14). Three Hugging Face TrOCR Urdu models fail (102% to 662%).
+`cxfajar197/urdu-ocr` is gated and not tested (waiting for the user's access request). Tesseract 5.5 English reads the
+dictionary English at 0.1% character error. UTRNet-Large stays the Gojri Nastaliq reader (2.1% on dictionary Arabic
+runs with PDF glyph boxes). New: SegNet (3 MB CNN, per-column Arabic / English / gap labels, trained from PDF glyph
+boxes), a page-mode switch (English share of the page >= 15% means mixed pipeline, else UTRNet alone), and
+`scripts/ocr_eval/ocr_page.py`. Result on the 12 gold pages: pooled Arabic-letter error 3.6% (UTRNet alone 7.0%); on
+the 8 pages Gemini was scored on, 2.7% against Gemini 3.1%. Weak spots: `primer_pehli` 28.3% (decorative primer),
+`dict_alif` 6.0% Arabic and 3.9% English (Gemini 5.2% and 2.6%), `kulyate_spread_b_left` 4.2% (Gemini 0.3%).
+Bugs found on the way: a PIL 1-D array resize collapsed all SegNet labels (first run trained on garbage); sentence
+pieces joined in the wrong order; SegNet trained on dictionary lines only labelled pure-Arabic text as English.
+Caveat: the gold pages guided the design, so 3.6% is a development number; only one gold page is a dictionary page.
+Next: test on a second dictionary and on scanned (not born-digital) pages; then run the pipeline on the PDF collection.
+The older uncommitted changes (CLAUDE.md, LOG.md and others) are still waiting for the user to decide.
+

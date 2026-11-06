@@ -106,7 +106,7 @@ We research, discuss, and agree on a roadmap together before writing pipeline co
 
 ## Key technical findings from research
 
-### Garbled text when copy-pasting from PDFs — CONFIRMED with direct inspection
+### Garbled text when copy-pasting from PDFs (CONFIRMED with direct inspection)
 Verified directly (Aug 2026) using PyMuPDF against the actual files in `pdfs/`, not
 just literature research. Root cause confirmed: most of these PDFs embed Nastaliq
 text using **Noori Nastaleeq**, the Nastaliq font family bundled with InPage (the
@@ -157,14 +157,29 @@ PUA-to-Unicode remapping table.
 - Practical implication for AWS credit: Claude (and other vision LLMs) is available
   through AWS Bedrock, so bulk page-by-page transcription of the PDF collection is a
   concrete, budget-appropriate use of the $150 credit.
+- **In-chat reading method (Oct 2026)**: read line strips at 3x instead of the full
+  page, then re-read each doubtful row. On Kahawat-Kosh page 19 this corrected four
+  words that the 1x view got wrong (`آب حیات` for `آپ جایات`, among others). It also
+  showed that one proverb can run over two printed rows. Count entries by sentence,
+  not by row. Page 19 output is in `data/decode/out/kahawat-kosh/chat/pages/`. No
+  page has a human check yet.
+- **Narrow-crop rule (Oct 2026)**: a "5x" or "8x" strip is false zoom. The vision
+  encoder shrinks any image to about 1568 px wide, so a wide strip keeps only about
+  2x. Dots stay soft and letters merge. Read narrow clips only: 300 native px wide or
+  less, final size 1500 px or less. For the sharpest check, render the clip straight
+  from the PDF at 1200 DPI (`page.get_pixmap(clip=rect, matrix=fitz.Matrix(16.6667,
+  16.6667))`). At that zoom the gold rules become testable: final `-و` vs `-ے`,
+  printed madda, `ک` vs `گ`, `ب` vs `پ`, `ت` vs `ٹ`, and the heh forms. Word gaps
+  are 5 to 13 px at 600 DPI; letter gaps are 3 to 4 px. Measure the gap, do not
+  judge it by eye.
 
-### PDF collection triage — refined into 4 buckets (Aug 2026 automated scan)
+### PDF collection triage: refined into 4 buckets (Aug 2026 automated scan)
 Ran a finer script across all 92 PDFs, counting Arabic-Unicode-block characters vs
 Private-Use-Area (PUA) characters vs Latin characters in sampled pages of each file:
 - **4 files = "good text already"**: correct Arabic-block Unicode, no fix needed,
   just extract and clean. Includes `QURANIC_TRANSLATION_in_GOJRI_by_Dr_Rafiq.pdf` and
-  its duplicate `javaidrahi-blog/gojri-quran-final-1010-1.pdf` (717 pages each — a
-  huge chunk of total page count, and duplicated), plus `ABC-Islamic-Studies.pdf`
+its duplicate `javaidrahi-blog/gojri-quran-final-1010-1.pdf` (717 pages each, a
+huge chunk of total page count, and duplicated), plus `ABC-Islamic-Studies.pdf`
   (401 pages) and `Revival-of-Islam.pdf` (116 pages), both under `pdfs/anjumshanasi/`.
   **Correction (Aug 2026):** the Quran file is not clean Unicode. Direct extract
   of page 17 (and the rest) is unreadable. UrduTypesetting ToUnicode maps many
@@ -194,7 +209,7 @@ Private-Use-Area (PUA) characters vs Latin characters in sampled pages of each f
   Lesson: bucket membership must be confirmed per file by looking at embedded font
   names, not inferred from character-range statistics alone.
 
-### Two distinct legacy encoding schemes (Aug 2026) — not one problem, two
+### Two distinct legacy encoding schemes (Aug 2026): not one problem, two
 An important refinement to the "font-encoding problem" framing. The broken PDFs do
 not all use the same broken encoding. Verified by inspecting embedded fonts and raw
 extracted codepoints:
@@ -216,7 +231,7 @@ Consequences:
   so it handles both schemes identically without caring which is which. This is a
   point in favor of vision transcription as the safe default.
 
-### Duplicate PDFs — verified by file hash (Aug 2026), corrects an earlier undercount
+### Duplicate PDFs: verified by file hash (Aug 2026), corrects an earlier undercount
 Ran MD5 hashing across all 92 files (byte-for-byte comparison, not just filename
 pattern-matching, since filename matching alone had already been shown to miss
 things). Found **7 exact-duplicate groups**, two of which were not previously known
@@ -269,8 +284,8 @@ number Stage 1's cost estimate should be built on.
 4. **Cost math, corrected twice, now based on measured values** (supersedes both the
    earlier "~tens of dollars" and the "~$44 Haiku / ~$175 Sonnet" figures, **both of
    which were wrong because they counted only input tokens and ignored output tokens
-   entirely** — for OCR the output is a full page of transcribed text, and output
-   tokens bill at ~5x the input rate, so omitting them understated cost by ~2x):
+entirely: for OCR the output is a full page of transcribed text, and output
+tokens bill at ~5x the input rate, so omitting them understated cost by ~2x):
    - Measured, not assumed: a rendered page at zoom 2 is ~1211x1568 px, which after
      Claude's automatic downscaling is **~2,530 image tokens per page**.
    - **Free optimization found: rendering at zoom 3 is wasted money.** Both zoom 2 and
@@ -295,29 +310,29 @@ number Stage 1's cost estimate should be built on.
    cost/quality tradeoff is based on evidence, not assumption.
    - **Resolved (Aug 2026, Stage 1 test batch)**: Haiku 4.5 tested directly via AWS
      Bedrock on 2 real gold-set pages (`dict_alif`, `gojri_adbiyaat`), controlled
-     settings (temperature=0, explicit max_tokens, no thinking — logged in
-     `data/gold/ocr_runs_log.csv`). **Quality is not usable**: on `dict_alif`
-     (dense dictionary layout) it substitutes a placeholder character in place of
-     headwords it can't read, inconsistently (`ئ` in one run, `Ī` — not even a
-     valid character in this script — in a rerun of the same page); on
-     `gojri_adbiyaat` (poetry) whole phrases are wrong, not just diacritics, e.g.
-     `وِچ چھوڑا کے عمر گزری، دتو تیں نہ کدے دیدار مِناں` (correct) came back as
-     `ویچ ویڑھو کے عم گردی، ڑو تھیں یک کے دھار دھیال` — most words differ, not a
-     near-miss. **Qwen3-VL** (a candidate cheap alternative, not in the original
-     Haiku/Sonnet plan) was tested alongside and also failed, differently: mostly
-     correct structure but frequent character-order corruption and word swaps
-     (`الف` read as `فلف`). **Both ruled out for this project.** The one variable
-     controlled for and eliminated as the cause: Gemini 3.6 Flash, given the exact
-     same cropped images and prompt, transcribed both pages correctly — so this is
-     a real capability gap on small/dense Nastaliq text for these two specific
-     models, not a settings or input-quality issue. Full outputs kept for the
-     record in `data/gold/transcriptions_archived/`. Sonnet 5 access turned out to
-     be blocked behind an AWS Sales-gated request (full self-service agreement flow
-     completed successfully, invocation still denied — a genuine Sales-only gate,
-     not a missed step; a request is in with AWS Sales, response pending). **Sonnet
-     4.6 is standing in as the active Claude candidate** until that clears, tested
-     against Gemini's and Kimi K2.5's cost/quality bar on both gold pages, per
-     `LOG.md`.
+settings (temperature=0, explicit max_tokens, no thinking, logged in
+`data/gold/ocr_runs_log.csv`). **Quality is not usable**: on `dict_alif`
+(dense dictionary layout) it substitutes a placeholder character in place of
+headwords it can't read, inconsistently (`ئ` in one run, `Ī`, not even a
+valid character in this script, in a rerun of the same page); on
+`gojri_adbiyaat` (poetry) whole phrases are wrong, not just diacritics, e.g.
+`وِچ چھوڑا کے عمر گزری، دتو تیں نہ کدے دیدار مِناں` (correct) came back as
+`ویچ ویڑھو کے عم گردی، ڑو تھیں یک کے دھار دھیال` (most words differ, not a
+near-miss). **Qwen3-VL** (a candidate cheap alternative, not in the original
+Haiku/Sonnet plan) was tested alongside and also failed, differently: mostly
+correct structure but frequent character-order corruption and word swaps
+(`الف` read as `فلف`). **Both ruled out for this project.** The one variable
+controlled for and eliminated as the cause: Gemini 3.6 Flash, given the exact
+same cropped images and prompt, transcribed both pages correctly, so this is
+a real capability gap on small/dense Nastaliq text for these two specific
+models, not a settings or input-quality issue. Full outputs kept for the
+record in `data/gold/transcriptions_archived/`. Sonnet 5 access turned out to
+be blocked behind an AWS Sales-gated request (full self-service agreement flow
+completed successfully, invocation still denied, a genuine Sales-only gate,
+not a missed step; a request is in with AWS Sales, response pending). **Sonnet
+4.6 is standing in as the active Claude candidate** until that clears, tested
+against Gemini's and Kimi K2.5's cost/quality bar on both gold pages, per
+`LOG.md`.
 6. **Tesseract (traditional OCR) considered as an alternative/baseline**: free and
    runs locally, but is a pattern-matching engine with no language understanding, it
    cannot use surrounding context to resolve ambiguous cursive strokes the way a
@@ -336,7 +351,7 @@ number Stage 1's cost estimate should be built on.
    table, or a much better model) beats gold without needing a person on every
    page.
 
-### The decode-table idea — highest-upside experiment, worth testing before bulk spend
+### The decode-table idea: highest-upside experiment, worth testing before bulk spend
 **Premise**: the broken PDFs are not random noise, they are a *deterministic
 substitution cipher*. Each (font, codepoint) pair always renders as the same Nastaliq
 ligature. If we can recover that mapping, we can decode pages for free, instantly,
@@ -462,7 +477,7 @@ verifiable manifest) came before any bulk processing:**
     and isn't PUA, so the original classifier had no bucket for it at all.
   - Genuinely out of scope, confirmed: `Islam-in-the-Modern-World.pdf`,
     `Revisiting-Islam.pdf`, and the five `the-gujjars-vol-*` history volumes (real
-    English prose, verified by font — plain Calibri/Arial, not Nastaliq).
+    English prose, verified by font: plain Calibri/Arial, not Nastaliq).
 - **New structural finding, not previously known**: 26 files (6,295 pages, ~43% of
   the OCR workload) are **two-page spreads**, a single PDF page containing both the
   left and right physical book pages side by side (page width notably exceeds
@@ -501,6 +516,17 @@ not good text. Unique good-text pages are now **1,473** (4 files). Unique pages
 that still need decode or OCR are **15,478**.
 
 ## Status
+**OCR model search done (2026-11-06).** Details: `scripts/ocr_eval/README.md`. UTRNet-Large is the Gojri Nastaliq reader
+(2.1% letter error on dictionary Arabic runs). Qaari-0.1 and three Hugging Face TrOCR Urdu models fail and are ruled out.
+`cxfajar197/urdu-ocr` is gated (the user must request access) and untested. Tesseract 5.5 (installed at
+`C:\Program Files\Tesseract-OCR`) reads English at 0.1% character error. Page pipeline `scripts/ocr_eval/ocr_page.py`
+(SegNet per-column script labels, page-mode switch, UTRNet for Arabic, Tesseract for English): 3.6% pooled Arabic-letter
+error on the 12 gold pages, 2.7% against Gemini 3.1% on the 8 pages Gemini was scored on. A development number: the
+gold pages guided the design, only one is a dictionary page, SegNet knows one dictionary's layout. UTRNet code and
+weights live outside the repo (`D:\ocr-tools`, CC BY-NC-SA 4.0); SegNet weights are on S3
+(`ocr-eval/models/segnet_v2.pt`). SageMaker GPU runs: one `ml.g5.xlarge` at a time; the role ARN comes from the
+environment variable `SAGEMAKER_ROLE_ARN` and never goes into the repo.
+
 Stage 0 in progress (Aug 2026). Manifest is built. Gold-set Step 0.3 is done for
 the working set of 12 vision-OCR pages (one `_gold.txt` each, first six
 re-checked 2026-08-15). Score with `py -3 scripts/score_gold.py`. One-shot
@@ -512,16 +538,108 @@ the user cannot review 15,478 pages, and 17% word error would poison the corpus.
 **NOORIN decode-table path abandoned (Aug 2026).** See
 `data/archive/noorin-decode-spike/README.md`. Do not rebuild NOORIN tables.
 
-**Paused (not validated at book scale):** Batool PUA table is in
-`data/decode/batool_pua_seed.json` (160 codes). This Gojri-English
-dictionary is one 498-page file (`Gojri-English-Dictionary.pdf`). Body
-pages 25-498 have **zero unknown** Batool codes. Front pages 1-24 are
-mostly English; 3 Batool codes on those pages are still unmapped.
-`Concise_Gojri_English_Dictionary_by_Dr_R.pdf` is the same 24-page front
-matter, not a second volume. Decode with
-`py -3 scripts/decode_batool.py 1 498`. Neighbor rules make page 25 letter
-forms match `dict_alif_gold.txt` on sample checks only. Do not use Batool
-decode output for corpus until scored on gold at book scale.
+**NOORIN component font test re-closed (Oct 2026).** One fair test was run on
+`Kahawat-Kosh.pdf` before the speech work. Findings: the NOORIN fonts are
+component fonts, so the unit is the cluster (all pieces at one origin), not the
+glyph. The column divider is x = 215, not the page centre; earlier line data was
+a 50 point slice and is void. Nineteen pages of vision drafts were made
+(`data/decode/out/kahawat-kosh/vision/`, raw, about 85 to 90 percent correct,
+not truth). Every learning model failed to recover the cluster table from text
+alone: hard EM locks the first cut, soft EM spreads, the word level table has no
+cross page reuse, and the pen advance is not proportional to characters. Held
+out word error is 79 to 100 percent against a 5 percent target. The kill
+condition is met and the path is closed. Only a shape image labelling route
+(hand labels on rendered clusters, then EM) could reopen it. Journal:
+`LOG.md`, 2026-10-24.
+
+**NOORIN line-wise OCR works; word spacing is the open gap (Oct 2026).** The
+user proposed a third route: cut the right column into one image row per printed
+line, number each row, then run OCR. The sheet goes to Gemini in one call. Every
+row returns in order, so the model cannot merge or drop a line. Measured on page
+50 against the 20 gold lines: character error 0.9 percent, word error 17.5
+percent, 12 of 20 lines exact. The word errors are almost all spaces. A repair
+pass with the dictionary word list made the score worse, because that list is
+Urdu heavy and holds Urdu words that split Gojri words. A second model pass that
+restores only spaces reached 13.4 percent word error, but it changed letters on
+two lines. Printed letter gaps measure 3 to 4 px and word spaces 5 to 12 px, so
+geometry cannot split words either. The print itself has wide gaps inside some
+words. A Gojri word model or a human check of spacing is the remaining work.
+Prototype: `linesheet_ocr.py` in the temp work folder. Sheet:
+`data/decode/out/kahawat-kosh/linesheet_img/`.
+
+**Batool decode + Pass 2 Gemini + Full Audit (Oct 2026):** PUA table in
+`data/decode/batool_pua_seed.json` (160 codes) for
+`Gojri-English-Dictionary.pdf` (498 pages). Body pages 25-498: zero
+unknown Batool codes on census. Front 1-24 mostly English; 3 unmapped
+codes. `Concise_Gojri_English_Dictionary_by_Dr_R.pdf` is the same front
+matter. **Gold score (page 25 / dict_alif):** full-token WER 9.2%
+(Latin spacing / `lpp`↔`Ipp`); Arabic-token WER **0%**.
+**Two-pass pipeline built and executed across full book:** Multimodal Pass 2
+(Gemini Flash with Gojri orthographic rules: `-و` endings, correct heh forms,
+fixed `Ipp:`, headword-gloss spacing) completed for **all 474 body pages**
+(pages 25-498) under `data/decode/out/gojri-english-dictionary/page-*-pass2.txt`.
+**Image-vs-Text Audit completed across all 474 pages:** Every page audited and
+documented in `data/decode/out/gojri-english-dictionary/audit/page-*-audit.txt`.
+Total entries: 11,767 dictionary lines across 474 pages.
+
+**Synthetic OCR data opened (Nov 2026).** Decoded Gojri Unicode text renders
+into Nastaliq line images as OCR training data: headless Chrome drawing with
+Noto Nastaliq Urdu, device scale 2 (HD), and for each row one clean image plus
+3 degraded copies from an approved 15-type scan-damage mix. Output stays
+gitignored under `data/synth/`. Full set `data/synth/line_full/`: 20,932
+rows (13,704 dictionary pass2 lines + 7,228 FLI story lines), 2.0 GB,
+health-checked. The 7,683-row pilot set was deleted in Nov 2026. Real-print
+pairs from the dictionary PDF land in `data/synth/real_pairs/`: tight
+per-line crops at about 300 DPI, pairing by row-count
+equality with a conditional folio-drop rule. Mined complete (Nov 2026): 11,524
+pairs from 465 of 474 pages, folio crops flagged `folio: true` and excluded
+from training, descender tails fixed with a 14 pt bottom pad. Locally training
+a compact CRNN-CTC line recogniser on CPU (no CUDA on this machine); evaluation
+on `data/gold/`.
+
+**Real-print labels rebuilt (Nov 2026).** The pass2 labels were wrong against
+the print. The user reviewed 200 random lines and all 160 table codes: 91% of
+lines had an error, mostly spaces around the `(romanisation)` group, then
+heh, kaf and a few wrong glyph codes. The fix has three parts.
+- **Table v3.1** (`data/decode/batool_pua_seed.json`): 22 codes corrected by the
+  user's rulings. F060 and F061 are always ھ. F0D4 and F0D5 are ك. F0A1 is the
+  joined لا shape, F0CD is ف, and F0F1+F031 is ئے with no extra alef.
+- **Merge** (`scripts/synth/merge_decode_letters.py`): takes the decode spelling
+  for each word that differs from pass2, and the decode gap for the spaces
+  around `(` and `)`. On the 200 reviewed lines, 316 of 333 Arabic words equal
+  the user's fix (pass2: 281). Paren spacing matches on 160 of 178 lines (pass2: 7).
+  All remaining misses are old review fixes that the user has since overruled,
+  or lines where the word counts differ.
+- **Clean step** (`scripts/synth/make_clean_labels.py`): writes
+  `real_pairs/labels_merged_clean.jsonl` (11,126 rows) for training. The 200
+  reviewed lines stay out of training, in both the real and the synthetic rows,
+  and are kept in `real_pairs/labels_review_test.jsonl` with the user's fix as
+  the test truth. Some of those fixes are stale (ہ where the print shows ھ), so
+  reconcile them before scoring.
+The synthetic dictionary rows in `line_full` still show the pass2 spelling and
+the spaces around the `(romanisation)` group. They match their own images but
+not the print. The S3 bucket `gojri-ai-sagemaker-data` holds the new labels under
+`train/`; the old ones are under `before_v3/`. The retrain on them (job
+`gojri-crnn-2026-11-05-16-02-39-998`) gave no gain. On the 200 reviewed lines the
+model reads Latin text with 0.4% error but Arabic-script letters with 33.4% error (78% on
+long Nastaliq sentences), for the old and the new model alike. It is not usable for Gojri text.
+Whole-line CER (4.8%) hides this because English is 87% of the characters, so report
+Arabic-letter error. **UTRNet-Large, zero-shot, reads the Arabic runs of the same 200 lines at 2.1%
+error** (178 lines exact; 10.9% with a 6 px margin that caught a "("). It needs only the CPU. On the
+English parts of the same lines it makes 86% errors, so it needs an Arabic/English split first. The
+cut-out runs came from PDF glyph boxes, so reading scanned pages still needs a line and script
+detector. Method, tables, error list and example crops: `data/utrnet-test/README.md`; code:
+`scripts/utrnet_arabic_eval.py`, `scripts/utrnet_latin_eval.py`. Next: UTRNet on the 12 gold pages with
+a simple line split (`LOG.md`, 2026-11-05). TrOCR is no longer first in line.
+
+**Hugging Face Dataset Published (Oct 2026):**
+`https://huggingface.co/datasets/junaidaslam/gojri-english-dictionary`.
+Complete digitized text corpus (CSV, JSONL, per-page TXT) with full credit to author Dr. Javaid Rahi.
+**Version 2 published 2026-11-05** (commit `889730b`): text rebuilt from the
+corrected font table, 10,228 of 11,767 lines changed on 465 pages; the README has
+a "Version 2" section with the numbers and known limits. Version 1 stays in the
+repo history. Rebuild with `py -3 -X utf8 scripts/build_dictionary_release.py`
+(writes `data/release/`, gitignored), then push the folder in one commit.
 
 The Quran GID table is `data/decode/quran_gid_seed.json` (570 keys).
 Key is `FONT:GID` from `get_texttrace`. Zero-width Arabic letters
@@ -539,18 +657,23 @@ still mix in one cluster. Arabic ayahs still have placeholders.
 facts.
 Direct-extraction pages were removed from the gold image folders. **Step 0.4
 run (Sep 2026):** `py -3 scripts/extract_clean_text.py` wrote
-`data/extracted/` (gitignored) and `provenance.jsonl` — the
+`data/extracted/` (gitignored) and `provenance.jsonl`: the
 Devanagari `Gojri-Hindi-English-Dictionary.pdf` (458 pages). Several English
 `good_text` / history PDFs were removed from scope by the user (Sep 2026);
 see `data/manifest.csv` error notes. FLI literature texts stay only under
 `datasets/Gojri Language Corpus/` (not duplicated under `data/extracted/`).
 
 **Devanagari → Gojri Nastaliq lexicon (Sep 2026):** tracked deliverable in
-`data/lexicon/` — `gojri_lexicon_final.tsv` (1,862 headwords) plus
+`data/lexicon/`: `gojri_lexicon_final.tsv` (1,862 headwords) plus
 `gojri_lexicon_human_verified.tsv` (50 speaker-checked rows). Dataset card and
 Hugging Face upload steps: `data/lexicon/README.md`, `data/lexicon/PUBLISH.md`.
 Published: `https://huggingface.co/datasets/junaidaslam/gojri-devanagari-nastaliq-lexicon`.
 Pipeline: `scripts/dict_translit_*.py`, `prompts/devanagari_to_gojri_nastaliq_v1.txt`.
+The source PDF has no Nastaliq text; the Nastaliq column is machine-made (Aksharamukha rules,
+Gemini, 50 human-checked rows). Nov 2026: the user ruled that a word-initial heh is ھ, as the
+Gojri print writes it (448 of 475 initial heh forms in the dictionary text), so
+`scripts/lexicon_initial_heh.py` changed 112 words in 98 rows of `gojri_lexicon_final.tsv`.
+Pushed 2026-11-05 as tag `v2.0` (commit `c21814b`); `v1.0` is the October text.
 
 **OCR gold set published (Sep 2026):** cropped images, gold text, and bake-off
 results (Gemini 3.6 Flash 17.1% pooled WER vs Sonnet 4.6 22.0%; Composer chat

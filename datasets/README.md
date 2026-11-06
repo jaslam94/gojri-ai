@@ -17,9 +17,9 @@ of that road: speech and text we can learn from locally.
 
 | Field | Detail |
 |-------|--------|
-| What it is | 11 UTF-8 Nastaliq text files (~60k words): stories, religious prose, Q&A, one poem, one Gojri–Urdu parallel file |
+| What it is | 11 UTF-8 Nastaliq text files (~60k words): stories, religious prose, Q&A, one poem, one Gojri-Urdu parallel file |
 | Curated by | Forum for Language Initiatives (FLI) |
-| Obtained from | [Mozilla Data Collective](https://datacollective.mozillafoundation.org/) — dataset listed as **Gojri Literature Corpus** |
+| Obtained from | [Mozilla Data Collective](https://datacollective.mozillafoundation.org/), dataset listed as Gojri Literature Corpus |
 | License | **CC-BY-NC-4.0** (non-commercial; attribution required) |
 | Notes | Some files contain U+FFFF placeholders (see project `LOG.md`). Keep the FLI / Data Collective license if you reuse these texts. |
 

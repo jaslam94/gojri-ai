@@ -24,9 +24,13 @@ Thumbs.db
 .vscode/
 .cursor/
 
+# Agent tooling (installed locally with `npx skills add`, not source)
+.agents/
+
 # Local Hugging Face staging (upload only; not source of truth)
 data/ocr-gold-publish/
 data/pdf-corpus-publish/
+data/hf_upload/
 
 # Decode-table glyph crops (regenerable from PDFs)
 data/decode/_glyph_crops/
@@ -35,5 +39,13 @@ data/decode/_tmp_*
 data/decode/transfer_decode.log
 data/decode/quran_gid_unknown.json
 
+# Synthetic OCR generation work area (fonts, renders, datasets); local only
+# until the user approves a publish. Fonts are SIL OFL, datasets are ours.
+data/synth/
+
 # Extracted Unicode from PDFs / local corpus copies (regenerable)
 data/extracted/
+
+# Dictionary review tool output (book crops and marks; local only)
+data/review/
+data/release/

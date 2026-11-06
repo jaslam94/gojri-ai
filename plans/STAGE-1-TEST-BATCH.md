@@ -12,10 +12,10 @@
 >
 > **Status update (2026-08-05): this plan has been executed and substantially
 > extended since it was written. Read `LOG.md`'s 2026-08-04/05 entries for the full,
-> current picture before acting on anything below** — several specifics here are now
-> stale:
+> current picture before acting on anything below** (several specifics here are now
+> stale):
 > - Images actually used are `data/gold/images_cropped/{id}.png`, not
->   `data/gold/images/{id}.png` — cropping margins cut image tokens ~60% on the
+>   `data/gold/images/{id}.png`: cropping margins cut image tokens ~60% on the
 >   densest pages, with originals kept for comparison. `data/gold/candidates.csv`
 >   now points at the cropped versions.
 > - Output files are named `{id}_{model}_{version}_original.txt` under
@@ -40,10 +40,10 @@ this session only prepared. Read this file plus the four referenced below, and y
 have everything needed to run the task without re-deriving anything.
 
 ## Read these first
-- `CLAUDE.md` — full project context and research findings
-- `ROADMAP.md` — staged plan; Stage 1 is OCR, this task is part of it
-- `plans/STAGE-0.md` — the gold-set-building plan this task follows on from
-- `data/gold/README.md` — what the gold set is and how it's organized
+- `CLAUDE.md`: full project context and research findings
+- `ROADMAP.md`: staged plan; Stage 1 is OCR, this task is part of it
+- `plans/STAGE-0.md`: the gold-set-building plan this task follows on from
+- `data/gold/README.md`: what the gold set is and how it's organized
 
 ## The task
 Send each of 12 gold-set page images through AWS Bedrock using **both** Claude
@@ -59,7 +59,7 @@ any bulk spend happens.
 
 ## The prompt
 Use `prompts/ocr_transcription_v1.txt` **verbatim**, as the text content sent
-alongside each image. Do not paraphrase or shorten it — it encodes multiple
+alongside each image. Do not paraphrase or shorten it: it encodes multiple
 hard-won corrections (numeral preservation, spread/column reading order, the
 Gojri-vs-Urdu normalization warning, etc.), each backed by a real example found in
 this project. Read it before running anything so you understand why each rule
@@ -97,14 +97,11 @@ Images for OCR calls are at `data/gold/images_cropped/{id}.png` (zoom 2).
   - Haiku 4.5: `us.anthropic.claude-haiku-4-5-20251001-v1:0`
   - Sonnet: `us.anthropic.claude-sonnet-4-5-20250929-v1:0` (or
     `us.anthropic.claude-sonnet-4-6`, also confirmed working)
-  - **Does NOT work yet**: `us.anthropic.claude-sonnet-5` — returns
-    `AccessDeniedException`, not enabled for this account (likely needs a one-time
-    console visit per Bedrock's new "first Anthropic invocation" flow). Not worth
-    chasing for this task, the 4.5/4.6 Sonnet models are a perfectly good stand-in
-    for a "capable, pricier tier" comparison point.
+  - **Does NOT work yet**: `us.anthropic.claude-sonnet-5` (returns
+    `AccessDeniedException`, not enabled for this account).
   - A bare model ID like `anthropic.claude-haiku-4-5-20251001-v1:0` (no `us.`
     prefix) fails with `ValidationException` telling you to use an inference
-    profile instead — that error is expected and means "use the `us.` ID."
+    profile instead: that error is expected and means "use the `us.` ID."
 
 ## Request format
 Bedrock's Anthropic models use the standard Anthropic Messages API shape, just
@@ -126,19 +123,18 @@ invoked differently. Body needs `anthropic_version: "bedrock-2023-05-31"`:
 }
 ```
 
-`max_tokens: 4096` is a reasonable ceiling — dense pages transcribe to roughly
-1,000-1,500 tokens per the earlier estimate in `CLAUDE.md`, but leave headroom.
+`max_tokens: 4096` is a reasonable ceiling. Dense pages transcribe to roughly
+1,000 to 1,500 tokens per the earlier estimate in `CLAUDE.md`.
 
-A minimal text-only call was already tested and confirmed working this session
-(Haiku 4.5 and Sonnet 4.5/4.6 both returned clean responses with real `usage`
-data). Image calls haven't been tested yet — that's this task.
+A minimal text-only call was already tested and confirmed working this session.
+Image calls haven't been tested yet (that is this task).
 
 ## What to capture, per image, per model
-The response JSON has a `usage` field: `input_tokens`, `output_tokens` (plus some
-cache fields you can ignore for this). **Capture and log these, they are the whole
-point of this exercise** — the earlier cost estimates in `CLAUDE.md`/`ROADMAP.md`
-were already corrected once after being found to undercount by ~2x (they'd ignored
-output tokens entirely), so getting real numbers here matters.
+The response JSON has a `usage` field: `input_tokens`, `output_tokens`.
+Capture and log these. They are the main point of this exercise.
+The earlier cost estimates in `CLAUDE.md` and `ROADMAP.md`
+were already corrected once after being found to undercount by ~2x because
+output tokens were ignored.
 
 For each of the 12 images x 2 models (24 calls total):
 1. Save the transcription text to `data/gold/images/{id}_{model_short_name}.txt`

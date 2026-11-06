@@ -31,7 +31,7 @@ on many pages, but the Unicode output was wrong. Not usable for a text corpus.
 ## Corpus path forward
 
 Vision OCR on rendered PDF pages (Gemini 3.6 Flash scored best on the gold set).
-See `LOG.md` entry **2026-08-31 — NOORIN decode abandoned**.
+See `LOG.md` entry **2026-08-31: NOORIN decode abandoned**.
 
 Batool and Quran GID decode scripts remain in the repo but are **paused** and
 not validated at book scale.

@@ -51,16 +51,21 @@ class UTRNet:
         from model import Model  # noqa: E402
         glyphs = "".join(s.strip("\n") for s in open(Path(repo) / "UrduGlyphs.txt", encoding="utf-8")) + " "
         self.chars = ["[CTCblank]"] + list(glyphs)
+        self.dev = torch.device("cuda" if torch.cuda.is_available() else "cpu")  # GPU on SageMaker, CPU on this PC
         opt = Namespace(FeatureExtraction="HRNet", SequenceModeling="DBiLSTM", Prediction="CTC", imgH=IMG_H, imgW=IMG_W,
                         num_fiducial=20, input_channel=1, output_channel=32, hidden_size=256, batch_max_length=100,
-                        rgb=False, device=torch.device("cpu"), character=glyphs, num_class=len(self.chars))
+                        rgb=False, device=self.dev, character=glyphs, num_class=len(self.chars))
         self.net = Model(opt)
         state = torch.load(weights, map_location="cpu", weights_only=True)
         self.net.load_state_dict({k.removeprefix("module."): v for k, v in state.items()})
-        self.net.eval()
+        self.net.to(self.dev).eval()
 
     def read(self, img):
         """One line chunk: grey, mirrored, 32 px high, padded to 400 px, scaled to [-1, 1]."""
+        return self.read_conf(img)[0]
+
+    def read_conf(self, img):
+        """Like read, also returns a confidence in 0..1: mean softmax peak of the frames that emit a character."""
         torch = self.torch
         img = img.convert("L").transpose(Image.Transpose.FLIP_LEFT_RIGHT)
         w, h = img.size
@@ -72,13 +77,16 @@ class UTRNet:
         if rw < IMG_W:
             x[:, :, rw:] = t[:, :, rw - 1].unsqueeze(2).expand(1, IMG_H, IMG_W - rw)
         with torch.no_grad():
-            idx = self.net(x.unsqueeze(0)).argmax(2)[0].tolist()
-        out, prev = [], 0
-        for k in idx:
+            probs = self.net(x.unsqueeze(0).to(self.dev)).softmax(2)[0]
+        peak, am = probs.max(1)
+        idx, peaks = am.tolist(), peak.tolist()
+        out, confs, prev = [], [], 0
+        for k, pk in zip(idx, peaks):
             if k != 0 and k != prev:
                 out.append(self.chars[k])
+                confs.append(pk)
             prev = k
-        return "".join(out)
+        return "".join(out), (sum(confs) / len(confs) if confs else 0.0)
 
 
 def tesseract_words(img, pad=12):

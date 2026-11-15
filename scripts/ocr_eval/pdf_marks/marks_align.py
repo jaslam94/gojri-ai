@@ -134,6 +134,8 @@ def pdf_marks(page_idx, y_ranges_px=None):
             if h is None:
                 continue
             t = "nun_n" if h == "ن" else "nun_l"
+        if e.get("kind") == "baked" and e.get("letter"):
+            t = t + "|" + e["letter"]  # the glyph carries its own letter (دُ is one glyph): marks_insert can check the OCR letter
         out.append((t, x_pt * PT2PX, oy * PT2PX))
     return out
 

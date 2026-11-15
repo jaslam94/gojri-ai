@@ -18,98 +18,112 @@
   "kind": "baked",
   "src": "Kahawat-Kosh.pdf NOORIN01,Bold:47",
   "xmin": 0.002,
-  "xmax": 0.188
+  "xmax": 0.188,
+  "letter": "ا"
  },
  "ddc63f70396171c6": {
   "type": "pesh",
   "kind": "baked",
   "src": "Kahawat-Kosh.pdf NOORIN01,Bold:105",
   "xmin": 0.007,
-  "xmax": 0.308
+  "xmax": 0.308,
+  "letter": "ڑ"
  },
  "1448da19ab5dbb26": {
   "type": "pesh",
   "kind": "baked",
   "src": "Kahawat-Kosh.pdf NOORIN01,Bold:106",
   "xmin": 0.002,
-  "xmax": 0.268
+  "xmax": 0.268,
+  "letter": "د"
  },
  "86886665fee25118": {
   "type": "pesh",
   "kind": "baked",
   "src": "Kahawat-Kosh.pdf NOORIN01,Bold:111",
   "xmin": 0.001,
-  "xmax": 0.326
+  "xmax": 0.326,
+  "letter": "ر"
  },
  "dd0efc91e7cbc8e1": {
   "type": "pesh",
   "kind": "baked",
   "src": "Kahawat-Kosh.pdf NOORIN01,Bold:159",
   "xmin": 0.004,
-  "xmax": 0.265
+  "xmax": 0.265,
+  "letter": "ز"
  },
  "0682cbe92ea94bb5": {
   "type": "pesh",
   "kind": "baked",
   "src": "Kahawat-Kosh.pdf NOORIN01,Bold:171",
   "xmin": 0.005,
-  "xmax": 0.262
+  "xmax": 0.262,
+  "letter": "ڈ"
  },
  "d1e1d744ee0aab90": {
   "type": "zer",
   "kind": "baked",
   "src": "Kahawat-Kosh.pdf NOORIN01,Bold:49",
   "xmin": 0.022,
-  "xmax": 0.157
+  "xmax": 0.157,
+  "letter": "ا"
  },
  "7511ba907efaf8e9": {
   "type": "zer",
   "kind": "baked",
   "src": "Kahawat-Kosh.pdf NOORIN01,Bold:92",
   "xmin": 0.005,
-  "xmax": 0.421
+  "xmax": 0.421,
+  "letter": "م"
  },
  "576f4667d58cbcd0": {
   "type": "zer",
   "kind": "baked",
   "src": "Kahawat-Kosh.pdf NOORIN01,Bold:100",
   "xmin": 0.004,
-  "xmax": 0.253
+  "xmax": 0.253,
+  "letter": "ذ"
  },
  "ec87ebefdb86142f": {
   "type": "zer",
   "kind": "baked",
   "src": "Kahawat-Kosh.pdf NOORIN01,Bold:101",
   "xmin": 0.001,
-  "xmax": 0.282
+  "xmax": 0.282,
+  "letter": "ر"
  },
  "faeb152dc9de5e9a": {
   "type": "zer",
   "kind": "baked",
   "src": "Kahawat-Kosh.pdf NOORIN01,Bold:131",
   "xmin": 0.005,
-  "xmax": 0.26
+  "xmax": 0.26,
+  "letter": "ڈ"
  },
  "1457f5202e656cb6": {
   "type": "zer",
   "kind": "baked",
   "src": "Kahawat-Kosh.pdf NOORIN01,Bold:134",
   "xmin": 0.002,
-  "xmax": 0.241
+  "xmax": 0.241,
+  "letter": "د"
  },
  "555313eca28db118": {
   "type": "zer",
   "kind": "baked",
   "src": "Kahawat-Kosh.pdf NOORIN01,Bold:147",
   "xmin": -0.005,
-  "xmax": 0.261
+  "xmax": 0.261,
+  "letter": "و"
  },
  "d17bdb7de874c4fb": {
   "type": "zer",
   "kind": "baked",
   "src": "Kahawat-Kosh.pdf NOORIN01,Bold:153",
   "xmin": 0.004,
-  "xmax": 0.265
+  "xmax": 0.265,
+  "letter": "ز"
  },
  "f9c3924aedfbfbff": {
   "type": "zabar",

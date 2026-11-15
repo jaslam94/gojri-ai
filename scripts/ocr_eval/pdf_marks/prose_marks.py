@@ -45,6 +45,8 @@ def page_marks(doc, pno, dpi, seed):
             if h is None:
                 continue
             t = "nun_n" if h == "ن" else "nun_l"
+        if e.get("kind") == "baked" and e.get("letter"):
+            t = t + "|" + e["letter"]
         out.append((t, x_pt * dpi / 72, oy * dpi / 72))
     return out
 

@@ -16,6 +16,8 @@ ROOT = A.ROOT
 ASPIRATE_RULE = True
 PUNCT = ":۔،()-."
 V_LETTER = {"nun_n": "ݨ", "nun_l": "ڵ"}  # ݨ (U+0768) for ن+v and ڵ (U+06B5) for ل+v: the speaker's letters (ruling B, 2026-11-15; ڵ ruled by the speaker 2026-11-15, replacing ڶ U+06B6)
+HOST_STATS = collections.Counter()   # (OCR letter, glyph letter) of every baked mark that sat on an OCR letter
+HOST_FIX = set()   # (OCR letter, glyph letter) pairs that are corrected; set in main from --host-fix, empty = only count
 MARK_CH = {"pesh": "ُ", "zer": "ِ", "zabar": "َ"}
 
 
@@ -39,8 +41,10 @@ def insert_marks(text, chars, idx, pm, keep_ocr_marks):
             o2t[blk.a + d] = blk.b + d
     add = collections.defaultdict(list)  # text letter number -> [mark chars]
     vdrop = set()  # text letter numbers dropped: UTRNet read one ل with a v as two letters, ل then ن (نالن for ناڵ)
+    hostfix = {}  # text letter number -> the letter of the baked glyph that replaces the OCR letter
     vmark = {}   # text letter number -> the letter with the small v (ݨ or ڵ) that replaces ن or ل
     for t, xpx, ri in pm:
+        t, _, host = t.partition("|")  # host: the letter of a baked glyph (letter and mark in one glyph), or ""
         cand = sorted((abs(chars[i][1] - xpx), j) for j, i in enumerate(idx) if chars[i][2] == ri)
         if not cand:
             continue
@@ -55,8 +59,13 @@ def insert_marks(text, chars, idx, pm, keep_ocr_marks):
                         vdrop.add(o2t[jj - 1])
                     break
             continue
+        if host and chars[idx[j]][2] == ri and j in o2t:
+            ol = chars[idx[j]][0]
+            HOST_STATS[(ol, host)] += 1
+            if ol != host and (ol, host) in HOST_FIX:
+                hostfix[o2t[j]] = host   # UTRNet read the baked letter wrong (دُ as ڈ): take the letter of the glyph
         # aspirate sign: the speaker writes the mark on the consonant before it (پُھل), except before a و (دھُواں)
-        if ASPIRATE_RULE and chars[idx[j]][0] == "ھ" and j > 0 and chars[idx[j - 1]][2] == chars[idx[j]][2] and chars[idx[j - 1]][0] not in "ھ"                 and not (j + 1 < len(idx) and chars[idx[j + 1]][0] == "و"):
+        if not host and ASPIRATE_RULE and chars[idx[j]][0] == "ھ" and j > 0 and chars[idx[j - 1]][2] == chars[idx[j]][2] and chars[idx[j - 1]][0] not in "ھ"                 and not (j + 1 < len(idx) and chars[idx[j + 1]][0] == "و"):
             j -= 1
         if j in o2t:
             add[o2t[j]].append(MARK_CH[t])
@@ -68,7 +77,7 @@ def insert_marks(text, chars, idx, pm, keep_ocr_marks):
             n += 1
             if n in vdrop and ch == "ل":
                 continue
-            out.append(vmark.get(n, ch) if ch in "نل" else ch)
+            out.append(vmark.get(n, ch) if ch in "نل" else hostfix.get(n, ch))
         else:
             out.append(ch)
         if is_letter(ch):
@@ -100,7 +109,10 @@ def main():
     ap.add_argument("--first", type=int, default=1)
     ap.add_argument("--last", type=int, default=169)
     ap.add_argument("--threads", type=int, default=0)
+    ap.add_argument("--pages", type=int, nargs="+", help="only these pages (instead of --first..--last)")
+    ap.add_argument("--host-fix", nargs="*", default=[], help="pairs OCR-letter+glyph-letter to correct, e.g. ڈد (UTRNet ڈ, glyph د)")
     a = ap.parse_args()
+    HOST_FIX.update((p[0], p[1]) for p in a.host_fix)
     if a.threads:
         import torch
         torch.set_num_threads(a.threads)
@@ -118,7 +130,7 @@ def main():
             e, _ = best_entry(info["entries"], c["idiom"], c["meaning"])
             jobs.setdefault(c["page"], []).append(info["entries"].index(e) if e is not None else None)
     else:
-        jobs = {n: None for n in range(a.first, a.last + 1)}
+        jobs = {n: None for n in (a.pages or range(a.first, a.last + 1))}
     for n, only in sorted(jobs.items()):
         f = Path(a.base) / f"page_{n:03d}.json"
         if not f.exists():
@@ -158,7 +170,9 @@ def main():
                     e[field] = new
         (out / f.name).write_text(json.dumps(info, ensure_ascii=False), encoding="utf-8")
         print("page", n, dict(stats), flush=True)
-    (out / f"stats_{a.first}_{a.last}.json").write_text(json.dumps(dict(stats)), encoding="utf-8")
+    tag = f"{a.first}_{a.last}" if not a.pages else f"p{a.pages[0]}_{len(a.pages)}"
+    (out / f"stats_{tag}.json").write_text(json.dumps(dict(stats)), encoding="utf-8")
+    (out / f"host_stats_{tag}.json").write_text(json.dumps({o + g: n for (o, g), n in HOST_STATS.items()}, ensure_ascii=False), encoding="utf-8")
 
 
 if __name__ == "__main__":

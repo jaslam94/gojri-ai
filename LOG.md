@@ -4718,3 +4718,124 @@ Caveat: the gold pages guided the design, so 3.6% is a development number; only 
 Next: test on a second dictionary and on scanned (not born-digital) pages; then run the pipeline on the PDF collection.
 The older uncommitted changes (CLAUDE.md, LOG.md and others) are still waiting for the user to decide.
 
+
+---
+
+**2026-11-10 and 11: English notes in Kahawat-Kosh, and a UTRNet fine-tune for short vowel marks (partly worked).**
+
+Kahawat-Kosh page OCR (`scripts/ocr_eval/ocr_kahawat.py`, GPU run on SageMaker, about $0.30 and 13 minutes per full book). It replaces the four Gemini prototype
+files. New this round: boxed section-letter headings are whitened before reading (28 pages; they came out as stray `پ`, `ق`, `ا`); each entry keeps its own
+row spans, so a review card shows only that entry; printed English notes ("Faith moves mountains.", 28 found) are read with Tesseract
+(`english_spans.py`) and kept out of UTRNet. Kraken 7 with the OpenITI Urdu model was tested as a second reader and is behind UTRNet (7.5% and 8.7% against
+2.1% letter error on 20 marks); no further work on it, except maybe for degraded pages after a scan test.
+
+Score on the 30 cards the speaker marked (60 fields; `data/ocr/kahawat-marks/`). Read it as the error on flagged cards, not as a page error rate: 24 of the 30 cards
+were marked wrong, an OK card keeps the OCR text as its truth, space errors count on Wrong cards only, and truth was trimmed in 17 fields.
+Letter error 3.4% (first run) to 2.1% (run 6). Marks: truth holds 36 (pesh 26, zer 8, shadda 1, zabar 1); the reader wrote 12 (all pesh, all right) and never a zer.
+It never writes a wrong mark, it leaves marks out. The dictionary 2.1% (200 random lines, Arabic runs cut with PDF glyph boxes) is a different measurement.
+
+Fine-tune of UTRNet-Large on real dictionary runs (`scripts/synth/build_utrnet_runs.py`, `scripts/ocr_eval/finetune_utrnet.py`, `sm_*_entry.py`):
+13,963 Arabic-script runs cut from the dictionary line crops, paired with the label parts left to right (the label is in visual left-to-right order; a first
+right-to-left pairing was wrong). The original model reads these runs at 1.6% letter error against the labels, so the labels fit. Split by whole pages:
+train 12,563 runs, val 411 (14 pages), clean test 732 (25 pages with no reviewed line), `test_seen` 257 (the 200 reviewed lines; 184 of their 188 pages also hold
+training lines, so it is the weaker test; the first split used only that and leaked).
+- UTRNet's own code adds tensors in place, which breaks the backward pass: patched at run time in `finetune_utrnet.py` (same maths, outputs identical).
+- Training all weights damages the letters. lr 3e-5 to 2e-5 collapsed within 200 steps (50 to 90% error); lr 5e-6 with warm-up degraded slowly (test letter error
+  1.9% to 6%) and marks did not improve. Controls: lr 0 keeps the score; letters-only labels are worst (11%); no augmentation, no temporal dropout, folded spellings
+  (ك ه ي) and training only on runs the model already reads all still degrade. Slack is not the cause (400 output steps, labels need 15 to 26%).
+- Training only the output layer (46,774 of 47.3 million weights, lr 2e-4, 250 to 750 steps) keeps the letters and improves marks: clean test mark error 55.8% to
+  about 41% (147 marks), `test_seen` 41.9% to 22.6%, val 68.9% to 55%; letter error unchanged (1.07% to 0.85% on the clean test). lr 6e-4 and 2e-3 hurt the letters.
+  Weights: `ocr-eval/tools/weights/large_ft_head.pth` on S3 (CC BY-NC-SA, like UTRNet).
+- On Kahawat the gain mostly does not carry over (run 7, `data/ocr/kahawat-gpu7`): letters 2.0%, marks wrong 23 of 36 (64%, was 67%), pesh matched 14 of 26 (was 12),
+  zer still 0 of 8, extra spaces 19 (was 5). The dictionary and Kahawat print differ (Batool against NOORIN fonts).
+- Restoring marks from a marked word list (`restore_marks.py`, the dictionary words, letters never change): 23 to 20 or 21 errors. Of the 36 marked words in the
+  truth, 19 are not in the list, 12 match it and 5 carry other marks, so the list can give about 12 marks at most.
+Not reached: the 15% mark target. Ideas not started: marks from the PDF text layer (mark glyphs sit at their own positions even where the letters cannot be decoded),
+and more Kahawat labels for the output layer. Cost this round: about $5 on SageMaker (estimate, 12 jobs), about $8 of the $150 so far.
+Nothing is committed yet. Local only: `data/ocr/`, `data/utrnet-ft/` (crops of printed books).
+
+## 2026-11-11: pesh and zer from the PDF text layer (option 3 works)
+
+Test of option 3 while the speaker labels more Kahawat cards. Code and README: `scripts/ocr_eval/pdf_marks/`.
+- **Finding.** Kahawat-Kosh draws pesh and zer as their own glyphs in the font `NOORIC,Bold`: gid 49 is pesh (about 930
+  uses on the 101 sampled pages), gid 47 is zer (about 525). They carry the mark at its own x
+  position. Gojri-Ghazal.pdf has the same glyphs with the same outline hash, so the table should hold for the other NOORIN
+  books. A further 12 glyphs of `NOORIN01,Bold` are one letter with a baked mark (pesh: alef, dal, reh, ڑ, ڈ, زُ; zer: alef,
+  ذ, ر, ڈ, د, ز). The texttrace of pymupdf lists every glyph twice (fill and stroke): halve the counts.
+- **Method.** UTRNet reads each row and gives the x of every letter (CTC frame centre); the nearest letter in x takes the
+  mark. Rule from the speaker's text: a mark on the aspirate sign ھ goes to the consonant before it (پُھل), except before و.
+- **Host letter check** (24 Wrong cards, 17 marks mapped): nearest letter is the speaker's host letter in 13, off by one in
+  4. Distance mark to letter 0 to 4 px at 200 DPI.
+- **Score on the 30 marked cards** (run on top of gpu6, the plain model, no fine-tune; OCR marks removed first):
+  | | gpu6 | gpu7 (fine-tune) | PDF marks |
+  |---|---|---|---|
+  | `score_marks.py` mark error | 24 of 36 (67%) | 23 (64%) | 5 (14%) |
+  | exact fields (of 60) | 32 | 26 | 43 |
+  | marks wrong or extra, host letter counted (`placed.py`) | 24 | not run | 8 |
+  Of the 8: 3 are marks the print has and the speaker's text lacks (card 22 `پھُٹو`, card 26 `گُناہ`, card 30 `پُچھنو`),
+  1 is `مَچ` where the print shows a pesh (card 28, for the speaker to rule on), 1 is a shadda (not handled), 1 is a zer in a
+  cluster of another font (card 6 `کِبت`), 2 are one off-by-one placement (card 5).
+- **Limits.** Letters still come from UTRNet (2.1% error), so a letter error moves a mark with it. Zabar and shadda are not
+  handled. The sample is 30 cards and 36 marks; the speaker's marks are incomplete (the print has more). The y values in
+  `sample.json` are 200 DPI pixels and its page numbers start at 1. Fonts are stable across pages (one object per font name), glyph ids are stable.
+- **Not done.** No full-book run, no other book, nothing committed.
+
+### 2026-11-11, later: full book, hash table, other books
+- **Table by outline hash**, not glyph id: `scripts/ocr_eval/pdf_marks/marks_table.py`, seed `data/decode/noori_marks_seed.json`
+  (16 glyphs: standalone `NOORIC,Bold` 49 pesh and 47 zer; baked in `NOORIN01,Bold`: pesh 47 105 106 111 159 171, zer 49 92 100 101
+  131 134 147 153). Search of all glyphs of all 98 fonts of the book (`find_baked.py`) for the pesh outline (loop plus tail contour) and
+  the zer outline (area about 6200): one new glyph (92, meem with zer, 2 uses). Zer is baked only in `NOORIN01`; no other font has it.
+- **Full Kahawat-Kosh run**, `data/ocr/kahawat-pdfmarks` (local): `marks_insert.py` on top of `kahawat-gpu6`, 169 pages, 4,766 fields,
+  1,936 fields with marks, 2,820 marks placed, 0 unplaced. The OCR's own pesh and zer are removed first; other OCR marks stay.
+  UTRNet runs only on fields that have a PDF mark. About 15 minutes on 4 CPU processes. Same 30-card score as before
+  (mark error 5 of 36 = 14%; 7 wrong or extra with the host letter counted). Only those 30 cards are checked; the other marks are not.
+- **Other books** (`scan_all.sh`, 5 sample pages each): the table's glyphs are present in 39 of 85 PDFs scanned (about 30 distinct books:
+  the Rahi dictionaries, Gojri-Ghazal, Afsana, Adbiyaat, Nasriyaat, Sheryaat, Anjum-Shanasi, G-Grammar, Qadim-Gojri, the kalam
+  collections and more); none in the primers, the school text books and the Batool dictionary (other fonts or scans). 6 files with
+  spaces in the name were skipped by the script (word splitting).
+
+### 2026-11-12: review page for 30 new cards, and a second book (Gojri-Ghazal)
+- **Review page.** `data/ocr/kahawat-pdfmarks/review/index.html` (local): 30 random Kahawat cards that have a PDF-placed pesh or zer, none of the
+  160 cards of the earlier sample (`build_kahawat_review.py` got `--only-marked` and `--exclude-sample`). Marks of the speaker: not back yet.
+- **Second book test.** `scripts/ocr_eval/pdf_marks/prose_marks.py` (single-column pages: `ocr_prose_pages.py` rows, UTRNet letter x, the mark glyphs
+  found in the PDF itself by outline hash). Gold page: Gojri-Ghazal PDF page 40 (12 truth marks: 2 pesh, 5 zer, 4 zabar, 1 tanwin). The pesh and zer were
+  found with the table made from Kahawat, no change: 7 of 7 right, host letter right. UTRNet alone: 6 of 11 readable marks (it misses all 4 zabar and one zer).
+- **Zabar.** The gold has the zabar only in `اَج` (4 times); the PDF draws that alef with the zabar baked in, `NOORIN01,Bold` gid 48, used 4 times on the
+  page. Added to the table with `marks_table.py add` (the Kahawat font subset has no outline for gid 48). The zabar result is in sample (the page found the glyph).
+  With it: 11 of 11 readable marks right, 0 missing, 0 wrong, 0 extra (one truth mark sits on a letter UTRNet did not read).
+- **Not marks.** `NOORIC02,Bold` gid 27 is a small "v" over the final ن (`چاݨ`, 12 uses on the page): the retroflex nun mark. The gold, the FLI corpus and the
+  Kahawat truth write a plain ن (zero U+0768 in all of them), so it is not inserted. UTRNet reads it as a sukun; no truth text has a sukun, so
+  `marks_insert.py` now removes OCR sukun. The two comma glyphs `NOORIN01` 44 and `NOORIN83` 121 sit over ت and are not zabar (not in the table).
+- **Seed** now 17 glyphs (pesh, zer, zabar). `build` merges into the seed, so glyphs added from other books stay.
+- **Open question for the speaker:** print writes the retroflex nun as ن with a small "v"; all project texts write ن. Keep ن, or write ݨ?
+- Review cards cut marks above the line (speaker, 2026-11-12): the crop started 10 px above the row ink. Now 18 px (`build_kahawat_review.py`; 32 px was too much for the speaker, 20 px still a little much); the 30-card page was rebuilt with the same cards.
+- Review cards: the margin above the entry shows the bottom of the row above (entries are tight). `fade_neighbour` in `build_kahawat_review.py` fades that ink to light grey; small separate pieces (pesh, zer, zabar, dots) stay black. Rows of the entry itself are never changed.
+
+### 2026-11-15: the speaker's check of 30 new Kahawat cards (PDF marks)
+Marks file: `data/ocr/kahawat-pdfmarks/review/review_marks.json` (local), sample `review/sample.json`: 30 random cards that have a PDF-placed pesh or zer, none from the first 160.
+12 OK, 18 Wrong. Score with `score_marks.py` (OK card: the text shown is the truth, so it is optimistic) and the host-letter check on the 18 Wrong cards only.
+- **Wrong cards (the speaker's own text), host letter counted:** 34 marks on read letters. PDF marks: 33 right, 1 missing, 0 other, 0 extra. Plain model (gpu6): 12 right, 22 missing, 1 extra.
+- The one miss (card 11, zer in `وِبسما`): UTRNet read the zer glyph as an extra د, so the mark went on that letter. A letter error, not a placement error.
+- All 60 fields: exact 42, letters 13, space only 5, marks only 0 (gpu6: exact 22, marks only 22, letters 13, space only 3). Letter error 1.2%.
+- Both reviews together (Wrong cards, 2,171 letters), the letter slips left: و read as د 4, ک as گ 3, د as ڈ 2 (the baked `دُ` glyph read as ڈ: `ڈُشمن`, `ڈُھلاوو`), ب as ی 2, آ as ا 2.
+- No ݨ, sukun, shadda or zabar in the speaker's new text.
+
+### 2026-11-15, later: card 28 ruled, retroflex nun and lam with the small v (speaker's ruling B)
+- **Card 28** (first sample, `مَچ` or `مُچ`): the speaker ruled `مُچ`, the print. `data/ocr/kahawat-marks/review_marks.json` card 28 changed. First-30 score now:
+  mark error 4 of 36 (11%), 6 wrong or extra with the host letter counted, exact fields 44 of 60.
+- **Ruling B for the small "v"**: write it, print-faithful. Over ن it is **ݨ** (U+0768). The speaker also confirmed that ل in `نامل` and `نال` carries the same
+  v. Over ل it is written **ڶ** (U+06B6, lam with dot above): the retroflex lateral the speaker named on 2026-11-04 (`orthography-decisions`); the print draws a v, not a dot. One constant (`V_LETTER` in
+  `marks_insert.py`) if the speaker prefers ڵ (U+06B5, lam with small v) or ݪ (U+076A).
+- **Why a rule on the glyph, not on the OCR letter:** UTRNet reads ل+v as ن (and sometimes as ل then ن, `نالن`), so "ن under a v" is wrong for about half of the
+  marks on Gojri-Ghazal p. 40 (5 ن, 6 ل, 1 unclear). The PDF letter glyph under the v tells them apart: `NOORIC01,Bold` 108 is ن; `NOORIC01,Bold` 175 and
+  `NOORIC,Bold` 168 are ل (table type `vhost`, field `letter`, found with `marks_table.py add ... vhost standalone <letter>`). A v over an unknown glyph is left alone.
+  The 12th v on that page sits over `آ` (`IN01:53`): not handled.
+- **Code:** `marks_table.host_letter`, `marks_align.pdf_marks` / `prose_marks.page_marks` (types `nun_n`, `nun_l`), `marks_insert.insert_marks`
+  (`ݨ` for ن; `ڶ` for ل, also when UTRNet read it as ن; a doubled ل from `لن` is collapsed). OCR zabar is now removed like pesh, zer and sukun.
+- **Gojri-Ghazal gold, PDF page 40** (`data/gold/transcriptions/gojri_ghazal/gojri_ghazal_gold.txt`): 11 words changed to the print:
+  `کرن کران ہون چان گزرن` to ݨ, `نال` (4 times) `سمھال` `نامل` to ڶ. Score: 11 of 11 marks right; letters matched 1181 of 1187.
+  **The gold set on Hugging Face still has the old text** (not pushed), and `data/gold/bakeoff_results.csv` was made with the old gold; re-score before quoting it.
+- **Kahawat-Kosh** has 1 such v in the whole book, so it is nearly unaffected. Full run with the final rules: `data/ocr/kahawat-pdfmarks-v2`.
+- **Kahawat-Kosh full run with the final rules** (`data/ocr/kahawat-pdfmarks-v2`, local; 169 pages, 2,820 marks placed, 0 unplaced): first 30 cards mark error 3 of 36 (8%), exact fields 44 of 60, letters 2.1%;
+  second 30 cards 1 of 69 (1%), exact 42 of 60, letters 1.2%. No ݨ or ڵ in the output (the one v of the book was not converted).
+- **Ruling 2026-11-15 (later):** the letter for ل with the small v is ڵ (U+06B5), not ڶ (U+06B6). `V_LETTER` in `marks_insert.py`, the Ghazal gold (6 words), `ghazal-marks7` and the memory notes now use ڵ. The corrected Ghazal gold text is pushed to `junaidaslam/gojri-nastaliq-ocr-gold` (commit `18eb08d`). `bakeoff_results.csv` still holds scores against the old gold.

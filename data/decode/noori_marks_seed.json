@@ -1,0 +1,152 @@
+{
+ "88f4bdb4b69cf667": {
+  "type": "pesh",
+  "kind": "standalone",
+  "src": "Kahawat-Kosh.pdf NOORIC,Bold:49",
+  "xmin": -0.112,
+  "xmax": 0.072
+ },
+ "ca19da68fb56232f": {
+  "type": "zer",
+  "kind": "standalone",
+  "src": "Kahawat-Kosh.pdf NOORIC,Bold:47",
+  "xmin": -0.081,
+  "xmax": 0.088
+ },
+ "efc9096657e08dbf": {
+  "type": "pesh",
+  "kind": "baked",
+  "src": "Kahawat-Kosh.pdf NOORIN01,Bold:47",
+  "xmin": 0.002,
+  "xmax": 0.188
+ },
+ "ddc63f70396171c6": {
+  "type": "pesh",
+  "kind": "baked",
+  "src": "Kahawat-Kosh.pdf NOORIN01,Bold:105",
+  "xmin": 0.007,
+  "xmax": 0.308
+ },
+ "1448da19ab5dbb26": {
+  "type": "pesh",
+  "kind": "baked",
+  "src": "Kahawat-Kosh.pdf NOORIN01,Bold:106",
+  "xmin": 0.002,
+  "xmax": 0.268
+ },
+ "86886665fee25118": {
+  "type": "pesh",
+  "kind": "baked",
+  "src": "Kahawat-Kosh.pdf NOORIN01,Bold:111",
+  "xmin": 0.001,
+  "xmax": 0.326
+ },
+ "dd0efc91e7cbc8e1": {
+  "type": "pesh",
+  "kind": "baked",
+  "src": "Kahawat-Kosh.pdf NOORIN01,Bold:159",
+  "xmin": 0.004,
+  "xmax": 0.265
+ },
+ "0682cbe92ea94bb5": {
+  "type": "pesh",
+  "kind": "baked",
+  "src": "Kahawat-Kosh.pdf NOORIN01,Bold:171",
+  "xmin": 0.005,
+  "xmax": 0.262
+ },
+ "d1e1d744ee0aab90": {
+  "type": "zer",
+  "kind": "baked",
+  "src": "Kahawat-Kosh.pdf NOORIN01,Bold:49",
+  "xmin": 0.022,
+  "xmax": 0.157
+ },
+ "7511ba907efaf8e9": {
+  "type": "zer",
+  "kind": "baked",
+  "src": "Kahawat-Kosh.pdf NOORIN01,Bold:92",
+  "xmin": 0.005,
+  "xmax": 0.421
+ },
+ "576f4667d58cbcd0": {
+  "type": "zer",
+  "kind": "baked",
+  "src": "Kahawat-Kosh.pdf NOORIN01,Bold:100",
+  "xmin": 0.004,
+  "xmax": 0.253
+ },
+ "ec87ebefdb86142f": {
+  "type": "zer",
+  "kind": "baked",
+  "src": "Kahawat-Kosh.pdf NOORIN01,Bold:101",
+  "xmin": 0.001,
+  "xmax": 0.282
+ },
+ "faeb152dc9de5e9a": {
+  "type": "zer",
+  "kind": "baked",
+  "src": "Kahawat-Kosh.pdf NOORIN01,Bold:131",
+  "xmin": 0.005,
+  "xmax": 0.26
+ },
+ "1457f5202e656cb6": {
+  "type": "zer",
+  "kind": "baked",
+  "src": "Kahawat-Kosh.pdf NOORIN01,Bold:134",
+  "xmin": 0.002,
+  "xmax": 0.241
+ },
+ "555313eca28db118": {
+  "type": "zer",
+  "kind": "baked",
+  "src": "Kahawat-Kosh.pdf NOORIN01,Bold:147",
+  "xmin": -0.005,
+  "xmax": 0.261
+ },
+ "d17bdb7de874c4fb": {
+  "type": "zer",
+  "kind": "baked",
+  "src": "Kahawat-Kosh.pdf NOORIN01,Bold:153",
+  "xmin": 0.004,
+  "xmax": 0.265
+ },
+ "f9c3924aedfbfbff": {
+  "type": "zabar",
+  "kind": "baked",
+  "src": "Gojri-Ghazal.pdf NOORIN01,Bold:48",
+  "xmin": 0.014,
+  "xmax": 0.183
+ },
+ "91ea06d1c9728556": {
+  "type": "nun",
+  "kind": "standalone",
+  "src": "Kahawat-Kosh.pdf NOORIC02,Bold:27",
+  "xmin": -0.074,
+  "xmax": 0.072
+ },
+ "897c17c5dc377e34": {
+  "type": "vhost",
+  "kind": "standalone",
+  "src": "Gojri-Ghazal.pdf NOORIC01,Bold:175",
+  "xmin": 0.032,
+  "xmax": 0.557,
+  "letter": "ل"
+ },
+ "ae408306d1178745": {
+  "type": "vhost",
+  "kind": "standalone",
+  "src": "Gojri-Ghazal.pdf NOORIC01,Bold:108",
+  "xmin": 0.042,
+  "xmax": 0.55,
+  "letter": "ن"
+ },
+ "46f243d83c4bcda7": {
+  "type": "vhost",
+  "kind": "standalone",
+  "src": "Gojri-Ghazal.pdf NOORIC,Bold:168",
+  "xmin": 0.032,
+  "xmax": 0.613,
+  "letter": "ل"
+ }
+}

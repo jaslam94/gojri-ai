@@ -122,9 +122,20 @@ button{font:inherit;padding:6px 12px;margin-right:8px;border:1px solid var(--lin
 .state{font-size:13px}
 </style></head><body><header><b>Kahawat spacing review</b> &middot; <span id="count"></span>
 <button id="dl">Download spacing_marks.json</button></header><main>
-<p>Compare the picture with the text. Check <b>where the spaces are</b>: two words joined, or one word split. Correct the
-spaces in the box (a wrong letter may be fixed too). Click <b>OK</b> if the spaces are right, or <b>Fixed</b> after you
-changed the text. Keep the marks (pesh, zer) as they are. Marks are saved in this browser; Download at the end.</p>
+<p>Compare the picture with the text. Write the text as <b>words</b>, not as the book shows it: the book often has no gap
+between real words, so do not follow its gaps. Correct the spaces in the box (a wrong letter may be fixed too). Click
+<b>OK</b> if the text is already right, <b>Fixed</b> after you changed it, <b>Unsure</b> if you cannot tell. Keep the marks
+(pesh, zer) as they are.</p>
+<p><b>Rules</b> (decided with the speaker, 2026-11-16):</p>
+<ol>
+<li>A space goes between two words. Test: does the part have its own meaning here? If it does, it is a word.</li>
+<li>Small words are separate words when they have their own meaning: <span dir="rtl">بھلا تے</span> (تے = then, so), کو، نا، ناں، تیں، وی، ہی.</li>
+<li>The same letters can be part of one word. Then keep them joined: <span dir="rtl">کھاتے</span> is one word. Decide by the meaning in the line.</li>
+<li>Helping verbs and compound verbs are separate words: <span dir="rtl">کر کے</span>, not <span dir="rtl">کرکے</span>.</li>
+<li>An ending or prefix that is part of one word stays joined, with no gap.</li>
+<li>If a case is not clear, click Unsure.</li>
+</ol>
+<p>Marks are saved in this browser; Download at the end.</p>
 ''' + "\n".join(cards) + '''
 </main><script>
 const KEY="kk_spacing_''' + KEYHASH + '''";let marks={};

@@ -27,6 +27,7 @@ UTRNet code and weights are third party (CC BY-NC-SA 4.0).
 """
 import argparse
 import json
+import re
 import sys
 import time
 from pathlib import Path
@@ -37,6 +38,7 @@ from PIL import Image
 from scipy import ndimage
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+sys.path.insert(0, str(Path(__file__).resolve().parent / "pdf_marks"))
 import ocrlib as O  # noqa: E402
 
 
@@ -48,6 +50,7 @@ def render(doc, n, dpi):
 
 LAYOUT_DPI = 300
 WORD_GAP = 0.2  # fraction of the median line height: a white gap at least this wide is a word gap (word mode)
+VERSE_MARK = "؎"  # U+060E, the poetic verse sign printed at the start of a verse line in these books
 
 
 def gap_shares(todo, med):
@@ -166,7 +169,23 @@ def read_segment(utr, gray_seg, ink_seg):
     return " ".join(t for _, t in sorted(parts, key=lambda p: -p[0]))
 
 
-def ocr_page(utr, doc, n, dpi, crop_dir=None, words="off"):
+def punct_space(s):
+    """A space after ۔ and ، (the speaker's rule: ۔ ends a sentence, ، is a break). Same rule as score_prose_review.punct_rule."""
+    return re.sub(r"([۔،])(?=[^\s۔،])", r"\1 ", s)
+
+
+def pdf_marks_of_page(doc, n, dpi):
+    """PDF mark glyphs of page n (1-based): [(type, x px, y px)]. Needs the NOORIN mark table (pdf_marks/marks_table.py)."""
+    import marks_table as MT  # noqa: E402 (lazy: the mark modules load heavy helpers)
+    import prose_marks as PM  # noqa: E402 (lazy: it imports this module)
+    seed = json.loads(MT.SEED.read_text(encoding="utf-8"))
+    return PM.page_marks(doc, n - 1, dpi, seed)
+
+
+def ocr_page(utr, doc, n, dpi, crop_dir=None, words="off", pdf_marks=False):
+    if pdf_marks:
+        import marks_align as MA  # noqa: E402
+        import marks_insert as MI  # noqa: E402
     gray, ink = render(doc, n, dpi)
     H, W = gray.shape
     # The row layout is always found on a 300 DPI render (split_rows works in pixels) and scaled to this DPI.
@@ -214,7 +233,20 @@ def ocr_page(utr, doc, n, dpi, crop_dir=None, words="off"):
         rows.append(row)
     wide, amb, ng = gap_shares(todo, med) if todo else (0.0, 0.0, 0)
     word_mode = words == "on" or (words == "auto" and wide >= 0.15 and amb <= 0.15)
+    pm_page = pdf_marks_of_page(doc, n, dpi) if pdf_marks else []
     for row, crop, sub_mine, cuts in todo:
+        row_pm = [(t, x, 0) for t, x, y in pm_page if row["x0"] - 4 <= x <= row["x1"] + 4
+                  and min(range(len(bands)), key=lambda j: abs(y - (bands[j][0] + bands[j][1]) / 2)) == row["row"]]
+
+        def rd(a0, a1):
+            """(text, chars) of one piece. chars = [(letter, x in page px, 0)], right to left; only with pdf_marks."""
+            text = read_segment(utr, crop[:, a0:a1], sub_mine[:, a0:a1])
+            if not pdf_marks or not row_pm:  # the aligned reading (letter x) is only needed on a row that has PDF marks
+                return text, None
+            # the aligned reading only gives the x of each letter; the text (letters, spaces) stays the normal reading
+            ch = [(c, row["x0"] + a0 + x, 0) for c, x in MA.read_row_aligned(utr, Image.fromarray(crop[:, a0:a1]), sub_mine[:, a0:a1])]
+            return text, ch
+
         segs = []
         for c0, c1 in cuts:
             if word_mode:
@@ -226,19 +258,41 @@ def ocr_page(utr, doc, n, dpi, crop_dir=None, words="off"):
                         pieces.append((start, p + xs[0] + c0))
                         start = q + xs[0] + c0
                 pieces.append((start, xs[-1] + 1 + c0))
-                keep = []
-                for a0, a1 in pieces:  # an isolated flat dash (verse-start mark) is not a word: the reader would call it a letter
+                keep, marker = [], []
+                for a0, a1 in pieces:  # an isolated flat dash is not a word: the reader would call it a letter
                     ys = np.where(sub_mine[:, a0:a1].any(axis=1))[0]
                     if len(ys) and (ys.max() - ys.min() + 1) < 0.25 * med and (a1 - a0) < 0.8 * med:
-                        row["dropped_marks"] = row.get("dropped_marks", 0) + 1
+                        if c1 == cuts[-1][1] and a1 == pieces[-1][1]:
+                            marker.append((a0, VERSE_MARK, [(VERSE_MARK, row["x0"] + a0, 0)] if pdf_marks else None))  # right end of the line: the verse-start mark
+                        else:
+                            row["dropped_marks"] = row.get("dropped_marks", 0) + 1
                     else:
                         keep.append((a0, a1))
-                txt = [(a0, read_segment(utr, crop[:, a0:a1], sub_mine[:, a0:a1])) for a0, a1 in keep]
-                segs.append((c0, " ".join(t for _, t in sorted(txt, key=lambda x: -x[0]))))
+                txt = [(a0, *rd(a0, a1)) for a0, a1 in keep] + marker
+                txt.sort(key=lambda x: -x[0])
+                chars = []
+                for _, _t, ch in txt:
+                    if pdf_marks and ch:
+                        chars += ([(" ", chars[-1][1] - 1, 0)] if chars else []) + ch
+                segs.append((c0, " ".join(t for _, t, _ in txt), chars))
             else:
-                segs.append((c0, read_segment(utr, crop[:, c0:c1], sub_mine[:, c0:c1])))
-        row["text"] = "\t".join(t for _, t in sorted(segs, key=lambda s: -s[0]))
+                t, ch = rd(c0, c1)
+                segs.append((c0, t, ch or []))
+        segs.sort(key=lambda s: -s[0])
+        row["text"] = "\t".join(t for _, t, _ in segs)
         row["segments"] = len(segs)
+        if pdf_marks:
+            chars = []
+            for k_, (_, _t, ch) in enumerate(segs):
+                if k_ and chars:
+                    chars.append(("\t", chars[-1][1] - 1, 0))
+                chars += ch or []
+            raw = row["text"]
+            idx = [i for i, (c, _, _) in enumerate(chars) if MI.is_letter(c) and c != " "]
+            row["text"], _left = MI.insert_marks(raw, chars, idx, row_pm, False)
+            row["raw"], row["pdf_marks"] = raw, len(row_pm)
+    for row in rows:  # speaker's rule (2026-11-16): a space follows ۔ and ، even where the print has none
+        row["text"] = punct_space(row["text"])
     return {"page": n, "dpi": dpi, "size": [W, H], "median_band": med, "word_mode": word_mode,
             "gaps": {"wide": round(wide, 3), "unclear": round(amb, 3), "n": ng}, "rows": rows}
 
@@ -253,6 +307,7 @@ def main():
     ap.add_argument("--out", required=True)
     ap.add_argument("--tag", default="")
     ap.add_argument("--words", choices=["auto", "on", "off"], default="auto")
+    ap.add_argument("--pdf-marks", action="store_true", help="put pesh and zer in from the PDF's own mark glyphs (NOORIN books)")
     args = ap.parse_args()
     utr = O.UTRNet(args.repo, args.weights)
     doc = fitz.open(args.pdf)
@@ -263,7 +318,7 @@ def main():
         out = base / f"dpi{dpi}"
         out.mkdir(parents=True, exist_ok=True)
         for n in args.pages:
-            res = ocr_page(utr, doc, n, dpi, base / "crops" / f"p{n:03d}" if dpi_i == 0 else None, args.words)
+            res = ocr_page(utr, doc, n, dpi, base / "crops" / f"p{n:03d}" if dpi_i == 0 else None, args.words, args.pdf_marks)
             (out / f"page_{n:03d}.json").write_text(json.dumps(res, ensure_ascii=False, indent=1), encoding="utf-8")
             (out / f"page_{n:03d}.txt").write_text("\n".join(r["text"] for r in res["rows"] if r["text"]) + "\n", encoding="utf-8")
             fl = sum("touch" in r["flags"] for r in res["rows"])

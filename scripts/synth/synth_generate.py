@@ -19,7 +19,7 @@ from pathlib import Path
 from playwright.sync_api import sync_playwright
 from PIL import Image
 
-ROOT = Path(r"D:\Code\VSCodeProjects\gojri-ai")
+ROOT = Path(__file__).resolve().parents[2]
 FONT = ROOT / "data" / "synth" / "fonts" / "NotoNastaliqUrdu-Regular.ttf"
 DATA_OUT = ROOT / "data" / "synth" / "line_full"
 IMG_OUT = DATA_OUT / "img"

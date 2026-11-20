@@ -24,7 +24,7 @@ import fitz
 import numpy as np
 from PIL import Image
 
-ROOT = Path(r"D:\Code\VSCodeProjects\gojri-ai")
+ROOT = Path(__file__).resolve().parents[2]
 PDF = ROOT / "pdfs" / "anjumshanasi" / "Gojri-English-Dictionary.pdf"
 PASS2 = ROOT / "data" / "decode" / "out" / "gojri-english-dictionary"
 OUT = ROOT / "data" / "synth" / "real_pairs"

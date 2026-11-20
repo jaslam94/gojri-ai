@@ -6,7 +6,7 @@ from pathlib import Path
 
 from PIL import Image, ImageDraw, ImageFont
 
-out = Path(sys.argv[1] if len(sys.argv) > 1 else r"D:\Code\VSCodeProjects\gojri-ai\data\synth\line_full")
+out = Path(sys.argv[1]) if len(sys.argv) > 1 else Path(__file__).resolve().parents[2] / "data" / "synth" / "line_full"
 rows = [json.loads(l) for l in (out / "labels.jsonl").open(encoding="utf-8")]
 rows = [r for r in rows if r["width_px"] >= 400 and r["height_px"] >= 100]
 random.seed(7)

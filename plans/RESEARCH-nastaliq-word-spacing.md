@@ -292,7 +292,7 @@ Tags: Read, Fetched, Snippet, Not opened (see the key at the top).
 | S32 | CLE (UET Lahore) InPage to Unicode converter, page and user guide | https://cle.org.pk/software/langproc/inpagetounicode.htm and https://www.cle.org.pk/Downloads/langproc/inpageunicode/Inpage-to-Unicode-Converter.pdf | Fetched (page); Read (guide, 3 pages, no technical detail) |
 | S33 | Wikipedia, "InPage" | https://en.wikipedia.org/wiki/InPage | Fetched (no format information) |
 | S34 | Malik, "A Robust InPage-to-Unicode Encoding Converter for Kashmiri and Related Languages", ResearchGate 2024 | https://www.researchgate.net/publication/387522744 | Not opened (HTTP 403) |
-| S35 | Project files: `LOG.md` (entries 2026-10-24, 2026-11-05 dictionary pass, 2026-11-15 PDF space test) and `CLAUDE.md` | D:\Code\VSCodeProjects\gojri-ai\LOG.md | Read |
+| S35 | Project files: `LOG.md` (entries 2026-10-24, 2026-11-05 dictionary pass, 2026-11-15 PDF space test) and `CLAUDE.md` | `LOG.md` (this repository) | Read |
 | S36 | Malik thesis on Urdu handwriting with a ligature language model (named in a search result) | https://shehryar-malik.github.io/theses/sp | Snippet |
 | S37 | Vendor and community pages on .inp conversion and InPage PDFs | https://convert.guru/inp-to-txt , https://www.fileinfo.com/extension/inp , https://redlib.hyperreal.coffee/r/Urdu/comments/1i0mm26/need_help_with_inpage_generated_pdf_back_in | Snippet |
 

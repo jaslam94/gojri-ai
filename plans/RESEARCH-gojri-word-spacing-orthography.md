@@ -252,7 +252,7 @@ If the user decides `بھلاتے` is one word (for example, as a fixed adverbia
 | S26 | Universal Dependencies, Punjabi guidelines | https://universaldependencies.org/pa/index.html | Snippet |
 | S27 | Pashto orthography studies (Palatana journal; Pashto Standard Orthography and Bara Gali Decisions) | https://journals.uom.edu.pk/palatana/article/view/492 ; https://pashto.org.pk/index.php/path/article/view/424 | Snippet (not opened) |
 | S28 | Cahill, effective orthographies (SIL; word breaks listed as an orthography part) | https://orthographyclearinghouse.org/papers/cahillEffectiveOrthographies.pdf | Snippet |
-| S29 | Project note `plans/RESEARCH-nastaliq-word-spacing.md` and `LOG.md` entries for 2026-11-15 | D:\Code\VSCodeProjects\gojri-ai\plans\RESEARCH-nastaliq-word-spacing.md | Read (first 40 lines, source table and open questions); LOG.md only through the CLAUDE.md summary |
+| S29 | Project note `plans/RESEARCH-nastaliq-word-spacing.md` and `LOG.md` entries for 2026-11-15 | `plans/RESEARCH-nastaliq-word-spacing.md` (this repository) | Read (first 40 lines, source table and open questions); LOG.md only through the CLAUDE.md summary |
 | S30 | Own count on the 11 FLI files in `datasets/Gojri Language Corpus/` (ZWNJ count; joined and separate pairs; token frequencies) | local files | Own count (simple string search, may include unrelated matches) |
 | S32 | "Gojri Linguistics: An Overview" (Academia) | https://www.academia.edu/119107335/Gojri_Linguistics_An_Overview | Snippet (not opened) |
 

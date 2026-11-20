@@ -2,11 +2,11 @@
 # not meant to live on GitHub). Kept locally; see data/manifest.csv for the catalog.
 /pdfs/
 
-# Common Voice audio clips (large, CC0 but terms prohibit re-hosting/speaker ID).
-# Publicly available directly from Mozilla Common Voice / Data Collective.
-# Metadata (train/dev/validated .tsv etc.) stays tracked - only the audio itself
-# is excluded. Path reflects the "datasets/" reorganization.
-datasets/cv-corpus-*/**/clips/
+# Third-party datasets: kept locally, never re-hosted from this repo (see
+# datasets/README.md). Common Voice terms prohibit re-hosting; the FLI corpus
+# comes from Mozilla Data Collective under its own terms. Only the README is tracked.
+datasets/cv-corpus-*/
+datasets/Gojri Language Corpus/
 
 # Python
 __pycache__/

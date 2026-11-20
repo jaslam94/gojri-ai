@@ -1,34 +1,36 @@
 # Code and data rights
 
-The MIT license in `LICENSE` covers the code and prompts of this project (`scripts/`, `prompts/`). It does not cover
-the data, the book text, or third-party tools. This file lists what applies to each part.
+Gojri AI is a non-commercial project. **Nothing in this repository or in its published datasets may be used for
+commercial purposes.** This file lists the terms for each part.
 
-## Data made by this project, in this repository
-
-| Path | Terms |
+| Part | Terms |
 |---|---|
-| `data/gold/` | OCR gold set: gold transcriptions and short page excerpts. See `data/gold/LICENSE.md`. |
-| `data/lexicon/` | Devanagari to Nastaliq lexicon, a derivative of a copyrighted dictionary. See `data/lexicon/LICENSE.md`. |
-| `data/pdf-corpus/` | Credits and the rights notice for the PDF mirror on Hugging Face. See `data/pdf-corpus/LICENSE.md`. |
-| `data/manifest.csv`, `data/decode/`, `data/reviews/`, `data/utrnet-test/` | Catalog, font decode tables, speaker review labels, test results. Shared for research, education and language preservation. Cite this project. |
+| Code and prompts (`scripts/`, `prompts/`) | PolyForm Noncommercial License 1.0.0 (`LICENSE`). |
+| `data/gold/` | OCR gold set: gold text and short page excerpts. Non-commercial. See `data/gold/LICENSE.md`. |
+| `data/lexicon/` | Devanagari to Nastaliq lexicon, a derivative of a copyrighted dictionary. Non-commercial. See `data/lexicon/LICENSE.md`. |
+| `data/pdf-corpus/` | Credits and rights notice for the PDF collection on Hugging Face. Non-commercial. See `data/pdf-corpus/LICENSE.md`. |
+| `data/dictionary/` | The card of the published dictionary text. CC BY-NC 4.0, with credit to Dr. M. R. Anjum Awan, the author of the source dictionary. |
+| All other project data (`data/manifest.csv`, `data/decode/`, `data/reviews/`, `data/utrnet-test/`, `data/ocr-output/`, `data/test-locked/`, `data/asr/`) | Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0). Credit "Gojri AI project". |
 
-Some of these files quote short lines from printed Gojri books (for example dictionary entries, proverbs and OCR
-rows). That text stays under the copyright of its authors and publishers. This repository gives no right to
-reproduce the books.
+License history of the code: before commit `49a9002` (2026-11-20) the repository had no license file. That commit
+added the MIT license. The same day the code moved to PolyForm Noncommercial 1.0.0, because the project is
+non-commercial. Copies taken from commit `49a9002` to commit `e0def0b` keep the MIT terms.
+
+Many data files quote lines from printed Gojri books (dictionary entries, proverbs, OCR text). That text stays under
+the copyright of its authors and publishers. These terms give no right to reproduce the books.
 
 ## Book content
 
 The source PDFs are not in this repository. Copyright of every book stays with its authors, editors and
 publishers, mainly Dr. Javaid Rahi and Prof. (Dr.) Rafique Anjum. Per-file credits: `data/pdf-corpus/CREDITS.tsv`.
+Authors or publishers who want a file removed can open an issue on GitHub.
 
 ## Published datasets
 
-Each dataset on Hugging Face carries its own license in its card:
-
-- `junaidaslam/gojri-english-dictionary`: CC BY-NC 4.0, with credit to Dr. Javaid Rahi.
-- `junaidaslam/gojri-devanagari-nastaliq-lexicon`: see its `LICENSE.md`.
-- `junaidaslam/gojri-nastaliq-ocr-gold`: see its `LICENSE.md`.
-- `junaidaslam/gojri-print-pdf-collection`: see its `LICENSE.md` and `CREDITS.tsv`.
+- `junaidaslam/gojri-english-dictionary`: CC BY-NC 4.0, with credit to Dr. M. R. Anjum Awan (*Concise Gojri-English Dictionary*).
+- `junaidaslam/gojri-devanagari-nastaliq-lexicon`: non-commercial; see its `LICENSE.md`.
+- `junaidaslam/gojri-nastaliq-ocr-gold`: non-commercial; see its `LICENSE.md`.
+- `junaidaslam/gojri-print-pdf-collection`: non-commercial; see its `LICENSE.md` and `CREDITS.tsv`.
 
 ## Third-party data and tools (not in this repository)
 
@@ -36,10 +38,8 @@ Each dataset on Hugging Face carries its own license in its card:
 |---|---|---|
 | Gojri Literature Corpus (FLI) | Mozilla Data Collective, CC BY-NC 4.0 | Download it from the source. See `datasets/README.md`. |
 | Common Voice Gujari 26.0 | Mozilla Common Voice, CC0 with Common Voice terms | Download it from the source. Do not re-host it or try to identify speakers. |
-| UTRNet code and weights | github.com/abdur75648/UTRNet-High-Resolution-Urdu-Text-Recognition, CC BY-NC-SA 4.0 | Scripts import it from a local clone. Non-commercial use only. |
+| UTRNet code and weights | github.com/abdur75648/UTRNet-High-Resolution-Urdu-Text-Recognition. Non-commercial: its LICENSE file is CC BY-NC 4.0, its README says CC BY-NC-SA 4.0. | Scripts import it from a local clone. |
+| Whisper (openai/whisper-small) | Apache 2.0 (model card on Hugging Face) | Downloaded by the ASR job. |
 | Tesseract OCR | Apache 2.0 | Installed separately. |
 | Kraken and its Urdu model | Apache 2.0 | Used only in one comparison script. |
 | Noto Nastaliq Urdu font | SIL Open Font License | Used to render synthetic lines. Not in this repository. |
-
-A result that depends on UTRNet (for example `scripts/ocr_eval/ocr_page.py`) can be used only under the
-non-commercial terms of UTRNet, even though our own code is MIT.

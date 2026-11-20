@@ -12,7 +12,7 @@ here are the reference copies. If a working copy differs, this folder is right.
 
 ## dictionary-200-lines/
 
-Book: *Gojri-English Dictionary* (Dr. Javaid Rahi), body pages 25 to 498.
+Book: *Concise Gojri-English Dictionary* (Dr. M. R. Anjum Awan), `anjumshanasi/Gojri-English-Dictionary.pdf`, body pages 25 to 498.
 
 | File | What it is |
 |---|---|

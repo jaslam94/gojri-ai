@@ -97,7 +97,7 @@ def pdf_mark_glyphs(doc, pno, seed=None):
     out = {}
     for f in doc[pno].get_fonts(full=True):
         name = f[3].split("+")[-1]
-        if not name.startswith("NOORI"):
+        if not name.startswith(("NOORI", "Batool")):  # Batool: the title font of Dil-Darya (its takhallus bar, gid 124)
             continue
         try:
             tt = TTFont(io.BytesIO(doc.extract_font(f[0])[3]))

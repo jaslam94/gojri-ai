@@ -12,8 +12,10 @@ S = Path(r"D:/Code/VSCodeProjects/gojri-ai/data/ocr/pdfmarks-work")
 ROOT = Path("D:/Code/VSCodeProjects/gojri-ai")
 DPI = 200
 PT2PX = DPI / 72
-sample = json.load(open(ROOT / "data/ocr/kahawat-marks/sample.json", encoding="utf-8"))
-marks = json.load(open(ROOT / "data/ocr/kahawat-marks/review_marks.json", encoding="utf-8"))
+_SAMPLE, _MARKS = ROOT / "data/ocr/kahawat-marks/sample.json", ROOT / "data/ocr/kahawat-marks/review_marks.json"
+# the Kahawat review files exist only on the author's machine; the module must still import on SageMaker (read_row_aligned needs neither)
+sample = json.load(open(_SAMPLE, encoding="utf-8")) if _SAMPLE.exists() else []
+marks = json.load(open(_MARKS, encoding="utf-8")) if _MARKS.exists() else {}
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import marks_table as MT
 
@@ -38,7 +40,7 @@ def _book_table():
     return out
 
 
-BOOK = _book_table()
+BOOK = _book_table() if (S / "fonts/map_all.json").exists() else {}  # work folder of the Kahawat experiment; empty on SageMaker
 TM = {0x64F: "pesh", 0x650: "zer"}
 IMG_W, IMG_H = O.IMG_W, O.IMG_H
 

@@ -162,5 +162,26 @@
   "xmin": 0.032,
   "xmax": 0.613,
   "letter": "ل"
+ },
+ "7e86b82cb0343f93": {
+  "type": "ulta_pesh",
+  "kind": "standalone",
+  "src": "Banjara.pdf NOORIC,Bold:61",
+  "xmin": -0.046,
+  "xmax": 0.059
+ },
+ "f53765ce2bf8602d": {
+  "type": "takhallus",
+  "kind": "standalone",
+  "src": "Dil-Darya.pdf NOORIN86,Bold:5",
+  "xmin": 0.249,
+  "xmax": 0.796
+ },
+ "776f24ef58abff79": {
+  "type": "takhallus",
+  "kind": "standalone",
+  "src": "Dil-Darya.pdf Batool,Bold:124",
+  "xmin": 0.012,
+  "xmax": 0.53
  }
 }

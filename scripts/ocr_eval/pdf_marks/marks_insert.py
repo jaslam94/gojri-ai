@@ -1,5 +1,5 @@
 """Experiment: put PDF pesh/zer glyphs into an OCR run's idiom text, by x position. Writes a run folder for score_marks.py."""
-import argparse, difflib, json, shutil, sys, unicodedata, collections
+import argparse, difflib, json, re, shutil, sys, unicodedata, collections
 from pathlib import Path
 import numpy as np
 import fitz
@@ -18,7 +18,7 @@ PUNCT = ":۔،()-."
 V_LETTER = {"nun_n": "ݨ", "nun_l": "ڵ"}  # ݨ (U+0768) for ن+v and ڵ (U+06B5) for ل+v: the speaker's letters (ruling B, 2026-11-15; ڵ ruled by the speaker 2026-11-15, replacing ڶ U+06B6)
 HOST_STATS = collections.Counter()   # (OCR letter, glyph letter) of every baked mark that sat on an OCR letter
 HOST_FIX = set()   # (OCR letter, glyph letter) pairs that are corrected; set in main from --host-fix, empty = only count
-MARK_CH = {"pesh": "ُ", "zer": "ِ", "zabar": "َ"}
+MARK_CH = {"pesh": "ُ", "zer": "ِ", "zabar": "َ", "ulta_pesh": "ٗ", "takhallus": "ؔ"}  # ulta_pesh = inverted damma U+0657 (NOORIC,Bold 61 in Banjara; user truth 2026-11-16)
 
 
 def is_letter(ch):
@@ -27,6 +27,25 @@ def is_letter(ch):
 
 def fold(s):
     return s.replace("ك", "ک").replace("ه", "ہ").replace("ۃ", "ہ").replace("ي", "ی").replace("ى", "ی")
+
+
+TAKH = "ؔ"  # U+0614, the pen-name sign: the speaker writes it after the last letter of the name (انجمؔ), the print has the bar above it
+
+
+def move_takhallus(text):
+    """Put each takhallus sign after the last letter of its word. The nearest-letter rule puts it one letter early (خالؔد for
+    خالدؔ), because the bar sits above and to the right of the final letter. A word is a run without space or tab; trailing
+    punctuation stays outside. Only the position of the sign changes."""
+    out = []
+    for tok in re.split(r"(\s+)", text):
+        if TAKH not in tok or tok.isspace():
+            out.append(tok)
+            continue
+        core = tok.rstrip(PUNCT + "()")
+        tail = tok[len(core):]
+        base = core.replace(TAKH, "")
+        out.append(base + TAKH + tail if base else tok)
+    return "".join(out)
 
 
 def insert_marks(text, chars, idx, pm, keep_ocr_marks):
@@ -84,7 +103,7 @@ def insert_marks(text, chars, idx, pm, keep_ocr_marks):
             for m in add.pop(n, []):
                 if m not in "".join(out[-3:]):
                     out.append(m)
-    return "".join(out), sum(len(v) for v in add.values())
+    return move_takhallus("".join(out)), sum(len(v) for v in add.values())
 
 
 def field_marks(allm, rows, lo, hi):

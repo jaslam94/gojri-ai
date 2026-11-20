@@ -35,3 +35,9 @@ See `LOG.md` entry **2026-08-31: NOORIN decode abandoned**.
 
 Batool and Quran GID decode scripts remain in the repo but are **paused** and
 not validated at book scale.
+
+**Update (Nov 2026).** The Batool decode was later completed and speaker-checked for the Gojri-English
+Dictionary (`data/decode/README.md`); the Quran table stays paused. A second NOORIN test (Oct 2026, learning the
+glyph clusters from text) also failed. Vision OCR stayed paused (17.8% word error). The path that works for the
+NOORIN books is page OCR with UTRNet-Large plus the PDF's own mark glyphs: `scripts/ocr_eval/` and
+`scripts/ocr_eval/pdf_marks/`.

@@ -30,8 +30,9 @@ mean correct Unicode.
 decode output were removed. Summary:
 `data/archive/noorin-decode-spike/README.md`.
 
-**Corpus path for font-encoded PDFs: vision OCR** (Gemini 3.6 Flash scored
-best on the gold set).
+**Corpus path for font-encoded PDFs: OCR of the page image** with UTRNet-Large
+(`scripts/ocr_eval/`, Nov 2026). One-shot vision models (Gemini 3.6 Flash was
+best) are too error-prone for unreviewed corpus text.
 
 ## Batool seed (active)
 
@@ -78,4 +79,14 @@ py -3 scripts/census_quran.py 1 717 --write-seed
 py -3 scripts/decode_quran.py 1 717
 ```
 
-Not validated at book scale. Prefer vision OCR for the Quran translation PDF.
+Not validated at book scale. Prefer page OCR for the Quran translation PDF.
+
+## Mark glyph table for NOORIN books (active, Nov 2026)
+
+`noori_marks_seed.json` is not a letter decode table. The NOORIN books draw
+short vowel marks and some signs as their own glyphs. This table names those
+glyphs, keyed by a hash of the glyph outline (so it works across books where
+glyph ids differ): pesh, zer, zabar, ulta pesh, the takhallus sign, the small
+"v" of retroflex ن and ل, and letters with a baked-in mark. The OCR reads the
+letters from the image; each mark from the PDF goes to the nearest letter.
+Code and method: `scripts/ocr_eval/pdf_marks/README.md`.

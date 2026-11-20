@@ -26,7 +26,8 @@ sample (default 20261103). The sample list is saved in `data/review/line_sample.
    wrong spacing, bad crop, plus a fix box.
 
 Marks save in the browser (`localStorage`). Use Export JSON to keep a copy.
-Import JSON restores one.
+Import JSON restores one. The speaker's final export (2026-11-04) and its summaries are
+tracked in `data/reviews/dictionary-200-lines/`.
 
 ## Read the result
 

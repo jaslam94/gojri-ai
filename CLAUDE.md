@@ -51,7 +51,7 @@ We research, discuss, and agree on a roadmap together before writing pipeline co
   zero-shot), published dataset + model + demo on Hugging Face. This is a solid
   template to follow for the ASR piece.
 
-## Data already collected (in this repo)
+## Data already collected (local; third-party data is not tracked in git)
 - `datasets/Gojri Language Corpus/`: 11 UTF-8 .txt files from the Mozilla Data Collective
   "Gojri Literature Corpus" dataset, curated by FLI. Actually read the content (Aug
   2026), not just file names, confirming word count (~60,814 words) matches the
@@ -269,7 +269,7 @@ The earlier "~18,000 total pages" figure was an undercount, it excluded the 11
 "unclear" which is pending a relevance decision): **14,550 pages.** This is the real
 number Stage 1's cost estimate should be built on.
 
-### OCR pipeline plan (validated on 2 sample pages so far, not yet run at scale)
+### OCR pipeline plan (historical, Aug 2026; superseded, see Status)
 1. "Good text already" files: extract directly (e.g. PyMuPDF `get_text`), light
    cleanup only, no OCR/vision needed. **Do not include the Quran translation.**
    Its ToUnicode CMap is broken (`broken_tounicode`). Direct extract is garbage.
@@ -478,8 +478,8 @@ verifiable manifest) came before any bulk processing:**
   - Genuinely out of scope, confirmed: `Islam-in-the-Modern-World.pdf`,
     `Revisiting-Islam.pdf`, and the five `the-gujjars-vol-*` history volumes (real
     English prose, verified by font: plain Calibri/Arial, not Nastaliq).
-- **New structural finding, not previously known**: 26 files (6,295 pages, ~43% of
-  the OCR workload) are **two-page spreads**, a single PDF page containing both the
+- **New structural finding, not previously known**: 25 unique files (5,885 pages, 38% of
+  the 15,478-page workload; 26 files and 6,295 pages with one duplicate copy) are **two-page spreads**, a single PDF page containing both the
   left and right physical book pages side by side (page width notably exceeds
   height). Detected by checking rendered page aspect ratio. Concentrated entirely in
   `javaidrahi-blog/`. This matters for Stage 1: fed to a vision model unmodified,
@@ -503,7 +503,7 @@ verifiable manifest) came before any bulk processing:**
 | Image only (needs vision transcription) | 17 | 1,281 |
 | Genuinely out of scope (English prose) | 7 | 4,192 |
 | **Pages needing paid OCR** | | **14,761** |
-| Of which: two-page-spread layout (needs special handling) | 26 files | 6,295 |
+| Of which: two-page-spread layout (needs special handling) | 25 unique files | 5,885 |
 | Tier 1 (dictionaries/glossaries, highest value) | 15 | 3,310 |
 
 This revises the OCR cost estimate up slightly again (14,761 vs the earlier 14,550),
@@ -515,7 +515,39 @@ collections are correctly counted.
 not good text. Unique good-text pages are now **1,473** (4 files). Unique pages
 that still need decode or OCR are **15,478**.
 
+**Content duplicates (2026-11-20):** hashing misses re-exported copies. `gojri-dictionary-by-dr-javaid-rahi-3.pdf`
+and `GOJRI_DICTIONARY_by_Dr_JAVAID_RAHI_Part (1).pdf` (169 pages), and `gojri-dictionary-by-dr-javaid-rahi-part-05.pdf`
+and `Gojri_Dictionary_by_Dr_Javaid_Rahi_Part.pdf` (110 pages) render identical pages. The 15,478 and Tier 1 3,310
+figures still count these 279 pages twice. The two Louk Warsti dictionary files show different pages.
+
 ## Status
+Newest first. The dated history is in `docs/TIMELINE.md`; the plan is in `ROADMAP.md`.
+
+**Repository audit (2026-11-20).** The speaker's review labels are tracked in `data/reviews/` (README there); the
+scripts read them from there, and `labels_review_test.jsonl` there holds one later hand fix (`page-0125:L26`).
+Third-party datasets (FLI corpus, Common Voice) are no longer tracked. Code is MIT (`LICENSE`); data terms are in
+`DATA-NOTICE.md`. Index of all scripts: `scripts/README.md`. Scorers now count ݨ (U+0768, Arabic Supplement) as an
+Arabic letter. UTRNet keeps its temporal dropout on at inference, so `scripts/utrnet_arabic_eval.py` takes `--seed`
+(default 0); report UTRNet numbers with the seed. Two pairs of Rahi dictionary PDFs are the same book in different
+files (279 pages counted twice in the manifest totals); the two `Gujjar_Qabila_Ki_Louk_Warsti_Dictionary` files need
+a look by eye.
+
+**Book OCR, PDF marks and word spacing (2026-11-10 to 2026-11-19).**
+- PDF mark glyphs: the NOORIN books draw pesh, zer, zabar, ulta pesh, the takhallus sign and the small "v" as their
+  own glyphs. Table `data/decode/noori_marks_seed.json` (24 glyphs, keyed by outline hash); code and method
+  `scripts/ocr_eval/pdf_marks/`. Each mark goes to the nearest UTRNet letter. On 30 Kahawat-Kosh cards mark error
+  fell from 67% to 14%. The glyphs appear in about 30 books of the collection.
+- Full local runs (gitignored `data/ocr/`): Kahawat-Kosh (169 pages, `kahawat-pdfmarks-v2`), Banjara and Dil-Darya
+  (716 pages, `prose-aws-full2`). On the 10 reviewed prose pages (`data/reviews/prose-banjara-dildarya/`): letters
+  0.8%, marks 12.0%.
+- Speaker rulings: ݨ over ن and ڵ over ل where the print shows the small "v"; a space after ۔ and ،; word spaces
+  follow meaning, not the print.
+- Word spacing is not solved: the PDF text layer has no space glyphs, and gaps in tight prose are as narrow inside
+  words as between them. `scripts/ocr_eval/space_fix.py` adds more wrong spaces than right ones. First decide one
+  labelling rule for the review truth (some reviewed rows keep glued words).
+- A UTRNet output-layer fine-tune for marks helped on the dictionary print only; the PDF mark method replaced it.
+  Kraken is behind UTRNet.
+
 **OCR model search done (2026-11-06).** Details: `scripts/ocr_eval/README.md`. UTRNet-Large is the Gojri Nastaliq reader
 (2.1% letter error on dictionary Arabic runs, 2.0% to 2.2% over five seeds; its dropout is random at inference). Qaari-0.1 and three Hugging Face TrOCR Urdu models fail and are ruled out.
 `cxfajar197/urdu-ocr` is gated (the user must request access) and untested. Tesseract 5.5 (installed at
@@ -528,7 +560,7 @@ weights live outside the repo (`D:\ocr-tools`, CC BY-NC-SA 4.0); SegNet weights 
 (`ocr-eval/models/segnet_v2.pt`). SageMaker GPU runs: one `ml.g5.xlarge` at a time; the role ARN comes from the
 environment variable `SAGEMAKER_ROLE_ARN` and never goes into the repo.
 
-Stage 0 in progress (Aug 2026). Manifest is built. Gold-set Step 0.3 is done for
+Stage 0 done (Aug 2026). Manifest is built. Gold-set Step 0.3 is done for
 the working set of 12 vision-OCR pages (one `_gold.txt` each, first six
 re-checked 2026-08-15). Score with `py -3 scripts/score_gold.py`. One-shot
 bake-off: Gemini 3.6 Flash 17.8% pooled word error, Sonnet 4.6 22.6% (after the gold fixes of Nov 2026). Composer
@@ -594,9 +626,8 @@ pairs from the dictionary PDF land in `data/synth/real_pairs/`: tight
 per-line crops at about 300 DPI, pairing by row-count
 equality with a conditional folio-drop rule. Mined complete (Nov 2026): 11,524
 pairs from 465 of 474 pages, folio crops flagged `folio: true` and excluded
-from training, descender tails fixed with a 14 pt bottom pad. Locally training
-a compact CRNN-CTC line recogniser on CPU (no CUDA on this machine); evaluation
-on `data/gold/`.
+from training, descender tails fixed with a 14 pt bottom pad. A compact CRNN-CTC
+line model was trained on them (CPU, then SageMaker); it was ruled out (see below).
 
 **Real-print labels rebuilt (Nov 2026).** The pass2 labels were wrong against
 the print. The user reviewed 200 random lines and all 160 table codes: 91% of
@@ -630,8 +661,8 @@ error** (seed 0: 29 letters, 179 lines exact; 2.0% to 2.2% over seeds 0 to 4; 10
 English parts of the same lines it makes 86% errors, so it needs an Arabic/English split first. The
 cut-out runs came from PDF glyph boxes, so reading scanned pages still needs a line and script
 detector. Method, tables, error list and example crops: `data/utrnet-test/README.md`; code:
-`scripts/utrnet_arabic_eval.py`, `scripts/utrnet_latin_eval.py`. Next: UTRNet on the 12 gold pages with
-a simple line split (`LOG.md`, 2026-11-05). TrOCR is no longer first in line.
+`scripts/utrnet_arabic_eval.py`, `scripts/utrnet_latin_eval.py`. The 12 gold-page run followed on 2026-11-06
+(see the OCR model search paragraph).
 
 **Hugging Face Dataset Published (Oct 2026):**
 `https://huggingface.co/datasets/junaidaslam/gojri-english-dictionary`.
@@ -689,9 +720,9 @@ Hugging Face (`junaidaslam/gojri-print-pdf-collection`). See
 with authors/publishers.
 
 **Local third-party datasets:** documented in `datasets/README.md` (FLI literature
-via Mozilla Data Collective; Common Voice Gujari). Not re-published from GitHub
-as our own dumps.
+via Mozilla Data Collective; Common Voice Gujari). Kept locally and gitignored
+(untracked on 2026-11-20); never re-published.
 
 **Project aim:** Gojri ASR and Gojri LLM (same spirit as Pashto Katib / Qehwa).
 
-See `plans/STAGE-0.md`, `data/gold/README.md`, and `LOG.md`.
+See `docs/TIMELINE.md`, `ROADMAP.md`, `data/gold/README.md`, and `LOG.md`.

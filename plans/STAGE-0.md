@@ -1,5 +1,10 @@
 # Stage 0: Data Hygiene: Implementation Plan
 
+> **Historical plan (closed).** Kept as written in August 2026, with its later status notes. The current state is
+> in `ROADMAP.md` and `docs/TIMELINE.md`. Numbers below are as of their date: for example the workload is now
+> 15,478 pages (not 14,550 or 14,761) and the bake-off is Gemini 17.8% / Sonnet 22.6% after the gold fixes of
+> November 2026.
+
 **Goal**: end up knowing exactly what data we have, which files are worth processing,
 in what order, and with a way to measure OCR quality. Nothing here trains a model.
 This stage exists so that every later decision is made on facts instead of guesses.

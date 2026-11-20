@@ -1,5 +1,10 @@
 # Handoff: Run the real OCR test batch via AWS Bedrock
 
+> **Historical plan (closed).** Kept as written in August 2026, with its later status notes. The current state is
+> in `ROADMAP.md` and `docs/TIMELINE.md`. Numbers below are as of their date: for example the workload is now
+> 15,478 pages (not 14,550 or 14,761) and the bake-off is Gemini 17.8% / Sonnet 22.6% after the gold fixes of
+> November 2026.
+
 > **Status update (2026-08-15): gold scoring is in place. Bulk vision OCR is
 > paused.** Haiku 4.5 and the other cheap vision models were tested and shelved
 > (`LOG.md`). Best one-shot API on the 12-page gold set is Gemini 3.6 Flash

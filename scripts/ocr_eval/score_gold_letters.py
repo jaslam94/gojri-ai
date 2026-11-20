@@ -1,7 +1,8 @@
 """Arabic-letter error of every OCR run on the gold pages (spaces, Latin and short vowels ignored).
 
-Same normalisation as scripts/utrnet_arabic_eval.py: NFC, short-vowel marks removed, only Arabic-block
-characters kept, ك=ک and ه=ہ folded (ھ stays separate). Error = Levenshtein distance of the whole page
+Same normalisation as scripts/utrnet_arabic_eval.py: NFC, short-vowel marks removed, only Arabic and
+Arabic Supplement characters kept (U+0750-077F holds ݨ), ك=ک, ه=ہ and ݩ=ݨ folded (ھ stays
+separate). Before 2026-11-20 the supplement was left out, so ݨ counted as an English character. Error = Levenshtein distance of the whole page
 string / number of gold letters. Add --latin to score the English (non-Arabic, non-space) characters instead.
 Run: py -3 -X utf8 scripts/ocr_eval/score_gold_letters.py [--latin] [run tags...]
 """
@@ -13,8 +14,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 TRANS = ROOT / "data" / "gold" / "transcriptions"
 MARKS = re.compile(r"[ً-ٰٟۖ-ۭؐ-ؚ]")
-ARAB = re.compile(r"[؀-ۿ]")
-FOLD = str.maketrans({"ك": "ک", "ه": "ہ"})
+ARAB = re.compile(r"[؀-ۿݐ-ݿ]")  # Arabic and Arabic Supplement (the supplement holds ݨ, Gojri retroflex noon)
+FOLD = str.maketrans({"ك": "ک", "ه": "ہ", "ݩ": "ݨ"})
 SKIP = re.compile(r"^\[.*\]$")
 
 

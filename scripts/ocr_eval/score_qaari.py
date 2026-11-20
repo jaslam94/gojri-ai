@@ -1,8 +1,8 @@
 """Score a crop run (SageMaker output jsonl from the Qaari or TrOCR job) against the 200 reviewed dictionary lines.
 Output rows are grouped by whichever of model / image / decode / variant they contain.
 
-Same metric as scripts/utrnet_arabic_eval.py: NFC, short-vowel marks removed, only Arabic-block characters
-kept, ك=ک and ه=ہ folded (ھ separate); Levenshtein distance summed over lines / reference letters.
+Same metric as scripts/utrnet_arabic_eval.py: NFC, short-vowel marks removed, only Arabic and Arabic
+Supplement characters kept, ك=ک, ه=ہ and ݩ=ݨ folded (ھ separate); Levenshtein distance summed over lines / reference letters.
 The crops of one line are joined left to right (idx order), as in the UTRNet test. The UTRNet column comes
 from data/utrnet-test/results.tsv, so both systems are scored on identical references.
 
@@ -18,8 +18,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 MARKS = re.compile(r"[ً-ٰٟۖ-ۭؐ-ؚ]")
-ARAB = re.compile(r"[؀-ۿ]")
-FOLD = str.maketrans({"ك": "ک", "ه": "ہ"})
+ARAB = re.compile(r"[؀-ۿݐ-ݿ]")  # Arabic and Arabic Supplement (the supplement holds ݨ, Gojri retroflex noon)
+FOLD = str.maketrans({"ك": "ک", "ه": "ہ", "ݩ": "ݨ"})
 
 
 def arabic(s):

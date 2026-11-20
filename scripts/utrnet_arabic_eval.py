@@ -7,14 +7,17 @@ glyph boxes stored in the PDF, so English text never reaches the model. Each run
 is read by UTRNet-Large (CPU, no training) and the outputs are joined.
 
 Score: Arabic-letter error against the user's fix (`text_fix`). Both sides are
-NFC-normalised, short-vowel marks removed, only Arabic-block characters kept
-(spaces and Latin dropped), then ك=ک and ه=ہ are folded (ھ stays separate). Error
+NFC-normalised, short-vowel marks removed, only Arabic and Arabic Supplement
+characters kept (spaces and Latin dropped), then ك=ک, ه=ہ and ݩ=ݨ are folded
+(ھ stays separate). Error
 is the Levenshtein distance (insert, delete, substitute) summed over the lines,
 divided by the number of reference letters.
 
-Results on 2026-11-05 (1,400 reference letters): UTRNet on Arabic runs 2.1% at
---pads 0 (30 letters, 178 of 200 lines exact), 2.9% at 2, 10.9% at 6 (the margin
-then catches a sliver of the "(" and UTRNet adds an alef). See
+Results on 2026-11-05 (1,400 reference letters, one run without a seed): UTRNet on
+Arabic runs 2.1% at --pads 0 (29 letters, 178 of 200 lines exact), 2.8% at 2, 10.9%
+at 6 (the margin then catches a sliver of the "(" and UTRNet adds an alef).
+UTRNet's dropout stays on at inference, so runs differ without a seed. --seed 0 (the
+default) gives 29 letters, 179 lines exact; seeds 0 to 4 give 2.0% to 2.2%. See
 data/utrnet-test/README.md for the full table and examples.
 
 Setup (UTRNet is third-party code, CC BY-NC-SA 4.0, research use):
@@ -48,6 +51,8 @@ ap.add_argument("--pads", type=int, nargs="+", default=[0], help="pixel margins 
 ap.add_argument("--crnn-base", default="", help="our baseline CRNN crnn_last.pt (optional)")
 ap.add_argument("--crnn-new", default="", help="our retrained CRNN crnn_last.pt (optional)")
 ap.add_argument("--report-dir", default="", help="write results.tsv, summary.json and examples/ here")
+ap.add_argument("--seed", type=int, default=0,
+                help="seed for UTRNet's test-time temporal dropout (np.random); one seed gives one fixed result")
 args = ap.parse_args()
 sys.path.insert(2, args.repo)
 
@@ -71,6 +76,10 @@ net = Model(opt)
 state = torch.load(args.weights, map_location="cpu", weights_only=True)
 net.load_state_dict({k.removeprefix("module."): v for k, v in state.items()})
 net.eval()
+# UTRNet keeps its temporal dropout on at inference: each read averages 5 random masks drawn with np.random
+# (modules/dropout_layer.py). Without a seed every run gives a slightly different result.
+np.random.seed(args.seed)
+torch.manual_seed(args.seed)
 
 
 def utrnet_read(img):
@@ -95,8 +104,8 @@ def utrnet_read(img):
 
 
 MARKS = re.compile(r"[ً-ٰٟۖ-ۭؐ-ؚ]")
-ARAB = re.compile(r"[؀-ۿ]")
-FOLD = str.maketrans({"ك": "ک", "ه": "ہ"})
+ARAB = re.compile(r"[؀-ۿݐ-ݿ]")  # Arabic and Arabic Supplement (the supplement holds ݨ, Gojri retroflex noon)
+FOLD = str.maketrans({"ك": "ک", "ه": "ہ", "ݩ": "ݨ"})
 
 
 def arabic(s):

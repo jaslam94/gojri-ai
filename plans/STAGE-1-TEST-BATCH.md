@@ -82,7 +82,7 @@ Images for OCR calls are at `data/gold/images_cropped/{id}.png` (zoom 2).
 ## AWS Bedrock setup (already verified working this session)
 - **Region: `us-east-1`.**
 - Credentials are already configured on this machine (`aws configure` was run with
-  a fresh IAM user, `ai_agent_user`, account `342374576774`, policy
+  a fresh IAM user, `ai_agent_user`, with the policy
   `AmazonBedrockFullAccess`). If running on the same machine/user profile, no
   further AWS setup is needed. If not, credentials need to be reconfigured.
 - **Use `boto3` directly in Python rather than shelling out to the `aws` CLI.**

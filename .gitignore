@@ -49,3 +49,9 @@ data/extracted/
 # Dictionary review tool output (book crops and marks; local only)
 data/review/
 data/release/
+
+# OCR run outputs, book crops and fine-tune work folders (large; regenerable).
+# The speaker's review labels from these runs are tracked in data/reviews/.
+data/ocr/
+data/utrnet-ft/
+data/fli-review/

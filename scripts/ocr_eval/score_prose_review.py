@@ -4,7 +4,7 @@ Truth of a row: the corrected text when the row is marked "wrong", the OCR text 
 Same-letter rules for scoring (orthography-decisions memory): ك=ک, ه=ہ, ݨ=ݩ; Persian and Arabic-Indic digits are the same.
 Punctuation spacing rule (user, 2026-11-16): a space follows ۔ and ، ; the rule is applied to OCR and truth alike.
 Three errors, scored apart: letters (marks, spaces and punctuation removed), marks (the mark sequence), spaces.
-Run: py -3 -X utf8 scripts/ocr_eval/score_prose_review.py data/ocr/prose-words/review_marks.json [--post]
+Run: py -3 -X utf8 scripts/ocr_eval/score_prose_review.py data/reviews/prose-banjara-dildarya/review_marks.json [--post]
 --post applies the punctuation rule to the OCR text before scoring (the truth always gets it).
 """
 import argparse

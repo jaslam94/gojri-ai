@@ -86,7 +86,7 @@ KEEP = re.compile(r"[A-Za-z0-9]")
 doc = fitz.open(M.PDF)
 pua = D.load_map()
 base = ROOT / "data" / "synth" / "real_pairs"
-review = [json.loads(line) for line in (base / "labels_review_test.jsonl").open(encoding="utf-8")]
+review = [json.loads(line) for line in (ROOT / "data" / "reviews" / "dictionary-200-lines" / "labels_review_test.jsonl").open(encoding="utf-8")]
 
 
 def line_boxes(page):

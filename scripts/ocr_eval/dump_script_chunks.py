@@ -30,7 +30,7 @@ args = ap.parse_args()
 out = Path(args.out); out.mkdir(parents=True, exist_ok=True)
 
 base = ROOT / "data" / "synth" / "real_pairs"
-review = {json.loads(l)["page_line"] for l in (base / "labels_review_test.jsonl").open(encoding="utf-8")}
+review = {json.loads(l)["page_line"] for l in (ROOT / "data" / "reviews" / "dictionary-200-lines" / "labels_review_test.jsonl").open(encoding="utf-8")}
 rows = [json.loads(l) for l in (base / "labels_merged_clean.jsonl").open(encoding="utf-8")]
 rows = [r for r in rows if not r["folio"] and r["page_line"] not in review
         and int(r["page_line"][5:9]) % args.every == 0][: args.limit_lines]

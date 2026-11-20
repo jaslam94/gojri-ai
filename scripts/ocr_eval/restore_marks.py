@@ -81,7 +81,7 @@ def main():
     ap.add_argument("--min-share", type=float, nargs="+", default=[0.5, 0.7, 0.9])
     args = ap.parse_args()
     base = ROOT / "data" / "synth" / "real_pairs"
-    forms = build_wordlist([base / "labels_merged_clean.jsonl", base / "labels_review_test.jsonl"])
+    forms = build_wordlist([base / "labels_merged_clean.jsonl", ROOT / "data" / "reviews" / "dictionary-200-lines" / "labels_review_test.jsonl"])
     print("word list:", len(forms), "bare words;", sum(1 for c in forms.values() if any(any(k) for k in c)), "with marks")
     rows = [r for r in json.loads(Path(args.score).read_text(encoding="utf-8")) if r["ocr"] is not None]
     marks_of = lambda s: "".join(MARK.findall(unicodedata.normalize("NFC", s)))  # noqa: E731

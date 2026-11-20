@@ -79,7 +79,7 @@ def main():
     doc = fitz.open(M.PDF)
     pua = D.load_map()
     clean = [json.loads(line) for line in (base / "labels_merged_clean.jsonl").open(encoding="utf-8")]
-    review = [json.loads(line) for line in (base / "labels_review_test.jsonl").open(encoding="utf-8")]
+    review = [json.loads(line) for line in (ROOT / "data" / "reviews" / "dictionary-200-lines" / "labels_review_test.jsonl").open(encoding="utf-8")]
 
     boxes = {}
 

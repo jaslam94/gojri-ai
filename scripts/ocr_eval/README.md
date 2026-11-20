@@ -1,8 +1,8 @@
 # OCR model comparison scripts
 
 Scripts that compare Nastaliq OCR models on Gojri text. The 200-line test set is the 200 dictionary lines the
-user reviewed. The reference text for it is `text_fix` in `data/synth/real_pairs/labels_review_test.jsonl`
-(gitignored, copied into `data/utrnet-test/results.tsv`).
+user reviewed. The reference text for it is `text_fix` in `data/reviews/dictionary-200-lines/labels_review_test.jsonl`
+(tracked; also copied into `data/utrnet-test/results.tsv`).
 
 | Script | What it does |
 |---|---|

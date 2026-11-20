@@ -10,9 +10,9 @@ Short answer: yes, when it gets only the Arabic-script parts of a line. It makes
 
 Book. The *Gojri-English Dictionary* compiled by Dr. Javaid Rahi (`pdfs/anjumshanasi/Gojri-English-Dictionary.pdf`, body pages 25 to 498). Each line has a Nastaliq headword, a Roman spelling in brackets, an English definition, and sometimes a Nastaliq example sentence. The Nastaliq uses the Batool font. The English uses a Latin font.
 
-Lines. The 200 lines the user checked by hand (`data/synth/real_pairs/labels_review_test.jsonl`). The book was cut into 200 equal parts in page order and one line was drawn from each (seed 20261103, built by `scripts/review/build_review.py`). The lines come from 192 different pages, 26 to 498. Together they hold 1,400 Arabic-script letters (short vowel marks not counted) and 9,370 other characters (English, digits, punctuation). Five lines have no Arabic at all. The retrained CRNN never saw these lines in training. The baseline CRNN did.
+Lines. The 200 lines the user checked by hand (`data/reviews/dictionary-200-lines/labels_review_test.jsonl`). The book was cut into 200 equal parts in page order and one line was drawn from each (seed 20261103, built by `scripts/review/build_review.py`). The lines come from 192 different pages, 26 to 498. Together they hold 1,400 Arabic-script letters (short vowel marks not counted) and 9,370 other characters (English, digits, punctuation). Five lines have no Arabic at all. The retrained CRNN never saw these lines in training. The baseline CRNN did.
 
-Truth. The `text_fix` field of each line: the text the user corrected while checking the line against the printed page (source file `data/review/marks_final_20261104.json`). A native Gojri speaker made these corrections. A dozen words still carry spellings that the user has since ruled differently (see the error table).
+Truth. The `text_fix` field of each line: the text the user corrected while checking the line against the printed page (source file `data/reviews/dictionary-200-lines/marks_final_20261104.json`). A native Gojri speaker made these corrections. A dozen words still carry spellings that the user has since ruled differently (see the error table).
 
 ## The models
 

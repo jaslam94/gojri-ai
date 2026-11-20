@@ -1,6 +1,6 @@
 import json, re, sys
 from pathlib import Path
-ROOT = Path("d:/Code/VSCodeProjects/gojri-ai")
+ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT/"scripts")); sys.path.insert(1, str(ROOT/"scripts"/"synth"))
 import fitz
 from PIL import Image
@@ -8,7 +8,7 @@ import dump_batool_lines as D, merge_decode_letters as M, mine_batool_pairs as M
 out = Path(sys.argv[1]); out.mkdir(parents=True, exist_ok=True)
 doc = fitz.open(M.PDF); pua = D.load_map()
 base = ROOT/"data"/"synth"/"real_pairs"
-review = [json.loads(l) for l in (base/"labels_review_test.jsonl").open(encoding="utf-8")]
+review = [json.loads(l) for l in (ROOT / "data" / "reviews" / "dictionary-200-lines" / "labels_review_test.jsonl").open(encoding="utf-8")]
 
 def line_boxes(page):
     labels = M.pass2_labels(page)

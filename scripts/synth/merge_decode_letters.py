@@ -38,7 +38,7 @@ PASS2 = ROOT / "data" / "decode" / "out" / "gojri-english-dictionary"
 SRC = ROOT / "data" / "synth" / "real_pairs" / "labels.jsonl"
 OUT = ROOT / "data" / "synth" / "real_pairs" / "labels_merged.jsonl"
 SKIP = ROOT / "data" / "synth" / "real_pairs" / "labels_merged_skipped.json"
-MARKS = ROOT / "data" / "review" / "marks_final_20261104.json"
+MARKS = ROOT / "data" / "reviews" / "dictionary-200-lines" / "marks_final_20261104.json"
 
 AR_RUN = re.compile(r"[؀-ۿݐ-ݿ]+")
 HEH_KAF = set("هہھكک")

@@ -1,0 +1,3494 @@
+{
+ "tool": "gojri-dictionary-review",
+ "built": "2026-11-03T22:12:16",
+ "seed": 20261103,
+ "exported": "2026-11-04T16:44:55.137Z",
+ "table": [
+  {
+   "code": "F0E7",
+   "table_output": "و",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 6669,
+   "pages": 472
+  },
+  {
+   "code": "F05E",
+   "table_output": "ا",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 4571,
+   "pages": 462
+  },
+  {
+   "code": "F086",
+   "table_output": "ر",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 2886,
+   "pages": 438
+  },
+  {
+   "code": "F0DE",
+   "table_output": "ن",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 2869,
+   "pages": 446
+  },
+  {
+   "code": "F0E3",
+   "table_output": "ھ",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 2843,
+   "pages": 377
+  },
+  {
+   "code": "F0DF",
+   "table_output": "ن",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 2580,
+   "pages": 439
+  },
+  {
+   "code": "F06F",
+   "table_output": "ی",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 2565,
+   "pages": 463
+  },
+  {
+   "code": "F05D",
+   "table_output": "ا",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 2555,
+   "pages": 404
+  },
+  {
+   "code": "F0F6",
+   "table_output": "ُ",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 2550,
+   "pages": 438
+  },
+  {
+   "code": "F0D2",
+   "table_output": "ک",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 2262,
+   "pages": 378
+  },
+  {
+   "code": "F06E",
+   "table_output": "ی",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 2198,
+   "pages": 422
+  },
+  {
+   "code": "F085",
+   "table_output": "ر",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 2086,
+   "pages": 400
+  },
+  {
+   "code": "F0E6",
+   "table_output": "و",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 1997,
+   "pages": 429
+  },
+  {
+   "code": "F065",
+   "table_output": "ب",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 1909,
+   "pages": 339
+  },
+  {
+   "code": "F089",
+   "table_output": "س",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 1642,
+   "pages": 278
+  },
+  {
+   "code": "F0DA",
+   "table_output": "م",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 1634,
+   "pages": 302
+  },
+  {
+   "code": "F0B5",
+   "table_output": "پ",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 1527,
+   "pages": 259
+  },
+  {
+   "code": "F081",
+   "table_output": "د",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 1396,
+   "pages": 283
+  },
+  {
+   "code": "F069",
+   "table_output": "ت",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 1299,
+   "pages": 267
+  },
+  {
+   "code": "F0F4",
+   "table_output": "ِ",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 1210,
+   "pages": 360
+  },
+  {
+   "code": "F032",
+   "table_output": "چ",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 1175,
+   "pages": 197
+  },
+  {
+   "code": "F0D6",
+   "table_output": "ل",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 1146,
+   "pages": 299
+  },
+  {
+   "code": "F0D7",
+   "table_output": "ل",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 1111,
+   "pages": 310
+  },
+  {
+   "code": "F071",
+   "table_output": "ج",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 1027,
+   "pages": 193
+  },
+  {
+   "code": "F0D3",
+   "table_output": "ک",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 998,
+   "pages": 279
+  },
+  {
+   "code": "F02B",
+   "table_output": "گ",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 991,
+   "pages": 207
+  },
+  {
+   "code": "F070",
+   "table_output": "ی",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 984,
+   "pages": 383
+  },
+  {
+   "code": "F03C",
+   "table_output": "ڑ",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 978,
+   "pages": 277
+  },
+  {
+   "code": "F082",
+   "table_output": "د",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 967,
+   "pages": 302
+  },
+  {
+   "code": "F061",
+   "table_output": "ه",
+   "mark": "wrong",
+   "fix": "ھ",
+   "note": "All images show Do Chashmi Hay ھ",
+   "uses": 953,
+   "pages": 246
+  },
+  {
+   "code": "F06D",
+   "table_output": "ی",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 816,
+   "pages": 269
+  },
+  {
+   "code": "F06A",
+   "table_output": "ت",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 797,
+   "pages": 267
+  },
+  {
+   "code": "F0E2",
+   "table_output": "ھ",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 695,
+   "pages": 193
+  },
+  {
+   "code": "F03A",
+   "table_output": "ٹ",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 686,
+   "pages": 157
+  },
+  {
+   "code": "F0DB",
+   "table_output": "م",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 623,
+   "pages": 211
+  },
+  {
+   "code": "F05C",
+   "table_output": "ڑ",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 596,
+   "pages": 220
+  },
+  {
+   "code": "F02C",
+   "table_output": "گ",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 586,
+   "pages": 204
+  },
+  {
+   "code": "F039",
+   "table_output": "ٹ",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 531,
+   "pages": 181
+  },
+  {
+   "code": "F060",
+   "table_output": "ہ",
+   "mark": "wrong",
+   "fix": "ھ",
+   "note": "All images show Do Chashmi Hay ھ",
+   "uses": 496,
+   "pages": 184
+  },
+  {
+   "code": "F08A",
+   "table_output": "س",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 487,
+   "pages": 166
+  },
+  {
+   "code": "F037",
+   "table_output": "ں",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 473,
+   "pages": 223
+  },
+  {
+   "code": "F04A",
+   "table_output": "ڈ",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 471,
+   "pages": 100
+  },
+  {
+   "code": "F031",
+   "table_output": "ے",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 443,
+   "pages": 218
+  },
+  {
+   "code": "F0F1",
+   "table_output": "ا",
+   "mark": "wrong",
+   "fix": "ئ ",
+   "note": "Yeh with Hamza Above ئ ",
+   "uses": 440,
+   "pages": 217
+  },
+  {
+   "code": "F0D8",
+   "table_output": "ل",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 440,
+   "pages": 230
+  },
+  {
+   "code": "F066",
+   "table_output": "ک",
+   "mark": "wrong",
+   "fix": "ب ",
+   "note": "The letter Bay (ب) ",
+   "uses": 430,
+   "pages": 166
+  },
+  {
+   "code": "F028",
+   "table_output": "،",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 421,
+   "pages": 246
+  },
+  {
+   "code": "F03B",
+   "table_output": "ڈ",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 416,
+   "pages": 163
+  },
+  {
+   "code": "F072",
+   "table_output": "ج",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 401,
+   "pages": 141
+  },
+  {
+   "code": "F06B",
+   "table_output": "ت",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 391,
+   "pages": 221
+  },
+  {
+   "code": "F08D",
+   "table_output": "ش",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 389,
+   "pages": 104
+  },
+  {
+   "code": "F0E0",
+   "table_output": "ہ",
+   "mark": "wrong",
+   "fix": "ن",
+   "note": "The letter noon (ن)",
+   "uses": 386,
+   "pages": 221
+  },
+  {
+   "code": "F0E1",
+   "table_output": "ں",
+   "mark": "wrong",
+   "fix": "ن",
+   "note": "The letter noon (ن)",
+   "uses": 376,
+   "pages": 216
+  },
+  {
+   "code": "F03E",
+   "table_output": "ھ",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 368,
+   "pages": 184
+  },
+  {
+   "code": "F0EC",
+   "table_output": "خ",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 356,
+   "pages": 95
+  },
+  {
+   "code": "F0D9",
+   "table_output": "ل",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 356,
+   "pages": 196
+  },
+  {
+   "code": "F033",
+   "table_output": "چ",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 300,
+   "pages": 108
+  },
+  {
+   "code": "F0CA",
+   "table_output": "ف",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 296,
+   "pages": 87
+  },
+  {
+   "code": "F087",
+   "table_output": "ز",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 256,
+   "pages": 100
+  },
+  {
+   "code": "F09D",
+   "table_output": "آ",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 247,
+   "pages": 81
+  },
+  {
+   "code": "F0CE",
+   "table_output": "ق",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 237,
+   "pages": 65
+  },
+  {
+   "code": "F0A1",
+   "table_output": "ل",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 232,
+   "pages": 97
+  },
+  {
+   "code": "F075",
+   "table_output": "ح",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 230,
+   "pages": 49
+  },
+  {
+   "code": "F06C",
+   "table_output": "ت",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 227,
+   "pages": 142
+  },
+  {
+   "code": "F0E4",
+   "table_output": "ہ",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 227,
+   "pages": 147
+  },
+  {
+   "code": "F0E5",
+   "table_output": "ئی",
+   "mark": "wrong",
+   "fix": "ہ",
+   "note": "Gol he urdu (ہ)",
+   "uses": 220,
+   "pages": 138
+  },
+  {
+   "code": "F0D4",
+   "table_output": "ک",
+   "mark": "wrong",
+   "fix": " ك",
+   "note": "ك / ک both are same letter kaf just written differently.. ک one is urdu and ك is written in arabic/persion",
+   "uses": 215,
+   "pages": 130
+  },
+  {
+   "code": "F09F",
+   "table_output": "لا",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 212,
+   "pages": 88
+  },
+  {
+   "code": "F0C2",
+   "table_output": "ع",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 204,
+   "pages": 64
+  },
+  {
+   "code": "F0B6",
+   "table_output": "پ",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 198,
+   "pages": 78
+  },
+  {
+   "code": "F036",
+   "table_output": "ں",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 191,
+   "pages": 124
+  },
+  {
+   "code": "F0DC",
+   "table_output": "ام",
+   "mark": "wrong",
+   "fix": "م",
+   "note": "Meem م",
+   "uses": 183,
+   "pages": 112
+  },
+  {
+   "code": "F08E",
+   "table_output": "ش",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 169,
+   "pages": 74
+  },
+  {
+   "code": "F0DD",
+   "table_output": "م",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 160,
+   "pages": 110
+  },
+  {
+   "code": "F02D",
+   "table_output": "گ",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 142,
+   "pages": 92
+  },
+  {
+   "code": "F038",
+   "table_output": "ل",
+   "mark": "wrong",
+   "fix": "ٹ",
+   "note": "Ṭe (ٹ)",
+   "uses": 140,
+   "pages": 88
+  },
+  {
+   "code": "0020",
+   "table_output": " ",
+   "mark": "wrong",
+   "fix": " ",
+   "note": "The bounding box in red is showing letter, not space. Space comes after a letter. There is a space after چِٹا and کُٹ only. کُلis wrong کُل کُٹ is right کُٹ",
+   "uses": 138,
+   "pages": 110
+  },
+  {
+   "code": "F0CB",
+   "table_output": "ف",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 138,
+   "pages": 50
+  },
+  {
+   "code": "F08C",
+   "table_output": "س",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 135,
+   "pages": 98
+  },
+  {
+   "code": "F0D5",
+   "table_output": "ک",
+   "mark": "wrong",
+   "fix": "ك",
+   "note": "",
+   "uses": 135,
+   "pages": 93
+  },
+  {
+   "code": "F063",
+   "table_output": "ے",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 131,
+   "pages": 86
+  },
+  {
+   "code": "F08B",
+   "table_output": "س",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 125,
+   "pages": 90
+  },
+  {
+   "code": "F0C6",
+   "table_output": "غ",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 125,
+   "pages": 36
+  },
+  {
+   "code": "F088",
+   "table_output": "ز",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 120,
+   "pages": 68
+  },
+  {
+   "code": "F0CF",
+   "table_output": "ق",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 119,
+   "pages": 59
+  },
+  {
+   "code": "F0ED",
+   "table_output": "خ",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 118,
+   "pages": 50
+  },
+  {
+   "code": "F0C3",
+   "table_output": "ع",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 118,
+   "pages": 48
+  },
+  {
+   "code": "F067",
+   "table_output": "ب",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 108,
+   "pages": 69
+  },
+  {
+   "code": "F062",
+   "table_output": "ھ",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 105,
+   "pages": 72
+  },
+  {
+   "code": "F09B",
+   "table_output": "ط",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 103,
+   "pages": 30
+  },
+  {
+   "code": "F068",
+   "table_output": "ب",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 93,
+   "pages": 69
+  },
+  {
+   "code": "F076",
+   "table_output": "ح",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 93,
+   "pages": 36
+  },
+  {
+   "code": "F091",
+   "table_output": "ص",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 92,
+   "pages": 30
+  },
+  {
+   "code": "F092",
+   "table_output": "ص",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 85,
+   "pages": 37
+  },
+  {
+   "code": "F048",
+   "table_output": "ٹ",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 83,
+   "pages": 62
+  },
+  {
+   "code": "F0F2",
+   "table_output": "ی",
+   "mark": "wrong",
+   "fix": "ئ",
+   "note": "Yeh With Hamza Above",
+   "uses": 77,
+   "pages": 48
+  },
+  {
+   "code": "F073",
+   "table_output": "ج",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 73,
+   "pages": 51
+  },
+  {
+   "code": "F05F",
+   "table_output": "ط",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 72,
+   "pages": 35
+  },
+  {
+   "code": "F095",
+   "table_output": "ض",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 72,
+   "pages": 30
+  },
+  {
+   "code": "F074",
+   "table_output": "ج",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 66,
+   "pages": 57
+  },
+  {
+   "code": "F090",
+   "table_output": "ش",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 65,
+   "pages": 50
+  },
+  {
+   "code": "F08F",
+   "table_output": "ش",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 63,
+   "pages": 42
+  },
+  {
+   "code": "F0B8",
+   "table_output": "پ",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 59,
+   "pages": 41
+  },
+  {
+   "code": "F02E",
+   "table_output": "گ",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 58,
+   "pages": 40
+  },
+  {
+   "code": "F0B7",
+   "table_output": "پ",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 56,
+   "pages": 34
+  },
+  {
+   "code": "F0CC",
+   "table_output": "ف",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 53,
+   "pages": 42
+  },
+  {
+   "code": "F0D1",
+   "table_output": "ق",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 44,
+   "pages": 35
+  },
+  {
+   "code": "F0CD",
+   "table_output": "اف",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 43,
+   "pages": 32
+  },
+  {
+   "code": "F034",
+   "table_output": "چ",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 42,
+   "pages": 26
+  },
+  {
+   "code": "F084",
+   "table_output": "ذ",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 40,
+   "pages": 17
+  },
+  {
+   "code": "F083",
+   "table_output": "ذ",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 39,
+   "pages": 10
+  },
+  {
+   "code": "F0F0",
+   "table_output": "ء",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 37,
+   "pages": 33
+  },
+  {
+   "code": "F0D0",
+   "table_output": "ق",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 37,
+   "pages": 31
+  },
+  {
+   "code": "F0C7",
+   "table_output": "غ",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 36,
+   "pages": 21
+  },
+  {
+   "code": "F024",
+   "table_output": "ث",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 34,
+   "pages": 14
+  },
+  {
+   "code": "F0BF",
+   "table_output": "ظ",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 27,
+   "pages": 12
+  },
+  {
+   "code": "F044",
+   "table_output": "ے",
+   "mark": "wrong",
+   "fix": "(",
+   "note": "It's a bracket, not a gojri letter.",
+   "uses": 24,
+   "pages": 23
+  },
+  {
+   "code": "F0EF",
+   "table_output": "خ",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 24,
+   "pages": 21
+  },
+  {
+   "code": "F035",
+   "table_output": "چ",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 24,
+   "pages": 18
+  },
+  {
+   "code": "F07C",
+   "table_output": "ح",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 24,
+   "pages": 16
+  },
+  {
+   "code": "F096",
+   "table_output": "ض",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 24,
+   "pages": 16
+  },
+  {
+   "code": "F09A",
+   "table_output": "ض",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 23,
+   "pages": 15
+  },
+  {
+   "code": "F0C4",
+   "table_output": "ع",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 19,
+   "pages": 15
+  },
+  {
+   "code": "F045",
+   "table_output": "ی",
+   "mark": "wrong",
+   "fix": ")",
+   "note": "It's a bracket, not a Gojri letter",
+   "uses": 18,
+   "pages": 17
+  },
+  {
+   "code": "F0EE",
+   "table_output": "خ",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 18,
+   "pages": 16
+  },
+  {
+   "code": "F0BE",
+   "table_output": "ظ",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 16,
+   "pages": 8
+  },
+  {
+   "code": "F0C9",
+   "table_output": "غ",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 16,
+   "pages": 13
+  },
+  {
+   "code": "F021",
+   "table_output": "-",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 15,
+   "pages": 13
+  },
+  {
+   "code": "F0BC",
+   "table_output": "بط",
+   "mark": "wrong",
+   "fix": "ط",
+   "note": "",
+   "uses": 14,
+   "pages": 12
+  },
+  {
+   "code": "F0C5",
+   "table_output": "اع",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 13,
+   "pages": 11
+  },
+  {
+   "code": "F0BD",
+   "table_output": "ط",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 12,
+   "pages": 10
+  },
+  {
+   "code": "F098",
+   "table_output": "ض",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 12,
+   "pages": 9
+  },
+  {
+   "code": "F025",
+   "table_output": "ث",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 11,
+   "pages": 8
+  },
+  {
+   "code": "F078",
+   "table_output": "ح",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 11,
+   "pages": 10
+  },
+  {
+   "code": "F03D",
+   "table_output": "!",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 10,
+   "pages": 9
+  },
+  {
+   "code": "F0F9",
+   "table_output": "ّ",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 10,
+   "pages": 10
+  },
+  {
+   "code": "F0F8",
+   "table_output": "ا",
+   "mark": "right",
+   "fix": "",
+   "note": "بِلّ is بِلّا",
+   "uses": 9,
+   "pages": 7
+  },
+  {
+   "code": "F094",
+   "table_output": "ص",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 9,
+   "pages": 6
+  },
+  {
+   "code": "F0A8",
+   "table_output": "ؤ",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 8,
+   "pages": 8
+  },
+  {
+   "code": "F027",
+   "table_output": "ث",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 8,
+   "pages": 5
+  },
+  {
+   "code": "F093",
+   "table_output": "ص",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 8,
+   "pages": 7
+  },
+  {
+   "code": "F022",
+   "table_output": "ﷺ",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 7,
+   "pages": 6
+  },
+  {
+   "code": "F023",
+   "table_output": "",
+   "mark": "wrong",
+   "fix": " ㅤU+3164 ㅤ",
+   "note": "",
+   "uses": 7,
+   "pages": 6
+  },
+  {
+   "code": "F0E9",
+   "table_output": "ۃ",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 6,
+   "pages": 4
+  },
+  {
+   "code": "F0FA",
+   "table_output": "م",
+   "mark": "wrong",
+   "fix": "ؔ",
+   "note": "The Sign Takhallus (ؔ) is a special diacritic mark (U+0614) used in Arabic, Persian, and Urdu literary texts. It appears above letters. E.g. بؔ In above images, the Takhallus appears on meem م.",
+   "uses": 6,
+   "pages": 6
+  },
+  {
+   "code": "F0EB",
+   "table_output": "ح",
+   "mark": "wrong",
+   "fix": "ؑ",
+   "note": "The Unicode sign for \"Alayhe Assallam\" is U+0611 (ؑ).",
+   "uses": 5,
+   "pages": 5
+  },
+  {
+   "code": "F026",
+   "table_output": "ث",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 5,
+   "pages": 5
+  },
+  {
+   "code": "F0C8",
+   "table_output": "غ",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 5,
+   "pages": 4
+  },
+  {
+   "code": "F0F7",
+   "table_output": "ً",
+   "mark": "right",
+   "fix": "",
+   "note": "تقریکاً is wrong, right word is تقریباً",
+   "uses": 5,
+   "pages": 5
+  },
+  {
+   "code": "F0C0",
+   "table_output": "ظ",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 5,
+   "pages": 4
+  },
+  {
+   "code": "F046",
+   "table_output": "ٰ",
+   "mark": "right",
+   "fix": "",
+   "note": "A Khari Zabar (also known as Khada Zabar or Standing Fatha, written as a vertical stroke ٰ above a letter) is a Tajweed diacritical mark in Arabic script. The words you made above are all wrong but the letter is right.",
+   "uses": 5,
+   "pages": 4
+  },
+  {
+   "code": "F0FC",
+   "table_output": "ُ",
+   "mark": "wrong",
+   "fix": " ٗ ",
+   "note": "ٗ ARABIC INVERTED DAMMA. It appears above a letter. In above images, it appears above alif ا.",
+   "uses": 2,
+   "pages": 2
+  },
+  {
+   "code": "F0C1",
+   "table_output": "ظ",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 2,
+   "pages": 1
+  },
+  {
+   "code": "F042",
+   "table_output": "×",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 1,
+   "pages": 1
+  },
+  {
+   "code": "F047",
+   "table_output": "+",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 1,
+   "pages": 1
+  },
+  {
+   "code": "F0F3",
+   "table_output": "۔",
+   "mark": "wrong",
+   "fix": ".",
+   "note": "Dot .",
+   "uses": 1,
+   "pages": 1
+  },
+  {
+   "code": "F0E8",
+   "table_output": "ة",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 1,
+   "pages": 1
+  },
+  {
+   "code": "F0FB",
+   "table_output": "k",
+   "mark": "unsure",
+   "fix": "",
+   "note": "",
+   "uses": 1,
+   "pages": 1
+  },
+  {
+   "code": "F057",
+   "table_output": ":",
+   "mark": "wrong",
+   "fix": "؛",
+   "note": "In written Urdu, the inverted semicolon (؛) is a standard punctuation mark known as Waqfa (وقفہ). Unicode: U+061B",
+   "uses": 1,
+   "pages": 1
+  },
+  {
+   "code": "F03F",
+   "table_output": "ٓ",
+   "mark": "right",
+   "fix": "",
+   "note": "",
+   "uses": 1,
+   "pages": 1
+  }
+ ],
+ "lines": [
+  {
+   "page_line": "page-0026:L7",
+   "label": "آپھرنو (aapharNu) v:Distend;swell;bloat;expand;inflate;be satiated.",
+   "raw": "آپھرنو(aapharNu)v:Distend;swell;bloat;expand;inflate;be satiated.",
+   "marks": [
+    "spacing"
+   ],
+   "fix": "آپھرنو(aapharNu)v:Distend;swell;bloat;expand;inflate;be satiated.",
+   "cause": "raw_right"
+  },
+  {
+   "page_line": "page-0028:L17",
+   "label": "آلسی (aalsi) adj.Lazy;sluggish;lethargic;slothful.",
+   "raw": "آلسی(aalsi)adj.Lazy;sluggish;lethargic;slothful.",
+   "marks": [
+    "spacing"
+   ],
+   "fix": "آلسی(aalsi)adj.Lazy;sluggish;lethargic;slothful.",
+   "cause": "raw_right"
+  },
+  {
+   "page_line": "page-0030:L25",
+   "label": "ابو (abbo) A.nm:Father;papa.syn.ادو ، بابو ،",
+   "raw": "ابو(abbo)A.nm:Father;papa.syn.ادو ، بابو ،",
+   "marks": [
+    "spacing",
+    "letters"
+   ],
+   "fix": "ابو(abbo)A.nm:Father;papa.syn.، ادو ، بابو",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0033:L6",
+   "label": "اٹ (aT) nf:Protective wall;defensive structure;barrier;hedge;fence.",
+   "raw": "اٹ(aT)nf:Protective wall;defensive structure;barrier;hedge;fence.",
+   "marks": [
+    "spacing"
+   ],
+   "fix": "اٹ(aT)nf:Protective wall;defensive structure;barrier;hedge;fence.",
+   "cause": "raw_right"
+  },
+  {
+   "page_line": "page-0035:L15",
+   "label": "اجھاں (ajhaa~) Still;till now;as yet;inspite of everything.اجھوں ، اجھے",
+   "raw": "اجھاں(ajhaa~)Still;till now;as yet;inspite of everything.اجھوں ، اجھے",
+   "marks": [
+    "spacing"
+   ],
+   "fix": "اجھاں(ajhaa~)Still;till now;as yet;inspite of everything.اجھوں ، اجھے",
+   "cause": "raw_right"
+  },
+  {
+   "page_line": "page-0038:L24",
+   "label": "اڈو (aDo) nm:Heel of footwear.",
+   "raw": "اڈو (aDo)nm:Heel of footwear.",
+   "marks": [
+    "spacing"
+   ],
+   "fix": "اڈو (aDo)nm:Heel of footwear.",
+   "cause": "raw_right"
+  },
+  {
+   "page_line": "page-0041:L5",
+   "label": "اڑواٹھی (arhwaaThi) nf:Jaw;jawbone;mandible.",
+   "raw": "اڑواٹھی(arhwaaThi)nf:Jaw;jawbone;mandible.",
+   "marks": [
+    "spacing"
+   ],
+   "fix": "اڑواٹھی(arhwaaThi)nf:Jaw;jawbone;mandible.",
+   "cause": "raw_right"
+  },
+  {
+   "page_line": "page-0043:L25",
+   "label": "افات (afaat) n:Giant;ghost;misery;misfortune.",
+   "raw": "افات(afaat)n:Giant;ghost;misery;misfortune.",
+   "marks": [
+    "spacing"
+   ],
+   "fix": "افات(afaat)n:Giant;ghost;misery;misfortune.",
+   "cause": "raw_right"
+  },
+  {
+   "page_line": "page-0044:L14",
+   "label": "اک لخت، اک دم Suddenly;abruptly;unawares;at once;instantly.",
+   "raw": "اک لخت، اک دم  Suddenly;abruptly;unawares;at once;instantly.",
+   "marks": [
+    "letters"
+   ],
+   "fix": "اك لخت، اك دم Suddenly;abruptly;unawares;at once;instantly.",
+   "cause": "raw_wrong"
+  },
+  {
+   "page_line": "page-0046:L15",
+   "label": "اِکی (ikki) nm:Twenty one;number 21.",
+   "raw": "اِکی(ikki)nm:Twenty one;number 21.",
+   "marks": [
+    "spacing"
+   ],
+   "fix": "اِکی(ikki)nm:Twenty one;number 21.",
+   "cause": "raw_right"
+  },
+  {
+   "page_line": "page-0050:L2",
+   "label": "lpp: امب کے هیٹھ امب نیہ هوتو ، امب چُوسنا کہ بات پُچھنی",
+   "raw": "Ipp:امب کے هیٹھ امب نیہ هوتو ، امب چُوسنا کہ بات پُچھنی",
+   "marks": [
+    "ok"
+   ],
+   "fix": "",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0051:L16",
+   "label": "اناج (aNaaj) nm:Corn;cereals;grains.=غلو ، اں",
+   "raw": "اناج(aNaaj)nm:Corn;cereals;grains.=غلو ، اں",
+   "marks": [
+    "spacing",
+    "letters"
+   ],
+   "fix": "اناج(aNaaj)nm:Corn;cereals;grains.=غلو ، ان",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0054:L15",
+   "label": "انگیٹھی (angeeThi) nf:Heater;furnace;portable oven;fire pot.",
+   "raw": "انگیٹھی(angeeThi)nf:Heater;furnace;portable oven;fire pot.",
+   "marks": [
+    "spacing"
+   ],
+   "fix": "انگیٹھی(angeeThi)nf:Heater;furnace;portable oven;fire pot.",
+   "cause": "raw_right"
+  },
+  {
+   "page_line": "page-0058:L11",
+   "label": "اِیماندار (imaandaar) Faithful;honest.",
+   "raw": "اِیماندار(imaandaar)Faithful;honest.",
+   "marks": [
+    "spacing"
+   ],
+   "fix": "اِیماندار(imaandaar)Faithful;honest.",
+   "cause": "raw_right"
+  },
+  {
+   "page_line": "page-0060:L25",
+   "label": "باراں (baaraa~) n:Twelve;number 12.eg:lpp:باراں مہیناں کو رواس",
+   "raw": "باراں(baaraa~)n:Twelve;number 12.eg:Ipp:باراں مہیناں کو رواس",
+   "marks": [
+    "spacing",
+    "letters"
+   ],
+   "fix": "باراں(baaraa~)n:Twelve;number 12.eg:lpp:باراں مھیناں کو رواس",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0063:L8",
+   "label": "باں (baa~) nf:A spring of water;water source;fountain.=باولی ، نابہ",
+   "raw": "باں(baa~)nf:A spring of water;water source;fountain.=باولی ، نابہ",
+   "marks": [
+    "spacing",
+    "letters"
+   ],
+   "fix": "باں (baa~)nf:A spring of water;water source;fountain.=باولی ، نابن",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0065:L3",
+   "label": "ببڑھ (babbarh) A kind of grass used to make ropes or twine.ببڑھی",
+   "raw": "بکڑھ(babbarh) A kind of grass used to make ropes or twine.بکڑھی",
+   "marks": [
+    "ok"
+   ],
+   "fix": "",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0066:L9",
+   "label": "بٹکو (baTko) nm:Patriarch;forefather;precursor;male ancestor.",
+   "raw": "بٹکو(baTko)nm:Patriarch;forefather;precursor;male ancestor.",
+   "marks": [
+    "spacing"
+   ],
+   "fix": "بٹکو(baTko)nm:Patriarch;forefather;precursor;male ancestor.",
+   "cause": "raw_right"
+  },
+  {
+   "page_line": "page-0068:L20",
+   "label": "بچھڑنو (bichharhnu) v:Be separated;part;be detached;split;break.",
+   "raw": "بچھڑنو(bichharhnu)v:Be separated;part;be detached;split;break.",
+   "marks": [
+    "spacing"
+   ],
+   "fix": "بچھڑنو(bichharhnu)v:Be separated;part;be detached;split;break.",
+   "cause": "raw_right"
+  },
+  {
+   "page_line": "page-0071:L18",
+   "label": "بِدھنو (bidhnu) v:Slit;incise;cut;inoculate. nf:بِدھی",
+   "raw": "بِدھنو(bidhnu)v:Slit;incise;cut;inoculate. nf:بِدھی",
+   "marks": [
+    "spacing"
+   ],
+   "fix": "بِدھنو (bidhnu)v:Slit;incise;cut;inoculate. nf:بِدھی",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0074:L20",
+   "label": "بریس(bares)nm:Age;year;span of time.",
+   "raw": "بریس(bares)nm:Age;year;span of time.",
+   "marks": [
+    "ok"
+   ],
+   "fix": "",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0075:L16",
+   "label": "2.A folk song of Gojri and Punjabi.",
+   "raw": "2.A folk song of Gojri and Punjabi.",
+   "marks": [
+    "ok"
+   ],
+   "fix": "",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0078:L5",
+   "label": "بگتو (bagto) adj:Flowing;running;streaming;blowing.eg:بگتو پانی",
+   "raw": "بگتو(bagto)adj:Flowing;running;streaming;blowing.eg:بگتو پانی",
+   "marks": [
+    "spacing"
+   ],
+   "fix": "بگتو(bagto)adj:Flowing;running;streaming;blowing.eg:بگتو پانی",
+   "cause": "raw_right"
+  },
+  {
+   "page_line": "page-0081:L8",
+   "label": "بن باسی (ban-baasi) adj.Banished;in exile;forced to live in forests.",
+   "raw": "بہ باسی(ban-baasi)adj.Banished;in exile;forced to live in forests.",
+   "marks": [
+    "spacing"
+   ],
+   "fix": "بن باسی(ban-baasi)adj.Banished;in exile;forced to live in forests.",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0083:L6",
+   "label": "بنیھارو (baNe haaro) A nomadic Gujjars who rears buffalo;milkman.",
+   "raw": "بنیھارو(baNe haaro)A nomadic Gujjars who rears buffalo;milkman.",
+   "marks": [
+    "spacing"
+   ],
+   "fix": "بنیھارو(baNe haaro) A nomadic Gujjars who rears buffalo;milkman.",
+   "cause": "raw_right"
+  },
+  {
+   "page_line": "page-0084:L16",
+   "label": "بوکی (boki) nf:fold of sheet/ blanket wrapped around the body.=بُکّل",
+   "raw": "بوکی(boki)nf:fold of sheet/ blanket wrapped around the body.=بُکل",
+   "marks": [
+    "letters",
+    "spacing"
+   ],
+   "fix": "بوکی (boki)nf:fold of sheet/ blanket wrapped around the body.=بُکل",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0087:L7",
+   "label": "بیٹھک (baiThak) nf:Seat;base;station;guest room;drawing room.",
+   "raw": "بیٹھک(baiThak)nf:Seat;base;station;guest room;drawing room.",
+   "marks": [
+    "spacing"
+   ],
+   "fix": "بیٹھک(baiThak)nf:Seat;base;station;guest room;drawing room.",
+   "cause": "raw_right"
+  },
+  {
+   "page_line": "page-0089:L14",
+   "label": "بھادرو (p-hadro) nm:The sixth month in Bikrami era/solar month.",
+   "raw": "بھادرو(p-hadro)nm:The sixth month in Bikrami era/solar month.",
+   "marks": [
+    "spacing"
+   ],
+   "fix": "بھادرو(p-hadro)nm:The sixth month in Bikrami era/solar month.",
+   "cause": "raw_right"
+  },
+  {
+   "page_line": "page-0092:L5",
+   "label": "بھرمٹا (p-harmaTa) n.pl.Eye brows.",
+   "raw": "بھرمٹا(p-harmaTa)n.pl.Eye brows.",
+   "marks": [
+    "spacing"
+   ],
+   "fix": "بھرمٹا (p-harmaTa)n.pl.Eye brows.",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0097:L4",
+   "label": "پارس (paaras) n:Touchstone;philosopher's stone;criterion.پارس پتھر",
+   "raw": "پارس(paaras)n:Touchstone;philosopher's stone;criterion.پارس پتھر",
+   "marks": [
+    "spacing"
+   ],
+   "fix": "پارس (paaras)n:Touchstone;philosopher's stone;criterion.پارس پتھر",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0099:L16",
+   "label": "پاال (paaiL) nf:Anklet;ankle bracelet;ornament for ankles.sn.پنجیب",
+   "raw": "پاال(paaiL) nf:Anklet;ankle bracelet;ornament for ankles.sn.پنجیب",
+   "marks": [
+    "spacing",
+    "letters"
+   ],
+   "fix": "پائل(paaiL) nf:Anklet;ankle bracelet;ornament for ankles.sn.پنجیب",
+   "cause": "raw_wrong"
+  },
+  {
+   "page_line": "page-0100:L16",
+   "label": "پتر پیل هونا To become paler;dwindle;fade out;decline;die out.",
+   "raw": "پتر پیل هونا To become paler;dwindle;fade out;decline;die out.",
+   "marks": [
+    "letters"
+   ],
+   "fix": "پتر پیلا هونا To become paler;dwindle;fade out;decline;die out.",
+   "cause": "raw_wrong"
+  },
+  {
+   "page_line": "page-0103:L6",
+   "label": "پٹُو (paTu) nm:A coarse woolen blanket;baize.",
+   "raw": "پٹُو(paTu)nm:A coarse woolen blanket;baize.",
+   "marks": [
+    "spacing"
+   ],
+   "fix": "پٹُو(paTu)nm :A coarse woolen blanket;baize.",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0106:L14",
+   "label": "پر (par) 1.adv/prep.On;over.syn.ور 2.conj.But;still;however.=ور",
+   "raw": "پر(par)1.adv/prep.On;over.syn.ور 2.conj.But;still;however.=ور",
+   "marks": [
+    "spacing"
+   ],
+   "fix": "پر (par)1.adv/prep.On;over.syn.ور 2.conj.But;still;however.=ور",
+   "cause": "raw_right"
+  },
+  {
+   "page_line": "page-0107:L3",
+   "label": "پرانو (puraanu) nm:Old;ancient;seasoned;antique;long standing.",
+   "raw": "پرانو(puraanu)nm:Old;ancient;seasoned;antique;long standing.",
+   "marks": [
+    "spacing"
+   ],
+   "fix": "پرانو(puraanu)nm:Old;ancient;seasoned;antique;long standing.",
+   "cause": "raw_right"
+  },
+  {
+   "page_line": "page-0109:L12",
+   "label": "پرهیز (par hez) nf:Prevention;abstension;avoidance;abstinence;",
+   "raw": "پرهیز(par hez)nf:Prevention;abstension;avoidance;abstinence;",
+   "marks": [
+    "spacing"
+   ],
+   "fix": "پرهیز(par hez)nf:Prevention;abstension;avoidance;abstinence;",
+   "cause": "raw_right"
+  },
+  {
+   "page_line": "page-0112:L11",
+   "label": "پسماندو (pas maanda) adj. P.Backward;recessive;diffident;hesitant.",
+   "raw": "پسماندئی(pas maanda)adj. P.Backward;recessive;diffident;hesitant.",
+   "marks": [
+    "spacing",
+    "letters"
+   ],
+   "fix": "پسماندہ(pas maanda)adj. P.Backward;recessive;diffident;hesitant.",
+   "cause": "raw_wrong"
+  },
+  {
+   "page_line": "page-0113:L17",
+   "label": "پکو کچو Uncertain;doubtful;tentative;vague;indeterminate.",
+   "raw": "پکو کچو Uncertain;doubtful;tentative;vague;indeterminate.",
+   "marks": [
+    "ok"
+   ],
+   "fix": "",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0115:L17",
+   "label": "پلنگ (paLang) nm:Sleeping couch;bedstead;comfortable seat/bed.",
+   "raw": "پلنگ(paLang)nm:Sleeping couch;bedstead;comfortable seat/bed.",
+   "marks": [
+    "spacing"
+   ],
+   "fix": "پلنگ(paLang)nm:Sleeping couch;bedstead;comfortable seat/bed.",
+   "cause": "raw_right"
+  },
+  {
+   "page_line": "page-0118:L2",
+   "label": "پنجی (panji) n:Twenty five;number 25 ;a five paise coin.",
+   "raw": "پنجی(panji)n:Twenty five;number 25 ;a five paise coin.",
+   "marks": [
+    "spacing"
+   ],
+   "fix": "پنجی(panji)n:Twenty five;number 25 ;a five paise coin.",
+   "cause": "raw_right"
+  },
+  {
+   "page_line": "page-0120:L24",
+   "label": "پوگر (pogar) nm:A log of dead-wood.adj.Empty;hollow;worthless.",
+   "raw": "پوگر(pogar)nm:A log of dead-wood.adj.Empty;hollow;worthless.",
+   "marks": [
+    "spacing"
+   ],
+   "fix": "پوگر(pogar)nm:A log of dead-wood.adj.Empty;hollow;worthless.",
+   "cause": "raw_right"
+  },
+  {
+   "page_line": "page-0122:L24",
+   "label": "پہموں (pehmu~) nm: Notion; idea; view; concept; thought. sn. گماں ، خیال",
+   "raw": "پہموں(pehmu~)nm:Notion;idea;view;concept;thought.sn.گماں، خیال",
+   "marks": [
+    "letters",
+    "spacing"
+   ],
+   "fix": "پھموں(pehmu~)nm: Notion; idea; view; concept; thought. sn. گمان، خیال",
+   "cause": "raw_wrong"
+  },
+  {
+   "page_line": "page-0125:L26",
+   "label": "پیلو (peelo) adj.Yellow;pale .پیلهنگو Yellowish.",
+   "raw": "و پیل(peelo)adj.Yellow;pale .پیلهنگوYellowish.",
+   "marks": [
+    "letters",
+    "spacing"
+   ],
+   "fix": "پیلو(peelo)adj.Yellow;pale . پیلاهنگو Yellowish.",
+   "cause": "raw_wrong"
+  },
+  {
+   "page_line": "page-0128:L6",
+   "label": "پھٹکڑی (phaTkarhi) nf:Alum;potash alum;a colourless solid that,",
+   "raw": "پھٹکڑی(phaTkarhi)nf:Alum;potash alum;a colourless solid that,",
+   "marks": [
+    "spacing"
+   ],
+   "fix": "پھٹکڑی(phaTkarhi)nf:Alum;potash alum;a colourless solid that,",
+   "cause": "raw_right"
+  },
+  {
+   "page_line": "page-0129:L21",
+   "label": "2.adj.Pretencious;hollow;pompous;fake.n:پھُڑ",
+   "raw": "2.adj.Pretencious;hollow;pompous;fake.n:پھڑھ",
+   "marks": [
+    "letters",
+    "spacing"
+   ],
+   "fix": "2.adj.Pretencious;hollow;pompous;fake.n:پھڑھ",
+   "cause": "raw_right"
+  },
+  {
+   "page_line": "page-0131:L21",
+   "label": "پھوس (phos) nm:Fresh cowdung;excreta of cattle.",
+   "raw": "پھوس(phos)nm:Fresh cowdung;excreta of cattle.",
+   "marks": [
+    "spacing"
+   ],
+   "fix": "پھوس(phos)nm:Fresh cowdung;excreta of cattle.",
+   "cause": "raw_right"
+  },
+  {
+   "page_line": "page-0134:L24",
+   "label": "تاس (taas) n:A subcaste of Gujjars and its member.",
+   "raw": "تاس(taas)n:A subcaste of Gujjars and its member.",
+   "marks": [
+    "spacing"
+   ],
+   "fix": "تاس(taas)n:A subcaste of Gujjars and its member.",
+   "cause": "raw_right"
+  },
+  {
+   "page_line": "page-0137:L4",
+   "label": "تت (tat) nm:Heat;warmth;branding;scorch;burn;charring.",
+   "raw": "تت(tat)nm:Heat;warmth;branding;scorch;burn;charring.",
+   "marks": [
+    "spacing"
+   ],
+   "fix": "تت(tat)nm:Heat;warmth;branding;scorch;burn;charring.",
+   "cause": "raw_right"
+  },
+  {
+   "page_line": "page-0138:L15",
+   "label": "تختو (takhto) nm:Board;plank;long flat piece of wood;slab;sill.",
+   "raw": "تختو(takhto)nm:Board;plank;long flat piece of wood;slab;sill.",
+   "marks": [
+    "spacing"
+   ],
+   "fix": "تختو(takhto)nm:Board;plank;long flat piece of wood;slab;sill.",
+   "cause": "raw_right"
+  },
+  {
+   "page_line": "page-0140:L24",
+   "label": "ترغیب (targeeb) nf:Temptation;persuation;inducement;attraction;lure.",
+   "raw": "ترغیب(targeeb)nf:Temptation;persuation;inducement;attraction;lure.",
+   "marks": [
+    "spacing"
+   ],
+   "fix": "ترغیب(targeeb)nf:Temptation;persuation;inducement;attraction;lure.",
+   "cause": "raw_right"
+  },
+  {
+   "page_line": "page-0144:L7",
+   "label": "تڑفنو (tarhfnu) v:To writhe;throb;flutter;to be in agony/restlessness.",
+   "raw": "تڑفنو(tarhfnu)v:To writhe;throb;flutter;to be in agony/restlessness.",
+   "marks": [
+    "spacing"
+   ],
+   "fix": "تڑفنو(tarhfnu)v:To writhe;throb;flutter;to be in agony/restlessness.",
+   "cause": "raw_right"
+  },
+  {
+   "page_line": "page-0145:L16",
+   "label": "تشریف (tashreef) A.nf:Grace;honour;dignity.",
+   "raw": "تشریف(tashreef)A.nf:Grace;honour;dignity.",
+   "marks": [
+    "spacing"
+   ],
+   "fix": "تشریف(tashreef)A.nf:Grace;honour;dignity.",
+   "cause": "raw_right"
+  },
+  {
+   "page_line": "page-0149:L17",
+   "label": "تِلک (tiLak) nm:A mark of sandal paste or vermillion on forehead.",
+   "raw": "تِلک(tiLak)nm:A  mark of sandal paste or vermillion on forehead.",
+   "marks": [
+    "letters",
+    "spacing"
+   ],
+   "fix": "تِلك(tiLak)nm:A mark of sandal paste or vermillion on forehead.",
+   "cause": "raw_wrong"
+  },
+  {
+   "page_line": "page-0151:L21",
+   "label": "تندرُست (tandrust) adj.Healthy;in good physical shape;well;positive.",
+   "raw": "تندرُست(tandrust)adj.Healthy;in good physical shape;well;positive.",
+   "marks": [
+    "spacing"
+   ],
+   "fix": "تندرُست(tandrust)adj.Healthy;in good physical shape;well;positive.",
+   "cause": "raw_right"
+  },
+  {
+   "page_line": "page-0152:L15",
+   "label": "تِنی (tini) nf:Grazing tax;tax levied on shepherds for grazing their",
+   "raw": "تِنی (tini)nf:Grazing tax;tax levied on shepherds for grazing their",
+   "marks": [
+    "spacing"
+   ],
+   "fix": "تِنی (tini)nf:Grazing tax;tax levied on shepherds for grazing their",
+   "cause": "raw_right"
+  },
+  {
+   "page_line": "page-0155:L21",
+   "label": "تیل (teL) nm:Oil;essence;crux;distillate;a liquid fat;petroleum;k.oil.",
+   "raw": "تیل(teL)nm:Oil;essence;crux;distillate;a liquid fat;petroleum;k.oil.",
+   "marks": [
+    "spacing"
+   ],
+   "fix": "تیل(teL)nm:Oil;essence;crux;distillate;a liquid fat;petroleum;k.oil.",
+   "cause": "raw_right"
+  },
+  {
+   "page_line": "page-0157:L10",
+   "label": "تھر تھر (thar thar) nf:Shievering;trembling;quiver;shiver.",
+   "raw": "تھر تھر(thar thar)nf:Shievering;trembling;quiver;shiver.",
+   "marks": [
+    "spacing"
+   ],
+   "fix": "تھر تھر(thar thar)nf:Shievering;trembling;quiver;shiver.",
+   "cause": "raw_right"
+  },
+  {
+   "page_line": "page-0159:L14",
+   "label": "تھوم چھِل Ungenerous;tight fisted;thrifty;miserly;mean.",
+   "raw": "تھوم چھِل Ungenerous;tight fisted;thrifty;miserly;mean.",
+   "marks": [
+    "ok"
+   ],
+   "fix": "",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0161:L8",
+   "label": "ٹانگو (Taango) nm:A horse-cart;tonga.",
+   "raw": "ٹانگو(Taango)nm:A horse-cart;tonga.",
+   "marks": [
+    "spacing"
+   ],
+   "fix": "ٹانگو(Taango)nm:A horse-cart;tonga.",
+   "cause": "raw_right"
+  },
+  {
+   "page_line": "page-0164:L24",
+   "label": "wood or metal.syn.ریتی",
+   "raw": "wood or metal.syn.ریتی",
+   "marks": [
+    "ok"
+   ],
+   "fix": "",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0165:L25",
+   "label": "ٹنڈھورو (TanDhoro) nm:1.Honey-comb;beehive.syn.گیی ، گھنیاری",
+   "raw": "ٹنڈھوروTanDhoro)nm:1.Honey-comb;beehive.syn.گیی ، گھنیاری",
+   "marks": [
+    "spacing",
+    "letters"
+   ],
+   "fix": "ٹنڈھورو TanDhoro)nm:1.Honey-comb;beehive.syn.گیی ، گھنیاری",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0168:L22",
+   "label": "ٹھار (Thaar) nm:Chilliness;coldness;chill;frost.eg:ٹھنڈوٹھار، کورا هار",
+   "raw": "ٹھار(Thaar) nm:Chilliness;coldness;chill;frost.eg:ٹھنڈوٹھار، کورا هار",
+   "marks": [
+    "ok"
+   ],
+   "fix": "",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0170:L22",
+   "label": "ٹھلنو (ThaLnu) v:Induce;win over; entice;persuade;bribe.مُنہ بند کرنو",
+   "raw": "ٹھلنو(ThaLnu) v:Induce;win over; entice;persuade;bribeمُنہ بند کرنو",
+   "marks": [
+    "ok"
+   ],
+   "fix": "",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0174:L10",
+   "label": "جابو (jaabo) nm:Marshland;swampland;wetland;guagmire.syn.جب",
+   "raw": "جابو(jaabo)nm:Marshland;swampland;wetland;guagmire.syn.جب",
+   "marks": [
+    "spacing"
+   ],
+   "fix": "جابو (jaabo)nm:Marshland;swampland;wetland;guagmire.syn. جب",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0177:L14",
+   "label": "جائزو (jaayezo) A.nm:Review;analysis;assessment;evaluation;survey.",
+   "raw": null,
+   "marks": [
+    "spacing"
+   ],
+   "fix": "جائزو(jaayezo)A.nm:Review;analysis;assessment;evaluation;survey.",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0180:L2",
+   "label": "جراب (jaraab) A.n:Stocking;socks;covering for feet and legs.",
+   "raw": null,
+   "marks": [
+    "spacing"
+   ],
+   "fix": "جراب(jaraab)A.n:Stocking;socks;covering for feet and legs.",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0180:L18",
+   "label": "جرمنی (jarmaNi) n:Germany;a European country.",
+   "raw": null,
+   "marks": [
+    "spacing"
+   ],
+   "fix": "جرمنی(jarmaNi)n:Germany;a European country.",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0184:L9",
+   "label": "جلو دھر (jaLodar) n:Dropsy;ascitis;generalised swelling of body.",
+   "raw": null,
+   "marks": [
+    "spacing"
+   ],
+   "fix": "جلو دھر (jaLodar)n:Dropsy;ascitis;generalised swelling of body.",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0185:L22",
+   "label": "جناہ (jaNah) nm:Cohabitation;adultery;fornication;illicit sex. = زناہ",
+   "raw": null,
+   "marks": [
+    "spacing"
+   ],
+   "fix": "جناہ(jaNah)nm:Cohabitation;adultery;fornication;illicit sex. = زناہ",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0186:L25",
+   "label": "جِنس (jiNas) A.nf:Kind;class;commodity;sex;article; thing.",
+   "raw": null,
+   "marks": [
+    "spacing"
+   ],
+   "fix": "جِنس (jiNas)A.nf:Kind;class;commodity;sex;article; thing.",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0190:L22",
+   "label": "2.Mind;soul;spirit;life;disposition;psyche. 3.(you)Live !",
+   "raw": null,
+   "marks": [
+    "ok"
+   ],
+   "fix": "",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0193:L16",
+   "label": "جھُجُو جھاٹی A rhyme/lullaby of tribal children.",
+   "raw": null,
+   "marks": [
+    "ok"
+   ],
+   "fix": "",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0196:L7",
+   "label": "جھُوٹھ (ch-ooTh) nm:Lie;falsehood;untruth;forgery.=جھُوٹھ مُوٹھ",
+   "raw": null,
+   "marks": [
+    "spacing"
+   ],
+   "fix": "جھُوٹھ(ch-ooTh)nm:Lie;falsehood;untruth;forgery.=جھُوٹھ مُوٹھ",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0199:L4",
+   "label": "چاننی (chaaNani) nf:Moonlight;moonshine;gleam;glimmer.",
+   "raw": null,
+   "marks": [
+    "spacing"
+   ],
+   "fix": "چاننی(chaaNani)nf:Moonlight;moonshine;gleam;glimmer.",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0200:L16",
+   "label": "چپھڑو (chafrho) adj.Wide;broad;open;extensive;vast;spacious.",
+   "raw": null,
+   "marks": [
+    "spacing"
+   ],
+   "fix": "چپھڑو(chafrho)adj.Wide;broad;open;extensive;vast;spacious.",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0202:L2",
+   "label": "چٹی (chaTi) nf:Loss;damage;harm;forfeiture;cost;hurt;penality.",
+   "raw": null,
+   "marks": [
+    "spacing"
+   ],
+   "fix": "چٹی(chaTi)nf:Loss;damage;harm;forfeiture;cost;hurt;penality.",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0205:L19",
+   "label": "چُغلی (chugli) nf:Backbiting;backstabbing;unkind remarks.",
+   "raw": null,
+   "marks": [
+    "spacing"
+   ],
+   "fix": "چُغلی(chugli)nf:Backbiting;backstabbing;unkind remarks.",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0208:L6",
+   "label": "are placed.eg:چلام بھرنی v:Serve;assist;oblige.syn.غُلامی کرنی",
+   "raw": null,
+   "marks": [
+    "letters",
+    "spacing"
+   ],
+   "fix": "are placed.eg: چلم بھرنی v:Serve;assist;oblige.syn. غلامی کرنی",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0208:L14",
+   "label": "چُلہو (chuLho) nm:Hearth;fire place.eg:چُلہے اگ نہ گھڑے پانی",
+   "raw": null,
+   "marks": [
+    "letters",
+    "spacing"
+   ],
+   "fix": "چُلھو(chuLho)nm:Hearth;fire place.eg:چُلھے اگ نہ گھڑے پانی",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0212:L21",
+   "label": "چوٹکو (choTko) nm:Pilfer;gain;by-product;bargain;turnover.",
+   "raw": null,
+   "marks": [
+    "spacing"
+   ],
+   "fix": "چوٹکو(choTko)nm:Pilfer;gain;by-product;bargain;turnover.",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0215:L2",
+   "label": "چولو (choLo) nm:Cloak;robe;gown;long coat;loose outer garment.",
+   "raw": null,
+   "marks": [
+    "spacing"
+   ],
+   "fix": "چولو (choLo)nm:Cloak;robe;gown;long coat;loose outer garment.",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0215:L15",
+   "label": "چُونک (choonk) nf:Beep;honk;short high pitched sound.",
+   "raw": null,
+   "marks": [
+    "spacing"
+   ],
+   "fix": "چُونك(choonk)nf:Beep;honk;short high pitched sound.",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0219:L20",
+   "label": "چھتا (chhataa) n.pl.Locks of hair;bobbed hair;scalp hair.min: چھتی",
+   "raw": "چھتا(chhataa)n.pl.Locks of hair;bobbed hair;scalp hair.min:چھتی",
+   "marks": [
+    "spacing"
+   ],
+   "fix": "چھتا (chhataa)n.pl.Locks of hair;bobbed hair;scalp hair.min: چھتی",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0222:L3",
+   "label": "چھلٹی (chhalaaTi) nf:Wave;current;tide;splash.nm:چھل",
+   "raw": null,
+   "marks": [
+    "spacing",
+    "letters"
+   ],
+   "fix": "چھلاٹی(chhalaaTi)nf:Wave;current;tide;splash.nm:چھل",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0223:L7",
+   "label": "چھنڈی (chhanDi) nf:Jerk;jolt;shudder;shake;yank;tug.",
+   "raw": null,
+   "marks": [
+    "spacing"
+   ],
+   "fix": "چھنڈی(chhanDi)nf:Jerk;jolt;shudder;shake;yank;tug.",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0227:L3",
+   "label": "حِرصنو (hirsnu) v:Long for;yearn;be eager;desire earnestly.هینسرنو",
+   "raw": null,
+   "marks": [
+    "spacing"
+   ],
+   "fix": "حِرصنو(hirsnu)v:Long for;yearn;be eager;desire earnestly.هینسرنو",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0228:L15",
+   "label": "حکایت (hikayat) A.nf:Story;saying;parable;anecdote;chronicle;tale.",
+   "raw": null,
+   "marks": [
+    "spacing"
+   ],
+   "fix": "حکایت(hikayat)A.nf:Story;saying;parable;anecdote;chronicle;tale.",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0230:L6",
+   "label": "حوالے (hawaaLaiy) adj.Assigned;handover;delievered;In custody.",
+   "raw": null,
+   "marks": [
+    "spacing"
+   ],
+   "fix": "حوالے(hawaaLaiy)adj.Assigned;handover;delievered;In custody.",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0234:L4",
+   "label": "خیراتی (kharaayeti) adj.Charitable;generous;sympathetic.=خیراتی",
+   "raw": null,
+   "marks": [
+    "spacing",
+    "letters"
+   ],
+   "fix": "خرائتی(kharaayeti)adj.Charitable;generous;sympathetic.=خیراتی",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0235:L25",
+   "label": "خِطو (khito) A.nm:Region;area;piece of land;territory;zone;province.",
+   "raw": null,
+   "marks": [
+    "spacing"
+   ],
+   "fix": "خِطو(khito)A.nm:Region;area;piece of land;territory;zone;province.",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0239:L4",
+   "label": "2.Lie;position.eg:لمے داء 3.Clean;clear. صااف",
+   "raw": null,
+   "marks": [
+    "letters"
+   ],
+   "fix": "2.Lie;position.eg:لمے داء 3.Clean;clear. صاف",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0242:L20",
+   "label": "در (dar) nm:Gate;door;entrance;doorstep.eg:در در کی ٹھوکر",
+   "raw": null,
+   "marks": [
+    "spacing"
+   ],
+   "fix": "در(dar)nm:Gate;door;entrance;doorstep.eg: در در کی ٹھوکر",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0244:L10",
+   "label": "درگُزر (dar guzar) Ignore;disregard;overlook;pay no attention/heed.",
+   "raw": null,
+   "marks": [
+    "spacing"
+   ],
+   "fix": "درگُزر(dar guzar)Ignore;disregard;overlook;pay no attention/heed.",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0247:L11",
+   "label": "دِقت (diqat) A.nf:Difficulty;trouble;problem;intricacy;complexity;hitch.",
+   "raw": null,
+   "marks": [
+    "spacing"
+   ],
+   "fix": "دِقت(diqat)A.nf:Difficulty;trouble;problem;intricacy;complexity;hitch.",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0248:L10",
+   "label": "دل بھلنو v:Entertain;amuse. دل هلنو v:Long for;yearn;desire;aspire.",
+   "raw": null,
+   "marks": [
+    "letters"
+   ],
+   "fix": "دل بھلانو v:Entertain;amuse. دل هلنو v:Long for;yearn;desire;aspire.",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0250:L19",
+   "label": "دندواائی (dand waai) nf:A small metallic file for sharpening sickles.",
+   "raw": null,
+   "marks": [
+    "letters",
+    "spacing"
+   ],
+   "fix": "دندوائی(dand waai)nf:A small metallic file for sharpening sickles.",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0254:L6",
+   "label": "دوائے (doey) adj.Both;pertainig to two or two things taken together.",
+   "raw": null,
+   "marks": [
+    "spacing",
+    "letters"
+   ],
+   "fix": "دوئے (doey)adj.Both;pertainig to two or two things taken together.",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0255:L19",
+   "label": "دینو (denu) v:To give;pay;offer;donate.n:Loan;debt;due;liability.",
+   "raw": "دینو(denu)v:To give;pay;offer;donate.n:Loan;debt;due;liability.",
+   "marks": [
+    "spacing"
+   ],
+   "fix": "دینو(denu)v:To give;pay;offer;donate.n:Loan;debt;due;liability.",
+   "cause": "raw_right"
+  },
+  {
+   "page_line": "page-0259:L10",
+   "label": "دھسنو (t-hasnu) v:Sink;penetrate;simmer;get absorbed/engrossed.",
+   "raw": null,
+   "marks": [
+    "spacing"
+   ],
+   "fix": "دھسنو(t-hasnu)v:Sink;penetrate;simmer;get absorbed/engrossed.",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0259:L14",
+   "label": "دھکڑ (t-hakarh) n:1.A subcaste of Gujjars and its member.",
+   "raw": null,
+   "marks": [
+    "spacing"
+   ],
+   "fix": "دھکڑ(t-hakarh)n:1.A subcaste of Gujjars and its member.",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0264:L2",
+   "label": "2.adj.Spotted;dotted;stippled;parti-coloured;blotchy.",
+   "raw": null,
+   "marks": [
+    "ok"
+   ],
+   "fix": "",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0264:L9",
+   "label": "ڈِبی (Dibi) nf:An earthen cook-ware;cooking pot for vegetables.",
+   "raw": null,
+   "marks": [
+    "spacing"
+   ],
+   "fix": "ڈِبی(Dibi)nf:An earthen cook-ware;cooking pot for vegetables.",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0267:L1",
+   "label": "ڈِنگو (Dingo) adj.Curved;bent;crooked;angled;not straight.ڈِنگ پڑِنگو",
+   "raw": null,
+   "marks": [
+    "spacing",
+    "letters"
+   ],
+   "fix": "ڈِنگو (Dingo)adj.Curved;bent;crooked;angled;not straightڈِنگ پڑِنگو",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0269:L5",
+   "label": "ڈھ (Dh)",
+   "raw": null,
+   "marks": [
+    "letters"
+   ],
+   "fix": "ڈھ (Dh/Ta)",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0272:L18",
+   "label": "ڈھیلو (T-heLo) nm:Cattle having horns hanging down.",
+   "raw": null,
+   "marks": [
+    "spacing"
+   ],
+   "fix": "ڈھیلو(T-heLo)nm:Cattle having horns hanging down.",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0275:L19",
+   "label": "راڑ (raarh) nf:Rambling;babble;irrelevant/incoherent/senseless talk.",
+   "raw": null,
+   "marks": [
+    "spacing"
+   ],
+   "fix": "راڑ(raarh)nf:Rambling;babble;irrelevant/incoherent/senseless talk.",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0277:L3",
+   "label": "راہی باہی (raahi baahi) nf:Sowing;cultivation;farming;agribusiness.",
+   "raw": null,
+   "marks": [
+    "spacing",
+    "letters"
+   ],
+   "fix": "راھی باھی(raahi baahi)nf:Sowing;cultivation;farming;agribusiness.",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0280:L5",
+   "label": "رزگار (razgaar) nf:Employment;service;job;business.=روز گار",
+   "raw": "رزگار(razgaar)nf:Employment;service;job;business.=روز گار",
+   "marks": [
+    "spacing"
+   ],
+   "fix": "رزگار(razgaar)nf:Employment;service;job;business.= روزگار",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0282:L5",
+   "label": "رقبو (raqbo) A.nm:Area;region;zone;stretch;expanse;piece of land.",
+   "raw": null,
+   "marks": [
+    "spacing"
+   ],
+   "fix": "رقبو(raqbo)A.nm:Area;region;zone;stretch;expanse;piece of land.",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0285:L20",
+   "label": "رُوداد (rudaad) nf:Account of woes;description;narrative;story;tale.",
+   "raw": null,
+   "marks": [
+    "spacing"
+   ],
+   "fix": "رُوداد(rudaad)nf:Account of woes;description;narrative;story;tale.",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0287:L17",
+   "label": "رونو (ronu) v:Weep;lament;cry;mourn;grieve;bewail;complain.",
+   "raw": null,
+   "marks": [
+    "spacing"
+   ],
+   "fix": "رونو(ronu)v:Weep;lament;cry;mourn;grieve;bewail;complain.",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0291:L8",
+   "label": "زباں دینی To promise;to give your word;vow;pledge.",
+   "raw": null,
+   "marks": [
+    "ok"
+   ],
+   "fix": "",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0292:L5",
+   "label": "زردآلُو (zardaalu) nm:A kind of plum fruit.",
+   "raw": "زردآلُو (zardaalu)nm:A kind of plum fruit.",
+   "marks": [
+    "spacing"
+   ],
+   "fix": "زردآلُو (zardaalu)nm:A kind of plum fruit.",
+   "cause": "raw_right"
+  },
+  {
+   "page_line": "page-0296:L2",
+   "label": "3.Sap;extract;vaginal discharge in cattle.eg:سار سٹنی",
+   "raw": null,
+   "marks": [
+    "spacing"
+   ],
+   "fix": "3.Sap;extract;vaginal discharge in cattle.eg:  سار سٹنی",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0298:L13",
+   "label": "ساہی (saahi) nf:Support;backing;reinforcement;assistance;patronage.",
+   "raw": null,
+   "marks": [
+    "spacing"
+   ],
+   "fix": "ساھی(saahi)nf:Support;backing;reinforcement;assistance;patronage.",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0300:L22",
+   "label": "ستانو (staanu) v:To vex;to tease;trouble;torture;harass;oppress.",
+   "raw": null,
+   "marks": [
+    "spacing"
+   ],
+   "fix": "ستانو(staanu)v:To vex;to tease;trouble;torture;harass;oppress.",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0302:L2",
+   "label": "سٹکر (sTakar) adj.Confronting;opposite;face to face;direct;head on.",
+   "raw": null,
+   "marks": [
+    "spacing"
+   ],
+   "fix": "سٹکر(sTakar)adj.Confronting;opposite;face to face;direct;head on.",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0304:L25",
+   "label": "سدھرنو (sadharnu) v:To yearn;crave for;aspire;long.adj. سدھریو وو",
+   "raw": "سدھرنو(sadharnu)v:To yearn;crave for;aspire;long.adjسدھریو وو",
+   "marks": [
+    "spacing"
+   ],
+   "fix": "سدھرنو(sadharnu)v:To yearn;crave for;aspire;long.adj. سدھریو وو",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0307:L25",
+   "label": "سِری (siri) nf:1.A small head;scalp;skull. 2.Capital of pillars.",
+   "raw": null,
+   "marks": [
+    "spacing"
+   ],
+   "fix": "سِری(siri)nf:1.A small head;scalp;skull. 2.Capital of pillars.",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0309:L4",
+   "label": "سطح (satah) A.nf:Surface;top;level;plane;face.adj.سطحی superficial.",
+   "raw": null,
+   "marks": [
+    "spacing"
+   ],
+   "fix": "سطح(satah)A.nf:Surface;top;level;plane;face.adj.سطحیsuperficial.",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0312:L3",
+   "label": "سلمت (sLaamat) A.adj.Safe and sound;secure;protected;all right.",
+   "raw": null,
+   "marks": [
+    "letters",
+    "spacing"
+   ],
+   "fix": "سلامت(sLaamat)A.adj.Safe and sound;secure;protected;all right.",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0313:L21",
+   "label": "سمار (sumaar) nm:Monday;day between sunday and tuesday.سوار",
+   "raw": null,
+   "marks": [
+    "spacing"
+   ],
+   "fix": "سمار(sumaar)nm:Monday;day between sunday and tuesday. سوار",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0316:L9",
+   "label": "eg: لُکھیں لُکھیں رات هِجر کیں پھِکا سُنجھ سکیل عظیمام",
+   "raw": "eg:لُکھیں لُکھیں رات هِجر کیں پھِکا سُنجھ سکیل عظیمام",
+   "marks": [
+    "spacing",
+    "letters"
+   ],
+   "fix": "eg: لُکھیں لُکھیں رات هِجر کیں پھِکا سُنجھ سبیلا     عظیمؔ",
+   "cause": "raw_wrong"
+  },
+  {
+   "page_line": "page-0317:L25",
+   "label": "سنگھل (sanghaT) nm:Smothering;choking;suffocation;asphyxia.",
+   "raw": null,
+   "marks": [
+    "spacing",
+    "letters"
+   ],
+   "fix": "سنگھٹ(sanghaT)nm:Smothering;choking;suffocation;asphyxia.",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0320:L11",
+   "label": "سُوجھ (soojh) nf:Sensibility;comprehension;understanding;knowledge.",
+   "raw": null,
+   "marks": [
+    "spacing"
+   ],
+   "fix": "سُوجھ(soojh)nf:Sensibility;comprehension;understanding;knowledge.",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0323:L16",
+   "label": "سُہاگ (suhaag) nm:Wedded bliss;conjugal affection;husband.",
+   "raw": null,
+   "marks": [
+    "spacing",
+    "letters"
+   ],
+   "fix": "سُھاگ(suhaag)nm:Wedded bliss;conjugal affection;husband.",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0324:L13",
+   "label": "سہیر (s-her) nf:Nostalgia;sentimental recollection;melancholy;pining.",
+   "raw": null,
+   "marks": [
+    "spacing",
+    "letters"
+   ],
+   "fix": "سھیر(s-her)nf:Nostalgia;sentimental recollection;melancholy;pining.",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0327:L8",
+   "label": "شاخ (shaakh) P.nf:Branch;offshoot;twig;sect;ramification.syn.ڈالی",
+   "raw": null,
+   "marks": [
+    "spacing"
+   ],
+   "fix": "شاخ(shaakh)P.nf:Branch;offshoot;twig;sect;ramification.syn.ڈالی",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0328:L16",
+   "label": "شب (shab) P.nf:Night.شب قدر The 27th.night of the month of fasts.",
+   "raw": "شب.(shab)P.nf:Night.شب قدر The 27th.night of the month of fasts.",
+   "marks": [
+    "spacing"
+   ],
+   "fix": "شب.(shab)P.nf:Night. شب قدر The 27th.night of the month of fasts.",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0332:L21",
+   "label": "شملو (shamLo) A.nm:End of a turban let flying loose.cf:طُرو Plume.",
+   "raw": null,
+   "marks": [
+    "spacing"
+   ],
+   "fix": "شملو(shamLo) A.nm:End of a turban let flying loose.cf:طُرو Plume.",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0334:L19",
+   "label": "شیش محل (sheesh mahal) Glass-house.",
+   "raw": null,
+   "marks": [
+    "spacing"
+   ],
+   "fix": "شیش محل(sheesh mahal)Glass-house.",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0339:L10",
+   "label": "طرف داری (tarf daari) nf:Partiality;bias;favouritism;prejudice;bigotry.",
+   "raw": null,
+   "marks": [
+    "spacing"
+   ],
+   "fix": "طرف داری (tarf daari)nf:Partiality;bias;favouritism;prejudice;bigotry.",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0342:L7",
+   "label": "عادی (aadi) adj.Accustomed;acclimatized;used to;habituated.n:عادت",
+   "raw": null,
+   "marks": [
+    "spacing"
+   ],
+   "fix": "عادی(aadi)adj.Accustomed;acclimatized;used to;habituated.n:عادت",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0345:L7",
+   "label": "عہدو (ohdo) n:Post;rank;position;status;grade;standing;degree;class.",
+   "raw": null,
+   "marks": [
+    "spacing"
+   ],
+   "fix": "عھدو(ohdo)n:Post;rank;position;status;grade;standing;degree;class.",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0345:L16",
+   "label": "commemoration of sacrifice of prophet Abraham,a.s.",
+   "raw": null,
+   "marks": [
+    "ok"
+   ],
+   "fix": "",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0348:L1",
+   "label": "غم (gham) A.nm:Grief;sorrow;woe;heartache;trouble;misery;anxiety.",
+   "raw": null,
+   "marks": [
+    "spacing"
+   ],
+   "fix": "غم(gham)A.nm:Grief;sorrow;woe;heartache;trouble;misery;anxiety.",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0352:L4",
+   "label": "فِرکی (firki) nf:Pulley;wheel like structure .=پھِرکی",
+   "raw": "فِرکی(firki) nf:Pulley;wheel like structure .=پھِرکی",
+   "marks": [
+    "spacing"
+   ],
+   "fix": "فِرکی(firki) nf:Pulley;wheel like structure .=پھِرکی",
+   "cause": "raw_right"
+  },
+  {
+   "page_line": "page-0354:L17",
+   "label": "فناء (faNah) A.n/adj.Ruin;destruction;devastation;wreck;annihilation.",
+   "raw": null,
+   "marks": [
+    "spacing",
+    "letters"
+   ],
+   "fix": "فناہ(faNah)A.n/adj.Ruin;destruction;devastation;wreck;annihilation.",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0356:L18",
+   "label": "قانوں (qaNooN) A.nm:Law;rule;statute;regulation;legislation;principle.",
+   "raw": null,
+   "marks": [
+    "spacing"
+   ],
+   "fix": "قانوں(qaNooN)A.nm:Law;rule;statute;regulation;legislation;principle.",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0359:L5",
+   "label": "قرُق (qarhuk) adj:Seized;attached;forfeited;repossessed;removed.",
+   "raw": null,
+   "marks": [
+    "spacing",
+    "letters"
+   ],
+   "fix": "قرق(qarhuk)adj:Seized;attached;forfeited;repossessed;removed.",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0360:L19",
+   "label": "قلمی (qaLmi) adj.1.Manuscript;script;text. 2.Something tapering.",
+   "raw": null,
+   "marks": [
+    "spacing"
+   ],
+   "fix": "قلمی (qaLmi)adj.1.Manuscript;script;text. 2.Something tapering.",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0364:L12",
+   "label": "کال جیکھو (kaal jeebho) adj.Black-tongued;Cassandra;Ill-omened.",
+   "raw": null,
+   "marks": [
+    "spacing",
+    "letters"
+   ],
+   "fix": "کال جیبھو (kaal jeebho)adj.Black-tongued;Cassandra;Ill-omened.",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0365:L18",
+   "label": "کائنات (kaai Naat) nf:Universe;cosmos;world;creation.",
+   "raw": "کاانات(kaai Naat)nf:Universe;cosmos;world;creation.",
+   "marks": [
+    "spacing"
+   ],
+   "fix": "کائنات(kaai Naat)nf:Universe;cosmos;world;creation.",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0368:L17",
+   "label": "کٹی (kaTi) nf:Female young one of a buffalo.",
+   "raw": null,
+   "marks": [
+    "spacing"
+   ],
+   "fix": "کٹی(kaTi)nf:Female young one of a buffalo.",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0369:L8",
+   "label": "کچج (ka chajj) nm:Tactlessness;unmannerliness;clumsiness.",
+   "raw": null,
+   "marks": [
+    "spacing"
+   ],
+   "fix": "کچج(ka chajj)nm:Tactlessness;unmannerliness;clumsiness.",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0372:L7",
+   "label": "کرِیتو (karito) adj.Strong;powerful;sturdy;tough;stalwart.nf:کریتی",
+   "raw": null,
+   "marks": [
+    "ok"
+   ],
+   "fix": "",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0374:L16",
+   "label": "کش (kash) adj.P.Drawing;pulling.جفاکش Laborious آری کش Sawer.",
+   "raw": null,
+   "marks": [
+    "spacing",
+    "letters"
+   ],
+   "fix": "کش (kash)adj.P.Drawing;pulling. جفاکش Laboriousآری کش؛  Sawer.",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0376:L23",
+   "label": "کلکتری (kaLbatri) nf:Small hand-saw;a tool for cutting wood.کلوتری",
+   "raw": null,
+   "marks": [
+    "spacing",
+    "letters"
+   ],
+   "fix": "کلبتری(kaLbatri)nf:Small hand-saw;a tool for cutting wood.  کلوتری",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0379:L16",
+   "label": "کناڑا (kaNaarha) n.pl.Mumps;swelling of parotid glands.",
+   "raw": null,
+   "marks": [
+    "spacing"
+   ],
+   "fix": "کناڑا(kaNaarha)n.pl.Mumps;swelling of parotid glands.",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0381:L24",
+   "label": "کنگن (kangan) nm:Ornament for wrists;bracelet;bangle.",
+   "raw": null,
+   "marks": [
+    "spacing"
+   ],
+   "fix": "کنگن (kangan)nm:Ornament for wrists;bracelet;bangle.",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0383:L13",
+   "label": "کوری (kori) nf:Earthen milk vessel.adj.Fresh;unwashed;unused.",
+   "raw": null,
+   "marks": [
+    "spacing"
+   ],
+   "fix": "کوری(kori)nf:Earthen milk vessel.adj.Fresh;unwashed;unused.",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0386:L16",
+   "label": "کیر (ker) n:Fragments/bits of something.eg:چُوہے کیر Molehill.",
+   "raw": null,
+   "marks": [
+    "spacing"
+   ],
+   "fix": "کیر(ker)n:Fragments/bits of something.eg: چُوھےکیر Molehill.",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0389:L12",
+   "label": "کھٹو (khaTo) adj.Sour;citron;acid;harsh;rude;ill mannered;spiteful.",
+   "raw": "کھٹو(khaTo)adj.Sour;citron;acid;harsh;rude;ill mannered;spiteful.",
+   "marks": [
+    "spacing"
+   ],
+   "fix": "کھٹو(khaTo)adj.Sour;citron;acid;harsh;rude;ill mannered;spiteful.",
+   "cause": "raw_right"
+  },
+  {
+   "page_line": "page-0391:L1",
+   "label": "کھُرڑو (khurarho) nm:Animal foot;hoof.pl:کھُرڑا ، کھُوایڑا",
+   "raw": null,
+   "marks": [
+    "spacing",
+    "letters"
+   ],
+   "fix": "کھُرڑو(khurarho)nm:Animal foot;hoof.pl: کھُرڑا،کھُوئیڑا",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0393:L21",
+   "label": "کھلیار (khaLeyaar) Expanse;a state of spread out/scattered articles.",
+   "raw": null,
+   "marks": [
+    "spacing"
+   ],
+   "fix": "کھلیار(khaLeyaar)Expanse;a state of spread out/scattered articles.",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0394:L25",
+   "label": "کھُنڈھو (khunDho) adj.Blunt;unsharpened;estranged;alienated.",
+   "raw": null,
+   "marks": [
+    "spacing"
+   ],
+   "fix": "کھُنڈھو(khunDho)adj.Blunt;unsharpened;estranged;alienated.",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0397:L19",
+   "label": "کھیلی (kheeLi) nf:Baby-corn.syn.سِٹی",
+   "raw": null,
+   "marks": [
+    "spacing"
+   ],
+   "fix": "کھیلی(kheeLi)nf:Baby-corn.syn. سِٹی",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0399:L6",
+   "label": "گبھ (gabh) nm:S:گربھ Pregnancy;condition of being pregnant.(cattle).",
+   "raw": null,
+   "marks": [
+    "spacing"
+   ],
+   "fix": "گبھ(gabh)nm:S:گربھ Pregnancy;condition of being pregnant.(cattle).",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0401:L24",
+   "label": "گُڈو (guDo) nm:1.Kite;toy for flying in air;doll;puppet;child's toy.",
+   "raw": "گُڈو(guDo)nm:1.Kite;toy for flying in air;doll;puppet;child's toy.",
+   "marks": [
+    "spacing"
+   ],
+   "fix": "گُڈو(guDo)nm:1.Kite;toy for flying in air;doll;puppet;child's toy.",
+   "cause": "raw_right"
+  },
+  {
+   "page_line": "page-0404:L21",
+   "label": "گڑکار (garh kaar) nm:Sound of waterfall or boiling water.",
+   "raw": null,
+   "marks": [
+    "spacing"
+   ],
+   "fix": "گڑکار(garh kaar)nm:Sound of waterfall or boiling water.",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0406:L11",
+   "label": "گلمُو (galmu) nm:Brim;dewlap of animal;collar/bosom of garment.",
+   "raw": null,
+   "marks": [
+    "spacing"
+   ],
+   "fix": "گلمُو(galmu)nm:Brim;dewlap of animal;collar/bosom of garment.",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0408:L9",
+   "label": "گنڈھ (ganDh) nf:Knot;node;loop;tie;link;bond;connection.سنڈ گنڈھ",
+   "raw": null,
+   "marks": [
+    "spacing"
+   ],
+   "fix": "گنڈھ(ganDh)nf:Knot;node;loop;tie;link;bond;connection. سنڈ گنڈھ",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0410:L8",
+   "label": "گورکھہ (gorkha) nm:A Sino-Tibetan race settled in northeast India.",
+   "raw": null,
+   "marks": [
+    "spacing"
+   ],
+   "fix": "گورکھه(gorkha)nm:A Sino-Tibetan race settled in northeast India.",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0413:L14",
+   "label": "گھاں (k-haan) nf:Plastering material;mixture of clay and chaff;mud.",
+   "raw": "گھاں(k-haan)nf:Plastering material;mixture of clay and chaff;mud.",
+   "marks": [
+    "spacing",
+    "letters"
+   ],
+   "fix": "گھان(k-haan)nf:Plastering material;mixture of clay and chaff;mud.",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0416:L21",
+   "label": "گھُمہ گھیر (k-human k-her) nm:Whirlpool;swirl;spiral/circular motion.",
+   "raw": null,
+   "marks": [
+    "spacing",
+    "letters"
+   ],
+   "fix": "گھُمن گھیر(k-human k-her)nm:Whirlpool;swirl;spiral/circular motion.",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0419:L18",
+   "label": "2.Carriage of grains on horses on 'food for work' basis.",
+   "raw": null,
+   "marks": [
+    "ok"
+   ],
+   "fix": "",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0421:L1",
+   "label": "لالو (LaaLo) nm:Businessman;trader;money lender;broker.شاہوکار",
+   "raw": null,
+   "marks": [
+    "spacing",
+    "letters"
+   ],
+   "fix": "لالو(LaaLo)nm:Businessman;trader;money lender;broker.شاھوکار",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0423:L20",
+   "label": "لچک (Lachak) nf:Flexibility;laxity;lenience;permissiveness.",
+   "raw": null,
+   "marks": [
+    "spacing",
+    "letters"
+   ],
+   "fix": "لچك(Lachak)nf:Flexibility;laxity;lenience;permissiveness.",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0425:L15",
+   "label": "لِسو (Lisso) adj.Emeciated;weak;feeble;lean;frail;scrawny.nf:لِسی",
+   "raw": "لِسو(Lisso)adj.Emeciated;weak;feeble;lean;frail;scrawny.nf:لِسی",
+   "marks": [
+    "spacing"
+   ],
+   "fix": "لِسو(Lisso)adj.Emeciated;weak;feeble;lean;frail;scrawny.nf:لِسی",
+   "cause": "raw_right"
+  },
+  {
+   "page_line": "page-0429:L3",
+   "label": "لنگوٹ (LangoT) nm:Loin-cloth.nf:لنگوٹی",
+   "raw": null,
+   "marks": [
+    "spacing"
+   ],
+   "fix": "لنگوٹ(LangoT)nm:Loin-cloth.nf:لنگوٹی",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0429:L21",
+   "label": "لوچ (Loch) nf:Desire;love;affection;passion;warmth;care;liking.",
+   "raw": null,
+   "marks": [
+    "spacing"
+   ],
+   "fix": "لوچ(Loch)nf:Desire;love;affection;passion;warmth;care;liking.",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0431:L22",
+   "label": "لہنو (Lehnu) v.Get down;get off;dismount;descend;climb down;set.",
+   "raw": null,
+   "marks": [
+    "spacing",
+    "letters"
+   ],
+   "fix": "لھنو(Lehnu)v.Get down;get off;dismount;descend;climb down;set.",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0434:L22",
+   "label": "مارخور (maar khor) nm:A predator wild animal:Capra falconeri.",
+   "raw": null,
+   "marks": [
+    "spacing"
+   ],
+   "fix": "مارخور(maar khor)nm: A predator wild animal:Capra falconeri.",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0438:L6",
+   "label": "متھو (matho) nm:Forehead;front portion of anything;face.",
+   "raw": null,
+   "marks": [
+    "spacing"
+   ],
+   "fix": "متھو(matho)nm:Forehead;front portion of anything;face.",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0439:L6",
+   "label": "مٹیرو (muTero) adj.Thicker;fatter;heavier.nf:مُٹیری",
+   "raw": null,
+   "marks": [
+    "spacing"
+   ],
+   "fix": "مٹیرو (muTero)adj.Thicker;fatter;heavier.nf:مُٹیری",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0442:L17",
+   "label": "مدان (madaaN) nm:Ground;field;terrain;stadium;arena.",
+   "raw": null,
+   "marks": [
+    "spacing"
+   ],
+   "fix": "مدان(madaaN)nm:Ground;field;terrain;stadium;arena.",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0445:L10",
+   "label": "مروڑنو (marorhnu) v:To twist;wind;rotate;wrench;concoct;screw up.",
+   "raw": null,
+   "marks": [
+    "spacing"
+   ],
+   "fix": "مروڑنو(marorhnu)v:To twist;wind;rotate;wrench;concoct;screw up.",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0446:L11",
+   "label": "مزمانی (mizmaaNi) nf:Hospitality;entertainment.=مہمانی",
+   "raw": null,
+   "marks": [
+    "spacing",
+    "letters"
+   ],
+   "fix": "مزمانی(mizmaaNi)nf:Hospitality;entertainment.=مھمانی",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0448:L23",
+   "label": "مُشکل کشاء Patron;benefactor;guardian;defender;sponsor.",
+   "raw": null,
+   "marks": [
+    "ok"
+   ],
+   "fix": "",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0451:L6",
+   "label": "مُفت (muft) adj.For nothing;free of cost;gratis;costless;toll-free.",
+   "raw": null,
+   "marks": [
+    "spacing"
+   ],
+   "fix": "مُفت (muft)adj.For nothing;free of cost;gratis;costless;toll-free.",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0454:L16",
+   "label": "ملنی (malni) nf:Rub;massage;beating;thrashing;kneading.",
+   "raw": null,
+   "marks": [
+    "spacing"
+   ],
+   "fix": "ملنی(malni)nf:Rub;massage;beating;thrashing;kneading.",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0454:L19",
+   "label": "ملہپ (mal hap) nm:Round worm;Ascaris lumbricoides.",
+   "raw": null,
+   "marks": [
+    "spacing",
+    "letters"
+   ],
+   "fix": "ملھپ(mal hap)nm:Round worm;Ascaris lumbricoides.",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0458:L16",
+   "label": "منہ کالکھ Disgrace;blasphemy;desecration;misadventure.",
+   "raw": null,
+   "marks": [
+    "letters"
+   ],
+   "fix": "منه کالکھ Disgrace;blasphemy;desecration;misadventure.",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0459:L17",
+   "label": "موچی (mochi) nm:Cobbler;shoe maker.",
+   "raw": null,
+   "marks": [
+    "spacing"
+   ],
+   "fix": "موچی(mochi)nm:Cobbler;shoe maker.",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0461:L11",
+   "label": "مونگ پھلی (mong phali) nf:Groundnuts;Arachis hypogaea.=مُنگ پھلی",
+   "raw": null,
+   "marks": [
+    "spacing"
+   ],
+   "fix": "مونگ پھلی (mong phali)nf:Groundnuts;Arachis hypogaea.=مُنگ پھلی",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0464:L19",
+   "label": "مینڈھی (menDhi) nf:Braid;plait;interwoven strand of hair.",
+   "raw": null,
+   "marks": [
+    "spacing"
+   ],
+   "fix": "مینڈھی (menDhi)nf:Braid;plait;interwoven strand of hair.",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0466:L14",
+   "label": "ناگن (Naagan) nf:A female snake.",
+   "raw": null,
+   "marks": [
+    "spacing"
+   ],
+   "fix": "ناگن(Naagan)nf:A female snake.",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0469:L15",
+   "label": "نڈر (NaDar) adj.Fearless;bold;unafraid;daring;confident;audacious.",
+   "raw": null,
+   "marks": [
+    "spacing"
+   ],
+   "fix": "نڈر(NaDar)adj.Fearless;bold;unafraid;daring;confident;audacious.",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0471:L18",
+   "label": "نشُکری (Nashukri) nf:Ingratitude;thanklessness.=ناشکری",
+   "raw": null,
+   "marks": [
+    "spacing"
+   ],
+   "fix": "نشُکری(Nashukri)nf:Ingratitude;thanklessness.=  ناشکری",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0473:L8",
+   "label": "نک (Nakk) nm:1.Nose;organ of smell. 2.Honour;pride;modesty.نک شرم",
+   "raw": null,
+   "marks": [
+    "spacing",
+    "letters"
+   ],
+   "fix": "نك(Nakk)nm:1.Nose;organ of smell. 2.Honour;pride;modesty.نك شرم",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0477:L1",
+   "label": "ننہال (NaNehaal) n:The family of maternal grandfather.",
+   "raw": null,
+   "marks": [
+    "spacing",
+    "letters"
+   ],
+   "fix": "ننھال(NaNehaal)n:The family of maternal grandfather.",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0478:L8",
+   "label": "نووں (Nawu~) adj.New;fresh;unused;innovative;different.نووں نکور",
+   "raw": null,
+   "marks": [
+    "spacing"
+   ],
+   "fix": "نووں(Nawu~)adj.New;fresh;unused;innovative;different. نووں نکور",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0481:L13",
+   "label": "وار وار Again and again;time and again.",
+   "raw": null,
+   "marks": [
+    "ok"
+   ],
+   "fix": "",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0482:L10",
+   "label": "والد (waaLad) A.n:Father.والدہ (waalda) Mother.والدین (waalden) Parents.",
+   "raw": null,
+   "marks": [
+    "spacing"
+   ],
+   "fix": "والد(waaLad)A.n:Father.والدہ(waalda) Mother.والدین(waalden) Parents.",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0486:L19",
+   "label": "هاضمُو (haazmu) A.nm:Digestion;processing of food in body.",
+   "raw": "هاضمُو(haazmu)A.nm:Digestion;processing of food in body.",
+   "marks": [
+    "spacing"
+   ],
+   "fix": "هاضمُو(haazmu)A.nm:Digestion;processing of food in body.",
+   "cause": "raw_right"
+  },
+  {
+   "page_line": "page-0488:L7",
+   "label": "ہتھوڑو (hathorho) nm:Hammer;pounding tool;mallet.nf:ہتھوڑی",
+   "raw": null,
+   "marks": [
+    "spacing",
+    "letters"
+   ],
+   "fix": "ھتھوڑو (hathorho)nm:Hammer;pounding tool;mallet.nf:ھتھوڑی",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0489:L22",
+   "label": "ہرجو (harjo) nm:Reparation;damages;costs;compensation.ہرجانو",
+   "raw": null,
+   "marks": [
+    "spacing",
+    "letters"
+   ],
+   "fix": "ھرجو(harjo)nm:Reparation;damages;costs;compensation. ھرجانو",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0492:L17",
+   "label": "ہمسایو (hamsayo) nm:Neighbor;somebody living nearby.sn.گوانڈھی",
+   "raw": null,
+   "marks": [
+    "spacing",
+    "letters"
+   ],
+   "fix": "ھمسایو(hamsayo)nm:Neighbor;somebody living nearby.sn.گواھنڈی",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0493:L25",
+   "label": "ہنیرو (hanero) nm:Darkness;want of light;gloom;obscurity.",
+   "raw": null,
+   "marks": [
+    "letters",
+    "spacing"
+   ],
+   "fix": "ھنیرو(hanero)nm:Darkness;want of light;gloom;obscurity.",
+   "cause": ""
+  },
+  {
+   "page_line": "page-0498:L6",
+   "label": "یکو (yakko) nm:1.Horse cart.syn .ٹانگو 2.Ace in playing cards",
+   "raw": "یکو(yakko)nm:1.Horse cart.syn .ٹانگو  2.Ace in playing cards",
+   "marks": [
+    "spacing"
+   ],
+   "fix": "یکو(yakko)nm:1.Horse cart.syn .ٹانگو 2.Ace in playing cards",
+   "cause": "raw_right"
+  }
+ ]
+}

@@ -30,7 +30,7 @@ def main():
     v = S.build_vocab(texts)
     v.c = {w: c for w, c in v.c.items() if c >= MINC}
     v.n = sum(v.c.values())
-    rev = json.load(open(ROOT / "data/ocr/prose-words/review_marks.json", encoding="utf-8"))
+    rev = json.load(open(ROOT / "data/reviews/prose-banjara-dildarya/review_marks.json", encoding="utf-8"))
     seen, cards = set(), []
     for k, x in rev.items():
         if x["m"] == "unsure":

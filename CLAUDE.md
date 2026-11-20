@@ -613,8 +613,8 @@ heh, kaf and a few wrong glyph codes. The fix has three parts.
 - **Clean step** (`scripts/synth/make_clean_labels.py`): writes
   `real_pairs/labels_merged_clean.jsonl` (11,126 rows) for training. The 200
   reviewed lines stay out of training, in both the real and the synthetic rows,
-  and are kept in `real_pairs/labels_review_test.jsonl` with the user's fix as
-  the test truth. Some of those fixes are stale (ہ where the print shows ھ), so
+  and are kept in `data/reviews/dictionary-200-lines/labels_review_test.jsonl`
+  (tracked) with the user's fix as the test truth. Some of those fixes are stale (ہ where the print shows ھ), so
   reconcile them before scoring.
 The synthetic dictionary rows in `line_full` still show the pass2 spelling and
 the spaces around the `(romanisation)` group. They match their own images but

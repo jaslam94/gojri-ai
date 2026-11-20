@@ -45,7 +45,7 @@ if args.segnet:
     seg.load_state_dict(torch.load(args.segnet, map_location="cpu", weights_only=True))
     seg.eval()
 base = ROOT / "data" / "synth" / "real_pairs"
-review = [json.loads(l) for l in (base / "labels_review_test.jsonl").open(encoding="utf-8")][: args.limit]
+review = [json.loads(l) for l in (ROOT / "data" / "reviews" / "dictionary-200-lines" / "labels_review_test.jsonl").open(encoding="utf-8")][: args.limit]
 
 
 def read_line_seg(img):

@@ -12,7 +12,7 @@ S = Path(r"D:/Code/VSCodeProjects/gojri-ai/data/ocr/pdfmarks-work")
 ROOT = Path("D:/Code/VSCodeProjects/gojri-ai")
 DPI = 200
 PT2PX = DPI / 72
-_SAMPLE, _MARKS = ROOT / "data/ocr/kahawat-marks/sample.json", ROOT / "data/ocr/kahawat-marks/review_marks.json"
+_SAMPLE, _MARKS = ROOT / "data/reviews/kahawat-first-30/sample.json", ROOT / "data/reviews/kahawat-first-30/review_marks.json"
 # the Kahawat review files exist only on the author's machine; the module must still import on SageMaker (read_row_aligned needs neither)
 sample = json.load(open(_SAMPLE, encoding="utf-8")) if _SAMPLE.exists() else []
 marks = json.load(open(_MARKS, encoding="utf-8")) if _MARKS.exists() else {}

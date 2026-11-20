@@ -21,7 +21,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent.parent
 SYNTH = ROOT / "data" / "synth"
-MARKS = ROOT / "data" / "review" / "marks_final_20261104.json"
+MARKS = ROOT / "data" / "reviews" / "dictionary-200-lines" / "marks_final_20261104.json"
 SETS = [
     ("line_full", "labels.jsonl", "labels_clean.jsonl"),
     ("real_pairs", "labels_merged.jsonl", "labels_merged_clean.jsonl"),
@@ -76,6 +76,9 @@ def main():
     merged = read_jsonl(SYNTH / "real_pairs" / "labels_merged.jsonl")
     test = [{**r, "text_fix": reviewed[r["page_line"]].get("fix") or reviewed[r["page_line"]]["label"]}
             for r in merged if r["page_line"] in reviewed]
+    # Working copy only. The test truth that the evaluation scripts read is the tracked
+    # data/reviews/dictionary-200-lines/labels_review_test.jsonl: it holds one later hand fix
+    # (page-0125:L26, heh checked against the print on 2026-11-06). Do not overwrite it with this output.
     write_jsonl(SYNTH / "real_pairs" / "labels_review_test.jsonl", test)
     print(f"real_pairs/labels_review_test.jsonl: {len(test)} lines")
 

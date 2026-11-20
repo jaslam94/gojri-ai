@@ -1,6 +1,6 @@
 """Zero-shot UTRNet-Large on the Arabic parts of the 200 held-out dictionary lines.
 
-Test set: data/synth/real_pairs/labels_review_test.jsonl, the 200 lines the user
+Test set: data/reviews/dictionary-200-lines/labels_review_test.jsonl, the 200 lines the user
 reviewed (one line per equal-size stratum of the dictionary, pages 26 to 498).
 Each line crop (data/synth/real_pairs/img) is cut into its Arabic runs with the
 glyph boxes stored in the PDF, so English text never reaches the model. Each run
@@ -116,7 +116,7 @@ def edit_distance(a, b):
 doc = fitz.open(M.PDF)
 pua = D.load_map()
 base = ROOT / "data" / "synth" / "real_pairs"
-review = [json.loads(line) for line in (base / "labels_review_test.jsonl").open(encoding="utf-8")]
+review = [json.loads(line) for line in (ROOT / "data" / "reviews" / "dictionary-200-lines" / "labels_review_test.jsonl").open(encoding="utf-8")]
 
 
 def line_boxes(page):

@@ -35,7 +35,7 @@ ap.add_argument("--synth", type=int, default=0, help="add N pure-Arabic syntheti
 args = ap.parse_args()
 H = 64
 base = ROOT / "data" / "synth" / "real_pairs"
-review = [json.loads(l) for l in (base / "labels_review_test.jsonl").open(encoding="utf-8")]
+review = [json.loads(l) for l in (ROOT / "data" / "reviews" / "dictionary-200-lines" / "labels_review_test.jsonl").open(encoding="utf-8")]
 rev_keys = {r["page_line"] for r in review}
 rev_pages = {int(k[5:9]) for k in rev_keys}
 allrows = [json.loads(l) for l in (base / "labels_merged_clean.jsonl").open(encoding="utf-8")]

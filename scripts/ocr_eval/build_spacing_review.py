@@ -35,7 +35,7 @@ ap.add_argument("--n", type=int, default=200)
 ap.add_argument("--seed", type=int, default=20261116)
 ap.add_argument("--dpi", type=int, default=200)
 ap.add_argument("--min-letters", type=int, default=8, help="skip idioms shorter than this (too little spacing to judge)")
-ap.add_argument("--exclude", nargs="*", default=[ROOT / "data/ocr/kahawat-marks/sample.json", ROOT / "data/ocr/kahawat-pdfmarks/review/sample.json"],
+ap.add_argument("--exclude", nargs="*", default=[ROOT / "data/reviews/kahawat-first-30/sample.json", ROOT / "data/reviews/kahawat-second-30/sample.json"],
                 help="sample.json files of earlier reviews: their cards are skipped")
 args = ap.parse_args()
 d = Path(args.ocr_dir)

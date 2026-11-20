@@ -3140,6 +3140,20 @@ An outside audit of the repository was checked claim by claim; most claims held.
   14,518 pages). The earlier 74-file state is tagged `v1.0`. `data/pdf-corpus/CREDITS.tsv` and the card follow.
 - **Docs.** README rewritten as the entry point; `docs/TIMELINE.md`, `scripts/README.md`; ROADMAP rewritten; this log
   put in date order, with the NOORIN batch notes moved to `data/archive/noorin-decode-spike/BATCH-LOG.md`.
+- **Gojri-Ghazal, full book** (`launch_prose_pages.py --first 1 --last 0 --pdf-marks --pdf-prefix prose-pdf-ghazal`,
+  job `gojri-ocr-prose-2026-11-20-14-35-56-652`, 1,993 billable seconds, about $0.80): 209 pages, 3,770 rows, local in
+  `data/ocr/ghazal-full/` (gitignored). 2,706 PDF marks placed (pesh 1,282, zer 680, zabar 43, ulta pesh 11), 69 ݨ,
+  121 ڵ, 59 verse signs, 402 takhallus signs (high for 209 pages; spot-check before use). Gold page 40: 11 of 11
+  readable marks right, 1.4% Arabic-letter error (a development page, so a consistency check only).
+- **Spacing review page rebuilt:** `data/ocr/prose-words/space_review.html`, 66 proposed splits of glued words in the
+  prose review truth, for the speaker to accept or reject (labels follow meaning, ruling 2026-11-16).
+- **ASR baseline set up.** The official Common Voice split has one training speaker (3,207 clips, 2.9 h), no dev clips
+  and five test speakers. `scripts/asr/prepare_cv_split.py` keeps the official test set and trains on every other
+  validated clip whose sentence is not a test sentence: train 9,041 clips (3 speakers), dev 475, test 623 (two test
+  speakers also appear in training, three never do; both groups are reported). The split is rebuilt from the
+  tracked `data/asr/split_clips.tsv`; the clips stay private on S3. A SageMaker smoke test (285 s) passed end to end;
+  the full Whisper-small run is `gojri-asr-whisper-2026-11-20-17-43-55-757`.
+- **Locked test set:** all 20 page drafts are in `data/test-locked/drafts/` for the speaker to correct.
 
 ---
 

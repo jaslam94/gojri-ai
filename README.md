@@ -43,7 +43,7 @@ Detailed origins and licensing terms are recorded in `datasets/README.md`.
 - Digitized Gojri-English dictionary (474 pages, 11,767 entries) published on Hugging Face.
 - Devanagari to Nastaliq lexicon (1,862 entries) published on Hugging Face.
 - OCR gold benchmark (12 pages) published on Hugging Face.
-- Pretrained UTRNet-Large reads the Arabic parts of dictionary lines at 2.1% letter error, with no training (`data/utrnet-test/`). Reading new scanned books still needs a line and script detector.
+- Pretrained UTRNet-Large reads the Arabic parts of dictionary lines at 2.1% letter error (2.0% to 2.2% over five seeds), with no training (`data/utrnet-test/`). Reading new scanned books still needs a line and script detector.
 - Bulk vision OCR paused pending automated verification methods.
 
 ## Contributions

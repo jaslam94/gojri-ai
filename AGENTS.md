@@ -34,4 +34,4 @@ Batool font decode, multimodal Pass 2 with Gemini, and Image-vs-Text audit are c
 
 Quran GID decode remains paused. Bulk vision OCR for other books stays paused.
 
-OCR model tests: report Arabic-letter error (Arabic-block letters only, no marks, ك=ک and ه=ہ equal, ھ separate), not whole-line character error, because English is 87% of the characters in dictionary lines. UTRNet-Large reads the Arabic runs of the 200 held-out lines at 2.1% with a 0 px crop margin. Details: `data/utrnet-test/README.md`.
+OCR model tests: report Arabic-letter error (Arabic-block letters only, no marks, ك=ک and ه=ہ equal, ھ separate), not whole-line character error, because English is 87% of the characters in dictionary lines. UTRNet-Large reads the Arabic runs of the 200 held-out lines at 2.1% with a 0 px crop margin (seed 0; 2.0% to 2.2% over seeds 0 to 4). UTRNet's dropout stays on at inference, so fix `--seed` when you report a UTRNet number. Details: `data/utrnet-test/README.md`.

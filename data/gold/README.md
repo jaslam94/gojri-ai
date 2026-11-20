@@ -51,15 +51,17 @@ Results pooled over 12 pages (1,791 ground-truth words):
 
 | Model / pipeline | Pooled word error rate | Notes |
 |------------------|-----------------------:|-------|
-| Gemini 3.6 Flash (one-shot API) | 17.3% | Lowest error rate among tested one-shot APIs |
-| Claude Sonnet 4.6 (one-shot API) | 22.0% | Tested via AWS Bedrock |
-| Composer 2.5 (chat) | 12.6% | Interactive chat baseline, not an API run |
+| Gemini 3.6 Flash (one-shot API) | 17.8% | Lowest error rate among tested one-shot APIs |
+| Claude Sonnet 4.6 (one-shot API) | 22.6% | Tested via AWS Bedrock |
+| Composer 2.5 (chat) | 13.0% | Interactive chat baseline, not an API run |
 
 Heh forms count as different letters in the scorer: a plain heh (ہ), the Arabic heh (ه) and the two-eyed heh (ھ) do not match each other.
 
 ## Versions
 
-Tag `v1.0` is the release before this correction. Tag `v2.0` (November 2026) changes five words in three gold files from ه to ھ after checking the printed pages: `dict_alif` (ھور, ھوا, مھارو), `gojri_adbiyaat` (برھنوسیال) and `nazir_spread_b_left` (بَھلا). Gemini 3.6 Flash pooled word error moves from 17.1% to 17.3%, and its `dict_alif` score from 23.5% to 26.1%. Composer `dict_alif` moves from 10.1% to 9.2%. Other scores do not change.
+- `v1.0`: the first release (September 2026).
+- `v2.0` (November 2026): five words in three gold files change from ه to ھ after checking the printed pages: `dict_alif` (ھور, ھوا, مھارو), `gojri_adbiyaat` (برھنوسیال) and `nazir_spread_b_left` (بَھلا). Gemini 3.6 Flash pooled word error moves from 17.1% to 17.3%, and its `dict_alif` score from 23.5% to 26.1%. Composer `dict_alif` moves from 10.1% to 9.2%. Other scores do not change.
+- Ghazal correction (15 November 2026): eleven words in `gojri_ghazal` now follow the small "v" that the print draws over ل and ن. Six words take ڵ (for example نال to ناڵ) and five take ݨ (for example کرن to کرݨ). The models wrote the plain letters, so every page score on `gojri_ghazal` rises: Gemini 12.4% to 14.7%, Sonnet 13.3% to 16.5%, Composer 14.2% to 16.5%. Pooled: Gemini 17.3% to 17.8%, Sonnet 22.0% to 22.6%, Composer 12.6% to 13.0%.
 
 Bulk vision OCR remains paused because an error rate of 17% without human verification introduces too many errors into corpus text.
 

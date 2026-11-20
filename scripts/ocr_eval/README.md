@@ -28,7 +28,7 @@ Arabic-letter error on the 200 lines (1,400 reference letters):
 
 | System | Input | Error |
 |---|---|---|
-| UTRNet-Large | Arabic runs | 2.1% (29 letters, 178 lines exact) |
+| UTRNet-Large | Arabic runs | 2.1% (29 letters, 178 lines exact; seeds 0 to 4: 2.0% to 2.2%) |
 | Qaari-0.1-Urdu-OCR-VL-2B | Arabic runs, 2x scale on white canvas | 185.9% (46 lines exact) |
 | Qaari | Arabic runs, raw crop | 198.5% |
 | Qaari | Arabic runs, 2x scale | 212.3% |
@@ -57,12 +57,15 @@ Splitter v1 cuts rows at empty ink gaps. v2 (`--valley`) also splits any row tal
 at its ink valley (touching Nastaliq lines). The 1.6 value was fixed in advance and run once.
 Command: `py -3 -X utf8 scripts/ocr_eval/utrnet_gold.py --repo <UTRNet clone> --weights <large.pth> --valley --tag utrnet_v2 --columns kahawat_kosh`.
 Outputs are `data/gold/transcriptions/<page>/<page>_utrnet_v1_original.txt` (and `_v2_`, `_qaari_v1_`).
+Rescored on 2026-11-20 against the corrected `gojri_ghazal` gold (15 November: ڵ and ݨ as printed) with the fixed
+scorer (ݨ, U+0768, now counts as an Arabic letter; before, it counted as English). Only the `gojri_ghazal` row and
+the pooled values changed.
 
 | Page | UTRNet v1 | UTRNet v2 | Qaari (page) | Gemini 3.6 Flash |
 |---|---|---|---|---|
 | dict_alif (English mixed in) | 100.4% | 99.6% | 718.1% | 5.2% |
 | gojri_adbiyaat | 9.2% | 3.2% | 37.9% | 2.8% |
-| gojri_ghazal | 1.3% | 1.2% | 37.6% | 1.6% |
+| gojri_ghazal | 1.8% | 1.8% | 38.4% | 2.4% |
 | kahawat_kosh (2 columns) | 0.9% | 0.7% | 170.6% | 2.7% |
 | kulyate_spread_a_right | 10.5% | 6.2% | 199.5% | 9.0% |
 | kulyate_spread_b_left | 15.7% | 3.9% | 332.2% | 0.3% |
@@ -72,15 +75,15 @@ Outputs are `data/gold/transcriptions/<page>/<page>_utrnet_v1_original.txt` (and
 | nazir_spread_b_left | 2.0% | 2.0% | 481.2% | not scored |
 | primer_pehli | 34.3% | 26.5% | 895.8% | not scored |
 | shingar_textbook | 5.9% | 6.0% | 33.7% | not scored |
-| **Pooled, 12 pages** | **9.2%** | **7.0%** | **174.2%** | |
+| **Pooled, 12 pages** | **9.3%** | **7.1%** | **174.3%** | |
 
-Without `dict_alif` (English) and `primer_pehli` (decorative primer), UTRNet v2 pools to about 2.8%.
-On the 8 pages that Gemini was scored on, UTRNet v1 pools to 10.6% and Gemini to 3.1%.
+Without `dict_alif` (English) and `primer_pehli` (decorative primer), UTRNet v2 pools to 2.9%.
+On the 8 pages that Gemini was scored on, UTRNet v1 pools to 10.7% and Gemini to 3.3%.
 Qaari writes Urdu-like text with invented words and loops until the token limit on dense pages. It is not usable for Gojri.
 
 ## Summary of the model search (2026-11-06)
 
-UTRNet-Large is the only tested model that reads Gojri Nastaliq well (2.1% on dictionary Arabic runs, 2.8% on the
+UTRNet-Large is the only tested model that reads Gojri Nastaliq well (2.1% on dictionary Arabic runs, 2.9% on the
 10 clean gold pages). It cannot read English (85.6% error on English runs), and its page score depends on the line
 splitter. Next step: a script detector that sends Arabic runs to UTRNet and English runs to an English reader.
 
@@ -122,14 +125,17 @@ SegNet weights: `s3://gojri-ai-sagemaker-data/ocr-eval/models/segnet_v2.pt` (not
 | 12 gold pages, first try (Tesseract word boxes) | not scored (200-line version: 90.6% Arabic, 38.0% English) | |
 | 12 gold pages, SegNet v1 on every page | 29.8% pooled | 40.3% |
 | 12 gold pages, SegNet v2 on every page | 28.6% pooled | 31.9% |
-| **12 gold pages, final (page mode)** | **3.6% pooled (222 of 6,253)** | 6.7% pooled (only `dict_alif` has English: 3.9%) |
-| 12 gold pages, UTRNet alone (v2 splitter) | 7.0% | |
-| 8 gold pages Gemini was scored on: final pipeline / Gemini 3.6 Flash | 2.7% / 3.1% | `dict_alif`: 3.9% / 2.6% |
+| **12 gold pages, final (page mode)** | **3.7% pooled (230 of 6,253)** | 6.7% pooled (only `dict_alif` has English: 3.9%) |
+| 12 gold pages, UTRNet alone (v2 splitter) | 7.1% | |
+| 8 gold pages Gemini was scored on: final pipeline / Gemini 3.6 Flash | 2.9% / 3.3% | `dict_alif`: 3.9% / 2.6% |
 
-Final per page (Arabic-letter error): dict_alif 6.0%, gojri_adbiyaat 3.3%, gojri_ghazal 1.2%, kahawat_kosh 0.9%,
+Final per page (Arabic-letter error): dict_alif 6.0%, gojri_adbiyaat 3.3%, gojri_ghazal 1.9%, kahawat_kosh 0.9%,
 kulyate_spread_a_right 5.7%, kulyate_spread_b_left 4.2%, louk_warsti 0.8%, mahatma_gandhi 0.0%,
 nazir_spread_a_right 1.4%, nazir_spread_b_left 2.0%, primer_pehli 28.3%, shingar_textbook 5.9%.
 Gemini is better on `kulyate_spread_b_left` (0.3%) and `dict_alif` (5.2% Arabic, 2.6% English).
+Rescored on 2026-11-20 against the corrected `gojri_ghazal` gold (15 November: ڵ and ݨ as printed) with the fixed
+scorer (ݨ, U+0768, now counts as an Arabic letter; before, it counted as English). Only the `gojri_ghazal` row and
+the pooled values changed.
 
 What went wrong on the way, and the lessons:
 - A first training run used labels that a PIL call had collapsed to one value per line (a 1-D array became a 1 pixel wide
@@ -139,7 +145,9 @@ What went wrong on the way, and the lessons:
 - SegNet trained on dictionary lines only labelled 3% to 25% of each pure-Arabic row as English. Adding synthetic
   pure-Arabic lines did not fix it. Tesseract confirmation of English runs and the page-level mode did.
 
-Caveats: the gold pages guided these design steps (the span merge, the 6-letter check, the page mode), so 3.6% is a
+Caveats: the gold pages guided these design steps (the span merge, the 6-letter check, the page mode), so 3.7% is a
 development number. The mode threshold (15%) lies in an empty gap between the measured shares, but only one gold page
 is a dictionary page. SegNet knows one dictionary's layout and font. The English reader depends on page resolution
 (gold images are about 700 px wide). A new book needs a fresh test before any claim.
+UTRNet keeps its temporal dropout on at inference (5 random masks, averaged), so each pipeline run is one random draw.
+The page numbers above come from one run (`pipe_v4`). Another run can move them by a few letters.

@@ -517,11 +517,12 @@ that still need decode or OCR are **15,478**.
 
 ## Status
 **OCR model search done (2026-11-06).** Details: `scripts/ocr_eval/README.md`. UTRNet-Large is the Gojri Nastaliq reader
-(2.1% letter error on dictionary Arabic runs). Qaari-0.1 and three Hugging Face TrOCR Urdu models fail and are ruled out.
+(2.1% letter error on dictionary Arabic runs, 2.0% to 2.2% over five seeds; its dropout is random at inference). Qaari-0.1 and three Hugging Face TrOCR Urdu models fail and are ruled out.
 `cxfajar197/urdu-ocr` is gated (the user must request access) and untested. Tesseract 5.5 (installed at
 `C:\Program Files\Tesseract-OCR`) reads English at 0.1% character error. Page pipeline `scripts/ocr_eval/ocr_page.py`
-(SegNet per-column script labels, page-mode switch, UTRNet for Arabic, Tesseract for English): 3.6% pooled Arabic-letter
-error on the 12 gold pages, 2.7% against Gemini 3.1% on the 8 pages Gemini was scored on. A development number: the
+(SegNet per-column script labels, page-mode switch, UTRNet for Arabic, Tesseract for English): 3.7% pooled Arabic-letter
+error on the 12 gold pages, 2.9% against Gemini 3.3% on the 8 pages Gemini was scored on (rescored
+2026-11-20 on the corrected Ghazal gold; one pipeline run). A development number: the
 gold pages guided the design, only one is a dictionary page, SegNet knows one dictionary's layout. UTRNet code and
 weights live outside the repo (`D:\ocr-tools`, CC BY-NC-SA 4.0); SegNet weights are on S3
 (`ocr-eval/models/segnet_v2.pt`). SageMaker GPU runs: one `ml.g5.xlarge` at a time; the role ARN comes from the
@@ -530,7 +531,7 @@ environment variable `SAGEMAKER_ROLE_ARN` and never goes into the repo.
 Stage 0 in progress (Aug 2026). Manifest is built. Gold-set Step 0.3 is done for
 the working set of 12 vision-OCR pages (one `_gold.txt` each, first six
 re-checked 2026-08-15). Score with `py -3 scripts/score_gold.py`. One-shot
-bake-off: Gemini 3.6 Flash 17.3% pooled word error, Sonnet 4.6 21.9%. Composer
+bake-off: Gemini 3.6 Flash 17.8% pooled word error, Sonnet 4.6 22.6% (after the gold fixes of Nov 2026). Composer
 chat is lower error but is not a bulk pipeline. Dual-model agreement still
 shares a wrong word on about 5% of agreed tokens. **Bulk vision OCR is paused:**
 the user cannot review 15,478 pages, and 17% word error would poison the corpus.
@@ -625,7 +626,7 @@ model reads Latin text with 0.4% error but Arabic-script letters with 33.4% erro
 long Nastaliq sentences), for the old and the new model alike. It is not usable for Gojri text.
 Whole-line CER (4.8%) hides this because English is 87% of the characters, so report
 Arabic-letter error. **UTRNet-Large, zero-shot, reads the Arabic runs of the same 200 lines at 2.1%
-error** (178 lines exact; 10.9% with a 6 px margin that caught a "("). It needs only the CPU. On the
+error** (seed 0: 29 letters, 179 lines exact; 2.0% to 2.2% over seeds 0 to 4; 10.9% with a 6 px margin that caught a "("). It needs only the CPU. On the
 English parts of the same lines it makes 86% errors, so it needs an Arabic/English split first. The
 cut-out runs came from PDF glyph boxes, so reading scanned pages still needs a line and script
 detector. Method, tables, error list and example crops: `data/utrnet-test/README.md`; code:
@@ -677,7 +678,8 @@ Pushed 2026-11-05 as tag `v2.0` (commit `c21814b`); `v1.0` is the October text.
 
 **OCR gold set published (Sep 2026):** cropped images, gold text, and bake-off
 results (Gemini 3.6 Flash 17.1% pooled WER vs Sonnet 4.6 22.0%; Composer chat
-12.6% as a non-API baseline).
+12.6% as a non-API baseline). After the gold fixes of Nov 2026 (heh forms, Ghazal ڵ and ݨ): Gemini 17.8%,
+Sonnet 22.6%, Composer 13.0%.
 `https://huggingface.co/datasets/junaidaslam/gojri-nastaliq-ocr-gold`.
 See `data/gold/README.md` and `data/gold/bakeoff_results.csv`.
 

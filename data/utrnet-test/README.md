@@ -61,6 +61,14 @@ Arabic-script letters, 200 lines, 1,400 reference letters:
 | Our CRNN, baseline | Arabic runs, 0 px | 66.1% | 926 | 7 |
 | Our CRNN, retrained | Arabic runs, 0 px | 63.9% | 894 | 7 |
 
+Run-to-run variation (checked 2026-11-20). UTRNet keeps its temporal dropout on at inference: each read averages five
+random masks drawn with `np.random` (`modules/dropout_layer.py` in the UTRNet code). So two runs without a fixed seed
+can differ by a few letters. The table above is one such run (2026-11-05). `scripts/utrnet_arabic_eval.py` now takes
+`--seed` (default 0), and one seed gives the same output every time (two seed-0 runs were byte-identical). At 0 px
+margin, seed 0 gives 29 wrong letters (2.1%) and 179 exact lines. Seeds 0 to 4 give 28 to 31 wrong letters (2.0% to
+2.2%, mean 2.1%) and 176 to 179 exact lines. Six runs without a seed on this machine gave 28 to 32 (2.0% to 2.3%). Report the
+result as 2.1% (2.0% to 2.2% over five seeds). The 2 px and 6 px rows and the CRNN rows are single runs.
+
 Update 2026-11-06: the user checked the two open heh forms against the print. p71 L18 is بدھنو (the reference was right, UTRNet wrote ہ). p125 L26 is پیلاھنگو (the reference had ہ and was wrong, UTRNet was right). The test file `labels_review_test.jsonl` now has ھ for p125 L26. One error less everywhere that line counted a heh error.
 
 Five lines have no Arabic. They count as exact when the output has no Arabic letters. UTRNet on a whole line writes Arabic letters for the English words, so it adds many letters and the error passes 100%.
@@ -261,8 +269,9 @@ py -3 -X utf8 scripts/utrnet_arabic_eval.py --repo <clone> --weights <large.pth>
 py -3 -X utf8 scripts/utrnet_latin_eval.py --repo <clone> --weights <large.pth>
 ```
 
-The two CRNN files are in `s3://gojri-ai-sagemaker-data/output/<job name>/output/model.tar.gz`. A first scratch version of the test gave 2.2%, 2.8% and 11.5% for the three margins. The scripts above give the numbers in this file.
+The two CRNN files are in `s3://gojri-ai-sagemaker-data/output/<job name>/output/model.tar.gz`. A first scratch version of the test gave 2.2%, 2.8% and 11.5% for the three margins. The scripts above give the numbers in this file. Add `--seed N` to fix the dropout draw (see the run-to-run note under
+the results table).
 
-## Next
+## Next (done)
 
-Read the 12 gold pages with UTRNet after a simple split into text lines. Score the word error with `scripts/score_gold.py`, the scorer used for Gemini 3.6 Flash (17.3%) and Claude Sonnet 4.6 (22.0%). Fine-tune UTRNet on SageMaker only if that test shows a need. Fine-tuned weights would carry the UTRNet license.
+The next step was to read the 12 gold pages with UTRNet. That is done (2026-11-06): the page pipeline in `scripts/ocr_eval/` (SegNet script labels, UTRNet for Arabic, Tesseract for English) reaches 3.7% Arabic-letter error on the 12 gold pages. See `scripts/ocr_eval/README.md`.

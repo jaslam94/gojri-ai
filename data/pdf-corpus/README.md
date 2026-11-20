@@ -41,7 +41,12 @@ The files in this collection are third-party published books. Copyright remains 
 - `CREDITS.tsv`: File metadata including path, page count, scope, credits, notes, and MD5 hashes.
 - `LICENSE.md`: Usage terms and copyright notice.
 
-Only primary unique files are included. Exact duplicate files identified by MD5 hash were removed during project triage.
+Only unique books are included: 64 PDFs, 14,518 pages. Duplicates were removed in two steps: byte-identical files (found by MD5 hash) during project triage, and in November 2026 files that hold the same book under another name (found by comparing every page image, then checked page by page).
+
+## Versions
+
+- `v1.0` (October 2026): 74 PDFs.
+- `v2.0` (November 2026): 64 PDFs. Ten files removed because the same book is already in the collection under another name (two Rahi dictionary parts, the Ismail Zabi kalam, the folk-song collection, the 7th-class book, two copies of the Gojri Bait collection, the first primer, the Concise Gojri-English Dictionary front matter, and `gojri-language-literature.pdf`). The two Louk Warsti files are Vol 1 and Vol 2 of one dictionary and are now named `Gujjar_Qabila_Ki_Louk_Warsti_Dictionary_Vol1.pdf` and `..._Vol2.pdf`. Load the old set with `revision="v1.0"`.
 
 ## Credits
 

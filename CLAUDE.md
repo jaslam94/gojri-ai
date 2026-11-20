@@ -719,7 +719,8 @@ Sonnet 22.6%, Composer 13.0%.
 See `data/gold/README.md` and `data/gold/bakeoff_results.csv`.
 
 **PDF research mirror (Sep 2026):** in-scope print PDFs with per-file credits on
-Hugging Face (`junaidaslam/gojri-print-pdf-collection`). See
+Hugging Face (`junaidaslam/gojri-print-pdf-collection`). Version `v2.0` (2026-11-20): 64 unique PDFs, 14,518
+pages, after the content dedupe; `v1.0` is the 74-file original. See
 `data/pdf-corpus/CREDITS.tsv` and `LICENSE.md`. Original book copyright remains
 with authors/publishers.
 

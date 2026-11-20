@@ -3129,6 +3129,8 @@ An outside audit of the repository was checked claim by claim; most claims held.
   files share no page (median correlation 0.24). The title pages show Vol 1 (`... (1).pdf`, ا to س) and Vol 2
   (`....pdf`, ش to ی, the source of the `louk_warsti` gold page); the speaker confirmed it. Renamed to
   `Gujjar_Qabila_Ki_Louk_Warsti_Dictionary_Vol1.pdf` and `..._Vol2.pdf`.
+- **Hugging Face PDF collection `v2.0`:** the 10 content duplicates removed and the Louk Warsti files renamed (64 PDFs,
+  14,518 pages). The earlier 74-file state is tagged `v1.0`. `data/pdf-corpus/CREDITS.tsv` and the card follow.
 - **Docs.** README rewritten as the entry point; `docs/TIMELINE.md`, `scripts/README.md`; ROADMAP rewritten; this log
   put in date order, with the NOORIN batch notes moved to `data/archive/noorin-decode-spike/BATCH-LOG.md`.
 

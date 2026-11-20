@@ -18,7 +18,6 @@ and `UTRNET_WEIGHTS`), Tesseract 5, and for SageMaker runs the environment varia
 | `inspect_pdf_glyphs.py` | Dumps the (font, codepoint) sequence of one PDF page. |
 | `extract_clean_text.py` | Extracts text from the PDFs that already hold correct Unicode (the Devanagari dictionary). |
 | `build_pdf_credits.py` | Builds `data/pdf-corpus/CREDITS.tsv` from the manifest. |
-| `convert_pdf_to_png.py`, `crop_and_clean.py` | One-off helpers (Nov 2026) with Kahawat-Kosh hard-coded: render pages to PNG; crop margins and drop blank pages. Nothing else uses them. |
 | `split_spread.py` | Splits a two-page-spread page image at its centre into the right and the left page. |
 
 ## 2. OCR gold set and the vision-model bake-off (Aug 2026, done)

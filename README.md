@@ -13,7 +13,7 @@ Private Use Area codes or to Latin letters. This project measures that problem a
 
 | Area | State |
 |---|---|
-| Catalog of 92 collected PDFs | Done: 21,143 unique pages, 2,244 duplicate pages removed by hash, 15,478 pages that need decode or OCR. `data/manifest.csv` |
+| Catalog of 92 collected PDFs | Done: 18 duplicate files (3,662 pages) found by file hash and by page content and removed; 19,725 unique pages; 14,060 pages that need decode or OCR. `data/manifest.csv` |
 | OCR benchmark | Done: 12 gold pages (1,791 words) written and checked by a native speaker. `data/gold/` |
 | Gojri-English dictionary text | Published: 474 pages, 11,767 entry lines, from a font decode table plus a Gemini pass. 200 lines were checked by the speaker; the rest is machine text. |
 | Devanagari to Nastaliq lexicon | Published: 1,862 headwords, 50 checked by the speaker. `data/lexicon/` |

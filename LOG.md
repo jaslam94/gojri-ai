@@ -3096,6 +3096,42 @@ Research note `plans/RESEARCH-gojri-word-spacing-orthography.md`: no published G
 
 ---
 
+## 2026-11-20: repository audit, re-scored numbers, duplicate PDFs removed
+
+An outside audit of the repository was checked claim by claim; most claims held. Changes:
+- **Speaker labels tracked.** Every check the speaker made against the print is now in `data/reviews/` (README there),
+  byte-identical to the working copies; the scripts read them there. The 200-line test file holds one later hand fix
+  (`page-0125:L26`, ھ), so `make_clean_labels.py` must not overwrite it.
+- **Rights.** MIT `LICENSE` for code and prompts; `DATA-NOTICE.md` for data, book content and third-party tools. The
+  FLI corpus texts and the Common Voice TSV files are no longer tracked (kept locally, gitignored).
+- **Scorer fix.** ݨ (U+0768) is in the Arabic Supplement block, which the Arabic-letter scorers left out, so it counted
+  as an English character. The scorers now keep U+0750-077F and treat ݩ as ݨ.
+- **UTRNet is random at inference.** Its temporal dropout stays on (five `np.random` masks averaged per read), so runs
+  differ by a few letters; threads are not the cause (two single-thread runs also differed). `utrnet_arabic_eval.py`
+  takes `--seed`: two seed-0 runs were byte-identical; seeds 0 to 4 give 28 to 31 of 1,400 letters (2.0% to 2.2%).
+- **Re-scored after the 2026-11-15 Ghazal gold fix.** Bake-off word error: Gemini 3.6 Flash 17.8%, Sonnet 4.6 22.6%,
+  Composer 13.0%. Page pipeline (`pipe_v4`): 3.7% Arabic-letter error (230 of 6,253); on the 8 Gemini pages 2.9%
+  against Gemini 3.3%. The Hugging Face gold card was updated.
+- **Duplicate PDFs.** Every page of every PDF in `pdfs/` was rendered to a 32x45 thumbnail and correlated with every
+  page of every other file; candidate pairs were checked page by page at 120x170 and by text layer, and unclear pairs
+  by eye. The 7 known byte-identical groups came out at 100% (the control). Ten more files are the same book in
+  another file: two Rahi dictionary parts (169 and 110 pages), Ismail Zabi kalam (81), the folk-song collection (292),
+  the 7th-class book (72, same as the Shingar textbook), the Gojri Bait collection (172, three files), the first primer
+  (56), the Concise Gojri-English Dictionary (its 24 pages are the front matter of the big dictionary), and
+  `gojri-language-literature.pdf` (270; the same text and line breaks as `gojri-adab-ki-tariekh.pdf` in another font).
+  All 18 duplicate files (8 byte-identical, 10 by content) were deleted from `pdfs/` and flagged
+  `removed_duplicate_nov2026` in the manifest. The kept copy is the gold-page source where there is one, else the
+  manifest primary, else the root copy. Unique pages: 19,725 (was 21,143). Pages that need decode or OCR: 14,060
+  (was 15,478). Tier 1: 3,007 pages.
+- **Kept although they overlap:** three primer pairs are two editions of one J&K board book (53 of 64, 23 of 33 and
+  24 of 33 pages identical; covers and some pages differ); `Gojri-Adbiyaat.pdf` holds about 73% of
+  `gojri-adab-ki-tariekh.pdf` and 82 pages of `Gojri-Sheryaat.pdf`. The two `Gujjar_Qabila_Ki_Louk_Warsti_Dictionary`
+  files share no page (median correlation 0.24): different books or volumes.
+- **Docs.** README rewritten as the entry point; `docs/TIMELINE.md`, `scripts/README.md`; ROADMAP rewritten; this log
+  put in date order, with the NOORIN batch notes moved to `data/archive/noorin-decode-spike/BATCH-LOG.md`.
+
+---
+
 ## Glossary (grows as new terms come up)
 
 - **Token**: the unit a model reads/writes in and is billed by: roughly a

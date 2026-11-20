@@ -479,7 +479,7 @@ verifiable manifest) came before any bulk processing:**
     `Revisiting-Islam.pdf`, and the five `the-gujjars-vol-*` history volumes (real
     English prose, verified by font: plain Calibri/Arial, not Nastaliq).
 - **New structural finding, not previously known**: 25 unique files (5,885 pages, 38% of
-  the 15,478-page workload; 26 files and 6,295 pages with one duplicate copy) are **two-page spreads**, a single PDF page containing both the
+  the 15,478-page workload as counted before the Nov 2026 dedupe; now 21 files, 5,168 pages) are **two-page spreads**, a single PDF page containing both the
   left and right physical book pages side by side (page width notably exceeds
   height). Detected by checking rendered page aspect ratio. Concentrated entirely in
   `javaidrahi-blog/`. This matters for Stage 1: fed to a vision model unmodified,
@@ -503,7 +503,7 @@ verifiable manifest) came before any bulk processing:**
 | Image only (needs vision transcription) | 17 | 1,281 |
 | Genuinely out of scope (English prose) | 7 | 4,192 |
 | **Pages needing paid OCR** | | **14,761** |
-| Of which: two-page-spread layout (needs special handling) | 25 unique files | 5,885 |
+| Of which: two-page-spread layout (needs special handling) | 26 files (Aug count) | 6,295 |
 | Tier 1 (dictionaries/glossaries, highest value) | 15 | 3,310 |
 
 This revises the OCR cost estimate up slightly again (14,761 vs the earlier 14,550),
@@ -515,10 +515,14 @@ collections are correctly counted.
 not good text. Unique good-text pages are now **1,473** (4 files). Unique pages
 that still need decode or OCR are **15,478**.
 
-**Content duplicates (2026-11-20):** hashing misses re-exported copies. `gojri-dictionary-by-dr-javaid-rahi-3.pdf`
-and `GOJRI_DICTIONARY_by_Dr_JAVAID_RAHI_Part (1).pdf` (169 pages), and `gojri-dictionary-by-dr-javaid-rahi-part-05.pdf`
-and `Gojri_Dictionary_by_Dr_Javaid_Rahi_Part.pdf` (110 pages) render identical pages. The 15,478 and Tier 1 3,310
-figures still count these 279 pages twice. The two Louk Warsti dictionary files show different pages.
+**Duplicates removed (2026-11-20).** Hashing misses re-exported copies, so every page of every PDF was compared
+by image (thumbnail correlation, then a page-by-page check at higher resolution, plus the text layer where one
+exists). 18 files were deleted from `pdfs/`: the 8 byte-identical copies and 10 content duplicates (same pages in
+another file). Their manifest rows stay, flagged `removed_duplicate_nov2026` with `is_primary=0` and a `dup_group`
+(D01 to D14) that names the kept copy. Current figures: 64 PDFs on disk; 3,662 duplicate pages; 19,725 unique
+pages; **14,060** pages need decode or OCR (bad text 12,907, image-only 1,153); spreads 21 files, 5,168 pages; Tier 1
+12 files, 3,007 pages. Kept on purpose: three primer pairs are two editions of the same J&K board book (`gojri-books-iind` / `GUJJARS_GOJRI_KI_DOJI_KITAB`, `gojri-book-iiird` / `..._TEJI_KITAB`, `gojri-book-ivth` / `..._CHOTHI_KITAB`; 53 of 64, 23 of 33 and 24 of 33 pages identical); `Gojri-Adbiyaat.pdf` holds about 73% of the pages of `gojri-adab-ki-tariekh.pdf`, and 82 pages of `Gojri-Sheryaat.pdf`. The two `Gujjar_Qabila_Ki_Louk_Warsti_Dictionary` files share no page. The manifest now holds hand-set flags (September and November removals):
+do not rebuild it blindly with `scripts/build_manifest.py`.
 
 ## Status
 Newest first. The dated history is in `docs/TIMELINE.md`; the plan is in `ROADMAP.md`.
@@ -528,9 +532,8 @@ scripts read them from there, and `labels_review_test.jsonl` there holds one lat
 Third-party datasets (FLI corpus, Common Voice) are no longer tracked. Code is MIT (`LICENSE`); data terms are in
 `DATA-NOTICE.md`. Index of all scripts: `scripts/README.md`. Scorers now count ݨ (U+0768, Arabic Supplement) as an
 Arabic letter. UTRNet keeps its temporal dropout on at inference, so `scripts/utrnet_arabic_eval.py` takes `--seed`
-(default 0); report UTRNet numbers with the seed. Two pairs of Rahi dictionary PDFs are the same book in different
-files (279 pages counted twice in the manifest totals); the two `Gujjar_Qabila_Ki_Louk_Warsti_Dictionary` files need
-a look by eye.
+(default 0); report UTRNet numbers with the seed. 18 duplicate PDFs (8 byte-identical, 10 same
+book in another file) were deleted from `pdfs/` after a page-image comparison; the workload is now 14,060 pages.
 
 **Book OCR, PDF marks and word spacing (2026-11-10 to 2026-11-19).**
 - PDF mark glyphs: the NOORIN books draw pesh, zer, zabar, ulta pesh, the takhallus sign and the small "v" as their
@@ -566,7 +569,7 @@ re-checked 2026-08-15). Score with `py -3 scripts/score_gold.py`. One-shot
 bake-off: Gemini 3.6 Flash 17.8% pooled word error, Sonnet 4.6 22.6% (after the gold fixes of Nov 2026). Composer
 chat is lower error but is not a bulk pipeline. Dual-model agreement still
 shares a wrong word on about 5% of agreed tokens. **Bulk vision OCR is paused:**
-the user cannot review 15,478 pages, and 17% word error would poison the corpus.
+the user cannot review 14,060 pages, and 17% word error would poison the corpus.
 
 **NOORIN decode-table path abandoned (Aug 2026).** See
 `data/archive/noorin-decode-spike/README.md`. Do not rebuild NOORIN tables.

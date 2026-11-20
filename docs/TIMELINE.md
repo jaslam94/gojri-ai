@@ -71,6 +71,9 @@ later correction is noted.
   - Scorer fix: ݨ now counts as an Arabic letter.
   - The UTRNet test now takes a fixed seed, because UTRNet's dropout stays on at inference.
   - Re-scored numbers: bake-off 17.8%, 22.6% and 13.0%; pipeline 3.7%; UTRNet 2.1% (2.0% to 2.2% over five seeds).
+  - Duplicate PDFs removed. Every page of every PDF was compared by image, not only by file hash. Besides the 8
+    byte-identical copies, 10 more files turned out to be the same book in another file. All 18 were deleted from
+    `pdfs/` and flagged in the manifest. Unique pages: 19,725; pages that need decode or OCR: 14,060.
 
 ## Not started yet
 

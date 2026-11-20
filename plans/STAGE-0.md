@@ -2,7 +2,7 @@
 
 > **Historical plan (closed).** Kept as written in August 2026, with its later status notes. The current state is
 > in `ROADMAP.md` and `docs/TIMELINE.md`. Numbers below are as of their date: for example the workload is now
-> 15,478 pages (not 14,550 or 14,761) and the bake-off is Gemini 17.8% / Sonnet 22.6% after the gold fixes of
+> 14,060 pages after removing duplicates in November 2026 (not 14,550 or 14,761) and the bake-off is Gemini 17.8% / Sonnet 22.6% after the gold fixes of
 > November 2026.
 
 **Goal**: end up knowing exactly what data we have, which files are worth processing,

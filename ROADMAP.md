@@ -24,18 +24,16 @@ BaltiVoice project did the same for Balti with 16.8 hours) and the fastest route
 ## Stage 0: Data hygiene and measurement (done)
 
 - **Catalog.** `data/manifest.csv` (`scripts/build_manifest.py`) lists all 92 PDFs with hash, duplicate group,
-  encoding scheme, script, scope and tier. Byte-identical copies: 7 groups, 2,244 pages. Unique pages: 21,143.
+  encoding scheme, script, scope and tier. Duplicates: 18 files (3,662 pages) in 14 groups, found by file hash
+  and, on 2026-11-20, by comparing every page image; all 18 were deleted from `pdfs/` and are flagged
+  `removed_duplicate_nov2026` in the manifest. Unique pages: 19,725.
 - **Triage by the script in the text, not by character counts.** This rescued Gojri poetry books in a legacy 8-bit
   encoding and the Devanagari Gojri-Hindi-English Dictionary, which a first count had marked as English. Seven files
   (4,192 pages) are English prose and out of scope.
-- **Workload.** 15,478 unique pages need decode or OCR (bad text 14,197 and image-only 1,281). The Quran translation
-  (717 pages) is in this number: its text layer is broken, not good text. Two-page spreads: 25 files, 5,885 pages,
-  split at the centre with `scripts/split_spread.py`. Tier 1 (dictionaries and glossaries): 15 files, 3,310 pages.
-- **Caveat on duplicates.** Hashes catch only byte-identical files. On 2026-11-20 two pairs of Rahi dictionary
-  files turned out to be the same book in different files (`gojri-dictionary-by-dr-javaid-rahi-3.pdf` and
-  `GOJRI_DICTIONARY_by_Dr_JAVAID_RAHI_Part (1).pdf`, 169 pages; `gojri-dictionary-by-dr-javaid-rahi-part-05.pdf` and
-  `Gojri_Dictionary_by_Dr_Javaid_Rahi_Part.pdf`, 110 pages). The figures above still count those 279 pages twice.
-  The two `Gujjar_Qabila_Ki_Louk_Warsti_Dictionary` files show different pages and need a look by eye.
+- **Workload.** 14,060 unique pages need decode or OCR (bad text 12,907 and image-only 1,153). The Quran translation
+  (717 pages) is in this number: its text layer is broken, not good text. Two-page spreads: 21 files, 5,168 pages,
+  split at the centre with `scripts/split_spread.py`. Tier 1 (dictionaries and glossaries): 12 files, 3,007 pages.
+- **Overlaps that stay.** Kept on purpose: three primer pairs are two editions of the same J&K board book (`gojri-books-iind` / `GUJJARS_GOJRI_KI_DOJI_KITAB`, `gojri-book-iiird` / `..._TEJI_KITAB`, `gojri-book-ivth` / `..._CHOTHI_KITAB`; 53 of 64, 23 of 33 and 24 of 33 pages identical); `Gojri-Adbiyaat.pdf` holds about 73% of the pages of `gojri-adab-ki-tariekh.pdf`, and 82 pages of `Gojri-Sheryaat.pdf`. The two `Gujjar_Qabila_Ki_Louk_Warsti_Dictionary` files share no page.
 - **Measurement.** 12 gold pages (1,791 words) spanning the hard cases, and the speaker's review sets in
   `data/reviews/`. Every OCR decision since then was made against these.
 
@@ -62,7 +60,7 @@ BaltiVoice project did the same for Balti with 16.8 hours) and the fastest route
 ### Next steps, in order
 
 1. **Lock a test set.** About 20 new pages that no design step touches, from books the pipeline has not seen.
-2. **Test on an unseen book and on photographed scans.** Report the result either way. The image-only books (1,281
+2. **Test on an unseen book and on photographed scans.** Report the result either way. The image-only books (1,153
    pages) need this before any bulk run.
 3. **Word spacing.** First decide one labelling rule for the review truth (some reviewed rows keep glued words, while
    the 2026-11-16 ruling says spaces follow meaning). Then try a small space tagger trained on speaker-checked lines,
@@ -109,8 +107,8 @@ Adapt an existing Urdu-capable model to Gojri with transfer learning (for exampl
   Gojri-Urdu file), probably a lost Gojri mark. No published method or error rate exists for the corpus
   (`plans/RESEARCH-gojri-corpus-provenance.md`). A sample review page is built (`scripts/fli_review.py`); the
   speaker's check is pending. Fix before training on those files.
-- **Content duplicates** that hashing cannot see: see the Stage 0 caveat. A full content-similarity pass over the
-  collection is still to do.
+- **Overlapping books** (primer editions, Gojri-Adbiyaat): see Stage 0. When those books are read, skip the pages
+  already read in the other copy.
 - **Quran translation (717 pages).** Broken text layer. The glyph-id table is paused; page OCR is the likely path.
 - **Orthography.** Gojri has no standard spelling. Rulings so far follow the print: word-initial ھ as printed, ك and
   ک equal, ه and ہ equal, ھ separate, ݨ and ڵ where the print shows the small "v", a space after ۔ and ،, word spaces

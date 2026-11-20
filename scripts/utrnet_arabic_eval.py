@@ -20,7 +20,8 @@ UTRNet's dropout stays on at inference, so runs differ without a seed. --seed 0 
 default) gives 29 letters, 179 lines exact; seeds 0 to 4 give 2.0% to 2.2%. See
 data/utrnet-test/README.md for the full table and examples.
 
-Setup (UTRNet is third-party code, CC BY-NC-SA 4.0, research use):
+Setup (UTRNet is third-party code, non-commercial: CC BY-NC 4.0 in its LICENSE file,
+CC BY-NC-SA 4.0 in its README):
   1. git clone https://github.com/abdur75648/UTRNet-High-Resolution-Urdu-Text-Recognition
      into a new folder (commit 049c2d6 or later).
   2. Download UTRNet-Large from the link in that repo's README (Google Drive) as large.pth.

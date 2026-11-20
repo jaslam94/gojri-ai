@@ -23,7 +23,7 @@ Output in <out>/<tag>/dpi<DPI>/: page_NNN.txt (one line per row) and page_NNN.js
 and <out>/<tag>/crops/pNNN/Lkk.png (the cleaned crop, from the first DPI).
 Run: py -3 -X utf8 scripts/ocr_eval/ocr_prose_pages.py --repo D:/ocr-tools/utrnet --weights D:/ocr-tools/weights/large.pth
         --pdf pdfs/anjumshanasi/Banjara.pdf --pages 60 150 --dpis 300 --out data/ocr/prose-test
-UTRNet code and weights are third party (CC BY-NC-SA 4.0).
+UTRNet code and weights are third party (non-commercial: CC BY-NC 4.0 in its LICENSE file, CC BY-NC-SA 4.0 in its README).
 """
 import argparse
 import json

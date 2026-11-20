@@ -1,7 +1,7 @@
 """Shared pieces of the Gojri OCR pipeline: UTRNet-Large reader, Tesseract English reader, line and span helpers.
 
 Import with: sys.path.insert(0, "scripts/ocr_eval"); import ocrlib
-UTRNet code and weights are third party (CC BY-NC-SA 4.0); only model.py and modules/ are imported from the clone.
+UTRNet code and weights are third party (non-commercial: CC BY-NC 4.0 in its LICENSE file, CC BY-NC-SA 4.0 in its README); only model.py and modules/ are imported from the clone.
 """
 import io
 import math
@@ -16,7 +16,7 @@ from pathlib import Path
 import numpy as np
 from PIL import Image
 
-# Local UTRNet clone and weights (third party, CC BY-NC-SA 4.0, not in this repo).
+# Local UTRNet clone and weights (third party, non-commercial license, not in this repo).
 # Set UTRNET_REPO and UTRNET_WEIGHTS to use another location.
 UTRNET_REPO = os.environ.get("UTRNET_REPO", "D:/ocr-tools/utrnet")
 UTRNET_WEIGHTS = os.environ.get("UTRNET_WEIGHTS", "D:/ocr-tools/weights/large.pth")

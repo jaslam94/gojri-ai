@@ -58,7 +58,7 @@ Already-ruled-out items (Qaari, three HF TrOCR Urdu models, Qwen3-VL, Haiku and 
 
 | Name | What it is | Script / type | Licence | Size | Link | Verified |
 |---|---|---|---|---|---|---|
-| UTRSet-Real | Real printed Urdu lines, annotated | Printed Nastaliq | CC BY-NC-SA 4.0 (repo licence) | over 11,000 lines | https://github.com/abdur75648/UTRNet-High-Resolution-Urdu-Text-Recognition | Y |
+| UTRSet-Real | Real printed Urdu lines, annotated | Printed Nastaliq | CC BY-NC 4.0 per the repo LICENSE file; its README says CC BY-NC-SA 4.0 | over 11,000 lines | https://github.com/abdur75648/UTRNet-High-Resolution-Urdu-Text-Recognition | Y |
 | UTRSet-Synth | Synthetic lines made with the Urdu-Synth tool. Paper says over 130 Urdu fonts. | Synthetic | CC BY-NC-SA 4.0 | 20,000 lines | same repo | Y |
 | UrduDoc | Page-level line detection benchmark. Not a recognition set. Not downloadable. Needs a free licence agreement. | Scanned pages | Needs request | not stated | same repo | Y (README) |
 | UPTI | Older synthetic printed Urdu set, linked from the UTRNet README | Synthetic | Not checked | not stated | same repo | Y (link only) |

@@ -7,14 +7,16 @@ from PIL import Image
 import dump_batool_lines as D, merge_decode_letters as M, mine_batool_pairs as MB
 out = Path(sys.argv[1]); out.mkdir(parents=True, exist_ok=True)
 doc = fitz.open(M.PDF); pua = D.load_map()
-base = ROOT/"data"/"synth"/"real_pairs"
+base = ROOT/"data"/"reviews"/"dictionary-200-lines"  # the 200 tracked line crops (img/)
 review = [json.loads(l) for l in (ROOT / "data" / "reviews" / "dictionary-200-lines" / "labels_review_test.jsonl").open(encoding="utf-8")]
 
+# Per page: does the entry numbering keep the printed page-number line? (tracked, see the file's note)
+FOLIO = json.load(open(ROOT / "data" / "reviews" / "dictionary-200-lines" / "folio_pages.json", encoding="utf-8"))["keep_folio"]
+
 def line_boxes(page):
-    labels = M.pass2_labels(page)
     rows = MB.cluster_rows_full(MB.page_chars_full(doc[page-1]))
     texts = [re.sub(r"\s+", " ", D.fmt_line(bb["chars"], pua, wrap_batool=False)).strip() for _y, bb in rows]
-    keep = str(page) in labels
+    keep = FOLIO[str(page)]
     return [bb for (_y, bb), t in zip(rows, texts) if t and (keep or t != str(page))]
 
 def arabic_runs(bb):

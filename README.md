@@ -106,10 +106,10 @@ py -3 -X utf8 scripts/score_gold.py                       # word error of every 
 py -3 -X utf8 scripts/ocr_eval/score_gold_letters.py      # Arabic-letter error of every run (add --latin for English)
 ```
 
-The UTRNet test needs the UTRNet code and weights (CC BY-NC-SA 4.0, not in this repository), the dictionary PDF
-from the PDF collection, and the line crops that `scripts/synth/mine_batool_pairs.py` cuts from it (it also needs the
-local Pass 2 text, which is not in the repository). Steps: [`data/utrnet-test/README.md`](data/utrnet-test/README.md).
-Use `--seed`, because UTRNet keeps its dropout on at inference.
+The UTRNet test needs the UTRNet code and weights (CC BY-NC-SA 4.0, not in this repository) and the dictionary PDF
+from the PDF collection. The 200 line crops and the test truth are tracked in `data/reviews/dictionary-200-lines/`.
+Steps: [`data/utrnet-test/README.md`](data/utrnet-test/README.md). Use `--seed` (default 0), because UTRNet keeps
+its dropout on at inference; seed 0 gives 29 wrong letters of 1,400 (2.1%).
 
 ## Credits
 

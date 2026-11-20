@@ -2,7 +2,7 @@
 
 Test set: data/reviews/dictionary-200-lines/labels_review_test.jsonl, the 200 lines the user
 reviewed (one line per equal-size stratum of the dictionary, pages 26 to 498).
-Each line crop (data/synth/real_pairs/img) is cut into its Arabic runs with the
+Each line crop (data/reviews/dictionary-200-lines/img, tracked) is cut into its Arabic runs with the
 glyph boxes stored in the PDF, so English text never reaches the model. Each run
 is read by UTRNet-Large (CPU, no training) and the outputs are joined.
 
@@ -124,15 +124,17 @@ def edit_distance(a, b):
 
 doc = fitz.open(M.PDF)
 pua = D.load_map()
-base = ROOT / "data" / "synth" / "real_pairs"
+base = ROOT / "data" / "reviews" / "dictionary-200-lines"  # the 200 tracked line crops (img/)
 review = [json.loads(line) for line in (ROOT / "data" / "reviews" / "dictionary-200-lines" / "labels_review_test.jsonl").open(encoding="utf-8")]
 
 
+# Per page: does the entry numbering keep the printed page-number line? (tracked, see the file's note)
+FOLIO = json.load(open(ROOT / "data" / "reviews" / "dictionary-200-lines" / "folio_pages.json", encoding="utf-8"))["keep_folio"]
+
 def line_boxes(page):
-    labels = M.pass2_labels(page)
     rows = MB.cluster_rows_full(MB.page_chars_full(doc[page - 1]))
     texts = [re.sub(r"\s+", " ", D.fmt_line(bb["chars"], pua, wrap_batool=False)).strip() for _y, bb in rows]
-    keep_folio = str(page) in labels
+    keep_folio = FOLIO[str(page)]
     return [bb for (_y, bb), t in zip(rows, texts) if t and (keep_folio or t != str(page))]
 
 

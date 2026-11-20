@@ -19,10 +19,15 @@ Book: *Gojri-English Dictionary* (Dr. Javaid Rahi), body pages 25 to 498.
 | `marks_final_20261104.json` | The speaker's export from the review page (`scripts/review/`), 2026-11-04. `table`: all 160 Batool font codes, each marked right (137), wrong (22) or unsure (1), with the fix. `lines`: 200 random lines (one per equal part of the book, seed 20261103), each with the label shown, the raw decode, the error types and the speaker's fix. |
 | `labels_review_test.jsonl` | The 200-line test set: one row per line with the crop name and `text_fix` (the speaker's text). Built by `scripts/synth/make_clean_labels.py` from the export. One later hand fix: `page-0125:L26` has ھ (checked against the print on 2026-11-06), where the export still has ه. |
 | `summary_final.md`, `analysis_final.md`, `analysis_followup.md` | Error rates and analysis of the review (91% of lines had an error, mostly spacing). |
+| `img/` | The 200 line crops (about 300 DPI, 3.1 MB), cut from the PDF by `scripts/synth/mine_batool_pairs.py`. |
+| `folio_pages.json` | Per test page: does the entry numbering keep the printed page-number line. Made from the local Pass 2 text, so the test needs no local files. |
 
 Read by: `scripts/utrnet_arabic_eval.py`, `scripts/utrnet_latin_eval.py`, `scripts/synth/make_clean_labels.py`,
 `scripts/synth/merge_decode_letters.py`, `scripts/synth/build_utrnet_runs.py` and several scripts in `scripts/ocr_eval/`.
-The line crops are not here. `scripts/synth/mine_batool_pairs.py` cuts them from the PDF.
+
+With `img/` and `folio_pages.json` the 200-line UTRNet test runs from this repository, the dictionary PDF (public in
+the PDF collection) and the UTRNet code and weights. Checked on 2026-11-20 with the local work folders hidden: seed 0
+gives the same 29 wrong letters and 179 exact lines, line by line.
 
 Known limit: a dozen fixes use spellings that the speaker ruled differently later (for example ہ where the print
 shows ھ). See `data/utrnet-test/README.md`.

@@ -252,7 +252,7 @@ The margin test. At 0 px UTRNet is exact. At 6 px the crop contains a sliver of 
 - One printed book, clean type, mostly short headwords (158 of 200 lines have 1 to 10 Arabic letters, and 5 have none). Two lines are long.
 - The reference has about a dozen old spellings (nine counted above, two not rechecked).
 - UTRNet writes the Arabic yeh ي where Gojri uses ی, and it cannot tell ہ from ھ by rule. Both need a post-processing rule.
-- The 12 gold pages (typeset and scanned pages from other books: poetry, proverbs, a textbook, a primer) have not been read with UTRNet yet.
+- The 12 gold pages were read later (2026-11-06) with a script segmenter and Tesseract for English: see `scripts/ocr_eval/README.md`.
 
 ## Files
 
@@ -262,7 +262,7 @@ The margin test. At 0 px UTRNet is exact. At 6 px the crop contains a sliver of 
 | `summary.json` | The error counts behind the results table |
 | `examples/` and `examples.json` | The crop pictures and the texts shown above |
 
-To reproduce the results (about 15 minutes on a CPU): clone the UTRNet repository into a new folder, download UTRNet-Large from the link in its README as `large.pth`, then run from the repository root:
+To reproduce the results (about 15 minutes on a CPU): clone the UTRNet repository into a new folder, download UTRNet-Large from the link in its README as `large.pth`, put `Gojri-English-Dictionary.pdf` (from the PDF collection on Hugging Face) at `pdfs/anjumshanasi/`, then run from the repository root. The line crops and the page flags are tracked in `data/reviews/dictionary-200-lines/`; no other local files are needed:
 
 ```
 py -3 -X utf8 scripts/utrnet_arabic_eval.py --repo <clone> --weights <large.pth> --pads 0 2 6 --crnn-base <baseline crnn_last.pt> --crnn-new <retrained crnn_last.pt> --report-dir data/utrnet-test

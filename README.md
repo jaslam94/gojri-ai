@@ -82,7 +82,7 @@ Collective) and Common Voice Gujari 26.0. See [`datasets/README.md`](datasets/RE
 | Path | Content |
 |---|---|
 | [`docs/TIMELINE.md`](docs/TIMELINE.md) | Dated summary of the work, findings and decisions. |
-| [`LOG.md`](LOG.md) | Full experiment journal. |
+| [`LOG.md`](LOG.md) | Full experiment journal, in date order. |
 | [`ROADMAP.md`](ROADMAP.md) | Stages of the project and what comes next. |
 | [`scripts/`](scripts/README.md) | All code, indexed by project stage in `scripts/README.md`. |
 | [`data/manifest.csv`](data/manifest.csv) | Catalog of the 92 PDFs: hash, duplicates, encoding, scope, tier. |

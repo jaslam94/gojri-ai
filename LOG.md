@@ -3126,7 +3126,9 @@ An outside audit of the repository was checked claim by claim; most claims held.
 - **Kept although they overlap:** three primer pairs are two editions of one J&K board book (53 of 64, 23 of 33 and
   24 of 33 pages identical; covers and some pages differ); `Gojri-Adbiyaat.pdf` holds about 73% of
   `gojri-adab-ki-tariekh.pdf` and 82 pages of `Gojri-Sheryaat.pdf`. The two `Gujjar_Qabila_Ki_Louk_Warsti_Dictionary`
-  files share no page (median correlation 0.24): different books or volumes.
+  files share no page (median correlation 0.24). The title pages show Vol 1 (`... (1).pdf`, ا to س) and Vol 2
+  (`....pdf`, ش to ی, the source of the `louk_warsti` gold page); the speaker confirmed it. Renamed to
+  `Gujjar_Qabila_Ki_Louk_Warsti_Dictionary_Vol1.pdf` and `..._Vol2.pdf`.
 - **Docs.** README rewritten as the entry point; `docs/TIMELINE.md`, `scripts/README.md`; ROADMAP rewritten; this log
   put in date order, with the NOORIN batch notes moved to `data/archive/noorin-decode-spike/BATCH-LOG.md`.
 

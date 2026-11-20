@@ -49,7 +49,7 @@ CANDIDATES = [
      "legacy_8bit scheme, two-page spread, poetry (previously validated)"),
     ("nazir_spread", "javaidrahi-blog/gojri-kalam-e-nazir-ahmad-nazir-nazir-ed-by-dr-javaid-rahi.pdf", 70, True,
      "legacy_8bit scheme, two-page spread, second example for cross-check"),
-    ("louk_warsti", "Gujjar_Qabila_Ki_Louk_Warsti_Dictionary.pdf", 100, False,
+    ("louk_warsti", "Gujjar_Qabila_Ki_Louk_Warsti_Dictionary_Vol2.pdf", 100, False,
      "image_only, tier1, folklore dictionary, no text layer at all"),
     ("shingar_textbook", "GOJRI_TEXT_BOOK_Series_SHINGAR_for_class.pdf", 21, False,
      "image_only, tier2, school textbook (previously validated)"),

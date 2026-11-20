@@ -33,7 +33,8 @@ BaltiVoice project did the same for Balti with 16.8 hours) and the fastest route
 - **Workload.** 14,060 unique pages need decode or OCR (bad text 12,907 and image-only 1,153). The Quran translation
   (717 pages) is in this number: its text layer is broken, not good text. Two-page spreads: 21 files, 5,168 pages,
   split at the centre with `scripts/split_spread.py`. Tier 1 (dictionaries and glossaries): 12 files, 3,007 pages.
-- **Overlaps that stay.** Kept on purpose: three primer pairs are two editions of the same J&K board book (`gojri-books-iind` / `GUJJARS_GOJRI_KI_DOJI_KITAB`, `gojri-book-iiird` / `..._TEJI_KITAB`, `gojri-book-ivth` / `..._CHOTHI_KITAB`; 53 of 64, 23 of 33 and 24 of 33 pages identical); `Gojri-Adbiyaat.pdf` holds about 73% of the pages of `gojri-adab-ki-tariekh.pdf`, and 82 pages of `Gojri-Sheryaat.pdf`. The two `Gujjar_Qabila_Ki_Louk_Warsti_Dictionary` files share no page.
+- **Overlaps that stay.** Kept on purpose: three primer pairs are two editions of the same J&K board book (`gojri-books-iind` / `GUJJARS_GOJRI_KI_DOJI_KITAB`, `gojri-book-iiird` / `..._TEJI_KITAB`, `gojri-book-ivth` / `..._CHOTHI_KITAB`; 53 of 64, 23 of 33 and 24 of 33 pages identical); `Gojri-Adbiyaat.pdf` holds about 73% of the pages of `gojri-adab-ki-tariekh.pdf`, and 82 pages of `Gojri-Sheryaat.pdf`. The two Louk Warsti files share no page: they are Vol 1 (ا to س) and Vol 2 (ش to ی) of Javaid Rahi's
+*Gujjar Qabila Ki Louk Warsti Dictionary*, now named `Gujjar_Qabila_Ki_Louk_Warsti_Dictionary_Vol1.pdf` and `..._Vol2.pdf`.
 - **Measurement.** 12 gold pages (1,791 words) spanning the hard cases, and the speaker's review sets in
   `data/reviews/`. Every OCR decision since then was made against these.
 

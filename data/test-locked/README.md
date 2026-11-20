@@ -12,7 +12,8 @@ Drawn on 2026-11-20 by `scripts/build_locked_test.py` (seed 20261120). The scrip
 |---|---|
 | `pages.tsv` | The frozen list: id, stratum, source PDF, MD5 of the PDF, page (1-based), half (`right`, `left` or `full`; a two-page spread gives one half), ink share. |
 | `images/Txx.png` | Each test page at 150 DPI, grayscale, for the speaker who writes the gold text. |
-| `gold/Txx_gold.txt` | The gold text, written by the native speaker. Not written yet. |
+| `drafts/Txx_draft.txt` | A first reading of each page by Claude (in chat, page crops at about 200 DPI), for the speaker to correct. Not our OCR pipeline. `[[...]]` marks a word the reader was unsure of; `[...]` describes a non-text element. |
+| `gold/Txx_gold.txt` | The gold text: the draft as corrected by the native speaker. Not written yet. |
 
 One page per book, 20 books, in five strata: 4 dictionaries and glossaries, 5 single-page NOORIN-font books, 4
 two-page-spread NOORIN-font books, 3 legacy 8-bit poetry books, 4 image-only scans. Pages come from 15% to 90% of each
@@ -33,3 +34,6 @@ The PDFs are in the public collection `junaidaslam/gojri-print-pdf-collection` (
 | Date | System and commit | Arabic-letter error | Notes |
 |---|---|---|---|
 | | | | No score yet: the gold text is not written. |
+
+Page notes: T05 (*Kaash*, page 40) is an Urdu poem, not Gojri; it stays in the set as a Nastaliq page (rule 4).
+T11 mixes a Gojri quatrain, an Urdu footnote and an Arabic verse.

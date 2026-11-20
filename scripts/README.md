@@ -25,6 +25,7 @@ and `UTRNET_WEIGHTS`), Tesseract 5, and for SageMaker runs the environment varia
 | Script | What it does |
 |---|---|
 | `build_gold_candidates.py` | Renders the gold-set candidate pages. |
+| `build_locked_test.py` | **Current.** Drew and froze the locked test set in `data/test-locked/` (20 pages from 20 unseen books). Run once only; it refuses to redraw. |
 | `crop_gold_images.py` | Crops gold page images to their content box. |
 | `ocr_test_common.py` | Shared prompt, file naming and run log for the model tests. |
 | `gemini_ocr_test.py`, `bedrock_ocr_test.py` | Transcribe a gold page with Gemini 3.6 Flash, or with a model on AWS Bedrock (Claude Haiku 4.5, Claude Sonnet 4.6, Qwen3-VL, Kimi K2.5, Llama 4 Maverick, Pixtral Large). |

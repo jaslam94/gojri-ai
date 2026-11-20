@@ -87,6 +87,7 @@ Collective) and Common Voice Gujari 26.0. See [`datasets/README.md`](datasets/RE
 | [`scripts/`](scripts/README.md) | All code, indexed by project stage in `scripts/README.md`. |
 | [`data/manifest.csv`](data/manifest.csv) | Catalog of the 92 PDFs: hash, duplicates, encoding, scope, tier. |
 | [`data/gold/`](data/gold/README.md) | OCR gold set and bake-off results. |
+| [`data/test-locked/`](data/test-locked/README.md) | Locked test set: 20 pages from 20 books that no design step used. |
 | [`data/reviews/`](data/reviews/README.md) | Every check the native speaker made against the print (the test truth). |
 | [`data/utrnet-test/`](data/utrnet-test/README.md) | UTRNet test on the 200 dictionary lines: method, results, error list, examples. |
 | [`data/decode/`](data/decode/README.md) | Font decode tables (Batool, Quran glyph ids) and the PDF mark glyph table. |

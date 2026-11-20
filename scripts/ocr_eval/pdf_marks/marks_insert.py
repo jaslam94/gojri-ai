@@ -4,8 +4,8 @@ from pathlib import Path
 import numpy as np
 import fitz
 from PIL import Image
-sys.path.insert(0, "D:/Code/VSCodeProjects/gojri-ai/scripts/ocr_eval")
-sys.path.insert(0, str(__import__("pathlib").Path(__file__).resolve().parent))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 import ocrlib as O
 import ocr_kahawat as K
 import marks_align as A
@@ -137,7 +137,7 @@ def main():
         torch.set_num_threads(a.threads)
     out = Path(a.out)
     out.mkdir(parents=True, exist_ok=True)
-    utr = O.UTRNet("D:/ocr-tools/utrnet", "D:/ocr-tools/weights/large.pth")
+    utr = O.UTRNet(O.UTRNET_REPO, O.UTRNET_WEIGHTS)
     doc = fitz.open(ROOT / "pdfs/anjumshanasi/Kahawat-Kosh.pdf")
     fb = K.book_line(doc, A.DPI, range(20, min(len(doc), 60), 4))
     stats = collections.Counter()

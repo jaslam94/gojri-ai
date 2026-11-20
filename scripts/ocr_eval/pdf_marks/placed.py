@@ -1,5 +1,6 @@
 import json, sys, difflib, re, unicodedata
-sys.path.insert(0, "D:/Code/VSCodeProjects/gojri-ai/scripts/ocr_eval")
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from kraken_compare import base, MARKS, norm
 def pairs(s):
     out = []   # [(letter, marks)]

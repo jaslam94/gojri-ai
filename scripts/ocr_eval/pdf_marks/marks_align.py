@@ -4,16 +4,16 @@ from pathlib import Path
 import numpy as np
 import fitz
 from PIL import Image
-sys.path.insert(0, "D:/Code/VSCodeProjects/gojri-ai/scripts/ocr_eval")
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import ocrlib as O
 import ocr_kahawat as K
 
-S = Path(r"D:/Code/VSCodeProjects/gojri-ai/data/ocr/pdfmarks-work")
-ROOT = Path("D:/Code/VSCodeProjects/gojri-ai")
+ROOT = Path(__file__).resolve().parents[3]
+S = ROOT / "data/ocr/pdfmarks-work"
 DPI = 200
 PT2PX = DPI / 72
 _SAMPLE, _MARKS = ROOT / "data/reviews/kahawat-first-30/sample.json", ROOT / "data/reviews/kahawat-first-30/review_marks.json"
-# the Kahawat review files exist only on the author's machine; the module must still import on SageMaker (read_row_aligned needs neither)
+# the review files are tracked in data/reviews/, but the SageMaker job stages only the code: the module must import without them
 sample = json.load(open(_SAMPLE, encoding="utf-8")) if _SAMPLE.exists() else []
 marks = json.load(open(_MARKS, encoding="utf-8")) if _MARKS.exists() else {}
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -143,7 +143,7 @@ def pdf_marks(page_idx, y_ranges_px=None):
 
 
 def main(cards):
-    utr = O.UTRNet("D:/ocr-tools/utrnet", "D:/ocr-tools/weights/large.pth")
+    utr = O.UTRNet(O.UTRNET_REPO, O.UTRNET_WEIGHTS)
     doc = fitz.open(ROOT / "pdfs/anjumshanasi/Kahawat-Kosh.pdf")
     fb = K.book_line(doc, DPI, range(20, min(len(doc), 60), 4))
     results = []

@@ -116,7 +116,7 @@ def main():
     if a.threads:
         import torch
         torch.set_num_threads(a.threads)
-    utr = O.UTRNet("D:/ocr-tools/utrnet", "D:/ocr-tools/weights/large.pth")
+    utr = O.UTRNet(O.UTRNET_REPO, O.UTRNET_WEIGHTS)
     doc = fitz.open(a.pdf)
     seed = json.loads(MT.SEED.read_text(encoding="utf-8"))
     out = Path(a.out)

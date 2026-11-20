@@ -5,6 +5,7 @@ UTRNet code and weights are third party (CC BY-NC-SA 4.0); only model.py and mod
 """
 import io
 import math
+import os
 import re
 import subprocess
 import sys
@@ -14,6 +15,11 @@ from pathlib import Path
 
 import numpy as np
 from PIL import Image
+
+# Local UTRNet clone and weights (third party, CC BY-NC-SA 4.0, not in this repo).
+# Set UTRNET_REPO and UTRNET_WEIGHTS to use another location.
+UTRNET_REPO = os.environ.get("UTRNET_REPO", "D:/ocr-tools/utrnet")
+UTRNET_WEIGHTS = os.environ.get("UTRNET_WEIGHTS", "D:/ocr-tools/weights/large.pth")
 
 TESS = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
 IMG_H, IMG_W = 32, 400

@@ -19,6 +19,7 @@ Run: py -3 -X utf8 scripts/ocr_eval/kraken_compare.py --marks <review_marks.json
 import argparse
 import difflib
 import json
+import os
 import re
 import sys
 import time
@@ -32,7 +33,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import ocrlib as O  # noqa: E402
 import ocr_kahawat as K  # noqa: E402
 
-MODEL = r"D:\ocr-tools\kraken-model\urdu_best.mlmodel"
+MODEL = os.environ.get("KRAKEN_MODEL", r"D:\ocr-tools\kraken-model\urdu_best.mlmodel")
 MARKS = re.compile("[\u064b-\u065f\u0670\u06d6-\u06ed]")
 MERGE = str.maketrans({"ك": "ک", "ه": "ہ", "ي": "ی", "ى": "ی", "ۃ": "ہ"})
 

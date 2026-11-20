@@ -1,5 +1,6 @@
 import fitz, json, sys, os
-S = r"D:/Code/VSCodeProjects/gojri-ai/data/ocr/pdfmarks-work"
+from pathlib import Path
+S = str(Path(__file__).resolve().parents[3] / "data/ocr/pdfmarks-work")
 doc = fitz.open("pdfs/anjumshanasi/Kahawat-Kosh.pdf")
 m = {}
 for p in map(int, sys.argv[1:]):

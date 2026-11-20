@@ -1,8 +1,9 @@
 import json
+from pathlib import Path
 from fontTools.ttLib import TTFont
 from fontTools.pens.recordingPen import DecomposingRecordingPen
 from PIL import Image, ImageDraw, ImageChops
-S = r"D:/Code/VSCodeProjects/gojri-ai/data/ocr/pdfmarks-work"
+S = str(Path(__file__).resolve().parents[3] / "data/ocr/pdfmarks-work")
 _name2x = {k.split("|")[1]: v for k, v in json.load(open(S+"/fonts/map_all.json")).items()}
 _tt = {}
 def font(n):

@@ -1,7 +1,7 @@
 """Run the prose and poetry page OCR (ocr_prose_pages.py) as one SageMaker job (ml.g5.xlarge, hard time cap).
 
 Needs in s3://$GOJRI_BUCKET/ocr-eval/: tools/utrnet/, tools/weights/large.pth (same as launch_ocr_pdf.py),
-and prose-pdf/<book>.pdf (only the books to read; every PDF there is read).
+and prose-pdf/<book>.pdf (only the books to read; every PDF there is read; --pdf-prefix picks another folder).
 Needs env var SAGEMAKER_ROLE_ARN (and optionally GOJRI_BUCKET). Run only when no other SageMaker job runs.
 
 The code is staged in a temporary folder first: the entry file at its root, the scripts under scripts/ocr_eval/ (so the
@@ -34,6 +34,7 @@ ap.add_argument("--words", default="auto", choices=["auto", "on", "off"])
 ap.add_argument("--pdf-marks", action="store_true", help="put pesh, zer and other marks in from the PDF mark glyphs")
 ap.add_argument("--weights", default="large.pth", help="file name under ocr-eval/tools/weights/ in S3")
 ap.add_argument("--max-run", type=int, default=3600, help="hard stop in seconds")
+ap.add_argument("--pdf-prefix", default="prose-pdf", help="S3 folder under ocr-eval/ that holds the PDFs to read (all of them are read)")
 args = ap.parse_args()
 
 stage = Path(tempfile.mkdtemp(prefix="gojri_prose_src_"))
@@ -64,6 +65,6 @@ est = PyTorch(
     sagemaker_session=sagemaker.Session(default_bucket=BUCKET),
     base_job_name="gojri-ocr-prose",
 )
-est.fit({"tools": f"s3://{BUCKET}/ocr-eval/tools/", "pdf": f"s3://{BUCKET}/ocr-eval/prose-pdf/"}, wait=False)
+est.fit({"tools": f"s3://{BUCKET}/ocr-eval/tools/", "pdf": f"s3://{BUCKET}/ocr-eval/{args.pdf_prefix}/"}, wait=False)
 print("started:", est.latest_training_job.name)
 shutil.rmtree(stage, ignore_errors=True)

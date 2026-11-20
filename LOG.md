@@ -3112,6 +3112,13 @@ An outside audit of the repository was checked claim by claim; most claims held.
 - **Re-scored after the 2026-11-15 Ghazal gold fix.** Bake-off word error: Gemini 3.6 Flash 17.8%, Sonnet 4.6 22.6%,
   Composer 13.0%. Page pipeline (`pipe_v4`): 3.7% Arabic-letter error (230 of 6,253); on the 8 Gemini pages 2.9%
   against Gemini 3.3%. The Hugging Face gold card was updated.
+- **Seeded pipeline.** `ocrlib.UTRNet` now resets `np.random` (seed 0 by default) before every read: 40 crops read
+  in opposite orders gave identical text (without the seed, two passes differed on 39 of 40). The page pipeline run
+  `pipe_v5` (`py -3 -X utf8 scripts/ocr_eval/ocr_page.py --repo <UTRNet clone> --weights <large.pth> --segnet <segnet_v2.pt> --tag pipe_v5 --columns kahawat_kosh`) gives 229 of 6,253 letters (3.7%), English 6.6%; a second run was byte-identical.
+  SegNet weights were fetched from S3 to `D:/ocr-tools/weights/segnet_v2.pt`.
+- **200-line test from the repository alone.** The 200 crops (3.1 MB) and per-page folio flags are tracked in
+  `data/reviews/dictionary-200-lines/`. With `data/synth` and `data/decode/out` hidden, seed 0 gave the same 29
+  letters and 179 exact lines, line by line.
 - **Duplicate PDFs.** Every page of every PDF in `pdfs/` was rendered to a 32x45 thumbnail and correlated with every
   page of every other file; candidate pairs were checked page by page at 120x170 and by text layer, and unclear pairs
   by eye. The 7 known byte-identical groups came out at 100% (the control). Ten more files are the same book in

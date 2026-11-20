@@ -149,5 +149,8 @@ Caveats: the gold pages guided these design steps (the span merge, the 6-letter 
 development number. The mode threshold (15%) lies in an empty gap between the measured shares, but only one gold page
 is a dictionary page. SegNet knows one dictionary's layout and font. The English reader depends on page resolution
 (gold images are about 700 px wide). A new book needs a fresh test before any claim.
-UTRNet keeps its temporal dropout on at inference (5 random masks, averaged), so each pipeline run is one random draw.
-The page numbers above come from one run (`pipe_v4`). Another run can move them by a few letters.
+UTRNet keeps its temporal dropout on at inference (5 random masks, averaged). The numbers above come from `pipe_v4`, one
+unseeded run. Since 2026-11-20 `ocrlib.UTRNet` resets `np.random` to a fixed seed (default 0) before every read, so a
+crop always gives the same text. The seeded run `pipe_v5` (two runs, byte-identical on all 12 pages):
+3.7% pooled Arabic-letter error (229 of 6,253), English 6.6% (65 of 988), 8 Gemini pages 2.9% (127 of 4,347).
+Command: `py -3 -X utf8 scripts/ocr_eval/ocr_page.py --repo <UTRNet clone> --weights <large.pth> --segnet <segnet_v2.pt> --tag pipe_v5 --columns kahawat_kosh`.

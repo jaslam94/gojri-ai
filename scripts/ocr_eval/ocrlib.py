@@ -50,9 +50,15 @@ def ed(a, b):
 
 
 class UTRNet:
-    def __init__(self, repo, weights):
+    """UTRNet-Large reader. UTRNet keeps its temporal dropout on at inference: each read averages five random masks
+    drawn with np.random (modules/dropout_layer.py), so unseeded reads of one crop can differ. With `seed` (default 0)
+    np.random is reset before every read, so a crop always gives the same text, whatever the reading order or the
+    process. seed=None keeps the old random behaviour."""
+
+    def __init__(self, repo, weights, seed=0):
         import torch
         self.torch = torch
+        self.seed = seed
         sys.path.insert(0, str(repo))
         from model import Model  # noqa: E402
         glyphs = "".join(s.strip("\n") for s in open(Path(repo) / "UrduGlyphs.txt", encoding="utf-8")) + " "
@@ -82,6 +88,8 @@ class UTRNet:
         x[:, :, :rw] = t
         if rw < IMG_W:
             x[:, :, rw:] = t[:, :, rw - 1].unsqueeze(2).expand(1, IMG_H, IMG_W - rw)
+        if self.seed is not None:
+            np.random.seed(self.seed)  # fixes the five dropout masks of this read
         with torch.no_grad():
             probs = self.net(x.unsqueeze(0).to(self.dev)).softmax(2)[0]
         peak, am = probs.max(1)

@@ -34,7 +34,7 @@ errors.
 | Test | Result | Conditions | Details |
 |---|---|---|---|
 | UTRNet-Large, no training, on the Arabic parts of 200 random dictionary lines checked by the speaker | **2.1%** (seed 0); 2.0% to 2.2% over five seeds | Clean born-digital print. Arabic runs cut with the PDF's glyph boxes. 1,400 reference letters. | [`data/utrnet-test/`](data/utrnet-test/README.md) |
-| Page pipeline (SegNet script labels, UTRNet for Arabic, Tesseract for English) on the 12 gold pages | **3.7%** (230 of 6,253 letters); English 6.7% | Development set: these pages guided the design. One run. Only one gold page is a dictionary page. | [`scripts/ocr_eval/`](scripts/ocr_eval/README.md) |
+| Page pipeline (SegNet script labels, UTRNet for Arabic, Tesseract for English) on the 12 gold pages | **3.7%** (229 of 6,253 letters); English 6.6% | Development set: these pages guided the design. Seed 0, repeatable. Only one gold page is a dictionary page. | [`scripts/ocr_eval/`](scripts/ocr_eval/README.md) |
 | One-shot vision models on the 12 gold pages, word error | Gemini 3.6 Flash 17.8%, Claude Sonnet 4.6 22.6% | One API call per page, fixed prompt. | [`data/gold/`](data/gold/README.md) |
 | Short vowel marks from the PDF's own mark glyphs, 30 Kahawat-Kosh cards | Mark error 67% (UTRNet alone) to 14% | 36 marks checked by the speaker. | `LOG.md`, 2026-11-11 |
 | Line-by-line OCR sheet, Kahawat-Kosh page 50 | 0.9% character error, 17.5% word error | 20 gold lines; nearly all word errors are spaces. | `LOG.md`, 2026-10-24 |

@@ -533,7 +533,7 @@ scripts read them from there, and `labels_review_test.jsonl` there holds one lat
 Third-party datasets (FLI corpus, Common Voice) are no longer tracked. Code is MIT (`LICENSE`); data terms are in
 `DATA-NOTICE.md`. Index of all scripts: `scripts/README.md`. Scorers now count ݨ (U+0768, Arabic Supplement) as an
 Arabic letter. UTRNet keeps its temporal dropout on at inference, so `scripts/utrnet_arabic_eval.py` takes `--seed`
-(default 0); report UTRNet numbers with the seed. 18 duplicate PDFs (8 byte-identical, 10 same
+(default 0), and `ocrlib.UTRNet` resets the seed before every read; report UTRNet numbers with the seed. 18 duplicate PDFs (8 byte-identical, 10 same
 book in another file) were deleted from `pdfs/` after a page-image comparison; the workload is now 14,060 pages.
 
 **Book OCR, PDF marks and word spacing (2026-11-10 to 2026-11-19).**
@@ -558,7 +558,7 @@ book in another file) were deleted from `pdfs/` after a page-image comparison; t
 `C:\Program Files\Tesseract-OCR`) reads English at 0.1% character error. Page pipeline `scripts/ocr_eval/ocr_page.py`
 (SegNet per-column script labels, page-mode switch, UTRNet for Arabic, Tesseract for English): 3.7% pooled Arabic-letter
 error on the 12 gold pages, 2.9% against Gemini 3.3% on the 8 pages Gemini was scored on (rescored
-2026-11-20 on the corrected Ghazal gold; one pipeline run). A development number: the
+2026-11-20 on the corrected Ghazal gold; the seeded run `pipe_v5` gives the same 3.7%, 229 of 6,253, repeatable). A development number: the
 gold pages guided the design, only one is a dictionary page, SegNet knows one dictionary's layout. UTRNet code and
 weights live outside the repo (`D:\ocr-tools`, CC BY-NC-SA 4.0); SegNet weights are on S3
 (`ocr-eval/models/segnet_v2.pt`). SageMaker GPU runs: one `ml.g5.xlarge` at a time; the role ARN comes from the

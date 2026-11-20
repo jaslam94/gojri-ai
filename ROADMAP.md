@@ -68,7 +68,9 @@ BaltiVoice project did the same for Balti with 16.8 hours) and the fastest route
    or a speaker review of about 500 lines.
 4. **Run the NOORIN books in tier order** with PDF marks (dictionaries and glossaries first, then literature, large
    volumes last), with speaker spot checks on a random sample of each book.
-5. **Publish** the text of books whose rights allow it, with the same credits as the PDF collection.
+5. **Speaker review of the OCR text.** The text of four full books is in `data/ocr-output/`. Each page a speaker
+   checks becomes test data and can later train the OCR.
+6. **Publish** the text of books whose rights allow it, with the same credits as the PDF collection.
 
 ## Stage 2: Speech recognition (ASR)
 
@@ -97,8 +99,9 @@ Adapt an existing Urdu-capable model to Gojri with transfer learning (for exampl
 
 ## Stage 4: Publish and promote
 
-- **Done:** four Hugging Face datasets (dictionary text, lexicon, OCR gold set, PDF collection with credits) and the
-  public code repository.
+- **Done:** four Hugging Face datasets (dictionary text, lexicon, OCR gold set, PDF collection with credits), the
+  public code repository, and the machine OCR text of four books for review. Everything is non-commercial and carries
+  an accuracy and AI-use notice.
 - **Next:** a small demo (dictionary search, OCR on an uploaded page) and contact with FLI and Common Voice, to work
   with the people already active for Gojri.
 

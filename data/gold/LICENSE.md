@@ -18,6 +18,7 @@ full books.
 1. Cite this dataset if you use it.
 2. Respect the original books and their authors/publishers.
 3. Treat results as experimental. Spot-check before trusting OCR output.
+4. Use this dataset for non-commercial purposes only.
 
 ## Contact
 

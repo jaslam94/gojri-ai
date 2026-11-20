@@ -178,6 +178,12 @@ ds = load_dataset(
 - Most rows are not yet human-verified.
 - Does not contain full page text or example sentences from the copyrighted book.
 
+## Accuracy, AI use and terms
+
+- This dataset comes from a personal, non-profit project. Use it for non-commercial purposes only.
+- The `nastaliq` column is machine-made (Aksharamukha rules, then Gemini); a native Gojri speaker checked only the 50 rows in `gojri_lexicon_human_verified.tsv`.
+- We check our figures against the data, but errors and inconsistencies can remain. Please report them. Corrections and reviews by Gojri speakers are very welcome: [github.com/jaslam94/gojri-ai](https://github.com/jaslam94/gojri-ai) (see `CONTRIBUTING.md`).
+
 ## License
 
 See [`LICENSE.md`](LICENSE.md).

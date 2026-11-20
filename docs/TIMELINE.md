@@ -66,7 +66,12 @@ later correction is noted.
   in tight prose is still not solved.
 - **20 Nov.** Repository audit and cleanup:
   - The speaker's review labels are now tracked in `data/reviews/`.
-  - Code license (MIT) and a data rights notice are added.
+  - Licenses: the code first got the MIT license, then the same day the PolyForm Noncommercial License 1.0.0;
+    project data is CC BY-NC 4.0. The project is non-commercial.
+  - Credit correction: the digitized dictionary is the *Concise Gojri-English Dictionary* by Dr. M. R. Anjum Awan
+    (title pages), not a work of Dr. Javaid Rahi as the published card had said.
+  - The machine OCR text of four full books is published in `data/ocr-output/` for Gojri speakers to review, with
+    an accuracy and AI-use notice in every public document.
   - Third-party datasets are no longer tracked.
   - Scorer fix: ݨ now counts as an Arabic letter.
   - The UTRNet test now takes a fixed seed, because UTRNet's dropout stays on at inference.

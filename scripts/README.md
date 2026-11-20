@@ -100,6 +100,7 @@ In `ocr_eval/`. Full results: `ocr_eval/README.md`.
 | Script | What it does |
 |---|---|
 | `ocr_eval/ocr_kahawat.py`, `ocr_eval/launch_ocr_pdf.py`, `ocr_eval/sm_ocr_entry.py`, `ocr_eval/english_spans.py` | Kahawat-Kosh (two columns) OCR, with Tesseract for its English notes. |
+| `ocr_eval/export_ocr_output.py` | **Current.** Copies the machine OCR text of the full-book runs to `data/ocr-output/` for review. |
 | `ocr_eval/ocr_prose_pages.py`, `ocr_eval/launch_prose_pages.py`, `ocr_eval/sm_prose_entry.py` | Single-column prose and poetry OCR; `--pdf-marks` adds the PDF's own mark glyphs. |
 | `ocr_eval/pdf_marks/` | Short vowel marks, takhallus and the small "v" taken from the PDF text layer by glyph outline hash. See `ocr_eval/pdf_marks/README.md`. Table: `data/decode/noori_marks_seed.json`. |
 | `ocr_eval/build_kahawat_review.py`, `ocr_eval/score_marks.py` | Kahawat review cards for the speaker, and the mark score against them. |

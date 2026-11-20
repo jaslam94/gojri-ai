@@ -29,8 +29,8 @@ This release does **not** include:
 
 ## What you may do
 
-You may use this headword conversion table for research, language technology,
-and language preservation, provided you:
+You may use this headword conversion table for non-commercial research, language
+technology and language preservation only, provided you:
 
 1. Cite the original dictionary (Anjum & Sadiq), and
 2. Cite this dataset.

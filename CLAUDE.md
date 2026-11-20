@@ -528,10 +528,18 @@ do not rebuild it blindly with `scripts/build_manifest.py`.
 ## Status
 Newest first. The dated history is in `docs/TIMELINE.md`; the plan is in `ROADMAP.md`.
 
+**Second pass (2026-11-20, later).** Code license is PolyForm Noncommercial 1.0.0 and project data CC BY-NC 4.0: the
+project is non-commercial. Every public document carries an accuracy and AI-use notice (README "About this
+project", `CONTRIBUTING.md`, the four Hugging Face cards). The dictionary source is the *Concise Gojri-English
+Dictionary* by Dr. M. R. Anjum Awan; the card had wrongly named Dr. Javaid Rahi. UTRNet's license: its LICENSE file
+says CC BY-NC 4.0, its README CC BY-NC-SA 4.0. Machine OCR text of four books is in `data/ocr-output/` for speaker
+review (`scripts/ocr_eval/export_ocr_output.py`). Gojri-Ghazal was read in full (`data/ocr/ghazal-full/`, local).
+The locked test set (`data/test-locked/`) has 20 drafts waiting for the speaker. The ASR baseline is in `scripts/asr/`.
+
 **Repository audit (2026-11-20).** The speaker's review labels are tracked in `data/reviews/` (README there); the
 scripts read them from there, and `labels_review_test.jsonl` there holds one later hand fix (`page-0125:L26`).
-Third-party datasets (FLI corpus, Common Voice) are no longer tracked. Code is MIT (`LICENSE`); data terms are in
-`DATA-NOTICE.md`. Index of all scripts: `scripts/README.md`. Scorers now count ݨ (U+0768, Arabic Supplement) as an
+Third-party datasets (FLI corpus, Common Voice) are no longer tracked. Code is PolyForm Noncommercial 1.0.0 (`LICENSE`; MIT for a few hours on 2026-11-20); project data is CC BY-NC 4.0;
+terms in `DATA-NOTICE.md`. Nothing may be used commercially. Index of all scripts: `scripts/README.md`. Scorers now count ݨ (U+0768, Arabic Supplement) as an
 Arabic letter. UTRNet keeps its temporal dropout on at inference, so `scripts/utrnet_arabic_eval.py` takes `--seed`
 (default 0), and `ocrlib.UTRNet` resets the seed before every read; report UTRNet numbers with the seed. 18 duplicate PDFs (8 byte-identical, 10 same
 book in another file) were deleted from `pdfs/` after a page-image comparison; the workload is now 14,060 pages.
@@ -560,7 +568,7 @@ book in another file) were deleted from `pdfs/` after a page-image comparison; t
 error on the 12 gold pages, 2.9% against Gemini 3.3% on the 8 pages Gemini was scored on (rescored
 2026-11-20 on the corrected Ghazal gold; the seeded run `pipe_v5` gives the same 3.7%, 229 of 6,253, repeatable). A development number: the
 gold pages guided the design, only one is a dictionary page, SegNet knows one dictionary's layout. UTRNet code and
-weights live outside the repo (`D:\ocr-tools`, CC BY-NC-SA 4.0); SegNet weights are on S3
+weights live outside the repo (`D:\ocr-tools`; non-commercial: CC BY-NC 4.0 in its LICENSE file, CC BY-NC-SA 4.0 in its README); SegNet weights are on S3
 (`ocr-eval/models/segnet_v2.pt`). SageMaker GPU runs: one `ml.g5.xlarge` at a time; the role ARN comes from the
 environment variable `SAGEMAKER_ROLE_ARN` and never goes into the repo.
 
@@ -670,7 +678,8 @@ detector. Method, tables, error list and example crops: `data/utrnet-test/README
 
 **Hugging Face Dataset Published (Oct 2026):**
 `https://huggingface.co/datasets/junaidaslam/gojri-english-dictionary`.
-Complete digitized text corpus (CSV, JSONL, per-page TXT) with full credit to author Dr. Javaid Rahi.
+Complete digitized text corpus (CSV, JSONL, per-page TXT). The source is the *Concise Gojri-English Dictionary* by
+Dr. M. R. Anjum Awan (title pages); the card wrongly named Dr. Javaid Rahi until the correction of 2026-11-20.
 **Version 2 published 2026-11-05** (commit `889730b`): text rebuilt from the
 corrected font table, 10,228 of 11,767 lines changed on 465 pages; the README has
 a "Version 2" section with the numbers and known limits. Version 1 stays in the

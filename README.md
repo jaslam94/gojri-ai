@@ -9,17 +9,38 @@ speakers. Gojri is not in NLLB-200, and in August 2026 we found no Gojri model o
 printed in Nastaliq script with InPage-era fonts, and their PDFs do not give usable Unicode text: the glyphs map to
 Private Use Area codes or to Latin letters. This project measures that problem and builds tools and data around it.
 
+## About this project
+
+Gojri AI is a personal, non-profit project for research and language preservation. **It is not for commercial use**
+(see [License](#license)).
+
+**AI does much of the work.** AI coding agents (Claude Code and Cursor) wrote most of the code and of this
+documentation under the maintainer's direction. AI models also made much of the data: Gemini corrected and audited
+the dictionary text; Gemini, Claude and Cursor Composer drafted the gold transcriptions, and Claude drafted the locked
+test pages; UTRNet and Tesseract read the book pages; transliteration rules and Gemini made the lexicon's Nastaliq.
+The maintainer, a native Gojri speaker, checks samples and decides spelling questions, but **most machine text has
+not been checked by a person**.
+
+**Accuracy.** We check numbers against the data and record every correction in [`LOG.md`](LOG.md). Even so, figures,
+statements and data can contain errors, inconsistencies or outdated values. Each number in these documents holds only
+under the conditions stated with it; reproduce it before you rely on it.
+
+**Help wanted.** We welcome corrections and contributions, above all from Gojri speakers who can review the machine
+OCR text in [`data/ocr-output/`](data/ocr-output/README.md). Every checked page becomes test data and helps us improve
+and fine-tune the OCR. See [`CONTRIBUTING.md`](CONTRIBUTING.md).
+
 ## Status (November 2026)
 
 | Area | State |
 |---|---|
 | Catalog of 92 collected PDFs | Done: 18 duplicate files (3,662 pages) found by file hash and by page content and removed; 19,725 unique pages; 14,060 pages that need decode or OCR. `data/manifest.csv` |
 | OCR benchmark | Done: 12 gold pages (1,791 words) written and checked by a native speaker. `data/gold/` |
-| Gojri-English dictionary text | Published: 474 pages, 11,767 entry lines, from a font decode table plus a Gemini pass. 200 lines were checked by the speaker; the rest is machine text. |
+| Gojri-English dictionary text | Published: 474 pages, 11,767 entry lines, from a font decode table, a Gemini correction pass and a corrected table merge. 200 lines were checked by the speaker; the rest is machine text. |
 | Devanagari to Nastaliq lexicon | Published: 1,862 headwords, 50 checked by the speaker. `data/lexicon/` |
 | OCR for clean printed Nastaliq | Works on born-digital print: see the results below. Not yet tested on a second unseen book or on photographed scans. |
 | Short vowel marks | Taken from the PDF text layer of the NOORIN-font books. Tested on four books; the mark glyphs appear in about 30 books of the collection. |
 | Word spacing | Open. OCR letters are good, but word spaces in tight prose are often missing. |
+| Machine OCR text for review | Published in `data/ocr-output/`: Kahawat-Kosh, Banjara, Dil-Darya and Gojri-Ghazal, mostly unchecked. |
 | ASR and language model | Not started. 10.7 hours of Common Voice Gujari audio are available. |
 
 The dated history is in [`docs/TIMELINE.md`](docs/TIMELINE.md). The full experiment journal is [`LOG.md`](LOG.md).
@@ -69,10 +90,10 @@ Published on Hugging Face (account [junaidaslam](https://huggingface.co/junaidas
 
 | Dataset | Content |
 |---|---|
-| [gojri-english-dictionary](https://huggingface.co/datasets/junaidaslam/gojri-english-dictionary) | Text of the Gojri-English Dictionary (Dr. Javaid Rahi), CSV, JSONL and per-page TXT. CC BY-NC 4.0. |
+| [gojri-english-dictionary](https://huggingface.co/datasets/junaidaslam/gojri-english-dictionary) | Text of the *Concise Gojri-English Dictionary* (Dr. M. R. Anjum Awan), CSV, JSONL and per-page TXT. CC BY-NC 4.0. |
 | [gojri-devanagari-nastaliq-lexicon](https://huggingface.co/datasets/junaidaslam/gojri-devanagari-nastaliq-lexicon) | Gojri headwords in Devanagari and Nastaliq, with Roman and English glosses. |
 | [gojri-nastaliq-ocr-gold](https://huggingface.co/datasets/junaidaslam/gojri-nastaliq-ocr-gold) | The 12-page OCR benchmark: page images, gold text, model outputs. |
-| [gojri-print-pdf-collection](https://huggingface.co/datasets/junaidaslam/gojri-print-pdf-collection) | The in-scope print PDFs, with per-file credits, for research. |
+| [gojri-print-pdf-collection](https://huggingface.co/datasets/junaidaslam/gojri-print-pdf-collection) | The 64 unique in-scope print PDFs, with per-file credits, for non-commercial research. |
 
 Third-party data that the project uses but does not re-host: the FLI Gojri Literature Corpus (Mozilla Data
 Collective) and Common Voice Gujari 26.0. See [`datasets/README.md`](datasets/README.md).
@@ -89,6 +110,8 @@ Collective) and Common Voice Gujari 26.0. See [`datasets/README.md`](datasets/RE
 | [`data/gold/`](data/gold/README.md) | OCR gold set and bake-off results. |
 | [`data/test-locked/`](data/test-locked/README.md) | Locked test set: 20 pages from 20 books that no design step used. |
 | [`data/reviews/`](data/reviews/README.md) | Every check the native speaker made against the print (the test truth). |
+| [`data/ocr-output/`](data/ocr-output/README.md) | Machine OCR text of four full books, for Gojri speakers to review. |
+| [`data/dictionary/`](data/dictionary/README.md) | The card of the published dictionary text. |
 | [`data/utrnet-test/`](data/utrnet-test/README.md) | UTRNet test on the 200 dictionary lines: method, results, error list, examples. |
 | [`data/decode/`](data/decode/README.md) | Font decode tables (Batool, Quran glyph ids) and the PDF mark glyph table. |
 | [`data/lexicon/`](data/lexicon/README.md) | The Devanagari to Nastaliq lexicon. |
@@ -97,6 +120,7 @@ Collective) and Common Voice Gujari 26.0. See [`datasets/README.md`](datasets/RE
 | [`plans/`](plans/) | Stage plans (historical) and research notes. |
 | [`prompts/`](prompts/) | Versioned prompts for the vision-model and lexicon runs. |
 | `CLAUDE.md`, `AGENTS.md` | Working briefs for the coding agents: current facts, rules and status. |
+| [`CONTRIBUTING.md`](CONTRIBUTING.md), [`DATA-NOTICE.md`](DATA-NOTICE.md), [`LICENSE`](LICENSE) | How to help; rights for code and data; the code license. |
 
 ## Reproduce the scores
 
@@ -107,14 +131,16 @@ py -3 -X utf8 scripts/score_gold.py                       # word error of every 
 py -3 -X utf8 scripts/ocr_eval/score_gold_letters.py      # Arabic-letter error of every run (add --latin for English)
 ```
 
-The UTRNet test needs the UTRNet code and weights (CC BY-NC-SA 4.0, not in this repository) and the dictionary PDF
+The UTRNet test needs the UTRNet code and weights (non-commercial: CC BY-NC 4.0 in its LICENSE file, CC BY-NC-SA 4.0 in its README; not in this repository) and the dictionary PDF
 from the PDF collection. The 200 line crops and the test truth are tracked in `data/reviews/dictionary-200-lines/`.
 Steps: [`data/utrnet-test/README.md`](data/utrnet-test/README.md). Use `--seed` (default 0), because UTRNet keeps
 its dropout on at inference; seed 0 gives 29 wrong letters of 1,400 (2.1%).
 
 ## Credits
 
-- Dr. Javaid Rahi: compiler of the Gojri-English Dictionary and of many books in the collection.
+- Dr. M. R. Anjum Awan: compiler of the *Concise Gojri-English Dictionary* (J&K Anjuman Taraqi Gojri Adab), the source of
+  the dictionary text.
+- Dr. Javaid Rahi: compiler and editor of many books in the collection (dictionaries, folklore, poetry).
 - Prof. (Dr.) Rafique Anjum and Ms. Ruksana Sadiq: the Concise Gojri-English-Hindi Dictionary behind the lexicon.
 - Forum for Language Initiatives (FLI): the Gojri Literature Corpus and Gojri orthography work.
 - Mozilla Common Voice and the Gujari contributors.
@@ -124,12 +150,14 @@ All book content stays under the copyright of its authors and publishers.
 
 ## License
 
-Code and prompts: MIT ([`LICENSE`](LICENSE)). Data and third-party parts have their own terms:
-[`DATA-NOTICE.md`](DATA-NOTICE.md).
+Non-commercial use only. Code and prompts: PolyForm Noncommercial License 1.0.0 ([`LICENSE`](LICENSE)). Project data:
+CC BY-NC 4.0, except where a folder has its own license file. Book content stays with its authors and publishers.
+Details and third-party terms: [`DATA-NOTICE.md`](DATA-NOTICE.md).
 
 ## Contributions and contact
 
-Native-speaker checks, more gold pages and rights-cleared Gojri text are welcome through issues or pull requests.
+Corrections, native-speaker checks, more gold pages and rights-cleared Gojri text are welcome through issues or pull
+requests. See [`CONTRIBUTING.md`](CONTRIBUTING.md).
 
 - GitHub: [jaslam94/gojri-ai](https://github.com/jaslam94/gojri-ai)
 - Hugging Face: [junaidaslam](https://huggingface.co/junaidaslam)

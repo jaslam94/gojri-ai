@@ -48,6 +48,12 @@ Only unique books are included: 64 PDFs, 14,518 pages. Duplicates were removed i
 - `v1.0` (October 2026): 74 PDFs.
 - `v2.0` (November 2026): 64 PDFs. Ten files removed because the same book is already in the collection under another name (two Rahi dictionary parts, the Ismail Zabi kalam, the folk-song collection, the 7th-class book, two copies of the Gojri Bait collection, the first primer, the Concise Gojri-English Dictionary front matter, and `gojri-language-literature.pdf`). The two Louk Warsti files are Vol 1 and Vol 2 of one dictionary and are now named `Gujjar_Qabila_Ki_Louk_Warsti_Dictionary_Vol1.pdf` and `..._Vol2.pdf`. Load the old set with `revision="v1.0"`.
 
+## Accuracy, AI use and terms
+
+- This dataset comes from a personal, non-profit project. Use it for non-commercial purposes only.
+- The catalog, the duplicate checks and the credit lines were made with AI-assisted scripts. The credit lines are helpers; the title page of each book is the authority.
+- We check our figures against the data, but errors and inconsistencies can remain. Please report them. Corrections and reviews by Gojri speakers are very welcome: [github.com/jaslam94/gojri-ai](https://github.com/jaslam94/gojri-ai) (see `CONTRIBUTING.md`).
+
 ## Credits
 
 Principal author and editor credits across this collection include:

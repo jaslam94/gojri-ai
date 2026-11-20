@@ -95,6 +95,12 @@ ds = load_dataset("junaidaslam/gojri-nastaliq-ocr-gold")
 print(ds["train"][0])
 ```
 
+## Accuracy, AI use and terms
+
+- This dataset comes from a personal, non-profit project. Use it for non-commercial purposes only.
+- AI models (Gemini, Claude and Cursor Composer) drafted the transcriptions; a native Gojri speaker corrected every gold page. The model outputs in `transcriptions/` are raw and unchecked.
+- We check our figures against the data, but errors and inconsistencies can remain. Please report them. Corrections and reviews by Gojri speakers are very welcome: [github.com/jaslam94/gojri-ai](https://github.com/jaslam94/gojri-ai) (see `CONTRIBUTING.md`).
+
 ## License and rights
 
 See [`LICENSE.md`](LICENSE.md).

@@ -3154,6 +3154,21 @@ An outside audit of the repository was checked claim by claim; most claims held.
   tracked `data/asr/split_clips.tsv`; the clips stay private on S3. A SageMaker smoke test (285 s) passed end to end;
   the full Whisper-small run is `gojri-asr-whisper-2026-11-20-17-43-55-757`.
 - **Locked test set:** all 20 page drafts are in `data/test-locked/drafts/` for the speaker to correct.
+- **Second pass on the documents** (later the same day).
+  - Non-commercial terms: the code moved from MIT (commit `49a9002`, a few hours earlier) to the PolyForm Noncommercial
+    License 1.0.0; project data is CC BY-NC 4.0; the gold, lexicon and PDF licenses say non-commercial only.
+  - Accuracy and AI-use notice in the README, `CONTRIBUTING.md` and all four Hugging Face cards.
+  - **Credit correction.** The title pages of `anjumshanasi/Gojri-English-Dictionary.pdf` read *Concise Gojri-English
+    Dictionary*, "BY Dr. M. R. Anjum Awan", publisher J&K Anjuman Taraqi Gojri Adab. The dataset card, the README and
+    several notes had named Dr. Javaid Rahi. Corrected everywhere; the card keeps a correction note.
+  - UTRNet's license: its LICENSE file is CC BY-NC 4.0, its README says CC BY-NC-SA 4.0. Docs now give both.
+  - Whisper-small weights are Apache 2.0 (model card), not MIT.
+  - Re-verified from data: dictionary v1 to v2 changed 10,228 of 11,767 lines on 465 pages (published v1.0 and v2.0
+    compared); 316 of 333 Arabic words and 160 of 178 paren spaces (`merge_decode_letters.py --check`); Kahawat
+    mark scores 3 of 36 and 1 of 69, letters 2.1% and 1.2% (`score_marks.py` on `kahawat-pdfmarks-v2`).
+  - Machine OCR text of Kahawat-Kosh (2,383 entries), Banjara (496 pages), Dil-Darya (220) and Gojri-Ghazal (209)
+    published in `data/ocr-output/` for speaker review.
+
 
 ---
 

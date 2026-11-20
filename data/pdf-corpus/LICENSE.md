@@ -25,6 +25,7 @@ and LLM resources for Gojri. It is **not**:
 1. Attribute authors and publishers.
 2. Use the files in ways that respect copyright and local law.
 3. Contact the maintainer if you need a file taken down.
+4. Use the files for non-commercial purposes only.
 
 ## Maintainer packaging
 

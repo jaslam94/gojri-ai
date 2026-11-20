@@ -10,7 +10,7 @@ rewritten on 2026-11-20. The August draft and its strategy reviews are in the gi
 |---|---|
 | 0. Data hygiene and measurement | Done. Catalog, deduplication, triage, 12-page gold set, speaker review sets. |
 | 1. Text extraction (OCR) | A working OCR path for clean printed Nastaliq. Three NOORIN books read in full: Kahawat-Kosh, Banjara, Dil-Darya (local, not published). Word spacing open. Not yet tested on an unseen book or on photographed scans. |
-| 2. Speech recognition (ASR) | Not started. Data in hand. Unblocked. |
+| 2. Speech recognition (ASR) | First baseline done: Whisper-small, 22.7% word error on the Common Voice test set. |
 | 3. Language model and translation | Not started. Waits for more text. |
 | 4. Publish and promote | Four datasets public on Hugging Face. Repository public. |
 
@@ -79,7 +79,11 @@ error, down from 159% zero-shot). Expect a rough but usable first model.
 
 - **Data:** Common Voice Scripted Speech 26.0, Gujari: 11,741 clips, 10.68 hours, 11,081 validated rows. The release
   page says 7 speakers; our count of `client_id` in `validated.tsv` finds 6. Kept locally, not in this repository.
-- **First experiment:** Whisper-small baseline, word error on the Common Voice `test.tsv` split. Never train on it.
+- **First baseline (done, 2026-11-20):** Whisper-small fine-tuned on 9,041 clips (3 speakers; the official split has
+  only one training speaker, see `scripts/asr/README.md`). Official `test.tsv`, no shared sentences: 22.7% word error,
+  8.3% character error (73.8% and 33.2% without fine-tuning); 21.6% for the three speakers never seen in training.
+  Dev word error was lowest at step 1,500 of 2,500, then rose (overfitting). Next: more speakers and hours, and an
+  error review of the test predictions by a speaker.
 - **More data:** new recordings through the normal Common Voice flow (more speakers, past 15 to 20 hours). Sentences
   from the OCR'd books can be read aloud in future drives.
 - **YouTube audio:** unlabeled, so it is not direct training data. Possible later uses: self-supervised pretraining or
@@ -124,9 +128,10 @@ Adapt an existing Urdu-capable model to Gojri with transfer learning (for exampl
 
 ## Cross-cutting
 
-- **Budget.** $150 AWS credit. The LOG estimates about $8 spent by 11 November and about $2.50 for the 19 November
-  book run. The credit goes to short GPU runs on SageMaker (one `ml.g5.xlarge` at a time), not to vision APIs.
-  Free notebooks (Colab, Kaggle) suit ASR training.
+- **Budget.** $150 AWS credit. The LOG estimates about $8 spent by 11 November, about $2.50 for the 19 November
+  book run and about $1.80 for the three jobs of 20 November (Gojri-Ghazal, ASR smoke test, ASR baseline). The credit
+  goes to short GPU runs on SageMaker (one `ml.g5.xlarge` at a time), not to vision APIs. Free notebooks (Colab,
+  Kaggle) are an option for longer ASR training.
 - **Measure first.** Every new method gets a score on the gold pages or a speaker-checked set before it touches
   corpus text. Report Arabic-letter error for OCR, with its conditions.
 - **Learning.** Each stage is also a chance to learn the ideas behind it as they come up.

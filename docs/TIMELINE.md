@@ -81,7 +81,10 @@ later correction is noted.
     `pdfs/` and flagged in the manifest. Unique pages: 19,725; pages that need decode or OCR: 14,060. The Hugging Face
     PDF collection drops the same duplicates in version 2.0 (64 PDFs).
 
+- **20 Nov (ASR).** First speech recognition baseline: Whisper-small fine-tuned on Common Voice Gujari (9,041 clips,
+  3 speakers) reaches 22.7% word error on the official test set, from 73.8% without fine-tuning; 21.6% for speakers
+  not in training.
+
 ## Not started yet
 
-Speech recognition (10.68 hours of Common Voice Gujari audio are available) and a Gojri language model. See
-`ROADMAP.md`.
+A Gojri language model. See `ROADMAP.md`.

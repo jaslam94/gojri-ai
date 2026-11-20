@@ -20,6 +20,23 @@ The test set shares no sentence with training. Two test speakers (S1, S3, 389 cl
 the honest one. `data/asr/split_clips.tsv` (tracked) lists clip, split and speaker label, so the split can be rebuilt
 from a Common Voice download.
 
+## Results (2026-11-20)
+
+Job `gojri-asr-whisper-2026-11-20-17-43-55-757` (`ml.g5.xlarge`, 2,248 billable seconds): Whisper-small, 2,500 steps,
+batch 16, learning rate 1e-5, warm-up 300, dev check every 500 steps; the best dev checkpoint (step 1,500, dev word
+error 18.9%) was kept.
+
+| Test set | Clips | Word error | Character error |
+|---|---|---|---|
+| No fine-tune (zero-shot, Urdu token) | 623 | 73.8% | 33.2% |
+| Fine-tuned, all | 623 | **22.7%** | 8.3% |
+| Fine-tuned, speakers seen in training (S1, S3) | 389 | 23.4% | 8.5% |
+| Fine-tuned, speakers never in training (S2, S4, S6) | 234 | 21.6% | 8.1% |
+
+Dev word error by step: 23.2% (500), 20.9% (1,000), 18.9% (1,500), 19.3% (2,000), 20.8% (2,500). One run, one seed.
+The numbers come from `results.json` of the job (copy: `data/asr/results_whisper-small_2026-11-20.json`); the
+per-clip predictions hold Common Voice sentence text and stay local.
+
 ## Files
 
 | File | What it does |

@@ -41,7 +41,8 @@ and fine-tune the OCR. See [`CONTRIBUTING.md`](CONTRIBUTING.md).
 | Short vowel marks | Taken from the PDF text layer of the NOORIN-font books. Tested on four books; the mark glyphs appear in about 30 books of the collection. |
 | Word spacing | Open. OCR letters are good, but word spaces in tight prose are often missing. |
 | Machine OCR text for review | Published in `data/ocr-output/`: Kahawat-Kosh, Banjara, Dil-Darya and Gojri-Ghazal, mostly unchecked. |
-| ASR and language model | Not started. 10.7 hours of Common Voice Gujari audio are available. |
+| ASR | First baseline: Whisper-small fine-tuned on Common Voice Gujari, 22.7% word error on the official test set (21.6% for speakers not in training). |
+| Language model | Not started. |
 
 The dated history is in [`docs/TIMELINE.md`](docs/TIMELINE.md). The full experiment journal is [`LOG.md`](LOG.md).
 
@@ -59,6 +60,7 @@ errors.
 | One-shot vision models on the 12 gold pages, word error | Gemini 3.6 Flash 17.8%, Claude Sonnet 4.6 22.6% | One API call per page, fixed prompt. | [`data/gold/`](data/gold/README.md) |
 | Short vowel marks from the PDF's own mark glyphs, 30 Kahawat-Kosh cards | Mark error 67% (UTRNet alone) to 14% | 36 marks checked by the speaker. | `LOG.md`, 2026-11-11 |
 | Line-by-line OCR sheet, Kahawat-Kosh page 50 | 0.9% character error, 17.5% word error | 20 gold lines; nearly all word errors are spaces. | `LOG.md`, 2026-10-24 |
+| Speech recognition: Whisper-small, fine-tuned | **22.7% word error**, 8.3% character error (no fine-tune: 73.8%, 33.2%); unseen speakers 21.6% | Common Voice Gujari, official test set (623 clips, no sentence shared with training); 9,041 training clips from 3 speakers; Urdu language token; marks and punctuation removed before scoring; one run. | [`scripts/asr/`](scripts/asr/README.md) |
 
 Statements that the data supports, and their limits:
 
@@ -67,6 +69,8 @@ Statements that the data supports, and their limits:
 - The page pipeline result (3.7%) is a development number. A locked test set and a second, unseen book are still
   needed.
 - One-shot vision models make about 18% word errors on these pages. That is too high for corpus text without review.
+- The ASR baseline is a first result from three training speakers and one run. It is not comparable to results on
+  other languages or test sets.
 
 ## What did not work
 

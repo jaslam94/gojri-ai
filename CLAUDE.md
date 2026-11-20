@@ -534,7 +534,9 @@ project", `CONTRIBUTING.md`, the four Hugging Face cards). The dictionary source
 Dictionary* by Dr. M. R. Anjum Awan; the card had wrongly named Dr. Javaid Rahi. UTRNet's license: its LICENSE file
 says CC BY-NC 4.0, its README CC BY-NC-SA 4.0. Machine OCR text of four books is in `data/ocr-output/` for speaker
 review (`scripts/ocr_eval/export_ocr_output.py`). Gojri-Ghazal was read in full (`data/ocr/ghazal-full/`, local).
-The locked test set (`data/test-locked/`) has 20 drafts waiting for the speaker. The ASR baseline is in `scripts/asr/`.
+The locked test set (`data/test-locked/`) has 20 drafts waiting for the speaker. ASR baseline (`scripts/asr/`):
+Whisper-small fine-tuned on 9,041 Common Voice clips (3 speakers), 22.7% word error on the official test set
+(73.8% zero-shot; 21.6% for unseen speakers); best dev checkpoint at step 1,500 of 2,500.
 
 **Repository audit (2026-11-20).** The speaker's review labels are tracked in `data/reviews/` (README there); the
 scripts read them from there, and `labels_review_test.jsonl` there holds one later hand fix (`page-0125:L26`).

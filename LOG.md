@@ -3169,6 +3169,12 @@ An outside audit of the repository was checked claim by claim; most claims held.
   - Machine OCR text of Kahawat-Kosh (2,383 entries), Banjara (496 pages), Dil-Darya (220) and Gojri-Ghazal (209)
     published in `data/ocr-output/` for speaker review.
 
+- **ASR baseline result.** Job `gojri-asr-whisper-2026-11-20-17-43-55-757` (2,248 billable seconds): Whisper-small,
+  2,500 steps. Dev word error 23.2%, 20.9%, 18.9%, 19.3%, 20.8% at steps 500 to 2,500; the step-1,500 checkpoint was
+  kept. Official test set (623 clips): zero-shot 73.8% word error, 33.2% character error; fine-tuned 22.7% and 8.3%;
+  seen speakers (389 clips) 23.4%, unseen speakers (234 clips) 21.6%. One run. Cost of the three jobs of the day:
+  about $1.80 (1,993 + 285 + 2,248 billable seconds).
+
 
 ---
 

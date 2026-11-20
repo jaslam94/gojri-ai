@@ -1,0 +1,116 @@
+{
+ "model": "openai/whisper-small",
+ "args": {
+  "model": "openai/whisper-small",
+  "max_steps": 2500,
+  "lr": 1e-05,
+  "warmup": 300,
+  "batch": 16,
+  "eval_every": 500,
+  "limit_train": 0,
+  "limit_eval": 0,
+  "seed": 0
+ },
+ "split": {
+  "train": 9041,
+  "dev": 475,
+  "test": 623
+ },
+ "training_speakers": [
+  "S1",
+  "S3",
+  "S5"
+ ],
+ "zero_shot_test": {
+  "all": {
+   "wer": 73.83,
+   "cer": 33.15,
+   "n": 623
+  },
+  "seen_speakers": {
+   "wer": 73.07,
+   "cer": 32.8,
+   "n": 389
+  },
+  "unseen_speakers": {
+   "wer": 74.99,
+   "cer": 33.67,
+   "n": 234
+  }
+ },
+ "dev_history": [
+  {
+   "eval_loss": 0.411795049905777,
+   "eval_wer": 23.16,
+   "eval_cer": 9.01,
+   "eval_n": 475,
+   "eval_runtime": 63.4138,
+   "eval_samples_per_second": 7.49,
+   "eval_steps_per_second": 0.473,
+   "epoch": 0.8833922261484098,
+   "step": 500
+  },
+  {
+   "eval_loss": 0.37478938698768616,
+   "eval_wer": 20.94,
+   "eval_cer": 7.63,
+   "eval_n": 475,
+   "eval_runtime": 63.5131,
+   "eval_samples_per_second": 7.479,
+   "eval_steps_per_second": 0.472,
+   "epoch": 1.76678445229682,
+   "step": 1000
+  },
+  {
+   "eval_loss": 0.38054731488227844,
+   "eval_wer": 18.91,
+   "eval_cer": 7.18,
+   "eval_n": 475,
+   "eval_runtime": 63.7549,
+   "eval_samples_per_second": 7.45,
+   "eval_steps_per_second": 0.471,
+   "epoch": 2.65017667844523,
+   "step": 1500
+  },
+  {
+   "eval_loss": 0.4073445498943329,
+   "eval_wer": 19.25,
+   "eval_cer": 7.2,
+   "eval_n": 475,
+   "eval_runtime": 63.7297,
+   "eval_samples_per_second": 7.453,
+   "eval_steps_per_second": 0.471,
+   "epoch": 3.53356890459364,
+   "step": 2000
+  },
+  {
+   "eval_loss": 0.4199006259441376,
+   "eval_wer": 20.82,
+   "eval_cer": 8.74,
+   "eval_n": 475,
+   "eval_runtime": 64.9875,
+   "eval_samples_per_second": 7.309,
+   "eval_steps_per_second": 0.462,
+   "epoch": 4.41696113074205,
+   "step": 2500
+  }
+ ],
+ "fine_tuned_test": {
+  "all": {
+   "wer": 22.66,
+   "cer": 8.34,
+   "n": 623
+  },
+  "seen_speakers": {
+   "wer": 23.38,
+   "cer": 8.52,
+   "n": 389
+  },
+  "unseen_speakers": {
+   "wer": 21.57,
+   "cer": 8.08,
+   "n": 234
+  }
+ },
+ "minutes": 33.6
+}

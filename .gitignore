@@ -59,3 +59,4 @@ data/fli-review/
 # ASR splits hold Common Voice sentence text (not re-hosted); the tracked data/asr/split_clips.tsv rebuilds them.
 data/asr/splits/
 data/asr/output/
+data/test-locked/review.html

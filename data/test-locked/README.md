@@ -21,6 +21,9 @@ book; blank and picture-only pages were redrawn. Left out on purpose: every gold
 speaker reviewed (Banjara, Dil-Darya), the Quran translation, and two books that share many pages with a gold book.
 The PDFs are in the public collection `junaidaslam/gojri-print-pdf-collection` (version `v2.0`).
 
+To correct the drafts: `py -3 -X utf8 scripts/build_test_gold_page.py build`, open `data/test-locked/review.html`,
+correct and mark each page Done, download `test_gold.json`, then `... build_test_gold_page.py apply <file>`.
+
 ## Rules
 
 1. No design step uses these pages: no tuning, no threshold choice, no prompt choice, no look at OCR output for them.

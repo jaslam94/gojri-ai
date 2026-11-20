@@ -25,6 +25,7 @@ and `UTRNET_WEIGHTS`), Tesseract 5, and for SageMaker runs the environment varia
 | Script | What it does |
 |---|---|
 | `build_gold_candidates.py` | Renders the gold-set candidate pages. |
+| `build_test_gold_page.py` | **Current.** Correction page for the locked test set (draft beside page image); `apply` writes the gold files. |
 | `build_locked_test.py` | **Current.** Drew and froze the locked test set in `data/test-locked/` (20 pages from 20 unseen books). Run once only; it refuses to redraw. |
 | `crop_gold_images.py` | Crops gold page images to their content box. |
 | `ocr_test_common.py` | Shared prompt, file naming and run log for the model tests. |

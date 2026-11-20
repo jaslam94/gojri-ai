@@ -105,4 +105,13 @@ In `ocr_eval/`. Full results: `ocr_eval/README.md`.
 | `ocr_eval/build_prose_review.py`, `ocr_eval/score_prose_review.py` | Prose review cards, and letter, mark and space error against them. |
 | `ocr_eval/build_spacing_review.py`, `ocr_eval/space_fix.py`, `ocr_eval/space_review.py` | Word spacing: a review page, a word-list splitter (it adds more wrong spaces than right ones), and an accept/reject page for its proposals. |
 
+## 9. Speech recognition baseline (Nov 2026, current)
+
+In `asr/`. See `asr/README.md`.
+
+| Script | What it does |
+|---|---|
+| `asr/prepare_cv_split.py` | Common Voice Gujari split (sentence-disjoint from the official test set) and private S3 staging. |
+| `asr/launch_whisper.py`, `asr/sm_whisper/` | Whisper-small fine-tune and scoring as one SageMaker job. |
+
 `ocr_eval/requirements.txt` lists the packages for the SageMaker jobs (PyMuPDF, Pillow, NumPy, SciPy).

@@ -23,11 +23,12 @@ Read by: `scripts/ocr_eval/score_spacing.py`. The review page itself (`index.htm
 | Text | Letter error | Spaces, on the 162 cards whose letters match | Cards with exact spaces |
 |---|---|---|---|
 | OCR as read | 44 of 4,036 letters (1.1%) | 759 in the truth; text has 553; 527 right, 232 missing, 26 extra | 50 of 162 |
-| + word splitter, margin 4 | same | text has 656; 613 right, 146 missing, 43 extra | 70 of 162 |
+| + word splitter, margin 4 | same | text has 654; 613 right, 146 missing, 41 extra | 72 of 162 |
 | + word splitter, margin 6 | same | text has 624; 595 right, 164 missing, 29 extra | 68 of 162 |
 
 The OCR text has 901 words; the speaker's text has 1,165. 205 of the 232 missing spaces follow a non-joining letter
-(ا د ڈ ذ ر ڑ ز ژ و ے), where the print shows no gap. The splitter (`space_fix.py`) added 103 spaces at margin 4, 86 of
-them right, and 71 at margin 6, 68 of them right. Its word list comes from the FLI corpus and the Banjara and
+(ا د ڈ ذ ر ڑ ز ژ و ے), where the print shows no gap. The splitter (`space_fix.py`) added 101 spaces at margin 4, 86 of
+them right, and 71 at margin 6, 68 of them right (it never cuts a piece shorter than 2 letters; the rule was added
+on 2026-11-21 and removed 2 wrong spaces at margin 4 and no right one). Its word list comes from the FLI corpus and the Banjara and
 Dil-Darya OCR, not from Kahawat-Kosh. Four margins (2, 4, 6, 8) were tried on these same cards, so treat the numbers
 as a development result. Adding the speaker's own words from the other cards (5-fold test) gained 1 to 2 spaces.

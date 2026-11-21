@@ -557,8 +557,10 @@ book in another file) were deleted from `pdfs/` after a page-image comparison; t
 - Speaker rulings: ݨ over ن and ڵ over ل where the print shows the small "v"; a space after ۔ and ،; word spaces
   follow meaning, not the print.
 - Spacing review (2026-11-21): 200 Kahawat-Kosh cards written as words by the speaker, in `data/reviews/kahawat-spacing/`.
-  The OCR text misses 232 of 759 spaces (205 after a non-joining letter); `space_fix.py` adds 103 spaces at margin 4,
-  86 right. Score with `scripts/ocr_eval/score_spacing.py`.
+  The OCR text misses 232 of 759 spaces (205 after a non-joining letter); `space_fix.py` adds 101 spaces at margin 4,
+  86 right. Score with `scripts/ocr_eval/score_spacing.py`. Split review (`data/reviews/prose-word-splits/`, 66 cards
+  from Banjara and Dil-Darya): 66 of 72 proposed spaces right, 6 cut a word; `score_splits.py`. `space_fix.py` now
+  never cuts a piece shorter than 2 letters (`MIN_PIECE`).
 - Word spacing is not solved: the PDF text layer has no space glyphs, and gaps in tight prose are as narrow inside
   words as between them. `scripts/ocr_eval/space_fix.py` adds more wrong spaces than right ones. First decide one
   labelling rule for the review truth (some reviewed rows keep glued words).

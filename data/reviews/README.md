@@ -53,6 +53,13 @@ Book: *Kahawat-Kosh*. 200 random idioms with the speaker's text written as words
 
 Read by: `scripts/ocr_eval/score_spacing.py`.
 
+## prose-word-splits/
+
+Books: *Banjara* and *Dil-Darya*. 66 glued tokens that the word splitter proposed to split, with the speaker's right split
+for each. Marked 2026-11-21: 59 Accept, 7 Reject. See `prose-word-splits/README.md`.
+
+Read by: `scripts/ocr_eval/score_splits.py`.
+
 ## prose-banjara-dildarya/
 
 Books: *Banjara* (pages 12, 60, 150, 300, 450) and *Dil-Darya* (pages 12, 50, 100, 150, 200). 183 OCR rows, keys

@@ -20,6 +20,7 @@ UNK = -13.0  # log probability of an unseen piece
 UNK_LEN = 1.5  # extra penalty per letter of an unseen piece
 MARGIN = 2.0  # the split must beat the whole token by this much (log units)
 MAX_PIECES = 4
+MIN_PIECE = 2  # no piece shorter than this many letters (2026-11-21: a one-letter ending such as the ے of ہزارے was cut)
 
 
 def strip_marks(s):
@@ -80,6 +81,8 @@ def split_token(tok, v, margin=MARGIN):
     sc, starts = best[len(pts) - 1]
     whole = v.lp(bare)
     if len(starts) <= 1 or sc <= whole + margin:
+        return tok
+    if MIN_PIECE > 1 and any(b - a < MIN_PIECE for a, b in zip(starts, starts[1:] + [len(bare)])):
         return tok
     cutset = set(starts[1:])
     out, n = [], 0

@@ -89,6 +89,9 @@ later correction is noted.
   misses 232 of 759 spaces (letter error 1.1%); the word-list splitter recovers most of them (see
   `data/reviews/kahawat-spacing/README.md`).
 
+- **21 Nov (word splits).** The speaker checked 66 splits that the word-list splitter proposed in Banjara and
+  Dil-Darya: 66 of 72 added spaces were right, 6 cut a word. The splitter now never cuts a piece shorter than 2 letters.
+
 ## Not started yet
 
 A Gojri language model. See `ROADMAP.md`.

@@ -106,6 +106,7 @@ In `ocr_eval/`. Full results: `ocr_eval/README.md`.
 | `ocr_eval/build_kahawat_review.py`, `ocr_eval/score_marks.py` | Kahawat review cards for the speaker, and the mark score against them. |
 | `ocr_eval/build_prose_review.py`, `ocr_eval/score_prose_review.py` | Prose review cards, and letter, mark and space error against them. |
 | `ocr_eval/build_spacing_review.py`, `ocr_eval/space_fix.py`, `ocr_eval/space_review.py` | Word spacing: a review page, a word-list splitter, and an accept/reject page for its proposals. |
+| `ocr_eval/score_splits.py` | Scores the splitter against the 66 speaker-checked split cards (`data/reviews/prose-word-splits/`). |
 | `ocr_eval/score_spacing.py` | Letter, mark and space error of the Kahawat-Kosh OCR text against the 200-card spacing review (`data/reviews/kahawat-spacing/`); `--fix 4` also scores the splitter. |
 
 ## 9. Speech recognition baseline (Nov 2026, current)

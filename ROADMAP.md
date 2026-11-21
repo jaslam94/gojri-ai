@@ -57,7 +57,8 @@ BaltiVoice project did the same for Balti with 16.8 hours) and the fastest route
 - **Word spaces are the main open problem.** The PDF text layer has no space glyphs, and in tight prose the gap
   between words is as narrow as the gap inside words. The speaker ruled that spaces follow meaning, not the print.
   Against the speaker's 200 Kahawat-Kosh cards (2026-11-21) the OCR text misses 232 of 759 spaces, 205 of them after
-  a non-joining letter. The word-list splitter adds 103 spaces at margin 4, 86 of them right. An earlier test
+  a non-joining letter. The word-list splitter adds 101 spaces at margin 4, 86 of them right. On 66 splits it proposed in Banjara and
+  Dil-Darya, 66 of 72 added spaces were right (the speaker's review of 2026-11-21). An earlier test
   against rows that kept glued words found it adding more wrong spaces than right ones; the two tests differ in
   truth and in book.
 

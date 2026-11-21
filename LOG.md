@@ -3186,14 +3186,34 @@ The speaker reviewed all 200 cards of `review_spacing` and wrote the text as wor
   text, 527 right, 232 missing (205 after a non-joining letter), 26 extra; 50 cards have exact spaces.
 - **Letter fixes (44 cards).** گ for ک 10 times, a missing ب in جیبھ 7 times, 6 missing colons, single letters for
   the rest. Three `fixed` cards equal the OCR text (ids 2, 9, 71).
-- **Word splitter (`space_fix.py`).** Margin 2: 135 spaces added, 102 right. Margin 4: 103 added, 86 right; 70 cards
-  exact. Margin 6: 71 added, 68 right; 68 cards exact. The word list holds the FLI corpus and the Banjara and
+- **Word splitter (`space_fix.py`), first run.** Margin 2: 135 spaces added, 102 right. Margin 4: 103 added, 86 right;
+  70 cards exact. Margin 6: 71 added, 68 right; 68 cards exact. (After the one-letter rule of the later entry below:
+  margin 2 adds 124, 102 right, 75 cards exact; margin 4 adds 101, 86 right, 72 exact; margin 6 unchanged.) The word list holds the FLI corpus and the Banjara and
   Dil-Darya OCR, no Kahawat-Kosh text. The margin was picked among 2, 4, 6 and 8 on these same cards. Adding the
   speaker's own words from the other cards (5-fold test) gained 1 to 2 spaces.
 - **Reading.** This reverses the note of 2026-11-16 that the splitter adds more wrong spaces than right ones. That
   test used the prose review, where some rows kept glued words, so the truth and the book differ. A second book with
   spaces labelled the same way is the next check.
 - Cards 26, 113 and 126 were checked against the page image: the speaker's text matches the print.
+
+## 2026-11-21: word-split review (66 cards)
+
+The speaker checked the 66 splits that `space_fix.py` proposed in Banjara and Dil-Darya and wrote the right split in
+a new box on each card (`space_review.py` now has the box). Saved in `data/reviews/prose-word-splits/`; scorer
+`scripts/ocr_eval/score_splits.py`.
+
+- **Result.** 72 spaces proposed, 66 right (91.7%), 6 cut a word. 56 cards equal the proposal; 4 are right but
+  incomplete (4 spaces missing in all: `نور محمد`, `ہر ہر گل`, `آ کے جے`, `کیو سر کھلا`); 6 were kept whole by the speaker:
+  `پہاڑیوں`, `ہزارے`, `گویوں`, `گیارہ`, `ہولو`, `کیاری`. Letters never changed. The Accept/Reject mark and the text
+  disagree on one card (`کےنورمحمد`, Reject, right but incomplete), so the scorer uses the text.
+- **Pattern.** In all 6 wrong cuts the second piece (`یوں` twice, `ے`, `رہ`, `لو`, `ری`) is an ending or has no meaning
+  of its own there; the right proposals have a real word as the second piece.
+- **Rule added.** `MIN_PIECE = 2` in `space_fix.py`: no piece shorter than 2 letters. It removes the `ہزار ے` cut on
+  this set and, on the 200 Kahawat cards (not used to find the rule), 2 wrong spaces at margin 4 and no right one. A
+  blocklist of the other pieces (`یوں`, `ری`, `رہ`, `لو`) removed one more wrong space there; it rests on 6 cases, so
+  it is not in the code.
+- **Limits.** The cards are the splitter's own proposals (precision, not recall), and its word list holds the OCR of
+  these two books.
 
 
 ---

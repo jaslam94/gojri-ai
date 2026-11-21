@@ -39,7 +39,7 @@ and fine-tune the OCR. See [`CONTRIBUTING.md`](CONTRIBUTING.md).
 | Devanagari to Nastaliq lexicon | Published: 1,862 headwords, 50 checked by the speaker. `data/lexicon/` |
 | OCR for clean printed Nastaliq | Works on born-digital print: see the results below. Not yet tested on a second unseen book or on photographed scans. |
 | Short vowel marks | Taken from the PDF text layer of the NOORIN-font books. Tested on four books; the mark glyphs appear in about 30 books of the collection. |
-| Word spacing | Open. OCR letters are good, but word spaces in tight prose are often missing. |
+| Word spacing | Open. On 200 Kahawat-Kosh idioms the OCR text misses 232 of 759 spaces (31%); a word-list splitter recovers most of them. |
 | Machine OCR text for review | Published in `data/ocr-output/`: Kahawat-Kosh, Banjara, Dil-Darya and Gojri-Ghazal, mostly unchecked. |
 | ASR | First baseline: Whisper-small fine-tuned on Common Voice Gujari, 22.7% word error on the official test set (21.6% for speakers not in training). |
 | Language model | Not started. |

@@ -105,7 +105,8 @@ In `ocr_eval/`. Full results: `ocr_eval/README.md`.
 | `ocr_eval/pdf_marks/` | Short vowel marks, takhallus and the small "v" taken from the PDF text layer by glyph outline hash. See `ocr_eval/pdf_marks/README.md`. Table: `data/decode/noori_marks_seed.json`. |
 | `ocr_eval/build_kahawat_review.py`, `ocr_eval/score_marks.py` | Kahawat review cards for the speaker, and the mark score against them. |
 | `ocr_eval/build_prose_review.py`, `ocr_eval/score_prose_review.py` | Prose review cards, and letter, mark and space error against them. |
-| `ocr_eval/build_spacing_review.py`, `ocr_eval/space_fix.py`, `ocr_eval/space_review.py` | Word spacing: a review page, a word-list splitter (it adds more wrong spaces than right ones), and an accept/reject page for its proposals. |
+| `ocr_eval/build_spacing_review.py`, `ocr_eval/space_fix.py`, `ocr_eval/space_review.py` | Word spacing: a review page, a word-list splitter, and an accept/reject page for its proposals. |
+| `ocr_eval/score_spacing.py` | Letter, mark and space error of the Kahawat-Kosh OCR text against the 200-card spacing review (`data/reviews/kahawat-spacing/`); `--fix 4` also scores the splitter. |
 
 ## 9. Speech recognition baseline (Nov 2026, current)
 

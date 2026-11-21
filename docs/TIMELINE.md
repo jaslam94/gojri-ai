@@ -85,6 +85,10 @@ later correction is noted.
   3 speakers) reaches 22.7% word error on the official test set, from 73.8% without fine-tuning; 21.6% for speakers
   not in training.
 
+- **21 Nov (word spacing).** The speaker reviewed 200 Kahawat-Kosh cards and wrote the text as words. The OCR text
+  misses 232 of 759 spaces (letter error 1.1%); the word-list splitter recovers most of them (see
+  `data/reviews/kahawat-spacing/README.md`).
+
 ## Not started yet
 
 A Gojri language model. See `ROADMAP.md`.

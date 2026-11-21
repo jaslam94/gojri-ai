@@ -3175,6 +3175,26 @@ An outside audit of the repository was checked claim by claim; most claims held.
   seen speakers (389 clips) 23.4%, unseen speakers (234 clips) 21.6%. One run. Cost of the three jobs of the day:
   about $1.80 (1,993 + 285 + 2,248 billable seconds).
 
+## 2026-11-21: Kahawat-Kosh spacing review (200 cards)
+
+The speaker reviewed all 200 cards of `review_spacing` and wrote the text as words (ruling 2026-11-16). Export:
+156 fixed, 44 OK, 0 unsure. Saved as `data/reviews/kahawat-spacing/spacing_marks_20261121.json`; scorer
+`scripts/ocr_eval/score_spacing.py`.
+
+- **OCR text against it.** Letter error 44 of 4,036 (1.1%); marks identical on 196 of 200 cards. The OCR text has
+  901 words, the speaker's text 1,165. On the 162 cards whose letters match: 759 spaces in the truth, 553 in the OCR
+  text, 527 right, 232 missing (205 after a non-joining letter), 26 extra; 50 cards have exact spaces.
+- **Letter fixes (44 cards).** گ for ک 10 times, a missing ب in جیبھ 7 times, 6 missing colons, single letters for
+  the rest. Three `fixed` cards equal the OCR text (ids 2, 9, 71).
+- **Word splitter (`space_fix.py`).** Margin 2: 135 spaces added, 102 right. Margin 4: 103 added, 86 right; 70 cards
+  exact. Margin 6: 71 added, 68 right; 68 cards exact. The word list holds the FLI corpus and the Banjara and
+  Dil-Darya OCR, no Kahawat-Kosh text. The margin was picked among 2, 4, 6 and 8 on these same cards. Adding the
+  speaker's own words from the other cards (5-fold test) gained 1 to 2 spaces.
+- **Reading.** This reverses the note of 2026-11-16 that the splitter adds more wrong spaces than right ones. That
+  test used the prose review, where some rows kept glued words, so the truth and the book differ. A second book with
+  spaces labelled the same way is the next check.
+- Cards 26, 113 and 126 were checked against the page image: the speaker's text matches the print.
+
 
 ---
 

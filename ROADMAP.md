@@ -55,17 +55,20 @@ BaltiVoice project did the same for Balti with 16.8 hours) and the fastest route
 - **Short vowel marks come from the PDF itself** in the NOORIN books: separate mark glyphs, found by outline hash.
   Mark error fell from 67% to 14% on 30 checked Kahawat-Kosh cards. The table's glyphs appear in about 30 books.
 - **Word spaces are the main open problem.** The PDF text layer has no space glyphs, and in tight prose the gap
-  between words is as narrow as the gap inside words. A word-list splitter added more wrong spaces than right ones.
-  The speaker ruled that spaces follow meaning, not the print.
+  between words is as narrow as the gap inside words. The speaker ruled that spaces follow meaning, not the print.
+  Against the speaker's 200 Kahawat-Kosh cards (2026-11-21) the OCR text misses 232 of 759 spaces, 205 of them after
+  a non-joining letter. The word-list splitter adds 103 spaces at margin 4, 86 of them right. An earlier test
+  against rows that kept glued words found it adding more wrong spaces than right ones; the two tests differ in
+  truth and in book.
 
 ### Next steps, in order
 
 1. **Lock a test set.** About 20 new pages that no design step touches, from books the pipeline has not seen.
 2. **Test on an unseen book and on photographed scans.** Report the result either way. The image-only books (1,153
    pages) need this before any bulk run.
-3. **Word spacing.** First decide one labelling rule for the review truth (some reviewed rows keep glued words, while
-   the 2026-11-16 ruling says spaces follow meaning). Then try a small space tagger trained on speaker-checked lines,
-   or a speaker review of about 500 lines.
+3. **Word spacing.** The rule is decided (spaces follow meaning) and 200 Kahawat-Kosh cards follow it. Next: check the
+   splitter on a book other than Kahawat-Kosh with spaces labelled the same way, then try a small space tagger trained
+   on speaker-checked lines.
 4. **Run the NOORIN books in tier order** with PDF marks (dictionaries and glossaries first, then literature, large
    volumes last), with speaker spot checks on a random sample of each book.
 5. **Speaker review of the OCR text.** The text of four full books is in `data/ocr-output/`. Each page a speaker

@@ -46,6 +46,13 @@ Read by: `scripts/ocr_eval/score_marks.py`, `scripts/ocr_eval/pdf_marks/marks_al
 Book: *Kahawat-Kosh*. 30 new random cards that have a PDF-placed pesh or zer, none from the first 160. Marked
 2026-11-15: 18 wrong, 12 OK. See `LOG.md`, 2026-11-15.
 
+## kahawat-spacing/
+
+Book: *Kahawat-Kosh*. 200 random idioms with the speaker's text written as words (spaces follow meaning). Marked
+2026-11-21: 156 fixed, 44 OK, 0 unsure. See `kahawat-spacing/README.md` for the files and scores.
+
+Read by: `scripts/ocr_eval/score_spacing.py`.
+
 ## prose-banjara-dildarya/
 
 Books: *Banjara* (pages 12, 60, 150, 300, 450) and *Dil-Darya* (pages 12, 50, 100, 150, 200). 183 OCR rows, keys

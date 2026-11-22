@@ -39,7 +39,7 @@ and fine-tune the OCR. See [`CONTRIBUTING.md`](CONTRIBUTING.md).
 | Devanagari to Nastaliq lexicon | Published: 1,862 headwords, 50 checked by the speaker. `data/lexicon/` |
 | OCR for clean printed Nastaliq | Works on born-digital print: see the results below. Not yet tested on a second unseen book or on photographed scans. |
 | Short vowel marks | Taken from the PDF text layer of the NOORIN-font books. Tested on four books; the mark glyphs appear in about 30 books of the collection. |
-| Word spacing | Open. On 200 Kahawat-Kosh idioms the OCR text misses 232 of 759 spaces (31%); a word-list splitter recovers most of them. |
+| Word spacing | Open. On 200 Kahawat-Kosh idioms the OCR text misses 232 of 759 spaces (31%); a word-list splitter adds 101 spaces, 86 of them right, which closes about a third of the gap. |
 | Machine OCR text for review | Published in `data/ocr-output/`: Kahawat-Kosh, Banjara, Dil-Darya and Gojri-Ghazal, mostly unchecked. |
 | ASR | First baseline: Whisper-small fine-tuned on Common Voice Gujari, 22.7% word error on the official test set (21.6% for speakers not in training). |
 | Language model | Not started. |
@@ -69,6 +69,9 @@ Statements that the data supports, and their limits:
 - The page pipeline result (3.7%) is a development number. A locked test set and a second, unseen book are still
   needed.
 - One-shot vision models make about 18% word errors on these pages. That is too high for corpus text without review.
+- The word-list splitter adds mostly right spaces: 86 of 101 on the 200 Kahawat-Kosh cards and 66 of 72 on the 66
+  Banjara and Dil-Darya split checks, with spaces written by meaning. The two tests differ in book and truth, and the
+  splitter still leaves 146 of the 232 missing spaces on Kahawat-Kosh, so word spacing stays open.
 - The ASR baseline is a first result from three training speakers and one run. It is not comparable to results on
   other languages or test sets.
 
@@ -86,7 +89,6 @@ Each failure has a stored output and a reason in `LOG.md`.
 | Three TrOCR Urdu models from Hugging Face | 102% to 662%. |
 | Kraken with its Urdu model | Behind UTRNet on the Kahawat cards. |
 | Full fine-tune of UTRNet on our labels | Damages the letters. Only an output-layer fine-tune kept them. |
-| Word-list space splitter | Adds more wrong spaces than right ones. |
 
 ## Data
 

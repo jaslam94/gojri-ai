@@ -86,7 +86,7 @@ later correction is noted.
   not in training.
 
 - **21 Nov (word spacing).** The speaker reviewed 200 Kahawat-Kosh cards and wrote the text as words. The OCR text
-  misses 232 of 759 spaces (letter error 1.1%); the word-list splitter recovers most of them (see
+  misses 232 of 759 spaces (letter error 1.1%); the word-list splitter adds 101 spaces, 86 of them right, and closes about a third of the gap (see
   `data/reviews/kahawat-spacing/README.md`).
 
 - **21 Nov (word splits).** The speaker checked 66 splits that the word-list splitter proposed in Banjara and

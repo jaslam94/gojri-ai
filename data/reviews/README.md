@@ -4,8 +4,8 @@ This folder holds every check that a native Gojri speaker made against the print
 truth for the tests in this repository. They are small, they cannot be made again without the speaker, and the
 scripts read them from here.
 
-The source books are public in full in the PDF mirror `junaidaslam/gojri-print-pdf-collection` on Hugging Face. This
-folder holds only text and labels, no page images.
+The source books are not in this repository (credits: `data/pdf-corpus/CREDITS.tsv`). Get each one from its original
+source. This folder holds only text and labels, no page images.
 
 Earlier working copies live in gitignored folders (`data/review/`, `data/ocr/`, `data/synth/real_pairs/`). The files
 here are the reference copies. If a working copy differs, this folder is right.

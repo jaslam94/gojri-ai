@@ -6,7 +6,7 @@ correct errors. Every correction helps us measure the OCR and improve it.
 
 ## Contents
 
-| Folder | Book (PDF in the collection) | Pages | Run |
+| Folder | Book (source PDF file name) | Pages | Run |
 |---|---|---|---|
 | `kahawat-kosh/entries.tsv` | `anjumshanasi/Kahawat-Kosh.pdf` (proverbs) | 2,383 entries on 151 pages | `kahawat-pdfmarks-v2`, 2026-11-15 |
 | `banjara/page_NNN.txt` | `anjumshanasi/Banjara.pdf` | 496 | `prose-aws-full2`, 2026-11-19 |
@@ -15,9 +15,8 @@ correct errors. Every correction helps us measure the OCR and improve it.
 
 `NNN` and `pdf_page` are PDF page numbers (1-based), not the numbers printed on the pages. In the page files, one
 row is one printed line; a TAB separates the two halves of a verse line, and the book name and page number at the top
-of a page are a header row. The PDFs are in the public collection
-[junaidaslam/gojri-print-pdf-collection](https://huggingface.co/datasets/junaidaslam/gojri-print-pdf-collection)
-(version `v2.0`). Made by `scripts/ocr_eval/export_ocr_output.py` from the local run folders.
+of a page are a header row. The books are not in this repository. Get each one from its original source (credits: `data/pdf-corpus/CREDITS.tsv`).
+Made by `scripts/ocr_eval/export_ocr_output.py` from the local run folders.
 
 How the text was made: UTRNet-Large reads each line from the page image; the short vowel marks, the takhallus sign and
 the small "v" of ݨ and ڵ come from the PDF's own mark glyphs (`scripts/ocr_eval/pdf_marks/`).

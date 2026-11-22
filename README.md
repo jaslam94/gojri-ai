@@ -97,7 +97,10 @@ Published on Hugging Face (account [junaidaslam](https://huggingface.co/junaidas
 | [gojri-english-dictionary](https://huggingface.co/datasets/junaidaslam/gojri-english-dictionary) | Text of the *Concise Gojri-English Dictionary* (Dr. M. R. Anjum Awan), CSV, JSONL and per-page TXT. CC BY-NC 4.0. |
 | [gojri-devanagari-nastaliq-lexicon](https://huggingface.co/datasets/junaidaslam/gojri-devanagari-nastaliq-lexicon) | Gojri headwords in Devanagari and Nastaliq, with Roman and English glosses. |
 | [gojri-nastaliq-ocr-gold](https://huggingface.co/datasets/junaidaslam/gojri-nastaliq-ocr-gold) | The 12-page OCR benchmark: page images, gold text, model outputs. |
-| [gojri-print-pdf-collection](https://huggingface.co/datasets/junaidaslam/gojri-print-pdf-collection) | The 64 unique in-scope print PDFs, with per-file credits, for non-commercial research. |
+
+The source books are not shared. The project has no written permission to redistribute them, so the PDF collection is
+private. Text that comes from a book carries a credit to that book; the credits are in
+[`data/pdf-corpus/CREDITS.tsv`](data/pdf-corpus/CREDITS.tsv).
 
 Third-party data that the project uses but does not re-host: the FLI Gojri Literature Corpus (Mozilla Data
 Collective) and Common Voice Gujari 26.0. See [`datasets/README.md`](datasets/README.md).
@@ -119,7 +122,7 @@ Collective) and Common Voice Gujari 26.0. See [`datasets/README.md`](datasets/RE
 | [`data/utrnet-test/`](data/utrnet-test/README.md) | UTRNet test on the 200 dictionary lines: method, results, error list, examples. |
 | [`data/decode/`](data/decode/README.md) | Font decode tables (Batool, Quran glyph ids) and the PDF mark glyph table. |
 | [`data/lexicon/`](data/lexicon/README.md) | The Devanagari to Nastaliq lexicon. |
-| [`data/pdf-corpus/`](data/pdf-corpus/README.md) | Credits and rights notice for the PDF collection. |
+| [`data/pdf-corpus/`](data/pdf-corpus/README.md) | Credits and rights notice for the source books (the PDFs are private). |
 | [`data/archive/`](data/archive/noorin-decode-spike/README.md) | Record of the abandoned NOORIN decode table. |
 | [`plans/`](plans/) | Stage plans (historical) and research notes. |
 | [`prompts/`](prompts/) | Versioned prompts for the vision-model and lexicon runs. |

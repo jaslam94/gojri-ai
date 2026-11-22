@@ -3215,6 +3215,22 @@ a new box on each card (`space_review.py` now has the box). Saved in `data/revie
 - **Limits.** The cards are the splitter's own proposals (precision, not recall), and its word list holds the OCR of
   these two books.
 
+## 2026-11-23: PDF collection made private
+
+The project has no written permission to redistribute the books. `junaidaslam/gojri-print-pdf-collection` was set to
+private on Hugging Face (checked with the Hub API). The dictionary text was set private for a few minutes and made
+public again on the user's ruling that text versions are fine. The dictionary text, the lexicon and the OCR gold set
+stay public. GitHub never held the PDFs (`/pdfs/` is gitignored). `data/ocr-output/` (machine OCR text of four
+books) stays on GitHub, by the user's decision.
+
+- **Docs changed.** README, ROADMAP, CLAUDE.md, AGENTS.md, DATA-NOTICE, `data/pdf-corpus/` (README and LICENSE),
+  `data/ocr-output/`, `data/reviews/`, `data/test-locked/`, `data/utrnet-test/`, `datasets/README.md`, TIMELINE. Links to
+  the PDF collection are gone; each doc points to `data/pdf-corpus/CREDITS.tsv` and says to get the book from its
+  original source.
+- **Open.** Ask the authors for written permission (Dr. Javaid Rahi, Prof. (Dr.) Rafique Anjum, and the authors and
+  publishers of the other books). Check whether "Prof. (Dr.) Rafique Anjum" and "Dr. M. R. Anjum Awan" are one
+  person. The old copies on GitHub history and on other people's machines are out of reach.
+
 
 ---
 

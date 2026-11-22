@@ -22,7 +22,7 @@ Use no em dashes. Write with natural structure. Use commas, periods, or conjunct
 - Gojri-English dictionary corpus: `junaidaslam/gojri-english-dictionary` on Hugging Face.
 - Devanagari to Nastaliq lexicon: `data/lexicon/` (tracked) and `junaidaslam/gojri-devanagari-nastaliq-lexicon` on Hugging Face.
 - OCR gold benchmark: `data/gold/` (tracked) and `junaidaslam/gojri-nastaliq-ocr-gold` on Hugging Face.
-- PDF research collection: `data/pdf-corpus/` (tracked) and `junaidaslam/gojri-print-pdf-collection` on Hugging Face.
+- PDF credits and rights notice: `data/pdf-corpus/` (tracked). The source PDFs are not a public deliverable. The Hugging Face repo `junaidaslam/gojri-print-pdf-collection` stays private (since 2026-11-23, no written permission to redistribute the books). Never make it public and never add PDFs to this repository.
 
 Do not publish raw full PDF page text dumps from `data/extracted/` (gitignored).
 

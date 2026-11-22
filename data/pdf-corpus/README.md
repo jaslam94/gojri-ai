@@ -22,13 +22,17 @@ size_categories:
 
 # Gojri print PDF collection
 
+> **Status: private since 2026-11-23.** The project has no written permission to redistribute these books, so the
+> PDFs are not shared. This card and `CREDITS.tsv` stay in the GitHub repository as the list of source books and
+> their credits. Get each book from its original source.
+
 A research collection of Gojri (ISO 639-3: `gju`) print PDFs, including dictionaries, poetry, folklore, textbooks, and historical works.
 
 This collection provides source material for OCR evaluation, lexicon building, and text corpus development for Gojri language technology.
 
 ## Rights and copyright
 
-The files in this collection are third-party published books. Copyright remains with the original authors, editors, and publishers. This repository serves as a research mirror for language technology development.
+The files in this collection are third-party published books. Copyright remains with the original authors, editors, and publishers. The collection served as a research mirror for language technology development; it is now private.
 
 - Read [`LICENSE.md`](LICENSE.md) and [`CREDITS.tsv`](CREDITS.tsv) before using these files.
 - Credit the authors and publishers listed for each file.

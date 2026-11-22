@@ -92,6 +92,10 @@ later correction is noted.
 - **21 Nov (word splits).** The speaker checked 66 splits that the word-list splitter proposed in Banjara and
   Dil-Darya: 66 of 72 added spaces were right, 6 cut a word. The splitter now never cuts a piece shorter than 2 letters.
 
+- **23 Nov (rights).** The Hugging Face PDF collection is private, because the project has no written permission to
+  redistribute the books. The text datasets stay public with a credit to the source book. The docs now say that the
+  books are not shared.
+
 ## Not started yet
 
 A Gojri language model. See `ROADMAP.md`.

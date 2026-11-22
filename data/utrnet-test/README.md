@@ -262,7 +262,7 @@ The margin test. At 0 px UTRNet is exact. At 6 px the crop contains a sliver of 
 | `summary.json` | The error counts behind the results table |
 | `examples/` and `examples.json` | The crop pictures and the texts shown above |
 
-To reproduce the results (about 15 minutes on a CPU): clone the UTRNet repository into a new folder, download UTRNet-Large from the link in its README as `large.pth`, put `Gojri-English-Dictionary.pdf` (from the PDF collection on Hugging Face) at `pdfs/anjumshanasi/`, then run from the repository root. The line crops and the page flags are tracked in `data/reviews/dictionary-200-lines/`; no other local files are needed:
+To reproduce the results (about 15 minutes on a CPU): clone the UTRNet repository into a new folder, download UTRNet-Large from the link in its README as `large.pth`, put `Gojri-English-Dictionary.pdf` (the *Concise Gojri-English Dictionary*; get it from its original source, credits in `data/pdf-corpus/CREDITS.tsv`) at `pdfs/anjumshanasi/`, then run from the repository root. The line crops and the page flags are tracked in `data/reviews/dictionary-200-lines/`; no other local files are needed:
 
 ```
 py -3 -X utf8 scripts/utrnet_arabic_eval.py --repo <clone> --weights <large.pth> --pads 0 2 6 --crnn-base <baseline crnn_last.pt> --crnn-new <retrained crnn_last.pt> --report-dir data/utrnet-test

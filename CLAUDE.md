@@ -734,11 +734,13 @@ Sonnet 22.6%, Composer 13.0%.
 `https://huggingface.co/datasets/junaidaslam/gojri-nastaliq-ocr-gold`.
 See `data/gold/README.md` and `data/gold/bakeoff_results.csv`.
 
-**PDF research mirror (Sep 2026):** in-scope print PDFs with per-file credits on
-Hugging Face (`junaidaslam/gojri-print-pdf-collection`). Version `v2.0` (2026-11-20): 64 unique PDFs, 14,518
-pages, after the content dedupe; `v1.0` is the 74-file original. See
-`data/pdf-corpus/CREDITS.tsv` and `LICENSE.md`. Original book copyright remains
-with authors/publishers.
+**PDF collection is private (2026-11-23):** the in-scope print PDFs with per-file credits are in the Hugging Face
+repo `junaidaslam/gojri-print-pdf-collection` (`v2.0`, 2026-11-20: 64 unique PDFs, 14,518 pages; `v1.0` is the
+74-file original). The user made it private because the project has no written permission to redistribute the
+books. Never make it public and never add PDFs to GitHub. The books stay public at their original sources. The
+project works on them and shares only derived text (OCR text, dictionary text, lexicon, gold excerpts) with a credit
+to the source book; the user ruled that this is fine. See `data/pdf-corpus/CREDITS.tsv` and `LICENSE.md`. Original
+book copyright remains with authors/publishers.
 
 **Local third-party datasets:** documented in `datasets/README.md` (FLI literature
 via Mozilla Data Collective; Common Voice Gujari). Kept locally and gitignored

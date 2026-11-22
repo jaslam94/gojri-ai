@@ -51,7 +51,6 @@ Please follow Common Voice terms if you train or share models on this data.
 
 - Lexicon: https://huggingface.co/datasets/junaidaslam/gojri-devanagari-nastaliq-lexicon  
 - OCR gold set: https://huggingface.co/datasets/junaidaslam/gojri-nastaliq-ocr-gold  
-- Print PDF collection (with per-file credits): https://huggingface.co/datasets/junaidaslam/gojri-print-pdf-collection  
 - Project: https://github.com/jaslam94/gojri-ai  
 
 If you maintain FLI, Common Voice, or related Gojri data and want this note corrected, open an issue. Corrections are welcome.

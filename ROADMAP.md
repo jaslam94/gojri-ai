@@ -12,7 +12,7 @@ rewritten on 2026-11-20. The August draft and its strategy reviews are in the gi
 | 1. Text extraction (OCR) | A working OCR path for clean printed Nastaliq. Three NOORIN books read in full: Kahawat-Kosh, Banjara, Dil-Darya (local, not published). Word spacing open. Not yet tested on an unseen book or on photographed scans. |
 | 2. Speech recognition (ASR) | First baseline done: Whisper-small, 22.7% word error on the Common Voice test set. |
 | 3. Language model and translation | Not started. Waits for more text. |
-| 4. Publish and promote | Four datasets public on Hugging Face. Repository public. |
+| 4. Publish and promote | Three datasets public on Hugging Face (the PDF collection is private). Repository public. |
 
 ## Why this order
 
@@ -74,7 +74,7 @@ BaltiVoice project did the same for Balti with 16.8 hours) and the fastest route
    volumes last), with speaker spot checks on a random sample of each book.
 5. **Speaker review of the OCR text.** The text of four full books is in `data/ocr-output/`. Each page a speaker
    checks becomes test data and can later train the OCR.
-6. **Publish** the text of books whose rights allow it, with the same credits as the PDF collection.
+6. **Publish** the text of books whose rights allow it, with a credit to the source book (`data/pdf-corpus/CREDITS.tsv`).
 
 ## Stage 2: Speech recognition (ASR)
 
@@ -107,9 +107,9 @@ Adapt an existing Urdu-capable model to Gojri with transfer learning (for exampl
 
 ## Stage 4: Publish and promote
 
-- **Done:** four Hugging Face datasets (dictionary text, lexicon, OCR gold set, PDF collection with credits), the
-  public code repository, and the machine OCR text of four books for review. Everything is non-commercial and carries
-  an accuracy and AI-use notice.
+- **Done:** three public Hugging Face datasets (dictionary text, lexicon, OCR gold set), the public code repository,
+  and the machine OCR text of four books for review. The PDF collection is private since 2026-11-23. Everything is
+  non-commercial and carries an accuracy and AI-use notice.
 - **Next:** a small demo (dictionary search, OCR on an uploaded page) and contact with FLI and Common Voice, to work
   with the people already active for Gojri.
 
@@ -126,8 +126,9 @@ Adapt an existing Urdu-capable model to Gojri with transfer learning (for exampl
   ک equal, ه and ہ equal, ھ separate, ݨ and ڵ where the print shows the small "v", a space after ۔ and ،, word spaces
   by meaning. Before Stage 3, compare with the spelling of the Common Voice sentences and FLI's proposals, and keep
   one convention across the project.
-- **PDF licensing.** The PDF collection is shared for research with per-file credits and a takedown contact. Ask the
-  authors and publishers before any commercial or wider release.
+- **PDF licensing.** The PDF collection on Hugging Face is private (2026-11-23): the project has no written permission
+  to redistribute the books. The project works on the books and shares only derived text, with a credit to the source
+  book. Ask the authors and publishers before any release of the PDFs themselves.
 - **Common Voice speaker count:** 7 on the release page, 6 in `validated.tsv`. Low stakes.
 
 ## Cross-cutting

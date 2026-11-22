@@ -8,7 +8,7 @@ commercial purposes.** This file lists the terms for each part.
 | Code and prompts (`scripts/`, `prompts/`) | PolyForm Noncommercial License 1.0.0 (`LICENSE`). |
 | `data/gold/` | OCR gold set: gold text and short page excerpts. Non-commercial. See `data/gold/LICENSE.md`. |
 | `data/lexicon/` | Devanagari to Nastaliq lexicon, a derivative of a copyrighted dictionary. Non-commercial. See `data/lexicon/LICENSE.md`. |
-| `data/pdf-corpus/` | Credits and rights notice for the PDF collection on Hugging Face. Non-commercial. See `data/pdf-corpus/LICENSE.md`. |
+| `data/pdf-corpus/` | Credits and rights notice for the source books. The PDFs are private and not shared. Non-commercial. See `data/pdf-corpus/LICENSE.md`. |
 | `data/dictionary/` | The card of the published dictionary text. CC BY-NC 4.0, with credit to Dr. M. R. Anjum Awan, the author of the source dictionary. |
 | All other project data (`data/manifest.csv`, `data/decode/`, `data/reviews/`, `data/utrnet-test/`, `data/ocr-output/`, `data/test-locked/`, `data/asr/`) | Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0). Credit "Gojri AI project". |
 
@@ -21,16 +21,19 @@ the copyright of its authors and publishers. These terms give no right to reprod
 
 ## Book content
 
-The source PDFs are not in this repository. Copyright of every book stays with its authors, editors and
-publishers, mainly Dr. Javaid Rahi and Prof. (Dr.) Rafique Anjum. Per-file credits: `data/pdf-corpus/CREDITS.tsv`.
-Authors or publishers who want a file removed can open an issue on GitHub.
+The source PDFs are not in this repository. The PDF collection on Hugging Face has been private since 2026-11-23,
+because the project has no written permission to redistribute the books. Copyright of every book stays with its
+authors, editors and publishers, mainly Dr. Javaid Rahi and Prof. (Dr.) Rafique Anjum. Per-file credits:
+`data/pdf-corpus/CREDITS.tsv`. Get each book from its original source. Where this project shares text from a book
+(OCR text, dictionary text, word lists, page excerpts), the text names its source book. Authors or publishers who
+want a file or a text removed can open an issue on GitHub.
 
 ## Published datasets
 
 - `junaidaslam/gojri-english-dictionary`: CC BY-NC 4.0, with credit to Dr. M. R. Anjum Awan (*Concise Gojri-English Dictionary*).
 - `junaidaslam/gojri-devanagari-nastaliq-lexicon`: non-commercial; see its `LICENSE.md`.
 - `junaidaslam/gojri-nastaliq-ocr-gold`: non-commercial; see its `LICENSE.md`.
-- `junaidaslam/gojri-print-pdf-collection`: non-commercial; see its `LICENSE.md` and `CREDITS.tsv`.
+- `junaidaslam/gojri-print-pdf-collection`: **private**, not a public release. Its `LICENSE.md` and `CREDITS.tsv` are kept in `data/pdf-corpus/`.
 
 ## Third-party data and tools (not in this repository)
 

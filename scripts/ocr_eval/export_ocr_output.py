@@ -1,7 +1,7 @@
 """Export the machine OCR text of the full-book runs to data/ocr-output/ (tracked) for speakers to review.
 
-Text only; page images and line crops stay local. Page numbers are PDF page numbers (1-based), as in the public PDF
-collection junaidaslam/gojri-print-pdf-collection (v2.0), not the numbers printed on the pages.
+Text only; page images and line crops stay local. Page numbers are PDF page numbers (1-based), as in the source PDFs
+(file names in data/pdf-corpus/CREDITS.tsv), not the numbers printed on the pages.
   kahawat-kosh/entries.tsv           from data/ocr/kahawat-pdfmarks-v2/page_NNN.json (one row per proverb entry)
   banjara/, dil-darya/               from data/ocr/prose-aws-full2/<book>/dpi300/page_NNN.txt
   gojri-ghazal/                      from data/ocr/ghazal-full/Gojri-Ghazal/dpi300/page_NNN.txt

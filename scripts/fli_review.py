@@ -39,6 +39,9 @@ button{font:inherit;padding:5px 12px;margin-right:8px;border:1px solid var(--lin
 label.t{font-size:13px;margin-right:12px;opacity:.9}
 .card.ok{border-color:var(--ok)}.card.wrong{border-color:var(--bad)}.card.unsure{border-color:var(--un)}
 .state{font-size:13px}
+.orig{direction:rtl;text-align:right;font:22px "Noto Nastaliq Urdu","Jameel Noori Nastaleeq",serif;line-height:1.9;padding:6px 8px;margin:6px 0;border:1px dashed var(--line);border-radius:4px;opacity:.85;white-space:pre-wrap}
+.orig mark{background:var(--bad);color:#fff;padding:0 3px;border-radius:3px}
+.lbl{font-size:12px;opacity:.7}
 '''
 
 JS = '''
@@ -83,6 +86,9 @@ def build(args):
         cards.append(
             f'<section class="card" data-id="{html.escape(r["id"], quote=True)}">'
             f'<div class="meta">{html.escape(r["file"])} line {r["line"]}</div>'
+            '<div class="lbl">Original (as in the corpus file, read only)</div>'
+            f'<div class="orig">{html.escape(r["text"]).replace(TOKEN, "<mark>" + TOKEN + "</mark>")}</div>'
+            '<div class="lbl">Your text (edit here)</div>'
             f'<textarea rows="{r["text"].count(chr(10)) + 3}" spellcheck="false">{html.escape(r["text"])}</textarea>'
             '<div><button data-m="ok">OK</button><button data-m="wrong">Wrong (I fixed the text)</button>'
             '<button data-m="unsure">Unsure</button> <span class="state"></span></div>'
@@ -96,7 +102,7 @@ def build(args):
             f'<title>FLI corpus check</title><style>{CSS}</style></head><body>'
             '<header><b>FLI Gojri Literature Corpus: sample check</b> &middot; <span id="count"></span> '
             '<button id="dl">Download fli_review_marks.json</button></header><main>'
-            '<p>Each card is a random line from the corpus. Read it. Click <b>OK</b> if the text is right. If not, correct the text in the box, '
+            '<p>Each card is a random line from the corpus. The top box shows the original and never changes. Read it. Click <b>OK</b> if the text is right. If not, correct the text in the lower box, '
             f'tick what was wrong, then click <b>Wrong</b>. {TOKEN} marks a broken character in the file: type the letter or mark that belongs there '
             '(or leave the token if you do not know). Your work is saved in this browser; use Download when you stop.</p>'
             + "\n".join(cards) + f'</main><script>const KEY="{key}";{JS}</script></body></html>')

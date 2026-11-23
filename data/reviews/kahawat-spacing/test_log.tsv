@@ -1,0 +1,2 @@
+date	config	errors	hit	missing	extra	text	truth	baseline_errors
+2026-11-23	{"bonus": 0, "errors": 60, "extra": 36, "hit": 376, "lam": 0.8, "missing": 24, "order": 5, "text": 412, "truth": 400, "wcards": 1, "where": "nonjoin"}	52	341	18	34	375	359	116

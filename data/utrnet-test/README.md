@@ -52,7 +52,7 @@ Arabic-script letters, 200 lines, 1,400 reference letters:
 
 | System | Input | Error | Wrong letters | Exact lines |
 |---|---|---|---:|---:|
-| UTRNet-Large | Arabic runs, 0 px margin | **2.1%** | 29 | 178 |
+| UTRNet-Large | Arabic runs, 0 px margin | **2.1%** | 29 | 179 |
 | UTRNet-Large | Arabic runs, 2 px margin | 2.8% | 39 | 168 |
 | UTRNet-Large | Arabic runs, 6 px margin | 10.9% | 152 | 69 |
 | UTRNet-Large | whole line (English included) | 221.5% | 3,101 | 1 |

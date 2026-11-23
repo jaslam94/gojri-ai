@@ -13,6 +13,9 @@ correct errors. Every correction helps us measure the OCR and improve it.
 | `dil-darya/page_NNN.txt` | `anjumshanasi/Dil-Darya.pdf` | 220 | `prose-aws-full2`, 2026-11-19 |
 | `gojri-ghazal/page_NNN.txt` | `anjumshanasi/Gojri-Ghazal.pdf` | 209 | `ghazal-full`, 2026-11-20 (seeded) |
 
+Banjara and Dil-Darya are code-mixed: much of their text is Urdu, with Gojri words in the same sentence. Do not count it as
+pure Gojri without a language tag per line.
+
 `NNN` and `pdf_page` are PDF page numbers (1-based), not the numbers printed on the pages. In the page files, one
 row is one printed line; a TAB separates the two halves of a verse line, and the book name and page number at the top
 of a page are a header row. The books are not in this repository. Get each one from its original source (credits: `data/pdf-corpus/CREDITS.tsv`).

@@ -32,3 +32,20 @@ them right, and 71 at margin 6, 68 of them right (it never cuts a piece shorter 
 on 2026-11-21 and removed 2 wrong spaces at margin 4 and no right one). Its word list comes from the FLI corpus and the Banjara and
 Dil-Darya OCR, not from Kahawat-Kosh. Four margins (2, 4, 6, 8) were tried on these same cards, so treat the numbers
 as a development result. Adding the speaker's own words from the other cards (5-fold test) gained 1 to 2 spaces.
+
+## Locked test of the character n-gram inserter (2026-11-23)
+
+The 200 cards were split 100 dev and 100 locked (`split_20261123.json`, seed 20261123). The settings were chosen by
+5-fold cross-validation on the dev half (`chosen_config_20261123.json`: order 5, FLI weight 0.8, spaces only after
+non-joining letters) and scored once on the locked half (`test_log.tsv`). On the 79 locked cards whose letters equal
+the truth (359 truth spaces):
+
+| Text | Space errors | Missing | Extra | Cards with exact spaces |
+|---|---|---|---|---|
+| OCR as read | 116 | 103 | 13 | 24 |
+| Character n-gram inserter | **52** | 18 | 34 | 45 |
+| Word splitter, margin 4 | 79 | 61 | 18 | not logged |
+
+Precision 90.9%, recall 95.0%. The word splitter's margin was picked on all 200 cards, so it is favoured. Limits: on an OK
+card the truth is the OCR text, so scores are a little optimistic; the model adds about 34 spaces the speaker did not
+write; the cards are short idioms. The same model on prose is in `../prose-model-space/` (32 of 67 added spaces right).

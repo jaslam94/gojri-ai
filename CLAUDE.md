@@ -5,8 +5,8 @@ Build OCR, ASR (speech-to-text), and a fine-tuned language model for Gojri (گو
 an under-resourced language, to help bring it into the AI/LLM space. Long-term
 mission: language preservation and promotion of Gojri in AI.
 
-Project is in the **research and planning phase**. No implementation has started.
-We research, discuss, and agree on a roadmap together before writing pipeline code.
+Project is in the **research and early build phase**. OCR tools, an ASR baseline, a spacing model and several
+datasets exist (see Status). We research, discuss, and agree on a roadmap together before writing new pipeline code.
 
 ## Who I'm working with
 - Not an AI/ML expert; basic conceptual understanding only. Explain things in simple,
@@ -20,7 +20,7 @@ We research, discuss, and agree on a roadmap together before writing pipeline co
 - Prefers to research and discuss deeply before jumping to implementation.
 
 ## Resources available
-- $150 USD in free AWS credits.
+- $150 USD in free AWS credits (about $12 spent by 2026-11-23, by the LOG estimates).
 
 ## The language: Gojri / Gujari (ISO 639-3: gju)
 - Indo-Aryan language spoken by Gujjar communities across Jammu & Kashmir, Himachal
@@ -47,8 +47,9 @@ We research, discuss, and agree on a roadmap together before writing pipeline co
   poetry anthologies, and translated works (many of the project's PDFs are his work).
 - **BaltiVoice** (arXiv 2606.03504): near-identical precedent project for Balti, another
   Nastaliq-script minority language from Gilgit-Baltistan, Pakistan. Built a 16.8-hour
-  Common Voice-derived corpus, fine-tuned Whisper-small (WER 26.74%, down from 159%
-  zero-shot), published dataset + model + demo on Hugging Face. This is a solid
+  Common Voice-derived corpus, fine-tuned Whisper-small (WER 24.78%, down from 159%
+  zero-shot; checked against the paper's abstract, Table 3 and section 5.2 on 2026-11-23. The paper picked the best
+  checkpoint on the same 538-utterance set it reports, so the figure is optimistic), published dataset + model + demo on Hugging Face. This is a solid
   template to follow for the ASR piece.
 
 ## Data already collected (local; third-party data is not tracked in git)
@@ -93,7 +94,7 @@ We research, discuss, and agree on a roadmap together before writing pipeline co
   `invalidated.tsv`, not confirmed. Gender field is 'unknown' for all validated rows
   in this release, so gender-based diversity can't be assessed from the data itself.
   License: CC0 (public domain, no re-hosting/speaker-identification per terms).
-- `pdfs/`: 92 PDF files, dictionaries, textbooks, poetry, folklore, a Quran
+- `pdfs/`: 64 PDF files on disk after the Nov 2026 dedupe (the manifest still lists 92 rows), dictionaries, textbooks, poetry, folklore, a Quran
   translation, history volumes, etc. See the precise, hash-verified categorization
   and duplicate list further down (not repeated here to avoid two sources of truth).
 - `pdfs/unlocked/`: contains one already-extracted .txt sample that reads as clean,
@@ -528,6 +529,24 @@ do not rebuild it blindly with `scripts/build_manifest.py`.
 ## Status
 Newest first. The dated history is in `docs/TIMELINE.md`; the plan is in `ROADMAP.md`.
 
+**Spacing model, language ID and shadda (2026-11-23).**
+- Character n-gram space inserter (`scripts/ocr_eval/spacing_lm.py`, `spacing_experiment.py`; insert only, letters never
+  change). The 200 Kahawat spacing cards were split 100 dev and 100 locked (`data/reviews/kahawat-spacing/split_20261123.json`).
+  Settings chosen by cross-validation on dev, scored once on the locked half (79 cards have letters equal to the
+  truth, 359 truth spaces): space errors 116 to 52, precision 90.9%, recall 95.0%, 45 cards exact (24 before); the old
+  word splitter has 79 errors. Log: `data/reviews/kahawat-spacing/test_log.tsv`. The test half is used up for this config.
+- On prose (55 Banjara and Dil-Darya cards, `data/reviews/prose-model-space/`) the model added 67 spaces, 32 right and
+  35 wrong: those books are largely Urdu and code-mixed, and the model learned Gojri idioms.
+- Language tagger (`scripts/ocr_eval/langid.py`, research note `plans/RESEARCH-urdu-gojri-language-id-and-mixed-spacing.md`):
+  free labels, group cross-validation, order 4 character n-gram: 78.4% accuracy, macro F1 76.5, Gojri precision 91%
+  and recall 77%. Short idioms 51.1% right, lines of 61 or more letters 97.5%. Marker letters alone: precision 100%,
+  recall 12.6%. The speaker's prose tags are the real test and are pending.
+- Shadda: `اللّٰہ` keeps its shadda as printed (speaker ruling); 68 of 74 words fixed from the whole-word glyphs, 5 fields
+  flagged for the speaker.
+- ASR check: after normalisation 4 of 623 test clips have the same text as a training clip (3 from S6, not in
+  training; 1 from S3). The 22.7% stands; the claim of no shared sentence applies to exact text only.
+- Rights: the PDF collection is private (see below). Only the gold bake-off re-runs from the public repository alone.
+
 **Second pass (2026-11-20, later).** Code license is PolyForm Noncommercial 1.0.0 and project data CC BY-NC 4.0: the
 project is non-commercial. Every public document carries an accuracy and AI-use notice (README "About this
 project", `CONTRIBUTING.md`, the four Hugging Face cards). The dictionary source is the *Concise Gojri-English
@@ -550,7 +569,7 @@ book in another file) were deleted from `pdfs/` after a page-image comparison; t
 - PDF mark glyphs: the NOORIN books draw pesh, zer, zabar, ulta pesh, the takhallus sign and the small "v" as their
   own glyphs. Table `data/decode/noori_marks_seed.json` (24 glyphs, keyed by outline hash); code and method
   `scripts/ocr_eval/pdf_marks/`. Each mark goes to the nearest UTRNet letter. On 30 Kahawat-Kosh cards mark error
-  fell from 67% to 14%. The glyphs appear in about 30 books of the collection.
+  fell from 67% to 8% (3 of 36, final rules). The glyphs appear in about 30 books of the collection.
 - Full local runs (gitignored `data/ocr/`): Kahawat-Kosh (169 pages, `kahawat-pdfmarks-v2`), Banjara and Dil-Darya
   (716 pages, `prose-aws-full2`). On the 10 reviewed prose pages (`data/reviews/prose-banjara-dildarya/`): letters
   0.8%, marks 12.0%.
@@ -562,8 +581,9 @@ book in another file) were deleted from `pdfs/` after a page-image comparison; t
   from Banjara and Dil-Darya): 66 of 72 proposed spaces right, 6 cut a word; `score_splits.py`. `space_fix.py` now
   never cuts a piece shorter than 2 letters (`MIN_PIECE`).
 - Word spacing is not solved: the PDF text layer has no space glyphs, and gaps in tight prose are as narrow inside
-  words as between them. `scripts/ocr_eval/space_fix.py` adds more wrong spaces than right ones. First decide one
-  labelling rule for the review truth (some reviewed rows keep glued words).
+  words as between them. The labelling rule is decided (spaces follow meaning). With truth written that way the
+  word-list splitter `space_fix.py` adds mostly right spaces (86 of 101 on Kahawat-Kosh) but leaves 146 of the 232
+  missing spaces. The older test that found more wrong spaces than right ones used rows that kept glued words.
 - A UTRNet output-layer fine-tune for marks helped on the dictionary print only; the PDF mark method replaced it.
   Kraken is behind UTRNet.
 

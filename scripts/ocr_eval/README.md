@@ -125,7 +125,7 @@ SegNet weights: `s3://gojri-ai-sagemaker-data/ocr-eval/models/segnet_v2.pt` (not
 | 12 gold pages, first try (Tesseract word boxes) | not scored (200-line version: 90.6% Arabic, 38.0% English) | |
 | 12 gold pages, SegNet v1 on every page | 29.8% pooled | 40.3% |
 | 12 gold pages, SegNet v2 on every page | 28.6% pooled | 31.9% |
-| **12 gold pages, final (page mode)** | **3.7% pooled (230 of 6,253)** | 6.7% pooled (only `dict_alif` has English: 3.9%) |
+| **12 gold pages, final (page mode)** | **3.7% pooled (229 of 6,253)** | 6.7% pooled (only `dict_alif` has English: 3.9%) |
 | 12 gold pages, UTRNet alone (v2 splitter) | 7.1% | |
 | 8 gold pages Gemini was scored on: final pipeline / Gemini 3.6 Flash | 2.9% / 3.3% | `dict_alif`: 3.9% / 2.6% |
 

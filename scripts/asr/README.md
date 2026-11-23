@@ -15,7 +15,8 @@ sentence is not a test sentence:
 | dev (5% of the training sentences, seed 20261120) | 475 | S1, S3, S5 |
 | test (official) | 623 | S1 (4), S2 (101), S3 (385), S4 (1), S6 (132) |
 
-The test set shares no sentence with training. Two test speakers (S1, S3, 389 clips) also read training sentences; three
+The test set shares no identical sentence with training. After the scorer's normalisation, 4 of the 623 test clips (0.6%)
+have the same text as a training clip: 3 from S6 (not in training) and 1 from S3. Two test speakers (S1, S3, 389 clips) also read training sentences; three
 (S2, S4, S6, 234 clips) never appear in training. Results are reported for both groups; the unseen-speaker number is
 the honest one. `data/asr/split_clips.tsv` (tracked) lists clip, split and speaker label, so the split can be rebuilt
 from a Common Voice download.

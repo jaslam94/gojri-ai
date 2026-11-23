@@ -19,7 +19,8 @@ One page per book, 20 books, in five strata: 4 dictionaries and glossaries, 5 si
 two-page-spread NOORIN-font books, 3 legacy 8-bit poetry books, 4 image-only scans. Pages come from 15% to 90% of each
 book; blank and picture-only pages were redrawn. Left out on purpose: every gold-page source, the books whose pages the
 speaker reviewed (Banjara, Dil-Darya), the Quran translation, and two books that share many pages with a gold book.
-The books are not in this repository. Get each one from its original source (credits: `data/pdf-corpus/CREDITS.tsv`).
+The full books are not in this repository; `images/` holds the 20 test page images. Get each book from its original source
+(credits: `data/pdf-corpus/CREDITS.tsv`).
 
 To correct the drafts: `py -3 -X utf8 scripts/build_test_gold_page.py build`, open `data/test-locked/review.html`,
 correct and mark each page Done, download `test_gold.json`, then `... build_test_gold_page.py apply <file>`.

@@ -5,7 +5,7 @@ truth for the tests in this repository. They are small, they cannot be made agai
 scripts read them from here.
 
 The source books are not in this repository (credits: `data/pdf-corpus/CREDITS.tsv`). Get each one from its original
-source. This folder holds only text and labels, no page images.
+source. This folder holds text and labels, plus the 200 dictionary line crops in `dictionary-200-lines/img/`.
 
 Earlier working copies live in gitignored folders (`data/review/`, `data/ocr/`, `data/synth/real_pairs/`). The files
 here are the reference copies. If a working copy differs, this folder is right.
@@ -25,8 +25,8 @@ Book: *Concise Gojri-English Dictionary* (Dr. M. R. Anjum Awan), `anjumshanasi/G
 Read by: `scripts/utrnet_arabic_eval.py`, `scripts/utrnet_latin_eval.py`, `scripts/synth/make_clean_labels.py`,
 `scripts/synth/merge_decode_letters.py`, `scripts/synth/build_utrnet_runs.py` and several scripts in `scripts/ocr_eval/`.
 
-With `img/` and `folio_pages.json` the 200-line UTRNet test runs from this repository, the dictionary PDF (public in
-the PDF collection) and the UTRNet code and weights. Checked on 2026-11-20 with the local work folders hidden: seed 0
+With `img/` and `folio_pages.json` the 200-line UTRNet test runs from this repository, the dictionary PDF (get it from
+its original source) and the UTRNet code and weights. Checked on 2026-11-20 with the local work folders hidden: seed 0
 gives the same 29 wrong letters and 179 exact lines, line by line.
 
 Known limit: a dozen fixes use spellings that the speaker ruled differently later (for example ہ where the print
@@ -52,6 +52,11 @@ Book: *Kahawat-Kosh*. 200 random idioms with the speaker's text written as words
 2026-11-21: 156 fixed, 44 OK, 0 unsure. See `kahawat-spacing/README.md` for the files and scores.
 
 Read by: `scripts/ocr_eval/score_spacing.py`.
+
+## prose-model-space/
+
+Books: *Banjara* and *Dil-Darya*. 55 of 170 glued tokens where the character n-gram space inserter proposes spaces, with the
+speaker's right spaces (2026-11-23): 32 of 67 added spaces right. See `prose-model-space/README.md`.
 
 ## prose-word-splits/
 

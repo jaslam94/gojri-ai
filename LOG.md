@@ -3231,6 +3231,31 @@ books) stays on GitHub, by the user's decision.
   publishers of the other books). Check whether "Prof. (Dr.) Rafique Anjum" and "Dr. M. R. Anjum Awan" are one
   person. The old copies on GitHub history and on other people's machines are out of reach.
 
+## 2026-11-23: documentation audit fixes
+
+An outside audit (pasted by the user) listed stale or wrong statements. Each claim was checked against the repo first.
+- **Rights wording.** The docs said "the source books are not shared", but 12 gold page images, 20 locked page images,
+  200 dictionary line crops and the OCR text of four books are public. The docs now say: the full books are private;
+  short excerpts and derived text are shared under research terms, with credit. `data/pdf-corpus/README.md` is now a
+  rights notice, not a dataset card (no load instruction, no citation). Dead pointers to the private collection were
+  removed from the README, `data/reviews/README.md` and the UTRNet steps.
+- **Results added to the public summary.** The character n-gram space inserter (100 locked Kahawat-Kosh cards: space errors
+  116 to 52), its failure on prose, the language tagger (78.4%, group cross-validation) and the shadda ruling are now in
+  README, ROADMAP, CLAUDE.md, TIMELINE and `data/reviews/kahawat-spacing/README.md`. The splitter contradiction in CLAUDE.md
+  is fixed (the 21 November reviews show 86 of 101 right).
+- **Numbers fixed.** Mark error on the first 30 Kahawat cards: 8% (3 of 36), not 14%. Page pipeline: 229 of 6,253, not 230.
+  UTRNet seed 0: 179 exact lines, not 178. The old numbers stay in the log entries where they were measured.
+- **ASR sentence overlap, checked on the local data.** The split is disjoint on exact text, but after the scorer's
+  normalisation 4 of 623 test clips (0.6%) have the same text as a training clip: 3 from S6 (not in training), 1 from S3.
+  One more matches a dev sentence. The 22.7% stands; the docs no longer say "no sentence shared" without that qualifier.
+  (The audit said 2 from S6; the count here is 3.)
+- **Also fixed.** The CLAUDE.md top line (no longer "no implementation"), the PDF count on disk (64) and the AWS spend (about
+  $12). ROADMAP stage 1 now lists four books and the locked test set.
+- **Not done, needs a decision.** Publishing small derived artifacts for re-running (SegNet weights, the fine-tuned Whisper
+  model, the n-gram count tables, pre-cut Arabic run images); the prose mark metric (12.0% in `data/ocr-output/README.md`
+  does not reproduce from the tracked review, which stores an earlier OCR run); the locked test gold text; the ASR model
+  upload. GitHub shows the license as Other (PolyForm Noncommercial is not OSI open source).
+
 
 ---
 

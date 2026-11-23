@@ -9,7 +9,7 @@ rewritten on 2026-11-20. The August draft and its strategy reviews are in the gi
 | Stage | State |
 |---|---|
 | 0. Data hygiene and measurement | Done. Catalog, deduplication, triage, 12-page gold set, speaker review sets. |
-| 1. Text extraction (OCR) | A working OCR path for clean printed Nastaliq. Three NOORIN books read in full: Kahawat-Kosh, Banjara, Dil-Darya (local, not published). Word spacing open. Not yet tested on an unseen book or on photographed scans. |
+| 1. Text extraction (OCR) | A working OCR path for clean printed Nastaliq. Four NOORIN books read in full (Kahawat-Kosh, Banjara, Dil-Darya, Gojri-Ghazal); the machine text is in `data/ocr-output/` for review. Word spacing is partly solved for short Gojri idioms (character n-gram inserter), not for prose; a language tag per line is next. Not yet tested on an unseen book or on photographed scans. |
 | 2. Speech recognition (ASR) | First baseline done: Whisper-small, 22.7% word error on the Common Voice test set. |
 | 3. Language model and translation | Not started. Waits for more text. |
 | 4. Publish and promote | Three datasets public on Hugging Face (the PDF collection is private). Repository public. |
@@ -53,7 +53,7 @@ BaltiVoice project did the same for Balti with 16.8 hours) and the fastest route
   dictionary lines (2.0% to 2.2% over five seeds). With SegNet script labels and Tesseract for English, the page
   pipeline reaches 3.7% on the 12 gold pages (a development number).
 - **Short vowel marks come from the PDF itself** in the NOORIN books: separate mark glyphs, found by outline hash.
-  Mark error fell from 67% to 14% on 30 checked Kahawat-Kosh cards. The table's glyphs appear in about 30 books.
+  Mark error fell from 67% to 8% (3 of 36) on 30 checked Kahawat-Kosh cards. The table's glyphs appear in about 30 books.
 - **Word spaces are the main open problem.** The PDF text layer has no space glyphs, and in tight prose the gap
   between words is as narrow as the gap inside words. The speaker ruled that spaces follow meaning, not the print.
   Against the speaker's 200 Kahawat-Kosh cards (2026-11-21) the OCR text misses 232 of 759 spaces, 205 of them after
@@ -61,15 +61,20 @@ BaltiVoice project did the same for Balti with 16.8 hours) and the fastest route
   Dil-Darya, 66 of 72 added spaces were right (the speaker's review of 2026-11-21). An earlier test
   against rows that kept glued words found it adding more wrong spaces than right ones; the two tests differ in
   truth and in book.
+  On 2026-11-23 a character n-gram space inserter cut space errors on 100 locked Kahawat-Kosh cards from 116 to 52
+  (precision 90.9%, recall 95.0%). On 55 checked Banjara and Dil-Darya cards it added 32 right and 35 wrong spaces,
+  because much of those books is Urdu. A first Gojri-or-Urdu line tagger reaches 78.4% on group cross-validation
+  (97.5% on lines of 61 or more letters, 51.1% on short idioms); the speaker's prose tags are the real test.
 
 ### Next steps, in order
 
-1. **Lock a test set.** About 20 new pages that no design step touches, from books the pipeline has not seen.
+1. **Score the locked test set.** The 20 pages are built (`data/test-locked/`, from books no design step touched). The
+   speaker's gold text is pending. Then run the page pipeline once, with no tuning, and publish the number.
 2. **Test on an unseen book and on photographed scans.** Report the result either way. The image-only books (1,153
    pages) need this before any bulk run.
-3. **Word spacing.** The rule is decided (spaces follow meaning) and 200 Kahawat-Kosh cards follow it. Next: check the
-   splitter on a book other than Kahawat-Kosh with spaces labelled the same way, then try a small space tagger trained
-   on speaker-checked lines.
+3. **Word spacing and language tags.** The rule is decided (spaces follow meaning) and 200 Kahawat-Kosh cards follow it.
+   The n-gram inserter is built and tested on idioms. Next: tag each prose line as Gojri, Urdu or mixed (the speaker's
+   tags test the tagger), add spaces only to Gojri lines, and test on a second book labelled by meaning.
 4. **Run the NOORIN books in tier order** with PDF marks (dictionaries and glossaries first, then literature, large
    volumes last), with speaker spot checks on a random sample of each book.
 5. **Speaker review of the OCR text.** The text of four full books is in `data/ocr-output/`. Each page a speaker
@@ -78,13 +83,14 @@ BaltiVoice project did the same for Balti with 16.8 hours) and the fastest route
 
 ## Stage 2: Speech recognition (ASR)
 
-Fine-tune Whisper on the Common Voice data, following the BaltiVoice recipe (Whisper-small, 16.8 hours, 26.74% word
+Fine-tune Whisper on the Common Voice data, following the BaltiVoice recipe (Whisper-small, 16.8 hours, 24.78% word
 error, down from 159% zero-shot). Expect a rough but usable first model.
 
 - **Data:** Common Voice Scripted Speech 26.0, Gujari: 11,741 clips, 10.68 hours, 11,081 validated rows. The release
   page says 7 speakers; our count of `client_id` in `validated.tsv` finds 6. Kept locally, not in this repository.
 - **First baseline (done, 2026-11-20):** Whisper-small fine-tuned on 9,041 clips (3 speakers; the official split has
-  only one training speaker, see `scripts/asr/README.md`). Official `test.tsv`, no shared sentences: 22.7% word error,
+  only one training speaker, see `scripts/asr/README.md`). Official `test.tsv`, no identical sentence in training (after normalisation 4 of 623 clips match a training
+  sentence): 22.7% word error,
   8.3% character error (73.8% and 33.2% without fine-tuning); 21.6% for the three speakers never seen in training.
   Dev word error was lowest at step 1,500 of 2,500, then rose (overfitting). Next: more speakers and hours, and an
   error review of the test predictions by a speaker.

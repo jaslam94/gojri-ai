@@ -96,6 +96,12 @@ later correction is noted.
   redistribute the books. The text datasets stay public with a credit to the source book. The docs now say that the
   books are not shared.
 
+- **23 Nov (spacing model, language ID).** A character n-gram space inserter cut space errors on 100 locked
+  Kahawat-Kosh cards from 116 to 52 (precision 90.9%, recall 95.0%). On Banjara and Dil-Darya prose, which is largely
+  Urdu, it added 32 right and 35 wrong spaces. A first Gojri-or-Urdu line tagger reaches 78.4% on group
+  cross-validation (51.1% on short idioms, 97.5% on lines of 61 or more letters). The `اللہ` shadda is now kept as
+  printed.
+
 ## Not started yet
 
 A Gojri language model. See `ROADMAP.md`.

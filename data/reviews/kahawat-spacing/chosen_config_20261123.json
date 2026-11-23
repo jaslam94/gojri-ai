@@ -1,0 +1,13 @@
+{
+ "order": 5,
+ "lam": 0.8,
+ "bonus": 0,
+ "where": "nonjoin",
+ "wcards": 1,
+ "errors": 60,
+ "hit": 376,
+ "missing": 24,
+ "extra": 36,
+ "text": 412,
+ "truth": 400
+}

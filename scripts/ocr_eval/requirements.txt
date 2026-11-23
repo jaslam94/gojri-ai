@@ -2,3 +2,4 @@ pymupdf
 pillow
 numpy
 scipy
+fonttools

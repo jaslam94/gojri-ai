@@ -10,6 +10,7 @@ split cards, and tokens whose added spaces already appear in the speaker's own r
     and that sit on rows he tagged Gojri (data/reviews/prose-language/lang_tags_final_20261124.json); writes model_space_review_gju.html
 """
 import argparse
+import base64
 import html
 import json
 import re
@@ -39,6 +40,15 @@ def tokens_with_splits(ocr, new):
             out.append((tok, " ".join(parts), letters))
         letters += n
     return out
+
+
+def crop_img(row):
+    """The printed row (OCR crop) as an embedded image, '' if the crop file is missing. row = book|page|row."""
+    b, pg, r = row.split("|")
+    f = ROOT / f"data/ocr/prose-aws-full2/{b}/crops/p{int(pg):03d}/L{int(r):02d}.png"
+    if not f.exists():
+        return ""
+    return f'<img class="o" alt="printed row" src="data:image/png;base64,{base64.b64encode(f.read_bytes()).decode()}">'
 
 
 def main():
@@ -79,7 +89,7 @@ def main():
     (out / f"model_space_cards{suffix}.json").write_text(json.dumps(cards, ensure_ascii=False, indent=1), encoding="utf-8")
     rows = "".join(
         f'<section class="c" data-id="{html.escape(c["id"])}"><div class="m">{html.escape(c["row"])}</div>'
-        f'<div class="w">{html.escape(c["token"])} &rarr; <b>{html.escape(c["proposal"])}</b></div><div class="l">{html.escape(c["context"])}</div>'
+        f'<div class="w">{html.escape(c["token"])} &rarr; <b>{html.escape(c["proposal"])}</b></div>{crop_img(c["row"])}<div class="l">{html.escape(c["context"])}</div>'
         f'<div class="f">Right split: <input class="t" dir="rtl" value="{html.escape(c["proposal"])}"></div>'
         '<button data-m="accept">Accept</button><button data-m="reject">Reject</button><span class="s"></span></section>'
         for c in cards)
@@ -87,7 +97,7 @@ def main():
             '<title>Model space check</title><style>body{font:16px system-ui;margin:0 auto;max-width:900px;padding:12px;background:#fafafa;color:#111}'
             '@media(prefers-color-scheme:dark){body{background:#161616;color:#eee}.c{background:#222!important}}'
             '.c{background:#fff;border:1px solid #888;border-radius:8px;padding:8px;margin:8px 0}.w,.l{direction:rtl;text-align:right;font:26px "Noto Nastaliq Urdu",serif;line-height:1.9}'
-            '.l{font-size:18px;opacity:.7}.m{font-size:12px;opacity:.7}.c.accept{border-color:#1b7f3b}.c.reject{border-color:#b3261e}button{font:inherit;margin-right:8px;padding:4px 12px}.t{font:22px "Noto Nastaliq Urdu",serif;width:60%;direction:rtl;margin:4px 0 8px}.f{font-size:13px;opacity:.8}</style></head><body>'
+            '.l{font-size:18px;opacity:.7}.o{display:block;max-width:100%;background:#fff;border:1px solid #bbb;margin:4px 0}.m{font-size:12px;opacity:.7}.c.accept{border-color:#1b7f3b}.c.reject{border-color:#b3261e}button{font:inherit;margin-right:8px;padding:4px 12px}.t{font:22px "Noto Nastaliq Urdu",serif;width:60%;direction:rtl;margin:4px 0 8px}.f{font-size:13px;opacity:.8}</style></head><body>'
             f'<h3>Model space check ({len(cards)} cards)</h3><p>The arrow shows the glued word and the spaces the model adds. Spaces follow meaning (ruling 2026-11-16). '
             'Accept if every space the model adds is right (more spaces may still be missing). Reject if it cuts a word wrongly. '
             'If the right split is different, or more spaces are missing, write the right words in the box.</p>'

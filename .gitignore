@@ -60,3 +60,6 @@ data/fli-review/
 data/asr/splits/
 data/asr/output/
 data/test-locked/review.html
+
+# OpenCode search output: third-party samples and private contact data
+gojri-corpus-search/

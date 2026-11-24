@@ -6,8 +6,7 @@ notice. **It does not hold the books.**
 ## Status
 
 The project once kept a Hugging Face collection of the book PDFs (`v1.0`, 74 files, then `v2.0`, 64 files, 14,518
-pages). It has been **private since 2026-11-23**, because the project has no written permission to redistribute the
-books. Nothing in this repository gives access to it. Get each book from its original source.
+pages). It is **private** and not shared. Nothing in this repository gives access to it. Get each book from its original source.
 
 ## Rights
 

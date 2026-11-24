@@ -92,9 +92,8 @@ later correction is noted.
 - **21 Nov (word splits).** The speaker checked 66 splits that the word-list splitter proposed in Banjara and
   Dil-Darya: 66 of 72 added spaces were right, 6 cut a word. The splitter now never cuts a piece shorter than 2 letters.
 
-- **23 Nov (rights).** The Hugging Face PDF collection is private, because the project has no written permission to
-  redistribute the books. The text datasets stay public with a credit to the source book. The docs now say that the
-  books are not shared.
+- **23 Nov (rights).** The Hugging Face PDF collection is private. The text datasets stay public with a credit to the
+  source book. The docs now say that the project does not share the books.
 
 - **23 Nov (spacing model, language ID).** A character n-gram space inserter cut space errors on 100 locked
   Kahawat-Kosh cards from 116 to 52 (precision 90.9%, recall 95.0%). On Banjara and Dil-Darya prose, which is largely

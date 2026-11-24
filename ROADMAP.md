@@ -132,9 +132,8 @@ Adapt an existing Urdu-capable model to Gojri with transfer learning (for exampl
   ک equal, ه and ہ equal, ھ separate, ݨ and ڵ where the print shows the small "v", a space after ۔ and ،, word spaces
   by meaning. Before Stage 3, compare with the spelling of the Common Voice sentences and FLI's proposals, and keep
   one convention across the project.
-- **PDF licensing.** The PDF collection on Hugging Face is private (2026-11-23): the project has no written permission
-  to redistribute the books. The project works on the books and shares only derived text, with a credit to the source
-  book. Ask the authors and publishers before any release of the PDFs themselves.
+- **PDF licensing.** The PDF collection on Hugging Face stays private. The project shares only derived text, with a
+  credit to the source book.
 - **Common Voice speaker count:** 7 on the release page, 6 in `validated.tsv`. Low stakes.
 
 ## Cross-cutting

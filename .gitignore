@@ -63,3 +63,6 @@ data/test-locked/review.html
 
 # OpenCode search output: third-party samples and private contact data
 gojri-corpus-search/
+
+# Third-party blog text fetched for research (see datasets/README.md)
+datasets/gojri-blogs/

@@ -21,8 +21,7 @@ the copyright of its authors and publishers. These terms give no right to reprod
 
 ## Book content
 
-The source PDFs are not in this repository. The PDF collection on Hugging Face has been private since 2026-11-23,
-because the project has no written permission to redistribute the books. Copyright of every book stays with its
+The source PDFs are not in this repository, and this project does not share them. Copyright of every book stays with its
 authors, editors and publishers, mainly Dr. Javaid Rahi and Prof. (Dr.) Rafique Anjum. Per-file credits:
 `data/pdf-corpus/CREDITS.tsv`. Get each book from its original source. Where this project shares text from a book
 (OCR text, dictionary text, word lists, page excerpts), the text names its source book. Authors or publishers who

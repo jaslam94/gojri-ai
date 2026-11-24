@@ -18,6 +18,8 @@ and `UTRNET_WEIGHTS`), Tesseract 5, and for SageMaker runs the environment varia
 | `inspect_pdf_glyphs.py` | Dumps the (font, codepoint) sequence of one PDF page. |
 | `extract_clean_text.py` | Extracts text from the PDFs that already hold correct Unicode (the Devanagari dictionary). |
 | `build_pdf_credits.py` | Builds `data/pdf-corpus/CREDITS.tsv` from the manifest. |
+| `corpus/filter_gojri_blog.py` | Keeps the Gojri parts of the fetched blog posts: tags chunks of 80 or more letters with the language tagger (`gju`, `urd`, `unsure`). A draft for the speaker's check. |
+| `corpus/fetch_blogger.py` | Fetches the posts of a public Blogger blog through its feed (2 s between requests) into `datasets/gojri-blogs/`. |
 | `split_spread.py` | Splits a two-page-spread page image at its centre into the right and the left page. |
 
 ## 2. OCR gold set and the vision-model bake-off (Aug 2026, done)

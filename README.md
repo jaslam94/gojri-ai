@@ -109,8 +109,7 @@ Published on Hugging Face (account [junaidaslam](https://huggingface.co/junaidas
 | [gojri-devanagari-nastaliq-lexicon](https://huggingface.co/datasets/junaidaslam/gojri-devanagari-nastaliq-lexicon) | Gojri headwords in Devanagari and Nastaliq, with Roman and English glosses. |
 | [gojri-nastaliq-ocr-gold](https://huggingface.co/datasets/junaidaslam/gojri-nastaliq-ocr-gold) | The 12-page OCR benchmark: page images, gold text, model outputs. |
 
-The full books are not shared. The project has no written permission to redistribute them, so the PDF collection is
-private. Short excerpts (the 12 gold page images, the 20 locked test page images, the 200 dictionary line crops) and text
+This project does not share the full books. Get each book from its original source. Short excerpts (the 12 gold page images, the 20 locked test page images, the 200 dictionary line crops) and text
 derived from the books (OCR text, dictionary text, lexicon) are shared under research terms, with a credit to the book.
 The credits are in
 [`data/pdf-corpus/CREDITS.tsv`](data/pdf-corpus/CREDITS.tsv).

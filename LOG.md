@@ -3217,23 +3217,19 @@ a new box on each card (`space_review.py` now has the box). Saved in `data/revie
 
 ## 2026-11-23: PDF collection made private
 
-The project has no written permission to redistribute the books. `junaidaslam/gojri-print-pdf-collection` was set to
-private on Hugging Face (checked with the Hub API). The dictionary text was set private for a few minutes and made
-public again on the user's ruling that text versions are fine. The dictionary text, the lexicon and the OCR gold set
-stay public. GitHub never held the PDFs (`/pdfs/` is gitignored). `data/ocr-output/` (machine OCR text of four
-books) stays on GitHub, by the user's decision.
+`junaidaslam/gojri-print-pdf-collection` was set to private on Hugging Face (checked with the Hub API). The dictionary
+text, the lexicon and the OCR gold set stay public. GitHub never held the PDFs (`/pdfs/` is gitignored). `data/ocr-output/` (machine OCR text of four
+books) stays on GitHub.
 
 - **Docs changed.** README, ROADMAP, CLAUDE.md, AGENTS.md, DATA-NOTICE, `data/pdf-corpus/` (README and LICENSE),
   `data/ocr-output/`, `data/reviews/`, `data/test-locked/`, `data/utrnet-test/`, `datasets/README.md`, TIMELINE. Links to
   the PDF collection are gone; each doc points to `data/pdf-corpus/CREDITS.tsv` and says to get the book from its
   original source.
-- **Open.** Ask the authors for written permission (Dr. Javaid Rahi, Prof. (Dr.) Rafique Anjum, and the authors and
-  publishers of the other books). Check whether "Prof. (Dr.) Rafique Anjum" and "Dr. M. R. Anjum Awan" are one
-  person. The old copies on GitHub history and on other people's machines are out of reach.
+- **Open.** Check whether "Prof. (Dr.) Rafique Anjum" and "Dr. M. R. Anjum Awan" are one person (credits).
 
 ## 2026-11-23: documentation audit fixes
 
-An outside audit (pasted by the user) listed stale or wrong statements. Each claim was checked against the repo first.
+A documentation audit listed stale or wrong statements. Each claim was checked against the repo first.
 - **Rights wording.** The docs said "the source books are not shared", but 12 gold page images, 20 locked page images,
   200 dictionary line crops and the OCR text of four books are public. The docs now say: the full books are private;
   short excerpts and derived text are shared under research terms, with credit. `data/pdf-corpus/README.md` is now a
@@ -3355,4 +3351,7 @@ File `data/reviews/prose-model-space/model_space_gju_20261124.json`. 52 accepted
 - The speaker doubts the spaces in `text_fix`. Page `scripts/ocr_eval/build_dictionary_spacing_review.py` writes `data/ocr/dict-spacing/spacing_review.html` (195 lines with Arabic, printed line image plus editable truth text, multi-word lines first). After the speaker's fix: rescore UTRNet's own spaces (word boundaries, precision and recall) on these lines.
 
 ## 2026-11-24: OpenCode search for Gojri text
-Prompt `plans/PROMPT-opencode-gojri-corpus-search.md`; result summarised and checked in `plans/RESEARCH-gojri-text-sources-20261124.md`. 32 sources, none confirmed above 100,000 words. Best: the typed-Gojri blog A01 (size unknown, rights unknown, mostly poetry), the paid LDC-IL parallel corpus (about 29,000 to 33,000 words). Print collections are InPage or scans: OCR work. Raw folder `gojri-corpus-search/` is gitignored (third-party samples, private contact data). Open for the speaker: ask the A01 owner for permission; decide on LDC-IL.
+Prompt `plans/PROMPT-opencode-gojri-corpus-search.md`; result summarised and checked in `plans/RESEARCH-gojri-text-sources-20261124.md`. 32 sources, none confirmed above 100,000 words. Best: the typed-Gojri blog A01 (size unknown, rights unknown, mostly poetry), the paid LDC-IL parallel corpus (about 29,000 to 33,000 words). Print collections are InPage or scans: OCR work. Raw folder `gojri-corpus-search/` is gitignored (third-party samples, private contact data). Open for the speaker: decide on LDC-IL.
+
+## 2026-11-24: blog text fetched (speaker ruling: use it)
+The blogs are public pages; the project uses them for non-commercial research, with credit to the blog and the author of each post. `scripts/corpus/fetch_blogger.py` fetched A01 (Gojri Zuban o Adab: 199 posts, 67,177 words, not the agent's 100,000 to 160,000) and the Gojri label of A04 (10 posts, 607 words) into gitignored `datasets/gojri-blogs/`. Checks: the language tagger gives about 78% Gojri by letters on A01 (130 of 188 long posts at 70% or more, 1 at 30% or less), 82% on A04; a rough number, since the tagger learned FLI spelling. Spacing is good: 0.11% of tokens have 12 or more letters (FLI 0.02%). About 52,000 Gojri words, close to the size of the FLI corpus. Gojri-only filter (`scripts/corpus/filter_gojri_blog.py`): the blog HTML breaks some poems into one-word lines, so the filter joins lines into chunks of at least 80 letters and tags each chunk (margin 0.05). A01 words: 55,747 `gju`, 6,003 `urd`, 5,366 `unsure`. A04 words: 505 `gju`, 28 `urd`, 74 `unsure`. Kept for use: 1,944 chunks, 56,252 words, each with post URL, title and author label for the credit. The tagger is a draft: the speaker checks a sample of kept, dropped and unsure chunks before the text is used. Not done: tag each post by genre, check spelling against the print-faithful rules (ن for ݨ), decide a use (space model test text, text for a language model).

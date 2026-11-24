@@ -11,11 +11,11 @@ archive.org scans) are InPage or scan PDFs, so their text layer is garbage: they
 ## Sources worth acting on
 | Id | What | Size (agent) | Rights | My view |
 |---|---|---|---|---|
-| A01 | Blog `gojrizubanoadab.blogspot.com`: typed Gojri poetry, prose, translation, Unicode Nastaliq | 199 posts; the agent estimates 100,000 to 160,000 words from 6 posts | none stated: ask the owner | Best free lead. The estimate rests on 6 posts, and poetry posts have only 159 to 371 words, so the true count may be far lower. Count it only after permission. The sample (checked) is Gojri (مناں, ڈاہڈی, سجناں, گیو), not Urdu, but it has glued words (`جےکر`, `لگوجگ`): typed text has space errors too. Mostly poetry. |
+| A01 | Blog `gojrizubanoadab.blogspot.com`: typed Gojri poetry, prose, translation, Unicode Nastaliq | 199 posts; the agent estimates 100,000 to 160,000 words from 6 posts | none stated; public page, used with credit to the blog and the author | Best free lead. Fetched on 2026-11-24: 199 posts, 67,177 words, so the agent's estimate was too high; about 78% of letters tag as Gojri. The sample (checked) is Gojri (مناں, ڈاہڈی, سجناں, گیو), not Urdu, but it has glued words (`جےکر`, `لگوجگ`): typed text has space errors too. Mostly poetry. |
 | B01, B02 | LDC-IL parallel text, Gojri with English and 146 Indian languages | 29,139 and 33,476 words, 5,332 sentences, probably overlapping | paid, non-commercial undertaking | Good for translation tests. Sentence set made for grammar coverage, not running text. Price unknown. No purchase without the speaker's decision. |
 | E01 | Losey, *Writing Gojri* (UND thesis, 2002) | 282 pages | thesis | Spelling rules (ݨ, ڵ, InPage habit of writing ن for both). Read it for the orthography decisions. |
 | B03 | Common Voice Gujari 27.0 | 10.67 h, 3,854 sentences | CC0 but "forbidden to re-host" | We hold 26.0. Compare the sentence list with ours before any use. |
-| A04 | Second blog (Rang-e-Watan, Gojri label) | about 8 posts, 2,500 words | none stated | Small. |
+| A04 | Second blog (Rang-e-Watan, Gojri label) | fetched: 10 posts, 607 words | none stated; public page, used with credit | Small. |
 
 ## Dead ends (agent, not re-checked)
 No `gju` in OPUS, FineWeb2, GlotCC, Glot500, HPLT. MADLAD-400 has a `gju` config of 0.4 MB, mostly mislabeled Urdu, Pashto and spam. No Gojri Bible text online

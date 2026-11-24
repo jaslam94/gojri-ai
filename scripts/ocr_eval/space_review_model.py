@@ -6,7 +6,10 @@ own proposals instead, as he did for the old splitter (space_review.py).
 Cards: every glued OCR token of the reviewed rows where the model adds a space, except tokens that are already among the 66
 split cards, and tokens whose added spaces already appear in the speaker's own row text.
   py -3 -X utf8 scripts/ocr_eval/space_review_model.py   writes data/ocr/prose-words/model_space_review.html and model_space_cards.json
+  py -3 -X utf8 scripts/ocr_eval/space_review_model.py --gojri-only   second page (2026-11-24): only cards that the speaker has not checked
+    and that sit on rows he tagged Gojri (data/reviews/prose-language/lang_tags_final_20261124.json); writes model_space_review_gju.html
 """
+import argparse
 import html
 import json
 import re
@@ -39,6 +42,9 @@ def tokens_with_splits(ocr, new):
 
 
 def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--gojri-only", action="store_true")
+    args = ap.parse_args()
     model = P.build_model()
     rev = json.loads((P.R / "prose-banjara-dildarya/review_marks.json").read_text(encoding="utf-8"))
     done = {(c["row"], c["token"]) for c in json.loads((P.R / "prose-word-splits/splits_20261121.json").read_text(encoding="utf-8"))}
@@ -64,7 +70,13 @@ def main():
                 continue
             cards.append({"id": f"{k}|{tok}|{start}", "row": k, "token": tok, "proposal": split, "context": ocr})
     out = ROOT / "data/ocr/prose-words"
-    (out / "model_space_cards.json").write_text(json.dumps(cards, ensure_ascii=False, indent=1), encoding="utf-8")
+    suffix = ""
+    if args.gojri_only:
+        tags = json.loads((ROOT / "data/reviews/prose-language/lang_tags_final_20261124.json").read_text(encoding="utf-8"))
+        done_ids = {k for k, v in json.loads((ROOT / "data/reviews/prose-model-space/model_space_20261123.json").read_text(encoding="utf-8")).items() if v.get("m")}
+        cards = [c for c in cards if c["id"] not in done_ids and tags.get(c["row"], {}).get("tag") == "gju"]
+        suffix = "_gju"
+    (out / f"model_space_cards{suffix}.json").write_text(json.dumps(cards, ensure_ascii=False, indent=1), encoding="utf-8")
     rows = "".join(
         f'<section class="c" data-id="{html.escape(c["id"])}"><div class="m">{html.escape(c["row"])}</div>'
         f'<div class="w">{html.escape(c["token"])} &rarr; <b>{html.escape(c["proposal"])}</b></div><div class="l">{html.escape(c["context"])}</div>'
@@ -79,13 +91,13 @@ def main():
             f'<h3>Model space check ({len(cards)} cards)</h3><p>The arrow shows the glued word and the spaces the model adds. Spaces follow meaning (ruling 2026-11-16). '
             'Accept if every space the model adds is right (more spaces may still be missing). Reject if it cuts a word wrongly. '
             'If the right split is different, or more spaces are missing, write the right words in the box.</p>'
-            '<button id="dl">Download model_space_review.json</button>' + rows +
-            '<script>const KEY="model_space_v1",KF="model_space_v1_text";let m={},x={};try{m=JSON.parse(localStorage.getItem(KEY)||"{}");x=JSON.parse(localStorage.getItem(KF)||"{}")}catch(e){}'
+            '<button id="dl">Download model_space_review' + suffix + '.json</button>' + rows +
+            '<script>const KEY="model_space_v1' + suffix + '",KF="model_space_v1' + suffix + '_text";let m={},x={};try{m=JSON.parse(localStorage.getItem(KEY)||"{}");x=JSON.parse(localStorage.getItem(KF)||"{}")}catch(e){}'
             'document.querySelectorAll(".c").forEach(c=>{const id=c.dataset.id;const t=c.querySelector(".t");if(x[id])t.value=x[id];t.oninput=()=>{x[id]=t.value;try{localStorage.setItem(KF,JSON.stringify(x))}catch(e){}};const p=()=>{c.classList.remove("accept","reject");if(m[id]){c.classList.add(m[id]);c.querySelector(".s").textContent=m[id]}};'
             'c.querySelectorAll("button").forEach(b=>b.onclick=()=>{m[id]=b.dataset.m;try{localStorage.setItem(KEY,JSON.stringify(m))}catch(e){}p()});p()});'
-            'document.getElementById("dl").onclick=()=>{const o={};document.querySelectorAll(".c").forEach(c=>{const id=c.dataset.id;if(m[id]||x[id])o[id]={m:m[id]||"",text:x[id]||c.querySelector(".t").defaultValue}});const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([JSON.stringify(o,null,1)],{type:"application/json"}));a.download="model_space_review.json";a.click()};'
+            'document.getElementById("dl").onclick=()=>{const o={};document.querySelectorAll(".c").forEach(c=>{const id=c.dataset.id;if(m[id]||x[id])o[id]={m:m[id]||"",text:x[id]||c.querySelector(".t").defaultValue}});const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([JSON.stringify(o,null,1)],{type:"application/json"}));a.download="model_space_review' + suffix + '.json";a.click()};'
             '</script></body></html>')
-    (out / "model_space_review.html").write_text(page, encoding="utf-8")
+    (out / f"model_space_review{suffix}.html").write_text(page, encoding="utf-8")
     print(len(cards), "cards;", skipped_known, "tokens skipped (already among the 66 split cards);", skipped_agreed, "skipped (the speaker's row text already has these spaces)")
 
 

@@ -27,3 +27,13 @@ Open Bible Stories gju is audio only. A paid Hugging Face "Gojri" set (B05) carr
 - C05 (archive.org `gojri-eng-dictionary`, 498 pages) is probably the dictionary we already hold (also 498 pages). The agent names "Altaf Aarsi"; our title page says M. R. Anjum Awan. The archive.org "public domain mark" is the uploader's claim, not proof.
 - C03 (a 988-page Gojri Quran translation, CC0 claimed by the uploader, OCR garbled) is a different book from the 717-page one we hold.
 - The largest Gojri text we can get is our own corrected OCR of about 70 books (14,060 pages needing OCR). Corrected text from our own pipeline is worth more than another small web source.
+
+## A01 blog word count (2026-11-25, speaker said yes)
+
+Method: public Blogger feed (`/feeds/posts/default?alt=json`), robots.txt allows it. Raw feed deleted after counting; only counts are kept.
+- 199 posts. 66,599 Arabic-script words, 11,117 distinct words, 580 Latin words. Median post 131 words, longest 3,431. 145 posts have 100 words or more.
+- The earlier estimate of 100,000 to 160,000 words was too high. Real size is about 66,600 words, the same size as the FLI corpus.
+- Most of it is Urdu. A rough marker-word test (crude, not a tagger) calls 47 posts Gojri-like (about 11,800 words) and 147 posts Urdu-like (about 54,700 words). Treat Gojri as roughly 12,000 to 25,000 words. The speaker must tag posts before use.
+- Glue proxy: 95 tokens of 12 letters or more (0.14%). This misses glued short words, so it is a floor.
+- Marker letters ݨ ݩ ڵ: 0 in the whole blog. Typed text uses ن and ں, as expected.
+- Conclusion: the blog is a small, mixed-language source. It does not change the OCR plan. Permission is still unknown.

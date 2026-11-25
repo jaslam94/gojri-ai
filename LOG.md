@@ -3367,3 +3367,10 @@ Speaker approved reading the public feed. 199 posts, 66,599 Arabic-script words 
 
 ## 2026-11-25: model space page with images, all 170 cards marked
 Saved as `data/reviews/prose-model-space/model_space_full_20261125.json`. 71 accept, 99 reject (42% accepted). 103 cards carry a split text that differs from the model proposal; 95 of them are rejects, so they are real truth splits. 7 marks changed against the two older files (marked without images). Next: rescore the space model on these truth splits.
+
+## 2026-11-26: random OCR rows checked (120), space rule retested
+File: `data/reviews/random-ocr-rows/review_marks_20261126.json` (README there). The speaker used only OK or Wrong with a fixed text, no tick boxes; I diffed OCR against the text.
+- 42 of 120 rows identical. Letters 0.60% (31 edits on 5,142), marks 5.6% (7 of 126), spaces 173 missing and 9 extra on 1,314. Spaces are the main error: 64 rows. This is an unbiased sample, so the 0.97% letter error of the 10 reviewed pages was close, and the 12% mark error was too high.
+- One third of letter errors are `گ` read for `ک` (mostly with pesh).
+- Three odd rows (443|19 ok with a fix; 214|5 and 230|15 wrong with no fix): checked against images.
+- Space model on the random rows (98 rows, letters equal): all tokens add 209 spaces, 122 right (58%), 80% of the missing found. Rule "8+ letters": 67 added, 52 right (78%), 34% found, 27 of 41 proposals fully right. The 88% from the 106 poetry cards was optimistic, as expected. The 170 marked cards agree (8+ letters: 29 of 48 right). Do not apply it without a check.

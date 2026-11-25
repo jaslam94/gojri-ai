@@ -1,0 +1,173 @@
+{
+ "model": "openai/whisper-medium",
+ "args": {
+  "model": "openai/whisper-medium",
+  "max_steps": 2500,
+  "lr": 1e-05,
+  "warmup": 300,
+  "batch": 8,
+  "grad_accum": 2,
+  "grad_ckpt": 1,
+  "eval_every": 250,
+  "limit_train": 0,
+  "limit_eval": 0,
+  "seed": 0
+ },
+ "split": {
+  "train": 9041,
+  "dev": 475,
+  "test": 623
+ },
+ "training_speakers": [
+  "S1",
+  "S3",
+  "S5"
+ ],
+ "zero_shot_test": {
+  "all": {
+   "wer": 72.68,
+   "cer": 34.62,
+   "n": 623
+  },
+  "seen_speakers": {
+   "wer": 73.85,
+   "cer": 35.95,
+   "n": 389
+  },
+  "unseen_speakers": {
+   "wer": 70.89,
+   "cer": 32.57,
+   "n": 234
+  }
+ },
+ "dev_history": [
+  {
+   "eval_loss": 0.42796003818511963,
+   "eval_wer": 27.07,
+   "eval_cer": 10.1,
+   "eval_n": 475,
+   "eval_runtime": 147.0843,
+   "eval_samples_per_second": 3.229,
+   "eval_steps_per_second": 0.408,
+   "epoch": 0.4420866489832007,
+   "step": 250
+  },
+  {
+   "eval_loss": 0.3563762605190277,
+   "eval_wer": 18.69,
+   "eval_cer": 6.97,
+   "eval_n": 475,
+   "eval_runtime": 143.1473,
+   "eval_samples_per_second": 3.318,
+   "eval_steps_per_second": 0.419,
+   "epoch": 0.8841732979664014,
+   "step": 500
+  },
+  {
+   "eval_loss": 0.34864866733551025,
+   "eval_wer": 18.97,
+   "eval_cer": 7.71,
+   "eval_n": 475,
+   "eval_runtime": 147.4872,
+   "eval_samples_per_second": 3.221,
+   "eval_steps_per_second": 0.407,
+   "epoch": 1.3262599469496021,
+   "step": 750
+  },
+  {
+   "eval_loss": 0.3463403582572937,
+   "eval_wer": 18.42,
+   "eval_cer": 6.54,
+   "eval_n": 475,
+   "eval_runtime": 144.0651,
+   "eval_samples_per_second": 3.297,
+   "eval_steps_per_second": 0.416,
+   "epoch": 1.7683465959328029,
+   "step": 1000
+  },
+  {
+   "eval_loss": 0.3850629925727844,
+   "eval_wer": 18.39,
+   "eval_cer": 6.39,
+   "eval_n": 475,
+   "eval_runtime": 144.1063,
+   "eval_samples_per_second": 3.296,
+   "eval_steps_per_second": 0.416,
+   "epoch": 2.2104332449160036,
+   "step": 1250
+  },
+  {
+   "eval_loss": 0.3781362473964691,
+   "eval_wer": 18.23,
+   "eval_cer": 7.06,
+   "eval_n": 475,
+   "eval_runtime": 146.6297,
+   "eval_samples_per_second": 3.239,
+   "eval_steps_per_second": 0.409,
+   "epoch": 2.6525198938992043,
+   "step": 1500
+  },
+  {
+   "eval_loss": 0.3951265215873718,
+   "eval_wer": 15.37,
+   "eval_cer": 5.45,
+   "eval_n": 475,
+   "eval_runtime": 144.0525,
+   "eval_samples_per_second": 3.297,
+   "eval_steps_per_second": 0.417,
+   "epoch": 3.094606542882405,
+   "step": 1750
+  },
+  {
+   "eval_loss": 0.41774559020996094,
+   "eval_wer": 17.03,
+   "eval_cer": 5.88,
+   "eval_n": 475,
+   "eval_runtime": 143.8735,
+   "eval_samples_per_second": 3.302,
+   "eval_steps_per_second": 0.417,
+   "epoch": 3.5366931918656057,
+   "step": 2000
+  },
+  {
+   "eval_loss": 0.42445313930511475,
+   "eval_wer": 15.92,
+   "eval_cer": 5.56,
+   "eval_n": 475,
+   "eval_runtime": 144.9198,
+   "eval_samples_per_second": 3.278,
+   "eval_steps_per_second": 0.414,
+   "epoch": 3.9787798408488064,
+   "step": 2250
+  },
+  {
+   "eval_loss": 0.4362950921058655,
+   "eval_wer": 15.55,
+   "eval_cer": 5.42,
+   "eval_n": 475,
+   "eval_runtime": 144.4569,
+   "eval_samples_per_second": 3.288,
+   "eval_steps_per_second": 0.415,
+   "epoch": 4.420866489832007,
+   "step": 2500
+  }
+ ],
+ "fine_tuned_test": {
+  "all": {
+   "wer": 18.33,
+   "cer": 6.88,
+   "n": 623
+  },
+  "seen_speakers": {
+   "wer": 18.2,
+   "cer": 6.42,
+   "n": 389
+  },
+  "unseen_speakers": {
+   "wer": 18.54,
+   "cer": 7.59,
+   "n": 234
+  }
+ },
+ "minutes": 138.1
+}

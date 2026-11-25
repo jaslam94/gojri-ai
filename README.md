@@ -42,7 +42,7 @@ and fine-tune the OCR. See [`CONTRIBUTING.md`](CONTRIBUTING.md).
 | Word spacing | Partly solved for short Gojri idioms, open for prose. On 200 Kahawat-Kosh idioms the OCR text misses 232 of 759 spaces (31%). A character n-gram inserter cut space errors from 116 to 52 on 100 locked idioms. On Banjara and Dil-Darya prose, which is largely Urdu, it adds more wrong spaces than right ones. |
 | Language ID (Gojri or Urdu) | First run on free labels: 78.4% accuracy on group cross-validation. Not yet tested on the speaker's prose tags. |
 | Machine OCR text for review | Published in `data/ocr-output/`: Kahawat-Kosh, Banjara, Dil-Darya and Gojri-Ghazal, mostly unchecked. |
-| ASR | First baseline: Whisper-small fine-tuned on Common Voice Gujari, 22.7% word error on the official test set (21.6% for speakers not in training). |
+| ASR | Whisper-small fine-tuned on Common Voice Gujari: 22.7% word error on the official test set (21.6% for speakers not in training). Whisper-medium, same data: 18.3% (18.5% for unseen speakers). One run each. |
 | Language model | Not started. |
 
 The dated history is in [`docs/TIMELINE.md`](docs/TIMELINE.md). The full experiment journal is [`LOG.md`](LOG.md).

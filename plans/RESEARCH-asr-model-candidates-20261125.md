@@ -7,7 +7,7 @@ Marks: VERIFIED = I opened the source in this session. MEMORY = from my own know
 **Whisper-medium** (769M parameters), same data and split as the small baseline, so the two scores compare directly.
 Job `gojri-asr-whisper-medium-2026-11-25-13-46-21-607`, `ml.g5.xlarge`, batch 8 x 2 accumulation (effective 16),
 gradient checkpointing, lr 1e-5, 2,500 steps, dev check every 250, hard cap 5 hours.
-Result goes to `data/asr/results_whisper-medium_<date>.json` when the job ends.
+**Result: 18.33% word error** on the 623 test clips (small: 22.7%); unseen speakers 18.5% (small 21.6%); character error 6.9% (8.3%). Size alone gave about 4 points. Details: `scripts/asr/README.md`.
 
 ## Candidates, best lead first
 | # | Model | Size | Why it may beat Whisper-small | Open question |

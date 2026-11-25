@@ -38,6 +38,24 @@ Dev word error by step: 23.2% (500), 20.9% (1,000), 18.9% (1,500), 19.3% (2,000)
 The numbers come from `results.json` of the job (copy: `data/asr/results_whisper-small_2026-11-20.json`); the
 per-clip predictions hold Common Voice sentence text and stay local.
 
+## Whisper-medium (2026-11-25)
+
+Job `gojri-asr-whisper-medium-2026-11-25-13-46-21-607` (`ml.g5.xlarge`, 8,539 billable seconds, about $3.4 by the cost of the earlier jobs): same data,
+split and scorer as the small run. Whisper-medium (769M), batch 8 x 2 accumulation (effective 16), gradient checkpointing,
+learning rate 1e-5, warm-up 300, 2,500 steps, dev check every 250; the best dev checkpoint (step 1,750, dev word error 15.4%)
+was kept. One run, one seed.
+
+| Test set | Clips | Word error small | Word error medium | Character error small | Character error medium |
+|---|---|---|---|---|---|
+| No fine-tune (zero-shot, Urdu token) | 623 | 73.8% | 72.7% | 33.2% | 34.6% |
+| Fine-tuned, all | 623 | 22.7% | **18.3%** | 8.3% | **6.9%** |
+| Fine-tuned, speakers seen in training (S1, S3) | 389 | 23.4% | 18.2% | 8.5% | 6.4% |
+| Fine-tuned, speakers never in training (S2, S4, S6) | 234 | 21.6% | 18.5% | 8.1% | 7.6% |
+
+Dev word error by step: 27.1% (250), 18.7% (500), 19.0% (750), 18.4% (1,000), 18.4% (1,250), 18.2% (1,500), 15.4% (1,750),
+17.0% (2,000), 15.9% (2,250), 15.6% (2,500). The curve is noisy and was still near its low at the end; small had its best
+point at 1,500 and got worse after. Results file: `data/asr/results_whisper-medium_2026-11-25.json`.
+
 ## Files
 
 | File | What it does |

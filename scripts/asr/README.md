@@ -56,12 +56,35 @@ Dev word error by step: 27.1% (250), 18.7% (500), 19.0% (750), 18.4% (1,000), 18
 17.0% (2,000), 15.9% (2,250), 15.6% (2,500). The curve is noisy and was still near its low at the end; small had its best
 point at 1,500 and got worse after. Results file: `data/asr/results_whisper-medium_2026-11-25.json`.
 
+## Meta Omnilingual ASR, zero-shot (2026-11-25)
+
+No training on our data. Same 623 test clips and same scorer. Language tag `gju_Arab` (Gojri, Arabic script) where the model takes one.
+Code: `launch_omni.py`, `sm_omni/omni_entry.py`. Result file: `data/asr/results_omniasr_zero-shot_2026-11-25.json`. Predictions stay local (they hold Common Voice text).
+
+| Model | Word error | Character error | Seen speakers | Unseen speakers |
+|---|---|---|---|---|
+| Omnilingual LLM-300M (`gju_Arab`) | 14.9% | 5.4% | 15.5% | 14.1% |
+| Omnilingual LLM-1B (`gju_Arab`) | 13.4% | 4.6% | 13.8% | 12.7% |
+| Omnilingual LLM-3B (`gju_Arab`) | 12.2% | 4.2% | 12.8% | 11.2% |
+| **Omnilingual LLM-7B (`gju_Arab`)** | **9.9%** | **3.2%** | 10.0% | 9.6% |
+| Omnilingual LLM-7B (`urd_Arab`, control) | 10.5% | 3.4% | 10.8% | 10.0% |
+| Omnilingual LLM-7B (no language tag) | 9.9% | 3.1% | 10.0% | 9.6% |
+| Omnilingual CTC-1B | 42.4% | 14.1% | 43.2% | 41.1% |
+| (Whisper-small, fine-tuned) | 22.7% | 8.3% | 23.4% | 21.6% |
+| (Whisper-medium, fine-tuned) | 18.3% | 6.9% | 18.2% | 18.5% |
+
+Error falls with size. The language tag changes little (7B: 9.9% with `gju_Arab` or no tag, 10.5% with the Urdu tag). The CTC model is poor on Gojri.
+**Limit:** Meta may have trained on these public Common Voice clips; I could not check. Treat the numbers as an upper bound on quality until a recording that no
+dataset holds (a speaker's own voice) is scored. Jobs: 17-57-37 (300M, 1B; the 3B step ran out of host memory on `ml.g5.xlarge`) and 18-32-10 (`ml.g5.4xlarge`, 64 GB).
+Versions: the PyPI release names the cards `omniASR_*` and `omniASR_*_v2`; the `_v2` names were not known inside the job, so only the first versions were tested.
+
 ## Files
 
 | File | What it does |
 |---|---|
 | `prepare_cv_split.py` | Builds the split from the local Common Voice copy; `--upload` stages it on private S3. |
 | `launch_whisper.py` | Starts the SageMaker job (`ml.g5.xlarge`, hard time cap). Needs `SAGEMAKER_ROLE_ARN`. |
+| `launch_omni.py` / `sm_omni/omni_entry.py` | Zero-shot test of Omnilingual ASR on the test set (SageMaker, PyTorch 2.8; reinstalls the CUDA 12.8 build of torch that fairseq2 needs; writes errors to `results.json`). |
 | `transcribe.py` | Runs the trained model on your own audio (any format, CPU only). Needs the unpacked `model.tar.gz` of the job and `pip install transformers torch av numpy`. |
 | `sm_whisper/sm_whisper_entry.py` | The job: zero-shot Whisper score, fine-tune, score again; writes `results.json`, `test_predictions.tsv` and the model. |
 

@@ -25,6 +25,8 @@ ap.add_argument("--grad-accum", type=int, default=1)
 ap.add_argument("--grad-ckpt", type=int, default=0)
 ap.add_argument("--lr", type=float, default=1e-5)
 ap.add_argument("--tag", default="small", help="part of the job name")
+ap.add_argument("--lora", type=int, default=0)
+ap.add_argument("--instance", default="ml.g5.xlarge")
 ap.add_argument("--eval-every", type=int, default=500)
 ap.add_argument("--limit-train", type=int, default=0)
 ap.add_argument("--limit-eval", type=int, default=0)
@@ -38,12 +40,12 @@ est = PyTorch(
     framework_version="2.3",
     py_version="py311",
     instance_count=1,
-    instance_type="ml.g5.xlarge",
+    instance_type=args.instance,
     max_run=args.max_run,
     volume_size=100,  # GB; medium checkpoints with optimizer state are about 9 GB each
     hyperparameters={"model": args.model, "max-steps": args.max_steps, "eval-every": args.eval_every,
                      "limit-train": args.limit_train, "limit-eval": args.limit_eval, "batch": args.batch,
-                     "grad-accum": args.grad_accum, "grad-ckpt": args.grad_ckpt, "lr": args.lr},
+                     "grad-accum": args.grad_accum, "grad-ckpt": args.grad_ckpt, "lr": args.lr, "lora": args.lora},
     code_location=f"s3://{BUCKET}/code",
     output_path=f"s3://{BUCKET}/asr/output",
     sagemaker_session=sagemaker.Session(default_bucket=BUCKET),

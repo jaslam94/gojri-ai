@@ -12,7 +12,9 @@ import csv
 import json
 import os
 import re
+import sys
 import time
+import traceback
 import unicodedata
 
 import jiwer
@@ -35,11 +37,22 @@ ap.add_argument("--eval-every", type=int, default=500)
 ap.add_argument("--limit-train", type=int, default=0)
 ap.add_argument("--limit-eval", type=int, default=0, help="cap on dev and test clips (smoke test only)")
 ap.add_argument("--seed", type=int, default=0)
+ap.add_argument("--lora", type=int, default=0, help="1 = LoRA adapters on a frozen fp16 base (for large-v3)")
+ap.add_argument("--lora-r", type=int, default=32)
 args = ap.parse_args()
 
 DATA = os.environ.get("SM_CHANNEL_DATA", "data")
 OUT = os.environ.get("SM_MODEL_DIR", "out")
 os.makedirs(OUT, exist_ok=True)
+
+
+def _crash(t, v, tb):  # the AWS user cannot read job logs: keep the trace in the output and end cleanly
+    with open(os.path.join(OUT, "error.txt"), "w", encoding="utf-8") as f:
+        f.write("".join(traceback.format_exception(t, v, tb)))
+    sys.exit(0)
+
+
+sys.excepthook = _crash
 torch.manual_seed(args.seed)
 np.random.seed(args.seed)
 
@@ -78,7 +91,7 @@ def audio(path):
 
 
 proc = WhisperProcessor.from_pretrained(args.model, language="urdu", task="transcribe")
-model = WhisperForConditionalGeneration.from_pretrained(args.model)
+model = WhisperForConditionalGeneration.from_pretrained(args.model, torch_dtype=torch.float16 if args.lora else torch.float32)
 model.generation_config.language = "urdu"
 model.generation_config.task = "transcribe"
 model.generation_config.forced_decoder_ids = None
@@ -101,6 +114,8 @@ class DS(torch.utils.data.Dataset):
 
 def collate(batch):
     feats = proc.feature_extractor([b["audio"] for b in batch], sampling_rate=16000, return_tensors="pt").input_features
+    if args.lora:  # the base model is fp16; the trainer's eval generate() does not autocast
+        feats = feats.half()
     lab = proc.tokenizer([b["text"] for b in batch], padding=True, return_tensors="pt")
     labels = lab.input_ids.masked_fill(lab.attention_mask.ne(1), -100)
     if (labels[:, 0] == model.config.decoder_start_token_id).all():
@@ -146,6 +161,15 @@ def compute_metrics(pred):
     return scores(proc.batch_decode(lab, skip_special_tokens=True), proc.batch_decode(ids, skip_special_tokens=True))
 
 
+if args.lora:
+    from peft import LoraConfig, get_peft_model
+    if args.grad_ckpt:  # the frozen conv input has no grad; checkpointing needs one
+        model.model.encoder.conv1.register_forward_hook(lambda m, i, o: o.requires_grad_(True))
+    model = get_peft_model(model, LoraConfig(r=args.lora_r, lora_alpha=2 * args.lora_r, lora_dropout=0.05, bias="none",
+                                             target_modules=["q_proj", "k_proj", "v_proj", "out_proj", "fc1", "fc2"]))
+    model.print_trainable_parameters()
+
+
 targs = Seq2SeqTrainingArguments(
     output_dir="/tmp/ckpt", per_device_train_batch_size=args.batch, per_device_eval_batch_size=args.batch,
     learning_rate=args.lr, warmup_steps=args.warmup, max_steps=args.max_steps, fp16=dev_ == "cuda",
@@ -153,12 +177,14 @@ targs = Seq2SeqTrainingArguments(
     eval_strategy="steps", eval_steps=args.eval_every, save_steps=args.eval_every, save_total_limit=2,
     load_best_model_at_end=True, metric_for_best_model="wer", greater_is_better=False, predict_with_generate=True,
     generation_max_length=128, logging_steps=50, report_to=[], remove_unused_columns=False,
-    dataloader_num_workers=4, seed=args.seed)
+    dataloader_num_workers=4, seed=args.seed, label_names=["labels"])
 trainer = Seq2SeqTrainer(model=model, args=targs, train_dataset=DS(train), eval_dataset=DS(dev), data_collator=collate,
                          compute_metrics=compute_metrics, tokenizer=proc.feature_extractor)
 trainer.train()
 results["dev_history"] = [h for h in trainer.state.log_history if "eval_wer" in h]
 best = trainer.model
+if args.lora:
+    best = best.merge_and_unload()  # fold the adapters into the base so the saved model is a plain Whisper
 best.config.use_cache = True
 hyps = transcribe(test, best)
 results["fine_tuned_test"] = report(test, hyps)

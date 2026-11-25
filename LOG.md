@@ -3374,3 +3374,10 @@ File: `data/reviews/random-ocr-rows/review_marks_20261126.json` (README there). 
 - One third of letter errors are `گ` read for `ک` (mostly with pesh).
 - Three odd rows (443|19 ok with a fix; 214|5 and 230|15 wrong with no fix): checked against images.
 - Space model on the random rows (98 rows, letters equal): all tokens add 209 spaces, 122 right (58%), 80% of the missing found. Rule "8+ letters": 67 added, 52 right (78%), 34% found, 27 of 41 proposals fully right. The 88% from the 106 poetry cards was optimistic, as expected. The 170 marked cards agree (8+ letters: 27 of 48 right). Do not apply it without a check.
+
+## 2026-11-25: Omnilingual ASR zero-shot (no training on our data)
+Word error on the 623 test clips: LLM-300M 14.9%, 1B 13.4%, 3B 12.2%, **7B 9.9%** (CER 3.2%; unseen speakers 9.6%); 7B with the Urdu tag 10.5%, with no tag 9.9%; CTC-1B 42.4%. Whisper-medium fine-tuned: 18.3%. Results: `data/asr/results_omniasr_zero-shot_2026-11-25.json`; details and limits in `scripts/asr/README.md`.
+- **Limit.** Meta may have trained on these public Common Voice clips (not verified). A recording by the speaker is the clean test.
+- **Jobs.** The first job failed at the 3B step (16 GB host RAM on `ml.g5.xlarge`, about $0.70); the 3B and 7B runs went to `ml.g5.4xlarge` (2,228 s, about $1.3). The `_v2` card names were unknown inside the job, so only the first model versions were tested. Quotas are per instance type (1 each), so two jobs on different types can run at once.
+- **Fine-tuning exists.** The repo has `workflows/recipes/wav2vec2/asr/configs/llm-finetune.yaml` and CTC recipes; data must be prepared in the repo's parquet or manifest format.
+- **Large-v3.** `sm_whisper_entry.py` gained `--lora`; the first smoke test on `ml.g5.2xlarge` trained 10 steps, then crashed in the dev check (fp32 features into an fp16 model). Fixed; second smoke test pending.

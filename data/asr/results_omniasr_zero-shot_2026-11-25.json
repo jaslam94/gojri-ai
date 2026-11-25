@@ -1,0 +1,159 @@
+{
+ "note": "Zero-shot test of Meta Omnilingual ASR (no training on our data) on the 623 official Common Voice Gujari test clips. Same scorer as the Whisper runs. Jobs: gojri-asr-omni-2026-11-25-17-57-37-446 (300M, 1B; ml.g5.xlarge) and gojri-asr-omni-2026-11-25-18-32-10-843 (3B, 7B, CTC-1B; ml.g5.4xlarge). The 3B step of the first job ran out of host memory. Meta may have trained on these public clips; not verified.",
+ "runs": [
+  {
+   "model": "omniASR_LLM_300M",
+   "lang": "gju_Arab",
+   "seconds": 384,
+   "test": {
+    "all": {
+     "wer": 14.92,
+     "cer": 5.39,
+     "n": 623
+    },
+    "seen_speakers": {
+     "wer": 15.47,
+     "cer": 5.79,
+     "n": 389
+    },
+    "unseen_speakers": {
+     "wer": 14.08,
+     "cer": 4.78,
+     "n": 234
+    }
+   }
+  },
+  {
+   "model": "omniASR_LLM_1B",
+   "lang": "gju_Arab",
+   "seconds": 413,
+   "test": {
+    "all": {
+     "wer": 13.37,
+     "cer": 4.64,
+     "n": 623
+    },
+    "seen_speakers": {
+     "wer": 13.8,
+     "cer": 4.89,
+     "n": 389
+    },
+    "unseen_speakers": {
+     "wer": 12.72,
+     "cer": 4.25,
+     "n": 234
+    }
+   }
+  },
+  {
+   "model": "omniASR_LLM_3B",
+   "lang": "gju_Arab",
+   "seconds": 420,
+   "test": {
+    "all": {
+     "wer": 12.19,
+     "cer": 4.23,
+     "n": 623
+    },
+    "seen_speakers": {
+     "wer": 12.82,
+     "cer": 4.51,
+     "n": 389
+    },
+    "unseen_speakers": {
+     "wer": 11.23,
+     "cer": 3.8,
+     "n": 234
+    }
+   }
+  },
+  {
+   "model": "omniASR_LLM_7B",
+   "lang": "gju_Arab",
+   "seconds": 518,
+   "test": {
+    "all": {
+     "wer": 9.86,
+     "cer": 3.15,
+     "n": 623
+    },
+    "seen_speakers": {
+     "wer": 10.02,
+     "cer": 3.33,
+     "n": 389
+    },
+    "unseen_speakers": {
+     "wer": 9.63,
+     "cer": 2.87,
+     "n": 234
+    }
+   }
+  },
+  {
+   "model": "omniASR_LLM_7B",
+   "lang": "urd_Arab",
+   "seconds": 447,
+   "test": {
+    "all": {
+     "wer": 10.47,
+     "cer": 3.39,
+     "n": 623
+    },
+    "seen_speakers": {
+     "wer": 10.8,
+     "cer": 3.63,
+     "n": 389
+    },
+    "unseen_speakers": {
+     "wer": 9.98,
+     "cer": 3.02,
+     "n": 234
+    }
+   }
+  },
+  {
+   "model": "omniASR_LLM_7B",
+   "lang": null,
+   "seconds": 403,
+   "test": {
+    "all": {
+     "wer": 9.86,
+     "cer": 3.14,
+     "n": 623
+    },
+    "seen_speakers": {
+     "wer": 10.02,
+     "cer": 3.33,
+     "n": 389
+    },
+    "unseen_speakers": {
+     "wer": 9.63,
+     "cer": 2.85,
+     "n": 234
+    }
+   }
+  },
+  {
+   "model": "omniASR_CTC_1B",
+   "lang": null,
+   "seconds": 24,
+   "test": {
+    "all": {
+     "wer": 42.36,
+     "cer": 14.11,
+     "n": 623
+    },
+    "seen_speakers": {
+     "wer": 43.18,
+     "cer": 14.47,
+     "n": 389
+    },
+    "unseen_speakers": {
+     "wer": 41.12,
+     "cer": 13.55,
+     "n": 234
+    }
+   }
+  }
+ ]
+}

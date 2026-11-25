@@ -44,6 +44,7 @@ per-clip predictions hold Common Voice sentence text and stay local.
 |---|---|
 | `prepare_cv_split.py` | Builds the split from the local Common Voice copy; `--upload` stages it on private S3. |
 | `launch_whisper.py` | Starts the SageMaker job (`ml.g5.xlarge`, hard time cap). Needs `SAGEMAKER_ROLE_ARN`. |
+| `transcribe.py` | Runs the trained model on your own audio (any format, CPU only). Needs the unpacked `model.tar.gz` of the job and `pip install transformers torch av numpy`. |
 | `sm_whisper/sm_whisper_entry.py` | The job: zero-shot Whisper score, fine-tune, score again; writes `results.json`, `test_predictions.tsv` and the model. |
 
 Scoring: word error (WER) and character error (CER) after one normalisation on both sides (NFC, combining marks and

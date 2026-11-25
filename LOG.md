@@ -3358,3 +3358,8 @@ The blogs are public pages; the project uses them for non-commercial research, w
 
 ## 2026-11-25: blog word count (A01)
 Speaker approved reading the public feed. 199 posts, 66,599 Arabic-script words (not 100,000 to 160,000). About 12,000 to 25,000 of them look Gojri by a crude marker test; the rest is Urdu. No ݨ ݩ ڵ at all. Raw feed deleted; counts kept in `plans/RESEARCH-gojri-text-sources-20261124.md`.
+
+## 2026-11-25: ASR, Whisper-medium run and model candidates
+- `scripts/asr/transcribe.py` runs the trained Whisper-small on any audio (CPU). One Common Voice test clip: first 10 words right, then 5 extra words.
+- Candidate list: `plans/RESEARCH-asr-model-candidates-20261125.md`. Finding: Meta Omnilingual ASR lists `gju_Arab`; MMS 1B has no `gju`.
+- Job `gojri-asr-whisper-medium-2026-11-25-13-46-21-607` (Whisper-medium, batch 8 x 2, gradient checkpointing, dev check every 250, hard cap 5 h). `sm_whisper_entry.py` and `launch_whisper.py` gained `--grad-accum`, `--grad-ckpt`, `--lr`, `--batch`, `--tag` and a 100 GB volume. The role ARN came from `aws iam list-roles` (the user has no `iam:GetRole`), used in memory only.

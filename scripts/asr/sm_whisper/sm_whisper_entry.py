@@ -28,7 +28,9 @@ ap.add_argument("--model", default="openai/whisper-small")
 ap.add_argument("--max-steps", type=int, default=2500)
 ap.add_argument("--lr", type=float, default=1e-5)
 ap.add_argument("--warmup", type=int, default=300)
-ap.add_argument("--batch", type=int, default=16)
+ap.add_argument("--batch", type=int, default=16, help="per-step batch; effective batch = batch x grad-accum")
+ap.add_argument("--grad-accum", type=int, default=1)
+ap.add_argument("--grad-ckpt", type=int, default=0, help="1 = gradient checkpointing (less GPU memory, slower; for medium and larger)")
 ap.add_argument("--eval-every", type=int, default=500)
 ap.add_argument("--limit-train", type=int, default=0)
 ap.add_argument("--limit-eval", type=int, default=0, help="cap on dev and test clips (smoke test only)")
@@ -80,6 +82,8 @@ model = WhisperForConditionalGeneration.from_pretrained(args.model)
 model.generation_config.language = "urdu"
 model.generation_config.task = "transcribe"
 model.generation_config.forced_decoder_ids = None
+if args.grad_ckpt:
+    model.config.use_cache = False  # the cache and gradient checkpointing do not mix during training
 dev_ = "cuda" if torch.cuda.is_available() else "cpu"
 
 
@@ -145,6 +149,7 @@ def compute_metrics(pred):
 targs = Seq2SeqTrainingArguments(
     output_dir="/tmp/ckpt", per_device_train_batch_size=args.batch, per_device_eval_batch_size=args.batch,
     learning_rate=args.lr, warmup_steps=args.warmup, max_steps=args.max_steps, fp16=dev_ == "cuda",
+    gradient_accumulation_steps=args.grad_accum, gradient_checkpointing=bool(args.grad_ckpt),
     eval_strategy="steps", eval_steps=args.eval_every, save_steps=args.eval_every, save_total_limit=2,
     load_best_model_at_end=True, metric_for_best_model="wer", greater_is_better=False, predict_with_generate=True,
     generation_max_length=128, logging_steps=50, report_to=[], remove_unused_columns=False,
@@ -154,6 +159,7 @@ trainer = Seq2SeqTrainer(model=model, args=targs, train_dataset=DS(train), eval_
 trainer.train()
 results["dev_history"] = [h for h in trainer.state.log_history if "eval_wer" in h]
 best = trainer.model
+best.config.use_cache = True
 hyps = transcribe(test, best)
 results["fine_tuned_test"] = report(test, hyps)
 results["minutes"] = round((time.time() - t0) / 60, 1)

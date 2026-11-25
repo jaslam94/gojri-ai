@@ -14,3 +14,7 @@ hold letter fixes by the speaker and are left out): 79 right, 49 wrong, 10 missi
 By token length (letters): under 6: 16 right, 29 wrong; 6 to 7: 21 right, 14 wrong; 8 to 10: 18 right, 4 wrong; 11 or more: 24 right, 2 wrong.
 30 of the 54 rejects are tokens under 6 letters (`مانہ` cut to `ما نہ` seven times, `عارف`, `انجم`, `جانے`). Rule "token of 8 or more letters":
 42 right, 6 wrong. The threshold was picked on this same sample, so the numbers are optimistic. Needs a fresh test before use.
+
+## Full page with images (2026-11-25)
+
+`model_space_full_20261125.json`: the speaker marked all 170 cards of `model_space_review.html` again, now with the printed row image on each card. 71 accept, 99 reject. It repeats the 55 cards of `model_space_20261123.json` (1 mark changed: `سے قرا قرم` reject to accept) and the 106 cards of `model_space_gju_20261124.json` (6 marks changed). Where the two files differ, the 2026-11-25 file is newer and was marked with the image. By row tag: Gojri rows 54 accept, 54 reject; Urdu rows 17 accept, 38 reject. Fields `m` (accept or reject) and `text` (the speaker's split).

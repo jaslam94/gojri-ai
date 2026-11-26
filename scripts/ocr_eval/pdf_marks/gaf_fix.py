@@ -9,6 +9,10 @@ Only text changes; nothing else. Input and output are run folders (<run>/<book>/
 
   py -3 -X utf8 scripts/ocr_eval/pdf_marks/gaf_fix.py dump --book Banjara --pages 12 150 300     (at most 6 pages per call; pymupdf crashes after more)
   py -3 -X utf8 scripts/ocr_eval/pdf_marks/gaf_fix.py fix --run data/ocr/prose-aws-full2 --out data/ocr/prose-gaffix --trace-dir <dir>
+  py -3 -X utf8 scripts/ocr_eval/pdf_marks/gaf_fix.py kahawat --run data/ocr/kahawat-final2 --out data/ocr/kahawat-final3 --trace-dir <dir>
+Kahawat-Kosh (two columns, entries; row y in px at 200 dpi, idiom in the right column x >= 215 pt, meaning in the left): the same rule per field, over all rows of the field.
+Check on Kahawat without the speaker: the book is alphabetical. OCR گُ at the start of an idiom on pages 120 to 130 (the ک section) must be کُ, and on pages 132 to 137 (the گ section) it is گُ.
+Result: 14 of 14 in the ک section have no glyph 60, 8 of 8 in the گ section have it.
 """
 import argparse
 import glob
@@ -44,6 +48,18 @@ def row_counts(glyphs, row):
     return len(pesh), sum(any(abs(p[2] - q[2]) < NEAR and abs(p[3] - q[3]) < 14 for q in gaf) for p in pesh)
 
 
+def field_counts(glyphs, rows_px, xlo, xhi):
+    """Kahawat: (pesh glyphs, pesh glyphs with a glyph 60 near them) over the rows (y0, y1 in px at 200 dpi) of one field, in the column xlo..xhi (pt)."""
+    seen = []
+    for ya, yb in rows_px:
+        y0, y1 = ya * 72 / 200, yb * 72 / 200
+        seen += [g for g in glyphs if y0 - 4 <= g[3] <= y1 + 4 and xlo <= g[2] <= xhi]
+    seen = list(dict.fromkeys(seen))
+    pesh = [g for g in seen if (g[0], g[1]) == PESH]
+    gaf = [g for g in seen if (g[0], g[1]) == GAF]
+    return len(pesh), sum(any(abs(p[2] - q[2]) < NEAR and abs(p[3] - q[3]) < 14 for q in gaf) for p in pesh)
+
+
 def main():
     ap = argparse.ArgumentParser()
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -55,7 +71,13 @@ def main():
     f.add_argument("--run", required=True)
     f.add_argument("--out", required=True)
     f.add_argument("--trace-dir", required=True)
+    k = sub.add_parser("kahawat")
+    k.add_argument("--run", required=True)
+    k.add_argument("--out", required=True)
+    k.add_argument("--trace-dir", required=True)
     a = ap.parse_args()
+    if a.cmd == "kahawat":
+        return kahawat(a)
     if a.cmd == "dump":
         dump(a.book, a.pages, a.trace_dir)
         return
@@ -87,6 +109,38 @@ def main():
                 stats["kept"] += 1
             else:
                 stats["ambiguous_rows"] += 1
+        Path(fn).write_text(json.dumps(j, ensure_ascii=False, indent=1), encoding="utf-8")
+    print(json.dumps(stats))
+
+
+def kahawat(a):
+    stats = {"fields_with_gaf_pesh": 0, "fields_changed": 0, "letters_changed": 0, "kept": 0, "ambiguous": 0, "few_pesh_glyphs": 0, "no_trace": 0}
+    shutil.copytree(a.run, a.out, dirs_exist_ok=True)
+    for fn in sorted(glob.glob(f"{a.out}/page_*.json")):
+        j = json.loads(Path(fn).read_text(encoding="utf-8"))
+        tf = Path(a.trace_dir) / f"Kahawat-Kosh_{j['page']}.json"
+        glyphs = [tuple(x) for x in json.loads(tf.read_text(encoding="utf-8"))] if tf.exists() else None
+        for e in j.get("entries", []):
+            for fld, rows, lo, hi in (("idiom", e.get("yr") or [], 215, 9999), ("meaning", e.get("yl") or [], 0, 215)):
+                n = len(GAF_PESH.findall(e.get(fld, "")))
+                if not n:
+                    continue
+                stats["fields_with_gaf_pesh"] += 1
+                if glyphs is None:
+                    stats["no_trace"] += 1
+                    continue
+                npesh, b = field_counts(glyphs, rows, lo, hi)
+                if npesh < n:
+                    stats["few_pesh_glyphs"] += 1
+                elif b == 0:
+                    e[fld + "_before_gaf_fix"] = e[fld]
+                    e[fld] = GAF_PESH.sub(lambda m: "ک" + m.group(1), e[fld])
+                    stats["fields_changed"] += 1
+                    stats["letters_changed"] += n
+                elif b >= n:
+                    stats["kept"] += 1
+                else:
+                    stats["ambiguous"] += 1
         Path(fn).write_text(json.dumps(j, ensure_ascii=False, indent=1), encoding="utf-8")
     print(json.dumps(stats))
 

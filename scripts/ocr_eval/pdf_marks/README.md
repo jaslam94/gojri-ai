@@ -46,3 +46,10 @@ Whole Banjara and Dil-Darya run: 482 rows have گُ; 229 rows change (246 letter
 On the 14 labeled rows that carry گُ or کُ: 6 fixed, 0 broken, 1 row unchanged (truth is ٹ, not a گ/ک case). Random-row letter error 0.6% to 0.5%.
 The rule was found on the first 10 cases and confirmed on 8 older ones; it is a small test. Other books may use other glyph ids: check before use.
 Output goes to a new run folder (`data/ocr/prose-gaffix`, local); the original run is not changed.
+
+### Kahawat-Kosh (2026-11-26)
+`gaf_fix.py kahawat --run data/ocr/kahawat-final2 --out data/ocr/kahawat-final3 --trace-dir <dir>`. The book is alphabetical, which gives labels without the speaker:
+OCR گُ at the start of an idiom on pages 120 to 130 (the ک section) must be کُ: 14 of 14 have no glyph 60. On pages 132 to 137 (the گ section) it is گُ: 8 of 8 have glyph 60.
+Run: 125 fields with گُ, 88 changed (94 letters: `کُتی`, `کُتا`, `کُجھ`, `کُھلا`, `بالکُل`, `کُوڑ`), 37 kept (`گڑ`, `گناہ`, `گذریو`, `گجر`, `گنگا`), 0 unclear.
+Reviewed cards (60 fields per review file): first-30 unchanged (letter error 2.1%), second-30 1.1% to 0.9% (card 12 `گُبا` is now `کُبا`); mark error unchanged (2 of 36, 2 of 69).
+Not caught: a `ک` read as `گ` when the pesh went to another letter (second-30 card 14, `گمہا` for `کُمہا`).

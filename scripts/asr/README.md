@@ -85,6 +85,7 @@ Versions: the PyPI release names the cards `omniASR_*` and `omniASR_*_v2`; the `
 | `prepare_cv_split.py` | Builds the split from the local Common Voice copy; `--upload` stages it on private S3. |
 | `launch_whisper.py` | Starts the SageMaker job (`ml.g5.xlarge`, hard time cap). Needs `SAGEMAKER_ROLE_ARN`. |
 | `launch_omni.py` / `sm_omni/omni_entry.py` | Zero-shot test of Omnilingual ASR on the test set (SageMaker, PyTorch 2.8; reinstalls the CUDA 12.8 build of torch that fairseq2 needs; writes errors to `results.json`). |
+| `omni_ft/make_parquet.py` | Converts our split (train, dev, test) to the parquet layout of the Omnilingual training recipe (flac 16 kHz, text, sample count) plus summary TSV and dataset card. Plan: `plans/PLAN-omnilingual-finetune-20261126.md`. |
 | `transcribe.py` | Runs the trained model on your own audio (any format, CPU only). Needs the unpacked `model.tar.gz` of the job and `pip install transformers torch av numpy`. |
 | `sm_whisper/sm_whisper_entry.py` | The job: zero-shot Whisper score, fine-tune, score again; writes `results.json`, `test_predictions.tsv` and the model. |
 

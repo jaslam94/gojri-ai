@@ -6,14 +6,19 @@ Columns: text (string), audio_bytes (list<int8>, flac at 16 kHz mono), audio_siz
 Also writes OUT/language_distribution_0.tsv (corpus, language, hours) and OUT/gojri_cv_gju26.yaml (the dataset card; DATA_PATH is
 replaced by the job). The test split is written for scoring only; the recipe trains on `train` and validates on `dev`.
 
-Text: NFC, punctuation removed, spaces collapsed; short vowel marks are kept (the scorer removes marks on both sides).
+Text: NFC, punctuation removed, then every character the Omnilingual tokenizer cannot represent is dropped (with --tokenizer), spaces
+collapsed. Checked 2026-11-26: 2.35% of the training label characters (short vowel marks damma, kasra, fatha, shadda, sukun, and a few
+symbols) are unknown to `omniASR_tokenizer_v1`; kept in the labels they would become unknown tokens. The scorer removes marks on both sides,
+so dropping them does not change the score.
 Common Voice terms forbid re-hosting: keep OUT local or on private S3.
 
-Run: py -3 -X utf8 scripts/asr/omni_ft/make_parquet.py OUT_DIR [--limit N]
+Run: py -3 -X utf8 scripts/asr/omni_ft/make_parquet.py OUT_DIR --tokenizer omniASR_tokenizer.model [--limit N]
+Tokenizer file: https://dl.fbaipublicfiles.com/mms/omniASR_tokenizer.model (the 7B LLM uses omniASR_tokenizer_v7.model).
 """
 import argparse
 import csv
 import io
+import collections
 import re
 import unicodedata
 from pathlib import Path
@@ -22,6 +27,7 @@ import librosa
 import numpy as np
 import pyarrow as pa
 import pyarrow.parquet as pq
+import sentencepiece as spm
 import soundfile as sf
 
 ROOT = Path(__file__).resolve().parents[3]
@@ -31,9 +37,27 @@ SR = 16000
 LANG = "gju_Arab"
 
 
+SP = None
+DROPPED = collections.Counter()
+
+
+def known(c):
+    if c == " ":
+        return True
+    return SP.piece_to_id(c) != SP.unk_id() and SP.encode(c) != [SP.unk_id()]
+
+
 def clean(s):
     s = unicodedata.normalize("NFC", s)
     s = "".join(c for c in s if not unicodedata.category(c).startswith("P"))
+    if SP is not None:
+        kept = []
+        for c in s:
+            if known(c):
+                kept.append(c)
+            else:
+                DROPPED[c] += 1
+        s = "".join(kept)
     return re.sub(r"\s+", " ", s).strip()
 
 
@@ -52,7 +76,12 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("out")
     ap.add_argument("--limit", type=int, default=0, help="clips per split (test runs)")
+    ap.add_argument("--tokenizer", help="sentencepiece model of the Omnilingual tokenizer; drops unknown characters from the text")
     a = ap.parse_args()
+    global SP
+    if a.tokenizer:
+        SP = spm.SentencePieceProcessor()
+        SP.load(a.tokenizer)
     out = Path(a.out)
     hours = 0.0
     for split in ("train", "dev", "test"):
@@ -82,6 +111,8 @@ def main():
         "name: gojri_cv_gju26\ndataset_family: mixture_parquet_asr_dataset\ndataset_config:\n  data: DATA_PATH/version=0\n"
         "tokenizer_ref: omniASR_tokenizer_v1\n", encoding="utf-8")
     print("total hours", round(hours, 3), "->", out)
+    if SP is not None:
+        print("dropped characters:", {f"U+{ord(c):04X}": n for c, n in DROPPED.most_common()})
 
 
 if __name__ == "__main__":

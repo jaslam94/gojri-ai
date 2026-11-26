@@ -10,7 +10,7 @@ rewritten on 2026-11-20. The August draft and its strategy reviews are in the gi
 |---|---|
 | 0. Data hygiene and measurement | Done. Catalog, deduplication, triage, 12-page gold set, speaker review sets. |
 | 1. Text extraction (OCR) | A working OCR path for clean printed Nastaliq. Four NOORIN books read in full (Kahawat-Kosh, Banjara, Dil-Darya, Gojri-Ghazal); the machine text is in `data/ocr-output/` for review. Word spacing is partly solved for short Gojri idioms (character n-gram inserter), not for prose; a language tag per line is next. Not yet tested on an unseen book or on photographed scans. |
-| 2. Speech recognition (ASR) | First baseline done: Whisper-small, 22.7% word error on the Common Voice test set. |
+| 2. Speech recognition (ASR) | Fine-tuned on Common Voice: Whisper-small 22.7% and Whisper-medium 18.3% word error on the test set. Meta Omnilingual ASR LLM-7B with no training on our data: 9.9% (possible overlap with Meta's training data). Next: fine-tune Omnilingual; score a recording from outside Common Voice. |
 | 3. Language model and translation | Not started. Waits for more text. |
 | 4. Publish and promote | Three datasets public on Hugging Face (the PDF collection is private). Repository public. |
 
@@ -94,6 +94,12 @@ error, down from 159% zero-shot). Expect a rough but usable first model.
   8.3% character error (73.8% and 33.2% without fine-tuning); 21.6% for the three speakers never seen in training.
   Dev word error was lowest at step 1,500 of 2,500, then rose (overfitting). Next: more speakers and hours, and an
   error review of the test predictions by a speaker.
+- **Bigger Whisper (2026-11-25):** Whisper-medium, same data and split: 18.3% word error, 6.9% character error; unseen
+  speakers 18.5%. One run.
+- **Meta Omnilingual ASR, zero-shot (2026-11-25):** its language list holds `gju_Arab`. Word error with no training on
+  our data: LLM-300M 14.9%, 1B 13.4%, 3B 12.2%, 7B 9.9%; the CTC-1B model 42.4%. Meta may have trained on these public
+  clips (not checked), so the clean test is a recording from outside Common Voice. Next: fine-tune the Omnilingual LLM
+  models on our split (`plans/PLAN-omnilingual-finetune-20261126.md`).
 - **More data:** new recordings through the normal Common Voice flow (more speakers, past 15 to 20 hours). Sentences
   from the OCR'd books can be read aloud in future drives.
 - **YouTube audio:** unlabeled, so it is not direct training data. Possible later uses: self-supervised pretraining or
@@ -138,10 +144,9 @@ Adapt an existing Urdu-capable model to Gojri with transfer learning (for exampl
 
 ## Cross-cutting
 
-- **Budget.** $150 AWS credit. The LOG estimates about $8 spent by 11 November, about $2.50 for the 19 November
-  book run and about $1.80 for the three jobs of 20 November (Gojri-Ghazal, ASR smoke test, ASR baseline). The credit
-  goes to short GPU runs on SageMaker (one `ml.g5.xlarge` at a time), not to vision APIs. Free notebooks (Colab,
-  Kaggle) are an option for longer ASR training.
+- **Budget.** $150 AWS credit. Cost Explorer (credits excluded), read 2026-11-26: gross usage $31.08 up to 25 November: $0.35 in August, $1.08 in October, $29.64 in November (SageMaker $24.22, Bedrock $5.05, S3 $0.32). The most recent day can lag. SageMaker training rates from the bill: `ml.g5.xlarge` $1.41 per hour,
+  `ml.g5.2xlarge` $1.52, `ml.g5.4xlarge` $2.03. Quotas are one job per instance type, so jobs of different types can run
+  together. The credit goes to GPU runs on SageMaker, not to vision APIs.
 - **Measure first.** Every new method gets a score on the gold pages or a speaker-checked set before it touches
   corpus text. Report Arabic-letter error for OCR, with its conditions.
 - **Learning.** Each stage is also a chance to learn the ideas behind it as they come up.

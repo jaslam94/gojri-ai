@@ -66,7 +66,7 @@ Code: `launch_omni.py`, `sm_omni/omni_entry.py`. Result file: `data/asr/results_
 | Omnilingual LLM-300M (`gju_Arab`) | 14.9% | 5.4% | 15.5% | 14.1% |
 | Omnilingual LLM-1B (`gju_Arab`) | 13.4% | 4.6% | 13.8% | 12.7% |
 | Omnilingual LLM-3B (`gju_Arab`) | 12.2% | 4.2% | 12.8% | 11.2% |
-| **Omnilingual LLM-7B (`gju_Arab`)** | **9.9%** | **3.2%** | 10.0% | 9.6% |
+| **Omnilingual LLM-7B (`gju_Arab`)** | **9.9%** | **3.15%** | 10.0% | 9.6% |
 | Omnilingual LLM-7B (`urd_Arab`, control) | 10.5% | 3.4% | 10.8% | 10.0% |
 | Omnilingual LLM-7B (no language tag) | 9.9% | 3.1% | 10.0% | 9.6% |
 | Omnilingual CTC-1B | 42.4% | 14.1% | 43.2% | 41.1% |

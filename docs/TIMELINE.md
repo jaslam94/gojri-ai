@@ -85,6 +85,11 @@ later correction is noted.
   3 speakers) reaches 22.7% word error on the official test set, from 73.8% without fine-tuning; 21.6% for speakers
   not in training.
 
+- **25 Nov (ASR model search).** Whisper-medium, same data and split, reaches 18.3% word error (small: 22.7%). Meta
+  Omnilingual ASR, with no training on our data, reaches 14.9% (LLM-300M), 13.4% (1B), 12.2% (3B) and 9.9% (7B) on the same
+  623 test clips; its language list holds `gju_Arab`. Meta may have trained on these public clips, so a recording from
+  outside Common Voice is the clean test.
+
 - **21 Nov (word spacing).** The speaker reviewed 200 Kahawat-Kosh cards and wrote the text as words. The OCR text
   misses 232 of 759 spaces (letter error 1.1%); the word-list splitter adds 101 spaces, 86 of them right, and closes about a third of the gap (see
   `data/reviews/kahawat-spacing/README.md`).

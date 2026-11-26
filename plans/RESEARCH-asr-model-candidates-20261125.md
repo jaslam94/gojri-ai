@@ -20,6 +20,20 @@ gradient checkpointing, lr 1e-5, 2,500 steps, dev check every 250, hard cap 5 ho
 | 6 | **Meta MMS 1B** | 1B | Covers 1,100+ languages. VERIFIED: the vocabulary has 1,198 keys and no `gju` key. | Not a lead unless an adapter is trained. Its license is CC BY-NC (MEMORY). |
 | 7 | **Seamless M4T v2 large** | 2.3B (MEMORY) | Supports Urdu. | Heavy; CC BY-NC (MEMORY); little reason to prefer it over 1 to 4. |
 
+## Results so far (all on the 623 test clips, one scorer)
+| Model | Training on our data | Word error | Character error |
+|---|---|---|---|
+| Whisper-small | fine-tuned | 22.7% | 8.3% |
+| Whisper-medium | fine-tuned | 18.3% | 6.9% |
+| Omnilingual LLM-300M, `gju_Arab` | none | 14.9% | 5.4% |
+| Omnilingual LLM-1B | none | 13.4% | 4.6% |
+| Omnilingual LLM-3B | none | 12.2% | 4.2% |
+| **Omnilingual LLM-7B** | none | **9.9%** | **3.15%** |
+| Omnilingual CTC-1B | none | 42.4% | 14.1% |
+
+Source: `data/asr/results_whisper-medium_2026-11-25.json`, `data/asr/results_omniasr_zero-shot_2026-11-25.json`. Open risk: Meta may have trained on these public Common Voice clips (not checked).
+Whisper large-v3 (LoRA) is smoke-tested, not run: Omnilingual-7B already scores below what Whisper-medium reached.
+
 ## Order I suggest
 1. Whisper-medium result (running). It tells us what size alone gives.
 2. Omnilingual ASR zero-shot on the 623 test clips (inference only, cheap). If it already reads Gojri, fine-tune it.

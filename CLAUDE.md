@@ -20,7 +20,7 @@ datasets exist (see Status). We research, discuss, and agree on a roadmap togeth
 - Prefers to research and discuss deeply before jumping to implementation.
 
 ## Resources available
-- $150 USD in free AWS credits (about $12 spent by 2026-11-23, by the LOG estimates).
+- $150 USD in free AWS credits. Cost Explorer (credits excluded), read 2026-11-26: gross usage $31.08 up to 25 November: $0.35 in August, $1.08 in October, $29.64 in November (SageMaker $24.22, Bedrock $5.05, S3 $0.32). The most recent day can lag.
 
 ## The language: Gojri / Gujari (ISO 639-3: gju)
 - Indo-Aryan language spoken by Gujjar communities across Jammu & Kashmir, Himachal
@@ -528,6 +528,15 @@ do not rebuild it blindly with `scripts/build_manifest.py`.
 
 ## Status
 Newest first. The dated history is in `docs/TIMELINE.md`; the plan is in `ROADMAP.md`.
+
+**ASR model search (2026-11-25).** Test set: the 623 official Common Voice clips, one scorer for all models (`scripts/asr/`).
+- Word error: Whisper-small fine-tuned 22.7%; Whisper-medium fine-tuned 18.3% (6.9% character error; unseen speakers 18.5%); Meta Omnilingual ASR
+  with no training on our data: LLM-300M 14.9%, 1B 13.4%, 3B 12.2%, 7B 9.9% (3.15% character error; unseen speakers 9.6%), CTC-1B 42.4%.
+  The language tag matters little (7B: Gojri tag 9.9%, no tag 9.9%, Urdu tag 10.5%). Files: `data/asr/results_whisper-medium_2026-11-25.json`,
+  `data/asr/results_omniasr_zero-shot_2026-11-25.json`, `plans/RESEARCH-asr-model-candidates-20261125.md`.
+- **Caveat.** Meta may have trained on these public Common Voice clips (not checked). A recording from outside Common Voice is the clean test; the speaker will make one.
+- Whisper large-v3 with LoRA is built and smoke-tested (`--lora 1` in `sm_whisper_entry.py`); the full run is not started. Next: fine-tune Omnilingual (`plans/PLAN-omnilingual-finetune-20261126.md`).
+- Jobs of different instance types can run together (quota is one per type). Billed training rates: `ml.g5.xlarge` $1.41 per hour, `ml.g5.2xlarge` $1.52, `ml.g5.4xlarge` $2.03.
 
 **Spacing model, language ID and shadda (2026-11-23).**
 - Character n-gram space inserter (`scripts/ocr_eval/spacing_lm.py`, `spacing_experiment.py`; insert only, letters never

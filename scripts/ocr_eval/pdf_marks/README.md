@@ -36,3 +36,13 @@ Print draws a small v over ن (ݨ) and over ل (ڵ) in Gojri-Ghazal (6 and 6 on 
 The letter under it comes from the letter glyph (table type `vhost` with a `letter` field):
 `marks_table.py add pdfs/anjumshanasi/Gojri-Ghazal.pdf 39 NOORIC01,Bold 175 vhost standalone ل` (also 108 = ن, and `NOORIC,Bold` 168 = ل).
 `build` keeps glyphs added with `add`. New books may have other host glyphs: a v over an unknown glyph is not converted. Check with the gold page.
+
+## گ read for ک under a pesh (2026-11-26)
+A pesh over ک looks like the second stroke of گ, so UTRNet reads گُ for کُ (random rows: 10 گُ outputs, 3 right; examples `کُن`, `کُجھ`, `کُڑتو`).
+A word list cannot decide: `گرو` and `کرو` are both common. The PDF can: a true گُ has the glyph `NOORIC,Bold` 60 beside the pesh glyph `NOORIC,Bold` 49
+(within 5 pt in x, 14 pt in y). Count: true گُ 8 of 8 have it, true کُ 0 of 7 (one more row unclear). `gaf_fix.py` applies the row rule (see its docstring):
+no glyph 60 at any pesh in the row and enough pesh glyphs: every گُ becomes کُ. Only text changes.
+Whole Banjara and Dil-Darya run: 482 rows have گُ; 229 rows change (246 letters), 241 stay, 3 are ambiguous, 9 have too few pesh glyphs.
+On the 14 labeled rows that carry گُ or کُ: 6 fixed, 0 broken, 1 row unchanged (truth is ٹ, not a گ/ک case). Random-row letter error 0.6% to 0.5%.
+The rule was found on the first 10 cases and confirmed on 8 older ones; it is a small test. Other books may use other glyph ids: check before use.
+Output goes to a new run folder (`data/ocr/prose-gaffix`, local); the original run is not changed.

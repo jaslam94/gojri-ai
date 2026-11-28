@@ -10,7 +10,7 @@ rewritten on 2026-11-20. The August draft and its strategy reviews are in the gi
 |---|---|
 | 0. Data hygiene and measurement | Done. Catalog, deduplication, triage, 12-page gold set, speaker review sets. |
 | 1. Text extraction (OCR) | A working OCR path for clean printed Nastaliq. Four NOORIN books read in full (Kahawat-Kosh, Banjara, Dil-Darya, Gojri-Ghazal); the machine text is in `data/ocr-output/` for review. Word spacing is partly solved for short Gojri idioms (character n-gram inserter), not for prose; a language tag per line is next. Not yet tested on an unseen book or on photographed scans. |
-| 2. Speech recognition (ASR) | Fine-tuned on Common Voice: Whisper-small 22.7% and Whisper-medium 18.3% word error on the test set. Meta Omnilingual ASR LLM-7B with no training on our data: 9.9% (possible overlap with Meta's training data). Next: fine-tune Omnilingual; score a recording from outside Common Voice. |
+| 2. Speech recognition (ASR) | Fine-tuned on Common Voice: Whisper-small 22.7% and Whisper-medium 18.3% word error on the test set. Meta Omnilingual ASR LLM-7B with no training on our data: 9.9% (possible overlap with Meta's training data). Omnilingual LLM-1B fine-tuned on our data: 12.5% (13.4% without training): more training on this data helps little. Next: score a recording from outside Common Voice; more varied training data. |
 | 3. Language model and translation | Not started. Waits for more text. |
 | 4. Publish and promote | Three datasets public on Hugging Face (the PDF collection is private). Repository public. |
 
@@ -98,8 +98,10 @@ error, down from 159% zero-shot). Expect a rough but usable first model.
   speakers 18.5%. One run.
 - **Meta Omnilingual ASR, zero-shot (2026-11-25):** its language list holds `gju_Arab`. Word error with no training on
   our data: LLM-300M 14.9%, 1B 13.4%, 3B 12.2%, 7B 9.9%; the CTC-1B model 42.4%. Meta may have trained on these public
-  clips (not checked), so the clean test is a recording from outside Common Voice. Next: fine-tune the Omnilingual LLM
-  models on our split (`plans/PLAN-omnilingual-finetune-20261126.md`).
+  clips (not checked), so the clean test is a recording from outside Common Voice. Fine-tuning the Omnilingual LLM-1B on our split
+  (`plans/PLAN-omnilingual-finetune-20261126.md`, 2026-11-26): 12.5% word error, from 13.4% without training; the 7B model without training
+  (9.9%) is still better and does not fit full fine-tuning on one `ml.g5.12xlarge`. The training loss fell to near zero while dev error stayed near 13%: the limit is the
+  small, repeated sentence pool and three training voices, not the number of steps.
 - **More data:** new recordings through the normal Common Voice flow (more speakers, past 15 to 20 hours). Sentences
   from the OCR'd books can be read aloud in future drives.
 - **YouTube audio:** unlabeled, so it is not direct training data. Possible later uses: self-supervised pretraining or

@@ -1,0 +1,93 @@
+{
+ "note": "Meta Omnilingual ASR LLM-1B fine-tuned on our Common Voice Gujari split (train 9,041 clips, 3 speakers), scored with the same scorer as the Whisper and zero-shot runs on the 623 official test clips. The checkpoint was chosen by dev word error (475 clips, scored by us); the test set was scored once, for that checkpoint. One run, one seed. Zero-shot LLM-1B for comparison: 13.37% word error (data/asr/results_omniasr_zero-shot_2026-11-25.json). Meta may have trained on these public clips; not checked.",
+ "job": "gojri-asr-omni-ft-1b-2026-11-26-12-33-47-861",
+ "instance": "ml.g5.12xlarge (4 x A10G, 24 GB)",
+ "billable_seconds": 9363,
+ "model": "omniASR_LLM_1B",
+ "recipe": "facebookresearch/omnilingual-asr tag 0.2.0, workflows.recipes.wav2vec2.asr, fairseq2 0.6.0",
+ "args": {
+  "model_card": "omniASR_LLM_1B",
+  "tokenizer": "omniASR_tokenizer_v1",
+  "num_steps": 400,
+  "checkpoint_every": 80,
+  "lr": 5e-05,
+  "accum": 4,
+  "max_num_elements": 320000,
+  "min_audio_len": 8000,
+  "max_audio_len": 320000,
+  "limit_eval": 0,
+  "upload_ckpt": 1,
+  "bucket": "gojri-ai-sagemaker-data",
+  "repo_ref": "0.2.0",
+  "fairseq2_index": "https://fair.pkg.atmeta.com/fairseq2/whl/pt2.8.0/cu128"
+ },
+ "config_yaml": "model:\n  name: \"omniASR_LLM_1B\"\ndataset:\n  name: \"gojri_cv_gju26\"\n  train_split: \"train\"\n  valid_split: null\n  storage_mode: \"MIXTURE_PARQUET\"\n  task_mode: \"ASR\"\n  mixture_parquet_storage_config:\n    dataset_summary_path: \"/opt/ml/input/data/data/language_distribution_0.tsv\"\n    beta_corpus: 0.5\n    beta_language: 0.5\n  asr_task_config:\n    min_audio_len: 8000\n    max_audio_len: 320000\n    max_num_elements: 320000\n    batch_shuffle_window: 1\n    normalize_audio: true\n    example_shuffle_window: 1\ntokenizer:\n  name: \"omniASR_tokenizer_v1\"\noptimizer:\n  config:\n    lr: 5e-05\ntrainer:\n  data_parallelism: \"fsdp\"\n  fsdp:\n    granularity: \"stack\"\n    version: \"v1\"\n    fp32_reduce: false\n  freeze_encoder_for_n_steps: 0\n  mixed_precision:\n    dtype: \"torch.bfloat16\"\n  grad_accumulation:\n    num_batches: 4\nregime:\n  num_steps: 400\n  score_metric: null\n  checkpoint_every_n_steps: 80\n  publish_metrics_every_n_steps: 10\n  save_model_only: true\n",
+ "stages_seconds": {
+  "install": 159,
+  "train": 7168,
+  "dev": 8747,
+  "score": 9100
+ },
+ "train_seconds": 7007,
+ "training": {
+  "steps": 400,
+  "examples_seen": 33746.0,
+  "passes_over_9041_clips": 3.73,
+  "audio_hours_seen": 30.69,
+  "loss_step_10": 0.1872,
+  "loss_step_400": 0.0052,
+  "loss_label_note": "fairseq2 logs the training loss under the name 'CTC Loss' even for the LLM model"
+ },
+ "steps_saved": [
+  80,
+  160,
+  240,
+  320,
+  400
+ ],
+ "dev_wer_by_step": {
+  "80": {
+   "wer": 13.95,
+   "cer": 5.15,
+   "n": 475
+  },
+  "160": {
+   "wer": 13.49,
+   "cer": 4.74,
+   "n": 475
+  },
+  "240": {
+   "wer": 13.8,
+   "cer": 4.86,
+   "n": 475
+  },
+  "320": {
+   "wer": 13.58,
+   "cer": 4.6,
+   "n": 475
+  },
+  "400": {
+   "wer": 13.03,
+   "cer": 4.45,
+   "n": 475
+  }
+ },
+ "chosen_step": 400,
+ "test": {
+  "all": {
+   "wer": 12.52,
+   "cer": 4.06,
+   "n": 623
+  },
+  "seen_speakers": {
+   "wer": 12.82,
+   "cer": 4.19,
+   "n": 389
+  },
+  "unseen_speakers": {
+   "wer": 12.06,
+   "cer": 3.85,
+   "n": 234
+  }
+ }
+}

@@ -30,6 +30,7 @@ gradient checkpointing, lr 1e-5, 2,500 steps, dev check every 250, hard cap 5 ho
 | Omnilingual LLM-3B | none | 12.2% | 4.2% |
 | **Omnilingual LLM-7B** | none | **9.9%** | **3.15%** |
 | Omnilingual CTC-1B | none | 42.4% | 14.1% |
+| Omnilingual LLM-1B, fine-tuned on our data (400 steps) | fine-tuned | 12.5% | 4.06% |
 
 Source: `data/asr/results_whisper-medium_2026-11-25.json`, `data/asr/results_omniasr_zero-shot_2026-11-25.json`. Open risk: Meta may have trained on these public Common Voice clips (not checked).
 Whisper large-v3 (LoRA) is smoke-tested, not run: Omnilingual-7B already scores below what Whisper-medium reached.

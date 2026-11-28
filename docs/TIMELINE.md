@@ -85,6 +85,10 @@ later correction is noted.
   3 speakers) reaches 22.7% word error on the official test set, from 73.8% without fine-tuning; 21.6% for speakers
   not in training.
 
+- **26 Nov (Omnilingual fine-tune).** Meta Omnilingual ASR LLM-1B fine-tuned on our Common Voice split (400 steps, 4 GPUs) reaches 12.5% word error
+  on the 623 test clips, from 13.4% without training. The 7B model without training (9.9%) is still better. Training loss went to nearly zero while dev
+  error stayed near 13%, so more steps on this data will not help. A recording from outside Common Voice is the next test.
+
 - **25 Nov (ASR model search).** Whisper-medium, same data and split, reaches 18.3% word error (small: 22.7%). Meta
   Omnilingual ASR, with no training on our data, reaches 14.9% (LLM-300M), 13.4% (1B), 12.2% (3B) and 9.9% (7B) on the same
   623 test clips; its language list holds `gju_Arab`. Meta may have trained on these public clips, so a recording from

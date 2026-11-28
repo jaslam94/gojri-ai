@@ -78,6 +78,31 @@ Error falls with size. The language tag changes little (7B: 9.9% with `gju_Arab`
 dataset holds (a speaker's own voice) is scored. Jobs: 17-57-37 (300M, 1B; the 3B step ran out of host memory on `ml.g5.xlarge`) and 18-32-10 (`ml.g5.4xlarge`, 64 GB).
 Versions: the PyPI release names the cards `omniASR_*` and `omniASR_*_v2`; the `_v2` names were not known inside the job, so only the first versions were tested.
 
+## Omnilingual LLM-1B fine-tuned on our data (2026-11-26)
+
+Job `gojri-asr-omni-ft-1b-2026-11-26-12-33-47-861` (`ml.g5.12xlarge`, 4 x A10G; 9,363 billable seconds). Meta's own recipe (tag 0.2.0, fairseq2 0.6.0), learning rate 5e-05,
+400 steps, checkpoint every 80 steps. Training saw 33,746 examples (3.73 passes over the 9,041 clips, 30.7 hours of audio), 17.4 seconds per step.
+Labels: our sentences without punctuation and without the characters the tokenizer cannot write (short vowel marks and a few symbols; the scorer ignores marks).
+Code: `launch_omni_ft.py`, `sm_omni_ft/omni_ft_entry.py`, `omni_ft/make_parquet.py`. Result file: `data/asr/results_omniasr_finetune-1b_2026-11-26.json`.
+
+Dev word error by saved checkpoint (475 clips, our scorer): 13.95% (step 80), 13.49% (160), 13.80% (240), 13.58% (320), **13.03% (400, chosen)**.
+The training loss fell from 0.187 (step 10) to 0.005 (step 400) while the dev error moved by less than one point.
+
+| Test set (623 clips) | Word error | Character error | Seen speakers | Unseen speakers |
+|---|---|---|---|---|
+| **LLM-1B fine-tuned (step 400)** | **12.5%** | 4.06% | 12.8% | 12.1% |
+| LLM-1B, no training | 13.4% | 4.6% | 13.8% | 12.7% |
+| LLM-7B, no training | 9.9% | 3.15% | 10.0% | 9.6% |
+| Whisper-medium, fine-tuned | 18.3% | 6.9% | 18.2% | 18.5% |
+
+Fine-tuning gained 0.85 points of word error (6% fewer errors) over the same model without training. The fine-tuned 1B model is 5.8 points better than fine-tuned Whisper-medium and
+2.7 points worse than the 7B model with no training. One run, one seed.
+Error analysis on the saved predictions (local, not published): the 7B model with no training makes 419 word errors in 4,249 words (306 substitutions, 66 deletions, 47 insertions), 391 of 623 sentences
+are exactly right; the fine-tuned 1B model makes 532 (414, 70, 48), 336 sentences exactly right. Of the eight most frequent word substitutions of the 7B model, most are spelling variants of one word (for example `ان` and `انھ`, `بی` and `بھی`,
+`اتوں` and `اتو`); I did not classify all of them. Gojri has no standard spelling, so part of the error comes from the reference text.
+Why the gain is small, as far as the numbers show: the training loss went to nearly zero, so the model fits the 3,852 book sentences, while the dev sentences are new text. More steps on this data are
+unlikely to help; more varied text and speakers would. The 7B model does not fit full fine-tuning on this machine (about 125 GB by the estimate in the plan; the machine has 96 GB).
+
 ## Files
 
 | File | What it does |

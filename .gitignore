@@ -2,6 +2,10 @@
 # not meant to live on GitHub). Kept locally; see data/manifest.csv for the catalog.
 /pdfs/
 
+# Local-only files made for this project: downloaded models, job outputs, third-party tools, scratch data.
+# Never create such folders in the root of D:\. See AGENTS.md.
+/local/
+
 # Third-party datasets: kept locally, never re-hosted from this repo (see
 # datasets/README.md). Common Voice terms prohibit re-hosting; the FLI corpus
 # comes from Mozilla Data Collective under its own terms. Only the README is tracked.

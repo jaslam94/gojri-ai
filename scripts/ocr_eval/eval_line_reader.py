@@ -10,7 +10,7 @@ For each line image:
 Scores: Arabic-letter error against reference_arabic (the 2.1% baseline used PDF glyph boxes), and Latin character
 error (non-Arabic, non-space characters of text_fix, in left-to-right span order).
 
-Run: py -3 -X utf8 scripts/ocr_eval/eval_line_reader.py --repo D:/ocr-tools/utrnet --weights D:/ocr-tools/weights/large.pth
+Run: py -3 -X utf8 scripts/ocr_eval/eval_line_reader.py --repo local/ocr-tools/utrnet --weights local/ocr-tools/weights/large.pth
      [--limit 200] [--out data/utrnet-test/line_reader_results.tsv]
 """
 import argparse

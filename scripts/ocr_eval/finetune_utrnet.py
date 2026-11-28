@@ -16,8 +16,8 @@ and keep the weights with the lowest val error.
 Scores (per set): letter error on base letters (marks, spaces, punctuation removed; ك=ک, ه=ہ), mark error (edit distance
 of the mark strings / marks in the truth), full error (letters and marks together, spaces removed), exact runs.
 
-Run (GPU strongly advised): py -3 -X utf8 scripts/ocr_eval/finetune_utrnet.py --repo D:/ocr-tools/utrnet
-    --weights D:/ocr-tools/weights/large.pth --data data/utrnet-ft --out data/utrnet-ft/run1 [--epochs 6]
+Run (GPU strongly advised): py -3 -X utf8 scripts/ocr_eval/finetune_utrnet.py --repo local/ocr-tools/utrnet
+    --weights local/ocr-tools/weights/large.pth --data data/utrnet-ft --out data/utrnet-ft/run1 [--epochs 6]
 UTRNet code and weights are third party (non-commercial: CC BY-NC 4.0 in its LICENSE file, CC BY-NC-SA 4.0 in its README): the fine-tuned weights stay non-commercial
 (and share-alike under the README terms).
 """

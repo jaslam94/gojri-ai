@@ -116,7 +116,7 @@ Hand labels on a random sample of 50 substitutions (seed 20261123), with one lab
 
 **These labels are from Claude, not from a native Gojri speaker. JD must check them.** The sample is small: 25 of 50 has a
 95% interval of about 36% to 64%. The sample holds substitutions only, which are 79% of all errors. The file with the
-labels is local (`D:\asr-check\analysis_job\sample50_labelled.tsv`) because it holds Common Voice sentence text.
+labels is local (`local\asr-check\analysis_job\sample50_labelled.tsv`) because it holds Common Voice sentence text.
 
 ### By speaker, clip length and group
 
@@ -147,12 +147,12 @@ is closed: the fine-tuned model always picks Urdu by itself. The zero-shot base 
 JD must do this step. Claude cannot record speech or correct Gojri text.
 
 1. Record 10 to 20 short Gojri sentences, one file each (phone or microphone, wav or mp3). Use sentences that are not in
-   Common Voice. Put the files in one local folder outside the repo, for example `D:\asr-check\own_voice`.
+   Common Voice. Put the files in one untracked folder, for example `local\asr-check\own_voice`.
 2. Transcribe:
-   `D:\asr-check\venv\Scripts\python.exe scripts\asr\perf_check\transcribe.py --model D:\asr-check\extract\model --audio-dir D:\asr-check\own_voice --out D:\asr-check\own_pred.tsv`
-3. Make the sheet: `python scripts\asr\perf_check\step6_ownvoice.py sheet --pred D:\asr-check\own_pred.tsv --out D:\asr-check\own_sheet.tsv`
+   `local\asr-check\venv\Scripts\python.exe scripts\asr\perf_check\transcribe.py --model local\asr-check\extract\model --audio-dir local\asr-check\own_voice --out local\asr-check\own_pred.tsv`
+3. Make the sheet: `python scripts\asr\perf_check\step6_ownvoice.py sheet --pred local\asr-check\own_pred.tsv --out local\asr-check\own_sheet.tsv`
 4. Open the sheet. In the column `corrected_text`, write what you said. Write it yourself, do not copy the model output.
-5. Score: `python scripts\asr\perf_check\step6_ownvoice.py score --sheet D:\asr-check\own_sheet.tsv --cv-sentences datasets\cv-corpus-26.0-2026-06-12\gju\validated.tsv`
+5. Score: `python scripts\asr\perf_check\step6_ownvoice.py score --sheet local\asr-check\own_sheet.tsv --cv-sentences datasets\cv-corpus-26.0-2026-06-12\gju\validated.tsv`
    The score step flags any sentence that is also in Common Voice.
 
 Treat the result as an anecdote. 10 to 20 sentences from one speaker cannot give a rate.
@@ -161,7 +161,7 @@ Treat the result as an anecdote. 10 to 20 sentences from one speaker cannot give
 
 `scripts/asr/perf_check/demo_app.py` is a Gradio app (record or upload, shows the Nastaliq output). It starts on
 `127.0.0.1:7860` only, with no share link, and answers HTTP 200. Claude did not test a recording through the page.
-Run: `D:\asr-check\venv\Scripts\python.exe scripts\asr\perf_check\demo_app.py --model D:\asr-check\extract\model`.
+Run: `local\asr-check\venv\Scripts\python.exe scripts\asr\perf_check\demo_app.py --model local\asr-check\extract\model`.
 Not deployed.
 
 ## Limits

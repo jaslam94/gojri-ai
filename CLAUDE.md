@@ -20,6 +20,7 @@ datasets exist (see Status). We research, discuss, and agree on a roadmap togeth
 - Prefers to research and discuss deeply before jumping to implementation.
 
 ## Resources available
+- **Local-only files** (downloaded models, job outputs, third-party tools, scratch data) go in `local/` inside the repository. It is gitignored. Never create project folders in the root of `D:\`. Layout: `local/ocr-tools/` (UTRNet, Kraken, weights), `local/asr-models/` (fine-tuned models), `local/asr-runs/` (job outputs), `local/asr-data/` (converted training data).
 - $150 USD in free AWS credits. Cost Explorer (credits excluded), read 2026-11-26: gross usage $31.08 up to 25 November: $0.35 in August, $1.08 in October, $29.64 in November (SageMaker $24.22, Bedrock $5.05, S3 $0.32). The most recent day can lag.
 
 ## The language: Gojri / Gujari (ISO 639-3: gju)
@@ -535,7 +536,7 @@ Newest first. The dated history is in `docs/TIMELINE.md`; the plan is in `ROADMA
   The language tag matters little (7B: Gojri tag 9.9%, no tag 9.9%, Urdu tag 10.5%). Files: `data/asr/results_whisper-medium_2026-11-25.json`,
   `data/asr/results_omniasr_zero-shot_2026-11-25.json`, `plans/RESEARCH-asr-model-candidates-20261125.md`.
 - **Caveat.** Meta may have trained on these public Common Voice clips (not checked). A recording from outside Common Voice is the clean test; the speaker will make one.
-- Whisper large-v3 with LoRA is built and smoke-tested (`--lora 1` in `sm_whisper_entry.py`); the full run is not started. Next: fine-tune Omnilingual (`plans/PLAN-omnilingual-finetune-20261126.md`).
+- Whisper large-v3 with LoRA is built and smoke-tested (`--lora 1` in `sm_whisper_entry.py`); the full run is not started. Omnilingual LLM-1B fine-tuned on our split (2026-11-26, `plans/PLAN-omnilingual-finetune-20261126.md`): 12.5% word error (CER 4.06%; unseen speakers 12.1%), from 13.4% without training; the 7B model without training (9.9%) is still better and does not fit full fine-tuning on one `ml.g5.12xlarge`. Training loss went to nearly zero while dev error stayed near 13%: more steps on this data will not help, more varied text and speakers might. File: `data/asr/results_omniasr_finetune-1b_2026-11-26.json`.
 - Jobs of different instance types can run together (quota is one per type). Billed training rates: `ml.g5.xlarge` $1.41 per hour, `ml.g5.2xlarge` $1.52, `ml.g5.4xlarge` $2.03.
 
 **Spacing model, language ID and shadda (2026-11-23).**
@@ -604,7 +605,7 @@ book in another file) were deleted from `pdfs/` after a page-image comparison; t
 error on the 12 gold pages, 2.9% against Gemini 3.3% on the 8 pages Gemini was scored on (rescored
 2026-11-20 on the corrected Ghazal gold; the seeded run `pipe_v5` gives the same 3.7%, 229 of 6,253, repeatable). A development number: the
 gold pages guided the design, only one is a dictionary page, SegNet knows one dictionary's layout. UTRNet code and
-weights live outside the repo (`D:\ocr-tools`; non-commercial: CC BY-NC 4.0 in its LICENSE file, CC BY-NC-SA 4.0 in its README); SegNet weights are on S3
+weights live in the untracked folder `local/ocr-tools/` (moved there from `D:\ocr-tools` on 2026-11-26; non-commercial: CC BY-NC 4.0 in its LICENSE file, CC BY-NC-SA 4.0 in its README); SegNet weights are on S3
 (`ocr-eval/models/segnet_v2.pt`). SageMaker GPU runs: one `ml.g5.xlarge` at a time; the role ARN comes from the
 environment variable `SAGEMAKER_ROLE_ARN` and never goes into the repo.
 

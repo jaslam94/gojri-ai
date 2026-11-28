@@ -15,7 +15,7 @@ Steps for each page image in data/gold/images_cropped/:
 
 English/Latin text and pictures are not handled (UTRNet fails on them); this test shows how much that costs.
 
-Run: py -3 -X utf8 scripts/ocr_eval/utrnet_gold.py --repo D:/ocr-tools/utrnet --weights D:/ocr-tools/weights/large.pth
+Run: py -3 -X utf8 scripts/ocr_eval/utrnet_gold.py --repo local/ocr-tools/utrnet --weights local/ocr-tools/weights/large.pth
 """
 import argparse
 import math

@@ -5,8 +5,8 @@ reader changes. Truth: a card marked OK keeps its OCR text, a card marked Wrong 
 Unsure cards are skipped. Cards are matched to entries by PDF page and the y of the entry's first idiom row.
 
 UTRNet text comes from the finished run in --utr-dir (same rows, no CPU re-run). Kraken is run here.
-Needs Kraken 7 (pip install --target D:/ocr-tools/kraken-pkgs kraken) and the model file urdu_best.mlmodel
-(https://zenodo.org/records/14585602, Apache 2.0). Run with PYTHONPATH=D:/ocr-tools/kraken-pkgs.
+Needs Kraken 7 (pip install --target local/ocr-tools/kraken-pkgs kraken) and the model file urdu_best.mlmodel
+(https://zenodo.org/records/14585602, Apache 2.0). Run with PYTHONPATH=local/ocr-tools/kraken-pkgs.
 
 Metrics (per field: idiom or meaning), all on the Arabic-script letters only:
   letter error  = edit distance of the base letters (spaces, marks, punctuation removed; ك/ک, ه/ہ, ي/ی merged) / truth letters
@@ -33,7 +33,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import ocrlib as O  # noqa: E402
 import ocr_kahawat as K  # noqa: E402
 
-MODEL = os.environ.get("KRAKEN_MODEL", r"D:\ocr-tools\kraken-model\urdu_best.mlmodel")
+MODEL = os.environ.get("KRAKEN_MODEL", str(Path(__file__).resolve().parents[2] / "local" / "ocr-tools" / "kraken-model" / "urdu_best.mlmodel"))
 MARKS = re.compile("[\u064b-\u065f\u0670\u06d6-\u06ed]")
 MERGE = str.maketrans({"ك": "ک", "ه": "ہ", "ي": "ی", "ى": "ی", "ۃ": "ہ"})
 

@@ -15,6 +15,7 @@ Use no em dashes. Write with natural structure. Use commas, periods, or conjunct
 - Research and agree before writing pipeline code.
 - Run Python as `py -3`.
 - Do not commit unless the user asks.
+- Put local-only files (downloaded models, job outputs, third-party tools, scratch data) in `local/` inside the repository. It is gitignored. Never create project folders in the root of `D:\`.
 - Journal experiments in `LOG.md`. Keep `CLAUDE.md` status current.
 
 ## Public deliverables

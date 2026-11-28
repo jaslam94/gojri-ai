@@ -1,6 +1,6 @@
 """Step 7 (optional): local Gradio demo of the fine-tuned Whisper model. Localhost only; do not deploy.
 
-Run: python demo_app.py --model D:\\asr-check\\extract\\model
+Run: python demo_app.py --model local\\asr-check\\extract\\model
 Needs: pip install gradio. The app binds 127.0.0.1 and has no share link. Recordings stay in memory.
 """
 import argparse

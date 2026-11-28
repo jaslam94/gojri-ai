@@ -18,8 +18,9 @@ from PIL import Image
 
 # Local UTRNet clone and weights (third party, non-commercial license, not in this repo).
 # Set UTRNET_REPO and UTRNET_WEIGHTS to use another location.
-UTRNET_REPO = os.environ.get("UTRNET_REPO", "D:/ocr-tools/utrnet")
-UTRNET_WEIGHTS = os.environ.get("UTRNET_WEIGHTS", "D:/ocr-tools/weights/large.pth")
+_LOCAL_TOOLS = Path(__file__).resolve().parents[2] / "local" / "ocr-tools"  # untracked folder inside the repository
+UTRNET_REPO = os.environ.get("UTRNET_REPO", str(_LOCAL_TOOLS / "utrnet"))
+UTRNET_WEIGHTS = os.environ.get("UTRNET_WEIGHTS", str(_LOCAL_TOOLS / "weights" / "large.pth"))
 
 TESS = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
 IMG_H, IMG_W = 32, 400

@@ -13,7 +13,7 @@ Order (all paths are under `data/ocr/pdfmarks-work`, local only):
 1. `bash scripts/ocr_eval/pdf_marks/dump_all.sh` (from the repo root): `dump_trace.py` and `dump_fonts.py` for every page,
    8 pages per process (pymupdf crashes after many `get_texttrace` calls in one process).
 2. `py -3 -X utf8 marks_insert.py --cards 0 1 2 ... --out <run folder>` : reads the idiom and meaning rows with UTRNet
-   (needs the UTRNet clone and weights: environment variables `UTRNET_REPO` and `UTRNET_WEIGHTS`, default `D:/ocr-tools`), inserts the marks into the entries of `data/ocr/kahawat-gpu6`.
+   (needs the UTRNet clone and weights: environment variables `UTRNET_REPO` and `UTRNET_WEIGHTS`, default `local/ocr-tools` (untracked, inside the repository)), inserts the marks into the entries of `data/ocr/kahawat-gpu6`.
 3. `py -3 -X utf8 ../score_marks.py --marks ... --sample ... --ocr-dir <run folder>` and `placed.py <run folder>` (which also
    counts the host letter).
 `marks_align.py` is the first check (nearest letter vs the speaker's host letter). `glyphrender.py` draws glyph outlines.

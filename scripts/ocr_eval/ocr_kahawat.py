@@ -12,7 +12,7 @@ closest row within 8 px (absorb_thin); without this each such piece was read as 
 Output in <out>: page_NNN.json (entries with confidences and flags), page_NNN.txt (one entry per line, idiom TAB meaning,
 the layout of data/gold/transcriptions/kahawat_kosh), and kahawat_kosh_entries.tsv for the whole run.
 
-Run: py -3 -X utf8 scripts/ocr_eval/ocr_kahawat.py --repo D:/ocr-tools/utrnet --weights D:/ocr-tools/weights/large.pth
+Run: py -3 -X utf8 scripts/ocr_eval/ocr_kahawat.py --repo local/ocr-tools/utrnet --weights local/ocr-tools/weights/large.pth
         --out <dir> [--pages 50 51 | --first 1 --last 169] [--dpi 200]
 """
 import argparse

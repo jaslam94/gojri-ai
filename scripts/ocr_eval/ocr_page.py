@@ -5,7 +5,7 @@ confirms them (>= 6 letters); if they cover >= 15% of the text width the page is
 Arabic, Tesseract for English, run text left to right), otherwise "arabic" (UTRNet alone, whole row right to left). Pages named in --columns have two columns (right column first, rows
 paired by vertical overlap, as in utrnet_gold.py).
 
-Run: py -3 -X utf8 scripts/ocr_eval/ocr_page.py --repo D:/ocr-tools/utrnet --weights D:/ocr-tools/weights/large.pth
+Run: py -3 -X utf8 scripts/ocr_eval/ocr_page.py --repo local/ocr-tools/utrnet --weights local/ocr-tools/weights/large.pth
         --segnet <segnet.pt> [--pages dict_alif ...] [--tag pipe_v1] [--columns kahawat_kosh]
 """
 import argparse

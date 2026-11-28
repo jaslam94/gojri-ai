@@ -85,30 +85,48 @@ later correction is noted.
   3 speakers) reaches 22.7% word error on the official test set, from 73.8% without fine-tuning; 21.6% for speakers
   not in training.
 
-- **26 Nov (Omnilingual fine-tune).** Meta Omnilingual ASR LLM-1B fine-tuned on our Common Voice split (400 steps, 4 GPUs) reaches 12.5% word error
-  on the 623 test clips, from 13.4% without training. The 7B model without training (9.9%) is still better. Training loss went to nearly zero while dev
-  error stayed near 13%, so more steps on this data will not help. A recording from outside Common Voice is the next test.
-
-- **25 Nov (ASR model search).** Whisper-medium, same data and split, reaches 18.3% word error (small: 22.7%). Meta
-  Omnilingual ASR, with no training on our data, reaches 14.9% (LLM-300M), 13.4% (1B), 12.2% (3B) and 9.9% (7B) on the same
-  623 test clips; its language list holds `gju_Arab`. Meta may have trained on these public clips, so a recording from
-  outside Common Voice is the clean test.
-
 - **21 Nov (word spacing).** The speaker reviewed 200 Kahawat-Kosh cards and wrote the text as words. The OCR text
-  misses 232 of 759 spaces (letter error 1.1%); the word-list splitter adds 101 spaces, 86 of them right, and closes about a third of the gap (see
-  `data/reviews/kahawat-spacing/README.md`).
-
+  misses 232 of 759 spaces (letter error 1.1%); the word-list splitter adds 101 spaces, 86 of them right, and closes
+  about a third of the gap (see `data/reviews/kahawat-spacing/README.md`).
 - **21 Nov (word splits).** The speaker checked 66 splits that the word-list splitter proposed in Banjara and
   Dil-Darya: 66 of 72 added spaces were right, 6 cut a word. The splitter now never cuts a piece shorter than 2 letters.
-
 - **23 Nov (rights).** The Hugging Face PDF collection is private. The text datasets stay public with a credit to the
   source book. The docs now say that the project does not share the books.
-
 - **23 Nov (spacing model, language ID).** A character n-gram space inserter cut space errors on 100 locked
-  Kahawat-Kosh cards from 116 to 52 (precision 90.9%, recall 95.0%). On Banjara and Dil-Darya prose, which is largely
-  Urdu, it added 32 right and 35 wrong spaces. A first Gojri-or-Urdu line tagger reaches 78.4% on group
-  cross-validation (51.1% on short idioms, 97.5% on lines of 61 or more letters). The `اللہ` shadda is now kept as
-  printed.
+  Kahawat-Kosh cards from 116 to 52 (precision 90.9%, recall 95.0%). On 55 Banjara and Dil-Darya cards it added 32
+  right and 35 wrong spaces. A first Gojri-or-Urdu line tagger reaches 78.4% on group cross-validation (51.1% on short
+  idioms, 97.5% on lines of 61 or more letters). The `اللہ` shadda is now kept as printed.
+- **23 to 24 Nov (ASR check).** The Whisper-small score reproduces from the saved model and the audio (22.62%). About
+  10% of its word errors are spacing only (`docs/asr_performance_check.md`).
+- **24 Nov (language tags).** The speaker tags 262 prose rows: 229 Gojri, 31 Urdu, 2 the same in both. The tagger
+  scores 76.1% on them, below "always Gojri" (88.6%). 52 of the 55 spacing cards of 23 November sat on rows tagged
+  Urdu.
+- **24 Nov (spacing on verse).** On 106 cards from rows tagged Gojri, which the speaker then identified as poetry, the
+  space model adds 79 right and 49 wrong spaces.
+- **24 Nov (text sources).** A web search for Gojri text finds no clean source above 100,000 words. One blog is fetched;
+  its Gojri share is not yet checked by a person.
+- **25 Nov (ASR model search).** Whisper-medium, same data and split, reaches 18.3% word error (small: 22.7%). Meta
+  Omnilingual ASR, with no training on our data, reaches 14.9% (LLM-300M), 13.4% (1B), 12.2% (3B) and 9.9% (7B) on the
+  same 623 test clips; its language list holds `gju_Arab`.
+- **25 Nov (spacing cards).** The speaker marks all 170 model space cards with the printed row on each card: 71
+  accepted, 99 rejected.
+- **26 Nov (random rows).** The speaker checks 120 random rows of Banjara and Dil-Darya: letters 0.60%, marks 5.6%,
+  173 of 1,314 spaces missing, 9 extra.
+- **26 Nov (گ and ک).** A pesh over ک makes the OCR read گ. A fix that uses the PDF's own glyph changes 229 rows of
+  Banjara and Dil-Darya and 88 fields of Kahawat-Kosh.
+- **26 Nov (Kahawat-Kosh).** The speaker fixes the 5 flagged اللّٰہ fields. A local release table holds 2,383 entries; 36
+  flagged fields wait for a check.
+- **26 Nov (Omnilingual fine-tune).** Meta Omnilingual ASR LLM-1B fine-tuned on our Common Voice split (400 steps, 4
+  GPUs) reaches 12.5% word error on the 623 test clips, from 13.4% without training. The 7B model without training
+  (9.9%) is still better. Training loss went to nearly zero while dev error stayed near 13%, so more steps on this data
+  will not help. The run and its four smoke tests cost $25.93.
+- **28 Nov (own-voice test).** The tool to score all three Omnilingual systems on new recordings is built; on 4 Common
+  Voice clips its 12 outputs equal the earlier ones. It waits for the speaker's recordings.
+- **28 Nov (overlap check).** Meta's paper lists Common Voice v22 as training data. Gujari first appears in Common Voice
+  23.0, and Meta's released corpus has no Gujari. Other training sources are not ruled out. Common Voice 27.0 holds the
+  same Gujari clips as 26.0.
+- **28 Nov (cleanup).** All local project folders are inside the repository. Temporary files and failed or smoke-test
+  job outputs are deleted.
 
 ## Not started yet
 

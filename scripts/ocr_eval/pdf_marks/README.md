@@ -37,6 +37,13 @@ The letter under it comes from the letter glyph (table type `vhost` with a `lett
 `marks_table.py add pdfs/anjumshanasi/Gojri-Ghazal.pdf 39 NOORIC01,Bold 175 vhost standalone ل` (also 108 = ن, and `NOORIC,Bold` 168 = ل).
 `build` keeps glyphs added with `add`. New books may have other host glyphs: a v over an unknown glyph is not converted. Check with the gold page.
 
+## Shadda from whole-word glyphs (2026-11-23)
+Kahawat-Kosh draws the shadda only inside two whole-word glyphs: `NOORIN41,Bold` 89 (اللّٰہ, 72 uses) and `NOORIN61,Bold` 10
+(بللّی, 2 uses). Speaker ruling: write اللّٰہ as printed. `word_glyphs.py <in run> <out run>` marks a field when the number of
+glyphs equals the number of matching words; else it lists the field in `word_glyph_flags.json`. Result: 68 of 74 words
+fixed in 62 fields; 5 fields flagged. The speaker fixed all 5 on 2026-11-26
+(`data/reviews/kahawat-allah/`, applied with `../apply_allah_fixes.py`).
+
 ## گ read for ک under a pesh (2026-11-26)
 A pesh over ک looks like the second stroke of گ, so UTRNet reads گُ for کُ (random rows: 10 گُ outputs, 3 right; examples `کُن`, `کُجھ`, `کُڑتو`).
 A word list cannot decide: `گرو` and `کرو` are both common. The PDF can: a true گُ has the glyph `NOORIC,Bold` 60 beside the pesh glyph `NOORIC,Bold` 49

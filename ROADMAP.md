@@ -9,8 +9,8 @@ rewritten on 2026-11-20. The August draft and its strategy reviews are in the gi
 | Stage | State |
 |---|---|
 | 0. Data hygiene and measurement | Done. Catalog, deduplication, triage, 12-page gold set, speaker review sets. |
-| 1. Text extraction (OCR) | A working OCR path for clean printed Nastaliq. Four NOORIN books read in full (Kahawat-Kosh, Banjara, Dil-Darya, Gojri-Ghazal); the machine text is in `data/ocr-output/` for review. Word spacing is partly solved for short Gojri idioms (character n-gram inserter), not for prose; a language tag per line is next. Not yet tested on an unseen book or on photographed scans. |
-| 2. Speech recognition (ASR) | Fine-tuned on Common Voice: Whisper-small 22.7% and Whisper-medium 18.3% word error on the test set. Meta Omnilingual ASR LLM-7B with no training on our data: 9.9% (possible overlap with Meta's training data). Omnilingual LLM-1B fine-tuned on our data: 12.5% (13.4% without training): more training on this data helps little. Next: score a recording from outside Common Voice; more varied training data. |
+| 1. Text extraction (OCR) | A working OCR path for clean printed Nastaliq. Four NOORIN books read in full (Kahawat-Kosh, Banjara, Dil-Darya, Gojri-Ghazal); the machine text is in `data/ocr-output/` for review. On 120 random checked rows of two books: letters 0.60%, marks 5.6%, 173 of 1,314 spaces missing. Word spacing is partly solved for short Gojri idioms, not for prose or verse. Not yet tested on an unseen book or on photographed scans. |
+| 2. Speech recognition (ASR) | Best system: Meta Omnilingual ASR LLM-7B with no training on our data, 9.9% word error on the Common Voice test set. Our best fine-tunes: Omnilingual LLM-1B 12.5%, Whisper-medium 18.3%. A test on recordings from outside Common Voice is built and waits for the speaker's recordings. |
 | 3. Language model and translation | Not started. Waits for more text. |
 | 4. Publish and promote | Three datasets public on Hugging Face (the PDF collection is private). Repository public. |
 
@@ -62,50 +62,83 @@ BaltiVoice project did the same for Balti with 16.8 hours) and the fastest route
   against rows that kept glued words found it adding more wrong spaces than right ones; the two tests differ in
   truth and in book.
   On 2026-11-23 a character n-gram space inserter cut space errors on 100 locked Kahawat-Kosh cards from 116 to 52
-  (precision 90.9%, recall 95.0%). On 55 checked Banjara and Dil-Darya cards it added 32 right and 35 wrong spaces,
-  because much of those books is Urdu. A first Gojri-or-Urdu line tagger reaches 78.4% on group cross-validation
-  (97.5% on lines of 61 or more letters, 51.1% on short idioms); the speaker's prose tags are the real test.
+  (precision 90.9%, recall 95.0%). On 55 checked Banjara and Dil-Darya cards it added 32 right and 35 wrong spaces;
+  52 of those 55 cards sit on rows that the speaker later tagged Urdu. A first Gojri-or-Urdu line tagger reaches 78.4%
+  on group cross-validation (97.5% on lines of 61 or more letters, 51.1% on short idioms).
+- **The speaker's checks of 24 to 26 November** show that the two models do not carry over to these books. The tagger
+  scores 76.1% on 255 prose rows, below "always Gojri" (88.6%). Urdu is about 5% of random rows. On 98 random rows the
+  space model adds 209 spaces, 122 of them right (58%); with a limit to tokens of 8 letters or more, 52 of 67 (78%),
+  but it then finds only 34% of the missing spaces. On 106 verse-row cards it added 79 right and 49 wrong spaces.
+- **A pesh over ک reads as گ.** The PDF draws a different glyph for a true گُ, so the fix needs no model
+  (`scripts/ocr_eval/pdf_marks/gaf_fix.py`). Random-row letter error 0.6% to 0.5%, a small test.
 
 ### Next steps, in order
 
-1. **Score the locked test set.** The 20 pages are built (`data/test-locked/`, from books no design step touched). The
+1. **Finish the Kahawat-Kosh release.** The release table is built (2,383 entries). The speaker checks the 36 flagged
+   fields. Then update `data/ocr-output/` with the fixed run.
+2. **Score the locked test set.** The 20 pages are built (`data/test-locked/`, from books no design step touched). The
    speaker's gold text is pending. Then run the page pipeline once, with no tuning, and publish the number.
-2. **Test on an unseen book and on photographed scans.** Report the result either way. The image-only books (1,153
+3. **Test on an unseen book and on photographed scans.** Report the result either way. The image-only books (1,153
    pages) need this before any bulk run.
-3. **Word spacing and language tags.** The rule is decided (spaces follow meaning) and 200 Kahawat-Kosh cards follow it.
-   The n-gram inserter is built and tested on idioms. Next: tag each prose line as Gojri, Urdu or mixed (the speaker's
-   tags test the tagger), add spaces only to Gojri lines, and test on a second book labelled by meaning.
-4. **Run the NOORIN books in tier order** with PDF marks (dictionaries and glossaries first, then literature, large
-   volumes last), with speaker spot checks on a random sample of each book.
-5. **Speaker review of the OCR text.** The text of four full books is in `data/ocr-output/`. Each page a speaker
+4. **Word spacing.** The rule is decided (spaces follow meaning). The n-gram inserter works on idioms. It is not good
+   enough for prose or verse, and a line language tag does not fix cuts in Urdu words inside Gojri rows. It needs more
+   Gojri text with correct spaces, or another method. The speaker's 170 marked cards and 120 random rows are the test
+   data. The spaces of the 200 dictionary lines wait for the speaker's check.
+5. **Run the NOORIN books in tier order** with PDF marks (dictionaries and glossaries first, then literature, large
+   volumes last), with speaker spot checks on a random sample of each book. Check the mark and گ glyph ids per book.
+6. **Speaker review of the OCR text.** The text of four full books is in `data/ocr-output/`. Each page a speaker
    checks becomes test data and can later train the OCR.
-6. **Publish** the text of books whose rights allow it, with a credit to the source book (`data/pdf-corpus/CREDITS.tsv`).
+7. **Publish** the text of books whose rights allow it, with a credit to the source book (`data/pdf-corpus/CREDITS.tsv`).
 
 ## Stage 2: Speech recognition (ASR)
 
-Fine-tune Whisper on the Common Voice data, following the BaltiVoice recipe (Whisper-small, 16.8 hours, 24.78% word
-error, down from 159% zero-shot). Expect a rough but usable first model.
+### Data
 
-- **Data:** Common Voice Scripted Speech 26.0, Gujari: 11,741 clips, 10.68 hours, 11,081 validated rows. The release
-  page says 7 speakers; our count of `client_id` in `validated.tsv` finds 6. Kept locally, not in this repository.
-- **First baseline (done, 2026-11-20):** Whisper-small fine-tuned on 9,041 clips (3 speakers; the official split has
-  only one training speaker, see `scripts/asr/README.md`). Official `test.tsv`, no identical sentence in training (after normalisation 4 of 623 clips match a training
-  sentence): 22.7% word error,
-  8.3% character error (73.8% and 33.2% without fine-tuning); 21.6% for the three speakers never seen in training.
-  Dev word error was lowest at step 1,500 of 2,500, then rose (overfitting). Next: more speakers and hours, and an
-  error review of the test predictions by a speaker.
-- **Bigger Whisper (2026-11-25):** Whisper-medium, same data and split: 18.3% word error, 6.9% character error; unseen
-  speakers 18.5%. One run.
-- **Meta Omnilingual ASR, zero-shot (2026-11-25):** its language list holds `gju_Arab`. Word error with no training on
-  our data: LLM-300M 14.9%, 1B 13.4%, 3B 12.2%, 7B 9.9%; the CTC-1B model 42.4%. Meta may have trained on these public
-  clips (not checked), so the clean test is a recording from outside Common Voice. Fine-tuning the Omnilingual LLM-1B on our split
-  (`plans/PLAN-omnilingual-finetune-20261126.md`, 2026-11-26): 12.5% word error, from 13.4% without training; the 7B model without training
-  (9.9%) is still better and does not fit full fine-tuning on one `ml.g5.12xlarge`. The training loss fell to near zero while dev error stayed near 13%: the limit is the
-  small, repeated sentence pool and three training voices, not the number of steps.
-- **More data:** new recordings through the normal Common Voice flow (more speakers, past 15 to 20 hours). Sentences
-  from the OCR'd books can be read aloud in future drives.
-- **YouTube audio:** unlabeled, so it is not direct training data. Possible later uses: self-supervised pretraining or
-  pseudo-labeling once a first model exists. Needs audio curation and a licensing check before any public use.
+Common Voice Scripted Speech, Gujari: 11,741 clips, 10.67 to 10.68 hours, 11,081 validated rows, 3,852 validated
+sentences. We hold release 26.0, kept locally. The release page says 7 speakers; our count of `client_id` in
+`validated.tsv` finds 6. Release 27.0 has the same clips and hours (checked 2026-11-28), so a newer download adds no
+data. Our split: train 9,041 clips (3 speakers), dev 475, test 623 (the official test set). See `scripts/asr/README.md`.
+
+### What we learned (all on the 623 test clips, one scorer)
+
+| Model | Trained on our data | Word error | Unseen speakers |
+|---|---|---|---|
+| Omnilingual LLM-7B | no | **9.9%** | 9.6% |
+| Omnilingual LLM-3B | no | 12.2% | 11.2% |
+| Omnilingual LLM-1B | yes | 12.5% | 12.1% |
+| Omnilingual LLM-1B | no | 13.4% | 12.7% |
+| Omnilingual LLM-300M | no | 14.9% | 14.1% |
+| Whisper-medium | yes | 18.3% | 18.5% |
+| Whisper-small | yes | 22.7% | 21.6% |
+| Omnilingual CTC-1B | no | 42.4% | 41.1% |
+
+- A model that already knows Gojri beats our fine-tunes of a model that does not (Whisper has no Gojri token).
+- Fine-tuning LLM-1B gained 0.85 points. Training loss fell to near zero while dev error stayed near 13%. The limit is
+  the small sentence pool and three training voices, not the number of steps.
+- The test set is read-aloud book text. Nothing here measures everyday or free speech.
+- Overlap with Meta's training data (checked 2026-11-28): the paper names Common Voice v22, and Gujari first appears in
+  23.0. Meta's released corpus has no Gujari. Other training sources of the paper are not ruled out.
+
+### Next steps, in order
+
+1. **Own-voice test (ready).** The speaker records 20 to 30 own sentences that are not in Common Voice and types the
+   text before seeing any model output. `scripts/asr/voice_test.py` scores LLM-7B, LLM-1B and the fine-tuned LLM-1B.
+   About 15 to 20 minutes and about $0.50 on AWS.
+2. **A better real-voice test set.** Everyday speech from two or more other Gojri speakers, transcribed by a speaker.
+   Agree on consent and a license before recording. Keep it for testing only.
+3. **Decide the base model** from steps 1 and 2. If the 7B model holds, it is the Gojri baseline and the next work is
+   around it (transcript drafts for new audio, a demo). If its error is much higher on new voices, new data comes first.
+4. **More varied training data**, because more steps will not help:
+   - New speakers and new sentences through Common Voice. Common Voice takes only public-domain (CC0) sentences, so own
+     sentences are usable and text from the books is not, unless the rights holder agrees.
+   - Free speech: record it, let the best model draft the text, and let a speaker correct it. Check this on a small
+     sample first, to see that correcting is faster than typing.
+   - YouTube audio is unlabeled and needs curation and a licensing check before any use.
+5. **Then fine-tune again** with the new data. Open technical items: fine-tune LLM-3B (about 70 GB of GPU memory by
+   estimate); find a parameter-efficient method for the 7B model (whether Meta's recipe supports one is unknown); score
+   the `_v2` model cards, which are not tested. Whisper large-v3 with LoRA is built and has low priority.
+6. **Publish** a short report and, if wanted, a demo. Read the Common Voice terms before releasing any weights trained
+   on that data.
 
 ## Stage 3: Language model and translation
 
@@ -146,9 +179,10 @@ Adapt an existing Urdu-capable model to Gojri with transfer learning (for exampl
 
 ## Cross-cutting
 
-- **Budget.** $150 AWS credit. Cost Explorer (credits excluded), read 2026-11-26: gross usage $31.08 up to 25 November: $0.35 in August, $1.08 in October, $29.64 in November (SageMaker $24.22, Bedrock $5.05, S3 $0.32). The most recent day can lag. SageMaker training rates from the bill: `ml.g5.xlarge` $1.41 per hour,
-  `ml.g5.2xlarge` $1.52, `ml.g5.4xlarge` $2.03. Quotas are one job per instance type, so jobs of different types can run
-  together. The credit goes to GPU runs on SageMaker, not to vision APIs.
+- **Budget.** $150 AWS credit. Cost Explorer (credits excluded), read 2026-11-28: gross usage $57.12 from July to date (SageMaker $50.15, Bedrock $6.48, S3 $0.37, Cost Explorer itself $0.11). No data for 27 and 28 November yet; the most recent days can lag. SageMaker training rates from the bill: `ml.g5.xlarge` $1.41 per hour,
+  `ml.g5.2xlarge` $1.52, `ml.g5.4xlarge` $2.03, `ml.g5.12xlarge` $7.09. Quotas are one job per instance type, so jobs of different types can run
+  together. The credit goes to GPU runs on SageMaker, not to vision APIs. Private S3
+  storage: 29.6 GB on 2026-11-28, 18.2 GB of it two fine-tune checkpoints.
 - **Measure first.** Every new method gets a score on the gold pages or a speaker-checked set before it touches
   corpus text. Report Arabic-letter error for OCR, with its conditions.
 - **Learning.** Each stage is also a chance to learn the ideas behind it as they come up.

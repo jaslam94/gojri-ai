@@ -22,6 +22,24 @@ user reviewed. The reference text for it is `text_fix` in `data/reviews/dictiona
 
 The launch scripts need the environment variable `SAGEMAKER_ROLE_ARN`. Do not commit it.
 
+## Current state (2026-11-28)
+
+The model search below is closed (2026-11-06). The work after it is book OCR, short vowel marks, word spacing and
+speaker checks. Script list: `scripts/README.md`, sections 7 and 8.
+
+| Test | Result | Details |
+|---|---|---|
+| 12 gold pages, page pipeline (development set) | 3.7% Arabic-letter error | below |
+| 120 random rows of Banjara and Dil-Darya, speaker check (run `prose-aws-full2`) | letters 0.60%, marks 5.6%, 173 of 1,314 spaces missing and 9 extra | `data/reviews/random-ocr-rows/` |
+| Kahawat-Kosh short vowel marks from the PDF, 30 cards | mark error 67% to 8% (3 of 36) | `pdf_marks/README.md` |
+| گ read for ک under a pesh, PDF glyph fix | random-row letter error 0.6% to 0.5% (small test) | `pdf_marks/README.md` |
+| Character n-gram space inserter, 100 locked Kahawat-Kosh cards | space errors 116 to 52 | `data/reviews/kahawat-spacing/` |
+| Same model, 98 random rows | 122 of 209 added spaces right (58%); 8-letter limit: 52 of 67 (78%), 34% of missing found | `score_space_rule_random.py` |
+| Gojri-or-Urdu tagger, 255 prose rows | 76.1% accuracy; "always Gojri" 88.6% | `LOG.md`, 2026-11-24 |
+
+Not done: the locked test set (waits for the gold text), an unseen book, photographed scans, and a re-export of
+`data/ocr-output/` with the later fixes.
+
 ## Results so far (2026-11-06)
 
 Arabic-letter error on the 200 lines (1,400 reference letters):

@@ -37,7 +37,7 @@ Please credit FLI and Mozilla Data Collective if you use these files.
 | Obtained from | [Mozilla Common Voice](https://commonvoice.mozilla.org/) / Mozilla Data Collective releases |
 | Release used here | Common Voice corpus **26.0** (folder name `cv-corpus-26.0-2026-06-12`) |
 | License | **CC0** for contributed clips, with Common Voice terms (do not re-host in ways that break speaker privacy / terms) |
-| Notes | Not in this repo (audio and TSV files are gitignored). Download the release from Mozilla into the local path above. |
+| Notes | Not in this repo (audio and TSV files are gitignored). Download the release from Mozilla into the local path above. Gujari first appears in release 23.0; release 27.0 lists the same clips and hours as 26.0 (checked 2026-11-28). |
 
 Please follow Common Voice terms if you train or share models on this data.
 
@@ -47,7 +47,7 @@ Please follow Common Voice terms if you train or share models on this data.
 
 | Folder | Source | Posts | Words | Notes |
 |---|---|---|---|---|
-| `gojrizubanoadab/` | [Gojri Zuban o Adab](https://gojrizubanoadab.blogspot.com/) (owner: Abrar Hussain Gujjar) | 199 | 67,177 | Gojri poetry, prose and translations; part is Urdu. About 78% of the letters tag as Gojri (`scripts/ocr_eval/langid.py`, a rough tag). |
+| `gojrizubanoadab/` | [Gojri Zuban o Adab](https://gojrizubanoadab.blogspot.com/) (owner: Abrar Hussain Gujjar) | 199 | 67,177 | Gojri poetry, prose and translations; part is Urdu. The tagger (`scripts/ocr_eval/langid.py`) calls about 78% of the letters Gojri; a cruder marker-word test finds far less (about 12,000 to 25,000 Gojri words). A person has not checked either. |
 | `rungewatan-hasan/` | [Rang-e-Watan](https://rungewatan.blogspot.com/), label of the poet Chaudhry Hasan-ud-Din | 10 | 607 | Gojri poetry. |
 
 Fetched 2026-11-24 from public pages for non-commercial research. The pages state no license. Only the Gojri parts are kept for use (the blogs also carry Urdu).

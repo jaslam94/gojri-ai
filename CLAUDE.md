@@ -20,8 +20,8 @@ datasets exist (see Status). We research, discuss, and agree on a roadmap togeth
 - Prefers to research and discuss deeply before jumping to implementation.
 
 ## Resources available
-- **Local-only files** (downloaded models, job outputs, third-party tools, scratch data) go in `local/` inside the repository. It is gitignored. Never create project folders in the root of `D:\`. Layout: `local/ocr-tools/` (UTRNet, Kraken, weights), `local/asr-models/` (fine-tuned models), `local/asr-runs/` (job outputs), `local/asr-data/` (converted training data).
-- $150 USD in free AWS credits. Cost Explorer (credits excluded), read 2026-11-26: gross usage $31.08 up to 25 November: $0.35 in August, $1.08 in October, $29.64 in November (SageMaker $24.22, Bedrock $5.05, S3 $0.32). The most recent day can lag.
+- **Local-only files** (downloaded models, job outputs, third-party tools, scratch data) go in `local/` inside the repository. It is gitignored. Never create project folders in the root of `D:\`. Layout: `local/ocr-tools/` (UTRNet clone and weights, Kraken model), `local/asr-models/` (fine-tuned Whisper models), `local/asr-runs/` (outputs of the real ASR jobs), `local/asr-check/` (Whisper-small check: environment, results, label page), `local/voice-test/` (own recordings), `local/asr-data/` (converted training data; `make_parquet.py` makes it again, a copy is on private S3).
+- $150 USD in free AWS credits. Cost Explorer (credits excluded), read 2026-11-28: gross usage $57.12 from July to date (SageMaker $50.15, Bedrock $6.48, S3 $0.37, Cost Explorer itself $0.11). No data for 27 and 28 November yet; the most recent days can lag. Private S3 bucket `gojri-ai-sagemaker-data` held 29.6 GB on 2026-11-28, 18.2 GB of it fine-tune checkpoints.
 
 ## The language: Gojri / Gujari (ISO 639-3: gju)
 - Indo-Aryan language spoken by Gujjar communities across Jammu & Kashmir, Himachal
@@ -94,7 +94,8 @@ datasets exist (see Status). We research, discuss, and agree on a roadmap togeth
   picking one number, likely the 7th speaker's clips live only in `other.tsv` or
   `invalidated.tsv`, not confirmed. Gender field is 'unknown' for all validated rows
   in this release, so gender-based diversity can't be assessed from the data itself.
-  License: CC0 (public domain, no re-hosting/speaker-identification per terms).
+  License: CC0 (public domain, no re-hosting/speaker-identification per terms). Release 27.0 holds the same clips
+  and hours (checked 2026-11-28).
 - `pdfs/`: 64 PDF files on disk after the Nov 2026 dedupe (the manifest still lists 92 rows), dictionaries, textbooks, poetry, folklore, a Quran
   translation, history volumes, etc. See the precise, hash-verified categorization
   and duplicate list further down (not repeated here to avoid two sources of truth).
@@ -530,14 +531,68 @@ do not rebuild it blindly with `scripts/build_manifest.py`.
 ## Status
 Newest first. The dated history is in `docs/TIMELINE.md`; the plan is in `ROADMAP.md`.
 
-**ASR model search (2026-11-25).** Test set: the 623 official Common Voice clips, one scorer for all models (`scripts/asr/`).
-- Word error: Whisper-small fine-tuned 22.7%; Whisper-medium fine-tuned 18.3% (6.9% character error; unseen speakers 18.5%); Meta Omnilingual ASR
-  with no training on our data: LLM-300M 14.9%, 1B 13.4%, 3B 12.2%, 7B 9.9% (3.15% character error; unseen speakers 9.6%), CTC-1B 42.4%.
-  The language tag matters little (7B: Gojri tag 9.9%, no tag 9.9%, Urdu tag 10.5%). Files: `data/asr/results_whisper-medium_2026-11-25.json`,
-  `data/asr/results_omniasr_zero-shot_2026-11-25.json`, `plans/RESEARCH-asr-model-candidates-20261125.md`.
-- **Caveat.** Meta may have trained on these public Common Voice clips (not checked). A recording from outside Common Voice is the clean test; the speaker will make one.
-- Whisper large-v3 with LoRA is built and smoke-tested (`--lora 1` in `sm_whisper_entry.py`); the full run is not started. Omnilingual LLM-1B fine-tuned on our split (2026-11-26, `plans/PLAN-omnilingual-finetune-20261126.md`): 12.5% word error (CER 4.06%; unseen speakers 12.1%), from 13.4% without training; the 7B model without training (9.9%) is still better and does not fit full fine-tuning on one `ml.g5.12xlarge`. Training loss went to nearly zero while dev error stayed near 13%: more steps on this data will not help, more varied text and speakers might. File: `data/asr/results_omniasr_finetune-1b_2026-11-26.json`.
-- Jobs of different instance types can run together (quota is one per type). Billed training rates: `ml.g5.xlarge` $1.41 per hour, `ml.g5.2xlarge` $1.52, `ml.g5.4xlarge` $2.03.
+**ASR (2026-11-25 to 2026-11-28).** Test set: the 623 official Common Voice clips, one scorer for all models
+(`scripts/asr/`). One run and one seed per fine-tune.
+
+| Model | Trained on our data | Word error | Character error | Unseen speakers, word error |
+|---|---|---|---|---|
+| Whisper-small | yes | 22.7% | 8.3% | 21.6% |
+| Whisper-medium | yes | 18.3% | 6.9% | 18.5% |
+| Omnilingual CTC-1B | no | 42.4% | 14.1% | 41.1% |
+| Omnilingual LLM-300M | no | 14.9% | 5.4% | 14.1% |
+| Omnilingual LLM-1B | no | 13.4% | 4.6% | 12.7% |
+| Omnilingual LLM-3B | no | 12.2% | 4.2% | 11.2% |
+| Omnilingual LLM-1B | yes (400 steps) | 12.5% | 4.1% | 12.1% |
+| **Omnilingual LLM-7B** | no | **9.9%** | **3.15%** | **9.6%** |
+
+- Result files: `data/asr/results_*.json`. Notes: `scripts/asr/README.md`, `plans/RESEARCH-asr-model-candidates-20261125.md`,
+  `plans/PLAN-omnilingual-finetune-20261126.md`.
+- Omnilingual tag `gju_Arab`. The tag matters little (7B: Gojri tag 9.9%, no tag 9.9%, Urdu tag 10.5%).
+- Fine-tune of LLM-1B: training loss fell to near zero while dev error stayed near 13%. More steps on this data will
+  not help; more varied text and speakers might. The 7B model does not fit full fine-tuning on one `ml.g5.12xlarge`.
+  LLM-3B fine-tuning is not tried (about 70 GB by estimate). Whisper large-v3 with LoRA is built and smoke-tested
+  (`--lora 1`); the full run is not started. The `_v2` Omnilingual cards are not tested.
+- **Overlap check (2026-11-28).** Meta's paper (arXiv 2511.09690v1, section 3.3.1) lists Common Voice **v22** as a
+  training source. Gujari is not in Common Voice 22.0; it first appears in 23.0 (September 2025; Mozilla's release
+  metadata, checked). Meta's released corpus `facebook/omnilingual-asr-corpus` has no `gju` folder. So these two routes
+  do not hold our test clips. Not excluded: the paper also reports a Common Voice speech fund, internal data and
+  licensed data, we found no data source for Gujari in it, and we found no general removal of test clips. A recording
+  from outside Common Voice is still the clean test.
+- **No new Common Voice data.** The Gujari entry of releases 23.0, 26.0 and 27.0 lists 11,741 clips each. 26.0 (ours)
+  and 27.0 have the same clips, hours (10.67) and validated sentences (3,852).
+- **Own-voice test ready:** `scripts/asr/voice_test.py` (sheet, launch, fetch, score) runs LLM-7B, LLM-1B and the
+  fine-tuned LLM-1B on recordings in `local/voice-test/audio/`. Smoke test on 4 Common Voice clips: 12 of 12 outputs
+  identical to the earlier jobs; 817 billable seconds. Waiting for the speaker's recordings (sentences not in Common
+  Voice; the speaker types the text before seeing any model output).
+- The Whisper-small check of 2026-11-23 (`docs/asr_performance_check.md`): the 22.7% reproduces; the 50 hand labels of
+  its errors are Claude's, and the speaker has not checked them.
+- Jobs of different instance types can run together (quota is one per type). Billed training rates: `ml.g5.xlarge`
+  $1.41 per hour, `ml.g5.2xlarge` $1.52, `ml.g5.4xlarge` $2.03, `ml.g5.12xlarge` $7.09. The Omnilingual fine-tune with
+  its four smoke tests cost $25.93.
+
+**OCR checks, language tags and Kahawat-Kosh (2026-11-24 to 2026-11-26).**
+- **Random rows, the least biased OCR check on these two books.** 120 random rows of Banjara and Dil-Darya checked by the
+  speaker (`data/reviews/random-ocr-rows/`, run `prose-aws-full2`): 42 rows identical; letters 0.60% (31 edits on
+  5,142); marks 5.6% (7 of 126); spaces 173 missing and 9 extra on 1,314. Spaces are the main error.
+- **گ for ک.** A pesh over ک looks like the second stroke of گ. `pdf_marks/gaf_fix.py` uses the PDF glyph of a true گُ.
+  Banjara and Dil-Darya: 229 of 482 rows with گُ change (246 letters); on 14 labeled rows 6 fixed, 0 broken; random-row
+  letter error 0.6% to 0.5% (small test). Kahawat-Kosh: 88 of 125 fields change; 22 of 22 agree with the book's
+  alphabetical order.
+- **Language tags** (`data/reviews/prose-language/`): 262 prose rows, final tags Gojri 229, Urdu 31, same 2. In the 120
+  random rows: 112, 6, 2 (5% Urdu). The free-label tagger fails on prose: on the 255 rows first tagged Gojri or Urdu,
+  76.1% accuracy and Urdu precision 13.6%, while "always Gojri" gives 88.6%.
+- **Space model off Gojri idioms** (`data/reviews/prose-model-space/`): 170 cards marked, 71 accepted. On 106 Gojri-row
+  cards (verse rows) 79 right and 49 wrong spaces. On the random rows (98 with equal letters) 209 added, 122 right
+  (58%), 80% of the missing spaces found; only tokens of 8 letters or more: 67 added, 52 right (78%), 34% found. Not
+  applied to prose.
+- **Kahawat-Kosh release table** (local, not published): run `kahawat-final3` (shadda, گُ fix, 5 اللہ fields fixed by the
+  speaker), `kahawat_release.py --run data/ocr/kahawat-final3`: 2,383 entries on 151 pages, 1,639 idioms with added
+  spaces. 36 fields flagged by rules wait for the speaker (`release_outliers.html`).
+- `data/ocr-output/` still holds the older runs (`kahawat-pdfmarks-v2`, `prose-aws-full2`), without these fixes.
+- The 2.1% UTRNet score ignores spaces. A spacing page for the 200 dictionary lines waits for the speaker.
+- **Text sources** (`plans/RESEARCH-gojri-text-sources-20261124.md`): no clean source above 100,000 words confirmed. One
+  blog (199 posts, about 67,000 words) is fetched; its Gojri share is unknown (the tagger says about 56,000 words, a
+  crude marker test 12,000 to 25,000). A 129-chunk review page waits for the speaker.
 
 **Spacing model, language ID and shadda (2026-11-23).**
 - Character n-gram space inserter (`scripts/ocr_eval/spacing_lm.py`, `spacing_experiment.py`; insert only, letters never
@@ -550,7 +605,7 @@ Newest first. The dated history is in `docs/TIMELINE.md`; the plan is in `ROADMA
 - Language tagger (`scripts/ocr_eval/langid.py`, research note `plans/RESEARCH-urdu-gojri-language-id-and-mixed-spacing.md`):
   free labels, group cross-validation, order 4 character n-gram: 78.4% accuracy, macro F1 76.5, Gojri precision 91%
   and recall 77%. Short idioms 51.1% right, lines of 61 or more letters 97.5%. Marker letters alone: precision 100%,
-  recall 12.6%. The speaker's prose tags are the real test and are pending.
+  recall 12.6%. The speaker's prose tags came on 2026-11-24 (see above).
 - Shadda: `اللّٰہ` keeps its shadda as printed (speaker ruling); 68 of 74 words fixed from the whole-word glyphs, 5 fields
   flagged for the speaker.
 - ASR check: after normalisation 4 of 623 test clips have the same text as a training clip (3 from S6, not in

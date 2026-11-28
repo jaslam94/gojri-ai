@@ -3,6 +3,10 @@
 Goal: find a better base than Whisper-small (22.7% word error, 21.6% on unseen speakers). Optimisation comes later.
 Marks: VERIFIED = I opened the source in this session. MEMORY = from my own knowledge, not checked today.
 
+**Status 2026-11-28.** Steps 1 and 2 of "Order I suggest" are done, and the Omnilingual fine-tune (table below). Open:
+the own-voice test, more speakers and text, Whisper large-v3 (low priority). Overlap check and current next steps:
+`scripts/asr/README.md` and `ROADMAP.md`.
+
 ## Run now
 **Whisper-medium** (769M parameters), same data and split as the small baseline, so the two scores compare directly.
 Job `gojri-asr-whisper-medium-2026-11-25-13-46-21-607`, `ml.g5.xlarge`, batch 8 x 2 accumulation (effective 16),
@@ -32,7 +36,7 @@ gradient checkpointing, lr 1e-5, 2,500 steps, dev check every 250, hard cap 5 ho
 | Omnilingual CTC-1B | none | 42.4% | 14.1% |
 | Omnilingual LLM-1B, fine-tuned on our data (400 steps) | fine-tuned | 12.5% | 4.06% |
 
-Source: `data/asr/results_whisper-medium_2026-11-25.json`, `data/asr/results_omniasr_zero-shot_2026-11-25.json`. Open risk: Meta may have trained on these public Common Voice clips (not checked).
+Source: `data/asr/results_whisper-medium_2026-11-25.json`, `data/asr/results_omniasr_zero-shot_2026-11-25.json`. Open risk: overlap with Meta's training data. Checked 2026-11-28: its Common Voice v22 holds no Gujari; other sources are not ruled out.
 Whisper large-v3 (LoRA) is smoke-tested, not run: Omnilingual-7B already scores below what Whisper-medium reached.
 
 ## Order I suggest

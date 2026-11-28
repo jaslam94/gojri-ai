@@ -1,4 +1,9 @@
-# Model space check, prose (55 of 170 cards)
+# Model space check (170 cards)
+
+Latest marks: `model_space_full_20261125.json` (all 170 cards, with images). The first two sections below describe the
+earlier passes. The speaker later said that the rows of the Gojri-row check are verse, not prose.
+
+## First pass (2026-11-23, 55 cards)
 
 Books: *Banjara* and *Dil-Darya*. The character n-gram space inserter (`scripts/ocr_eval/spacing_lm.py`, config of 2026-11-23) added spaces to
 170 glued OCR tokens (`cards.json`: `id`, `row`, `token`, `proposal`, `context`). The speaker checked the first 55 on 2026-11-23 and wrote the right

@@ -3426,3 +3426,23 @@ Job `gojri-asr-omni-ft-1b-2026-11-26-12-33-47-861`: finished cleanly (training e
 
 ## 2026-11-28: the last two project folders moved into `local/`
 `D:\asr-check` -> `local/asr-check/` and `D:\tmp` -> `local/tmp/` (both made by the ASR performance check session; nothing was running from them). The virtual environment in `asr-check` takes its Python from `asr-check/py310`, so `venv/pyvenv.cfg` and the activate scripts now name the new path; after the move the environment imports torch, transformers and gradio. Its small launchers (`pip.exe`, `gradio.exe`) may still name the old path: use `python -m pip`. Paths updated in `docs/asr_performance_check.md` and the `scripts/asr/perf_check/` docstrings. Old log files inside the folder keep the old paths. The D: root now holds no project folder.
+
+## 2026-11-28: bill for the fine-tune
+Cost Explorer (credits excluded): `ml.g5.12xlarge` $25.93 for 3.6571 h on 26 November = **$7.09 per hour**; that is the real run (9,363 s, $18.44) and the four smoke tests (3,803 s, $7.49). Gross usage from July to date $57.12 (SageMaker $50.15, Bedrock $6.48, S3 $0.37, Cost Explorer $0.11; each Cost Explorer query costs a cent). No data for 27 and 28 November yet.
+
+## 2026-11-28: own-voice test tool, smoke-tested
+`scripts/asr/voice_test.py` (local: sheet, launch, fetch, score) and `scripts/asr/sm_voice/voice_entry.py` (SageMaker, `ml.g5.4xlarge`): recordings in `local/voice-test/audio/` go to private S3; the job transcribes them with LLM-7B and LLM-1B without training and the fine-tuned LLM-1B (checkpoint step 400 from private S3). Output files have the columns `path`, `hypothesis`, as `scripts/asr/perf_check` uses; the score step uses that folder's `asrlib.py` and flags sentences that are in Common Voice.
+- First smoke test (`gojri-asr-voice-2026-11-28-07-00-57-262`, 391 s) failed: I had left out the step that makes `libsndfile` visible to fairseq2. Added from the fine-tune job.
+- Second (`gojri-asr-voice-2026-11-28-07-09-54-865`, 817 s): 4 Common Voice test clips, all three models; **12 of 12 outputs identical** to the earlier jobs, also with the different audio decoder (PyAV). The sheet and score steps work and flag the 4 clips as Common Voice sentences. Cost of both tests at $2.03 per hour: $0.68.
+
+## 2026-11-28: overlap check with Omnilingual's training data
+- Paper arXiv 2511.09690v1 (read through a fetch agent): section 3.3.1 lists Common Voice v22 among the open training datasets. It also reports a Common Voice speech fund, internal data and licensed data. The agent read no per-language source for Gujari and no general removal of evaluation clips from training; the appendix was only partly read.
+- Mozilla release metadata (`common-voice/cv-dataset`, `datasets/scripted-speech/`, downloaded and searched): `cv-corpus-22.0` has no `gju` entry; 23.0 (2025-09-05) lists Gujari as a new language. Gujari totals: 11,741 clips in 23.0, 26.0 and 27.0; 26.0 and 27.0 have the same hours (10.67) and validated sentences (3,852).
+- `facebook/omnilingual-asr-corpus` on Hugging Face: no file or folder with `gju` under `data/`.
+- Meaning: two routes of overlap are closed; others are open. The own-voice test stays the clean test.
+
+## 2026-11-28: documentation update and cleanup of temporary files
+- Docs brought up to date for OCR and ASR (README, ROADMAP, CLAUDE.md, TIMELINE, ASR and OCR READMEs, review and data READMEs, plans, DATA-NOTICE). Re-run on this day and equal to the docs: gold bake-off word error, gold letter error, Kahawat spacing score, split score, 10-page prose score (`--run data/ocr/prose-aws-full2`), space rule on random rows, and the numbers in `data/asr/results_*.json`.
+- Deleted, all regenerable or duplicated: `local/tmp/`; `local/voice-test-smoke/`; `local/asr-data/` (parquet data; copy on private S3, made again by `make_parquet.py`); the smoke-test and failed job folders in `local/asr-runs/` (archives checked against private S3 by size); pip cache, temp folder, duplicate model archive, logs and two scratch scripts in `local/asr-check/`; `data/asr/output/` (same SHA-256 as `local/asr-models/gojri-asr-model/model.tar.gz`); Kraken Python packages in `local/ocr-tools/` (Kraken was behind UTRNet); superseded OCR runs `data/ocr/prose-aws`, `prose-aws-full`, `ghazal-marks7`; Python cache folders in `scripts/`.
+- Kept: models, real job outputs, OCR runs that scripts read, review pages that wait for the speaker. Private S3 was not changed.
+

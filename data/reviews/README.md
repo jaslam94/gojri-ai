@@ -53,10 +53,23 @@ Book: *Kahawat-Kosh*. 200 random idioms with the speaker's text written as words
 
 Read by: `scripts/ocr_eval/score_spacing.py`.
 
+## kahawat-allah/
+
+Book: *Kahawat-Kosh*. The 5 fields where the PDF draws اللّٰہ and the OCR text did not read it. Marked 2026-11-26: all 5
+wrong, with the speaker's text.
+
+Read by: `scripts/ocr_eval/apply_allah_fixes.py`.
+
+## prose-language/
+
+Books: *Banjara* and *Dil-Darya*. The speaker's language tag of 262 rows (final: 229 Gojri, 31 Urdu, 2 the same in both).
+See `prose-language/README.md`.
+
 ## prose-model-space/
 
-Books: *Banjara* and *Dil-Darya*. 55 of 170 glued tokens where the character n-gram space inserter proposes spaces, with the
-speaker's right spaces (2026-11-23): 32 of 67 added spaces right. See `prose-model-space/README.md`.
+Books: *Banjara* and *Dil-Darya*. All 170 glued tokens where the character n-gram space inserter proposes spaces, with the
+speaker's right spaces. Marked in three passes (2026-11-23 to 2026-11-25); the last pass shows the printed row on each
+card: 71 accepted, 99 rejected. See `prose-model-space/README.md`.
 
 ## prose-word-splits/
 
@@ -72,6 +85,13 @@ Books: *Banjara* (pages 12, 60, 150, 300, 450) and *Dil-Darya* (pages 12, 50, 10
 the error types (letters, marks, spaces, crop).
 
 Read by: `scripts/ocr_eval/score_prose_review.py`, `scripts/ocr_eval/space_review.py`.
+
+## random-ocr-rows/
+
+Books: *Banjara* and *Dil-Darya*. 120 random rows from all pages, each with the speaker's text (2026-11-26). The least
+biased OCR measure on these books. See `random-ocr-rows/README.md`.
+
+Read by: `scripts/ocr_eval/score_space_rule_random.py`.
 
 ## How to read the scores
 

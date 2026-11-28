@@ -2,6 +2,9 @@
 
 Date: 2026-11-23. Scope: language identification (LID) for two very close languages in one script with a tiny labelled set, how digitisation projects tag mixed-language text, Urdu word spacing tools, public Urdu text for the Urdu side, and a recommended pipeline. This note continues `plans/RESEARCH-nastaliq-word-spacing.md` and `plans/RESEARCH-gojri-word-spacing-orthography.md`.
 
+**Outcome (2026-11-24).** A character n-gram tagger on free labels reached 78.4% on cross-validation but 76.1% on the
+speaker's tags of 255 prose rows, below "always Gojri" (88.6%). Urdu is about 5% of random rows. See `LOG.md`.
+
 ## Summary
 
 - No public LID model has a Gojri label. GlotLID v4 (2,060 labels), GlotLID v3, OpenLID (201 languages), OpenLID-v2 and NLLB LID have no `gju`. fastText lid.176 and CLD3 have none either. Hindko, Pahari and Potwari have no label in GlotLID. [S3, S5, S8, S9, S10, Read or Fetched]

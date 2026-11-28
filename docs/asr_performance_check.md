@@ -6,6 +6,14 @@ Date: 2026-11-23 and 2026-11-24. Model: `openai/whisper-small`, fine-tuned on Co
 This check trains nothing and uploads nothing. Audio, sentence text and per-clip predictions stay on the local PC.
 Code is in `scripts/asr/perf_check/`.
 
+**Update 2026-11-28.** Better models were scored after this check (best: 9.9% word error, see
+`scripts/asr/README.md`). This report stays about Whisper-small. A tool for the own-voice test of the newer models is
+ready (`scripts/asr/voice_test.py`). A page where the speaker can check the 50 hand labels is built
+(`perf_check/build_label_review.py`; local file `local\asr-check\label_review\review.html`); no marks are saved yet.
+The copy of the model in `data/asr/output/` and the duplicate archive in `local\asr-check\model_tar\` were deleted;
+the same files are in `local\asr-models\gojri-asr-model\` (same SHA-256) and the unpacked model is in
+`local\asr-check\extract\model\`.
+
 ## Result in short
 
 | Question | Answer |
@@ -13,7 +21,7 @@ Code is in `scripts/asr/perf_check/`.
 | Does the reported number reproduce from the saved predictions? | Yes: 22.66% word error (all), 23.38% (seen), 21.57% (unseen). |
 | Does it reproduce from the model and the audio? | Yes, within 0.04 points: 22.62% (all). 615 of 623 clips give identical text. |
 | What is in the errors? | About 10% of all errors are spacing only. About half of the sampled word substitutions are real errors. No empty or looping output. |
-| Own-voice test | **Not done.** It needs JD to record sentences (step 6 below). |
+| Own-voice test | **Not done.** It needs the speaker to record sentences (step 6 below). |
 | Safe claim | Word error near 22% on read-aloud Common Voice sentences from the same books as training. Nothing is shown for free speech. |
 
 ## What was run
@@ -22,7 +30,7 @@ Code is in `scripts/asr/perf_check/`.
 |---|---|
 | Hardware | Intel Core i7-1165G7 (4 cores, 8 threads), 15.7 GB RAM, Windows 10. No GPU: all runs used the CPU. |
 | Software | Python 3.10.5, torch 2.14.1+cpu, torchaudio 2.11.1+cpu, transformers 4.46.3, jiwer 3.0.4, accelerate 1.1.1, numpy 1.26.4, soundfile 0.14.0 (the job used 0.12.1), gradio 6.17.3 (demo only) |
-| Model files | `model.tar.gz` from S3 (425.6 MiB). The copy in `data/asr/output/` is byte-identical (same SHA-256). Weights are fp16 on disk; the run loads them as fp32. |
+| Model files | `model.tar.gz` from S3 (425.6 MiB). A second copy in `data/asr/output/` was byte-identical (same SHA-256; deleted 2026-11-28). Weights are fp16 on disk; the run loads them as fp32. |
 | Test data | The official `test.tsv` (623 clips) from the local Common Voice copy, with the speaker labels of `data/asr/splits/test.tsv`. The sentences equal the job's `test_predictions.tsv` for all 623 clips. The S3 test copy was not downloaded: it is the same files. |
 | Decoding | Language `urdu`, task `transcribe`, `max_new_tokens=128`, greedy search, batch 16. Same as the job. |
 | Scoring | The rule of the job, copied into `scripts/asr/perf_check/asrlib.py`: NFC, combining marks and punctuation removed, ك to ک, ي to ی, ه to ہ, ھ kept apart, spaces collapsed. Same rule on both sides. |
@@ -114,7 +122,7 @@ Hand labels on a random sample of 50 substitutions (seed 20261123), with one lab
 | Spelling variant | 7 | Same word, other accepted spelling (for example وخت and وقت, صحیح and سہی, جنازا and جنازہ) |
 | Unclear | 7 | Word-final nasal or vowel, or ب and پ; cannot decide without the audio |
 
-**These labels are from Claude, not from a native Gojri speaker. JD must check them.** The sample is small: 25 of 50 has a
+**These labels are from Claude, not from a native Gojri speaker. The speaker must check them.** The sample is small: 25 of 50 has a
 95% interval of about 36% to 64%. The sample holds substitutions only, which are 79% of all errors. The file with the
 labels is local (`local\asr-check\analysis_job\sample50_labelled.tsv`) because it holds Common Voice sentence text.
 
@@ -144,7 +152,7 @@ is closed: the fine-tuned model always picks Urdu by itself. The zero-shot base 
 
 ## Step 6: own-voice test (not done)
 
-JD must do this step. Claude cannot record speech or correct Gojri text.
+The speaker must do this step. Claude cannot record speech or correct Gojri text.
 
 1. Record 10 to 20 short Gojri sentences, one file each (phone or microphone, wav or mp3). Use sentences that are not in
    Common Voice. Put the files in one untracked folder, for example `local\asr-check\own_voice`.
@@ -190,7 +198,7 @@ Not deployed.
   Gojri test set here was not used to choose the checkpoint (the dev set was), so the two numbers are not the same kind.
   Languages, data and test sets differ, so do not compare them as a ranking.
 
-## Decision list for JD
+## Decision list for the speaker
 
 1. **Good enough to publish with the limits?** The evidence supports a baseline model card: about 22% word error on
    read-aloud Common Voice sentences, spacing noise included, with the limits above. It does not support any claim about
@@ -202,11 +210,11 @@ Not deployed.
    seen and unseen groups and the intervals above; the Urdu language token; the spacing-noise note; the missing Gojri
    letters; the limits; the AI-use and accuracy notice used in the README and the other Hugging Face cards.
 4. **Repository:** a model repo under `junaidaslam` on Hugging Face. An optional Space with the Gradio app. Both need
-   JD's decision. Nothing was created or uploaded.
+   the speaker's decision. Nothing was created or uploaded.
 
 ## Open items
 
-- Step 6, own-voice recordings and corrections (JD).
-- JD to confirm or change the 50 hand labels (Claude's labels, not a native speaker's).
+- Step 6, own-voice recordings and corrections (speaker).
+- The speaker to confirm or change the 50 hand labels (Claude's labels, not a native speaker's).
 - The zero-shot base model without a forced language was not run.
 - Common Voice terms on model release (decision 2).

@@ -31,6 +31,15 @@ the small "v" of ݨ and ڵ come from the PDF's own mark glyphs (`scripts/ocr_eva
 | Kahawat-Kosh | 60 cards checked by the speaker (`data/reviews/kahawat-*`) | Letter error 2.1% (first 30) and 1.2% (second 30); short vowel marks wrong 3 of 36 and 1 of 69 |
 | Banjara, Dil-Darya | 178 rows on 10 pages (`data/reviews/prose-banjara-dildarya/`) | Letter error 0.8%; marks wrong 12.0% of 117; 152 space edits on 1,522 spaces |
 | Gojri-Ghazal | Gold page 40 (`data/gold/`) | Letter error 1.4%; 11 of 11 readable marks right |
+| Banjara, Dil-Darya | **120 random rows** from all pages, checked 2026-11-26 (`data/reviews/random-ocr-rows/`) | Letter error 0.60% (31 of 5,142); marks wrong 5.6% (7 of 126); 173 of 1,314 spaces missing, 9 extra; 42 rows with no difference |
+
+The random rows are the better estimate for Banjara and Dil-Darya: the 10-page sample is not random. The 10-page score
+is for the current run (`score_prose_review.py --run data/ocr/prose-aws-full2 data/reviews/prose-banjara-dildarya/review_marks.json`,
+a local run folder).
+
+**Fixes made after this export, not yet in these files:** گ read for ک under a pesh (Banjara, Dil-Darya and Kahawat-Kosh;
+method in `scripts/ocr_eval/pdf_marks/README.md`), and for Kahawat-Kosh the shadda of اللّٰہ and
+ڈ read for د under a mark.
 
 The rest is not checked. Known problems: **word spaces** (words run together in tight prose, and some words split);
 marks on letters that the OCR misread; headers and page numbers read as text; Gojri-Ghazal shows 402 takhallus signs,

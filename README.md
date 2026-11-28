@@ -39,10 +39,10 @@ and fine-tune the OCR. See [`CONTRIBUTING.md`](CONTRIBUTING.md).
 | Devanagari to Nastaliq lexicon | Published: 1,862 headwords, 50 checked by the speaker. `data/lexicon/` |
 | OCR for clean printed Nastaliq | Works on born-digital print: see the results below. Not yet tested on a second unseen book or on photographed scans. |
 | Short vowel marks | Taken from the PDF text layer of the NOORIN-font books. Tested on four books; the mark glyphs appear in about 30 books of the collection. |
-| Word spacing | Partly solved for short Gojri idioms, open for prose. On 200 Kahawat-Kosh idioms the OCR text misses 232 of 759 spaces (31%). A character n-gram inserter cut space errors from 116 to 52 on 100 locked idioms. On Banjara and Dil-Darya prose, which is largely Urdu, it adds more wrong spaces than right ones. |
-| Language ID (Gojri or Urdu) | First run on free labels: 78.4% accuracy on group cross-validation. Not yet tested on the speaker's prose tags. |
-| Machine OCR text for review | Published in `data/ocr-output/`: Kahawat-Kosh, Banjara, Dil-Darya and Gojri-Ghazal, mostly unchecked. |
-| ASR | Whisper-small fine-tuned on Common Voice Gujari: 22.7% word error on the official test set (21.6% for speakers not in training). Whisper-medium, same data: 18.3% (18.5% for unseen speakers). One run each. Meta Omnilingual ASR LLM-7B, no training on our data: 9.9% word error (possible overlap with its training data; see `scripts/asr/README.md`). Omnilingual LLM-1B fine-tuned on our split: 12.5% (13.4% without training). |
+| Word spacing | Partly solved for short Gojri idioms, open for prose and verse. On 200 Kahawat-Kosh idioms the OCR text misses 232 of 759 spaces (31%). A character n-gram inserter cut space errors from 116 to 52 on 100 locked idioms. On 98 random rows of two other books only 58% of the spaces it adds are right. |
+| Language ID (Gojri or Urdu) | 78.4% accuracy on group cross-validation of free labels, but 76.1% on the speaker's tags of prose rows, below "always Gojri" (88.6%). Not usable on prose. |
+| Machine OCR text for review | Published in `data/ocr-output/`: Kahawat-Kosh, Banjara, Dil-Darya and Gojri-Ghazal, mostly unchecked. Later fixes (گ and ک, اللّٰہ) are not yet in this export. |
+| ASR | Best: Meta Omnilingual ASR LLM-7B with no training on our data, 9.9% word error on the Common Voice Gujari test set. Fine-tuned on our split: Omnilingual LLM-1B 12.5%, Whisper-medium 18.3%, Whisper-small 22.7% (one run each). A test on recordings from outside Common Voice is built and waits for the recordings. |
 | Language model | Not started. |
 
 The dated history is in [`docs/TIMELINE.md`](docs/TIMELINE.md). The full experiment journal is [`LOG.md`](LOG.md).
@@ -63,9 +63,11 @@ errors.
 | Line-by-line OCR sheet, Kahawat-Kosh page 50 | 0.9% character error, 17.5% word error | 20 gold lines; nearly all word errors are spaces. | `LOG.md`, 2026-10-24 |
 | Word spacing: character n-gram space inserter, 100 locked Kahawat-Kosh cards | Space errors **116 to 52**; precision 90.9%, recall 95.0%; 45 of 79 scored cards exact (24 before) | Short Gojri idioms. Settings chosen by cross-validation on the other 100 cards; scored once. Prose check: of 67 added spaces on 55 Banjara and Dil-Darya cards, 32 right and 35 wrong. | `LOG.md`, 2026-11-23; `data/reviews/kahawat-spacing/test_log.tsv` |
 | Language ID, Gojri or Urdu lines: character n-gram, group cross-validation | 78.4% accuracy, macro F1 76.5; Gojri precision 91%, recall 77% | Labels come free from the sources. Short idioms 51.1% right; lines of 61 or more letters 97.5%. The marker letters ݨ ݩ ڵ alone: Gojri precision 100%, recall 12.6%. | `LOG.md`, 2026-11-23; `plans/RESEARCH-urdu-gojri-language-id-and-mixed-spacing.md` |
+| OCR of random rows (Banjara, Dil-Darya) against the speaker's check | Letters **0.60%** (31 of 5,142), short vowel marks 5.6% (7 of 126); 173 of 1,314 spaces missing and 9 extra; 42 of 120 rows with no difference | 120 random rows from all pages of two born-digital books. These books were used in design work. Rows marked OK count the OCR text as truth. Run before the گ fix. | [`data/reviews/random-ocr-rows/`](data/reviews/random-ocr-rows/README.md) |
+| Language ID on those books: the same tagger against the speaker's tags | 76.1% accuracy; Urdu precision 13.6% ("always Gojri": 88.6%) | 255 prose rows tagged Gojri or Urdu; 142 of the 262 tagged rows come from a few pages. | `LOG.md`, 2026-11-24 |
 | Speech recognition: Whisper-small, fine-tuned | **22.7% word error**, 8.3% character error (no fine-tune: 73.8%, 33.2%); unseen speakers 21.6% | Common Voice Gujari, official test set (623 clips; no identical sentence in training; after normalisation 4 of 623 test clips (0.6%) have the same text as a training clip, 3 of them from speaker S6, who is not in training); 9,041 training clips from 3 speakers; Urdu language token; marks and punctuation removed before scoring; one run. | [`scripts/asr/`](scripts/asr/README.md) |
 | Speech recognition: Whisper-medium, fine-tuned (same data and split) | **18.3% word error**, 6.9% character error (no fine-tune: 72.7%, 34.6%); unseen speakers 18.5% | Same test set and scorer; 2,500 steps; best dev checkpoint at step 1,750; one run. | [`scripts/asr/`](scripts/asr/README.md) |
-| Speech recognition: Meta Omnilingual ASR LLM-7B, zero-shot (no training on our data) | **9.9% word error**, 3.15% character error; unseen speakers 9.6% (LLM-3B 12.2%, LLM-1B 13.4%, LLM-300M 14.9%) | Same 623 test clips and scorer; Gojri tag `gju_Arab`. Meta may have trained on these public clips (not checked), so this may be too good until a recording outside Common Voice is scored. | [`scripts/asr/`](scripts/asr/README.md) |
+| Speech recognition: Meta Omnilingual ASR LLM-7B, zero-shot (no training on our data) | **9.9% word error**, 3.15% character error; unseen speakers 9.6% (LLM-3B 12.2%, LLM-1B 13.4%, LLM-300M 14.9%) | Same 623 test clips and scorer; Gojri tag `gju_Arab`. Meta's paper lists Common Voice v22 as training data, which holds no Gujari (first in 23.0); its other sources are not ruled out. Read-aloud text only. | [`scripts/asr/`](scripts/asr/README.md) |
 | Speech recognition: Meta Omnilingual ASR LLM-1B, fine-tuned on our split (same test set and scorer) | **12.5% word error**, 4.06% character error; unseen speakers 12.1% (the same model without training: 13.4%) | Meta's recipe, 400 steps, checkpoint chosen by dev error; training loss near zero while dev error stayed near 13%, so the model fits the training sentences. One run. | [`scripts/asr/`](scripts/asr/README.md) |
 
 Statements that the data supports, and their limits:
@@ -78,14 +80,16 @@ Statements that the data supports, and their limits:
 - The word-list splitter adds mostly right spaces: 86 of 101 on the 200 Kahawat-Kosh cards and 66 of 72 on the 66
   Banjara and Dil-Darya split checks, with spaces written by meaning. The two tests differ in book and truth, and the
   splitter still leaves 146 of the 232 missing spaces on Kahawat-Kosh, so word spacing stays open.
-- The n-gram space inserter works on short Gojri idioms and fails on code-mixed prose. A language tag per line is the
-  next step.
+- The n-gram space inserter works on short Gojri idioms and does not carry over to prose or verse. The language tagger
+  does not carry over to prose either.
+- On random rows of Banjara and Dil-Darya (born-digital print), letters are in much better shape than word spaces.
 - Re-running: only the gold bake-off can be re-run from this repository alone. The UTRNet 2.1% needs the dictionary
   PDF. The page pipeline needs the SegNet weights (on private S3) and the books. The ASR needs the Common Voice audio
   and an unpublished model. The spacing and language ID results need the local FLI corpus. Small derived files may
   be published later.
-- The ASR baseline is a first result from three training speakers and one run. It is not comparable to results on
-  other languages or test sets.
+- All ASR scores use read-aloud Common Voice sentences from a pool of 3,852 book sentences. Each fine-tune is one run
+  on three training speakers. Nothing is shown for free speech, and the scores are not comparable to other languages or
+  test sets.
 
 ## What did not work
 
@@ -168,6 +172,7 @@ its dropout on at inference; seed 0 gives 29 wrong letters of 1,400 (2.1%).
 - Forum for Language Initiatives (FLI): the Gojri Literature Corpus and Gojri orthography work.
 - Mozilla Common Voice and the Gujari contributors.
 - UTRNet: Abdur Rahman, Arjun Ghosh and Chetan Arora (ICDAR 2023).
+- Meta's Omnilingual ASR and OpenAI's Whisper: the speech models (Apache 2.0 on their Hugging Face pages).
 
 All book content stays under the copyright of its authors and publishers.
 

@@ -41,7 +41,9 @@ want a file or a text removed can open an issue on GitHub.
 | Gojri Literature Corpus (FLI) | Mozilla Data Collective, CC BY-NC 4.0 | Download it from the source. See `datasets/README.md`. |
 | Common Voice Gujari 26.0 | Mozilla Common Voice, CC0 with Common Voice terms | Download it from the source. Do not re-host it or try to identify speakers. |
 | UTRNet code and weights | github.com/abdur75648/UTRNet-High-Resolution-Urdu-Text-Recognition. Non-commercial: its LICENSE file is CC BY-NC 4.0, its README says CC BY-NC-SA 4.0. | Scripts import it from a local clone. |
-| Whisper (openai/whisper-small) | Apache 2.0 (model card on Hugging Face) | Downloaded by the ASR job. |
+| Whisper (openai/whisper-small, whisper-medium, whisper-large-v3) | Apache 2.0 (model cards on Hugging Face) | Downloaded by the ASR jobs. |
+| Meta Omnilingual ASR (models `omniASR_*`) | Apache 2.0 (Hugging Face model pages `facebook/omniASR-*`) | Downloaded by the ASR jobs; the recipe code comes from `facebookresearch/omnilingual-asr`. |
+| Public Gojri blogs | No license stated on the pages | Fetched for non-commercial research, with credit; not re-hosted. See `datasets/README.md`. |
 | Tesseract OCR | Apache 2.0 | Installed separately. |
 | Kraken and its Urdu model | Apache 2.0 | Used only in one comparison script. |
 | Noto Nastaliq Urdu font | SIL Open Font License | Used to render synthetic lines. Not in this repository. |

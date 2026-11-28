@@ -112,14 +112,28 @@ In `ocr_eval/`. Full results: `ocr_eval/README.md`.
 | `ocr_eval/build_spacing_review.py`, `ocr_eval/space_fix.py`, `ocr_eval/space_review.py` | Word spacing: a review page, a word-list splitter, and an accept/reject page for its proposals. |
 | `ocr_eval/score_splits.py` | Scores the splitter against the 66 speaker-checked split cards (`data/reviews/prose-word-splits/`). |
 | `ocr_eval/score_spacing.py` | Letter, mark and space error of the Kahawat-Kosh OCR text against the 200-card spacing review (`data/reviews/kahawat-spacing/`); `--fix 4` also scores the splitter. |
+| `ocr_eval/spacing_lm.py`, `ocr_eval/spacing_experiment.py` | Character n-gram space inserter, and its split, cross-validation and locked test on the Kahawat cards. |
+| `ocr_eval/score_prose_spacing.py`, `ocr_eval/space_review_model.py`, `ocr_eval/score_space_rule_random.py` | The inserter on the prose reviews, the card page for its proposals, and its score on the random rows. |
+| `ocr_eval/langid.py`, `ocr_eval/build_lang_tag_review.py`, `ocr_eval/build_lang_context_review.py` | Gojri-or-Urdu line tagger, and the speaker's tagging pages. |
+| `ocr_eval/build_random_ocr_review.py` | Check page for 120 random OCR rows (`data/reviews/random-ocr-rows/`). |
+| `ocr_eval/build_dictionary_spacing_review.py` | Check page for the word spaces of the 200 dictionary lines (waits for the speaker). |
+| `ocr_eval/pdf_marks/word_glyphs.py`, `ocr_eval/pdf_marks/gaf_fix.py` | Shadda from the whole-word glyphs; گ read for ک under a pesh, fixed with the PDF glyph. |
+| `ocr_eval/launch_marks.py`, `ocr_eval/sm_marks_entry.py` | The Kahawat-Kosh mark step as a SageMaker job. |
+| `ocr_eval/build_allah_review.py`, `ocr_eval/apply_allah_fixes.py` | Check page for the flagged اللّٰہ fields, and the step that writes the speaker's fixes into the run. |
+| `ocr_eval/kahawat_release.py`, `ocr_eval/build_release_outliers.py` | Kahawat-Kosh release table with added idiom spaces, and the check page for fields that look wrong. |
 
-## 9. Speech recognition baseline (Nov 2026, current)
+## 9. Speech recognition (Nov 2026, current)
 
-In `asr/`. See `asr/README.md`.
+In `asr/`. Results and details: `asr/README.md`.
 
 | Script | What it does |
 |---|---|
 | `asr/prepare_cv_split.py` | Common Voice Gujari split (sentence-disjoint from the official test set) and private S3 staging. |
-| `asr/launch_whisper.py`, `asr/sm_whisper/` | Whisper-small fine-tune and scoring as one SageMaker job. |
+| `asr/launch_whisper.py`, `asr/sm_whisper/` | Whisper fine-tune (small, medium; LoRA option for large-v3) and scoring as one SageMaker job. |
+| `asr/launch_omni.py`, `asr/sm_omni/` | Meta Omnilingual ASR with no training, scored on the test set. |
+| `asr/omni_ft/make_parquet.py`, `asr/launch_omni_ft.py`, `asr/sm_omni_ft/` | Data conversion and fine-tune of Omnilingual ASR. |
+| `asr/voice_test.py`, `asr/sm_voice/` | **Current.** Own-voice test: sheet, SageMaker job, download, score. |
+| `asr/perf_check/` | Local check of Whisper-small (`docs/asr_performance_check.md`): scoring, error analysis, label review page, demo. |
+| `asr/transcribe.py` | Runs the trained Whisper model on your own audio (CPU). |
 
 `ocr_eval/requirements.txt` lists the packages for the SageMaker jobs (PyMuPDF, Pillow, NumPy, SciPy).

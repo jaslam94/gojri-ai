@@ -29,7 +29,7 @@ Full fine-tuning with fp32 master weights, gradients and AdamW needs about 16 by
 - `ml.g5.12xlarge`: four 24 GB GPUs (96 GB), quota 1 (VERIFIED in Service Quotas). FSDP can shard LLM-1B comfortably; LLM-3B is tight; LLM-7B does not fit.
 - `ml.g5.48xlarge` quota is 0. Other large types: UNKNOWN.
 So LLM-1B is the first target. LLM-7B needs a larger instance or a parameter-efficient method; whether the recipe supports LoRA is UNKNOWN.
-Price of `ml.g5.12xlarge` is not in our bill yet (rates so far: `g5.xlarge` $1.41, `2xlarge` $1.52, `4xlarge` $2.03 per hour). Check the price before launching.
+Billed price (read 2026-11-28): `ml.g5.12xlarge` $7.09 per hour (`g5.xlarge` $1.41, `2xlarge` $1.52, `4xlarge` $2.03). The fine-tune cost $25.93 in all: the real run 9,363 s ($18.44), the four smoke tests 3,803 s ($7.49).
 
 ## Steps
 1. **Data (local, free).** `scripts/asr/omni_ft/make_parquet.py` converts `data/asr/splits/{train,dev,test}.tsv` (9,041 / 475 / 623 clips; the test split is for scoring only) to the parquet layout with `corpus=cv`, `language=gju_Arab`, flac at 16 kHz mono, plus the summary TSV and the dataset card. Text: NFC, punctuation removed, short vowel marks kept (the scorer removes marks on both sides, so they do not change the score).
@@ -41,7 +41,7 @@ Price of `ml.g5.12xlarge` is not in our bill yet (rates so far: `g5.xlarge` $1.4
 
 ## Risks
 - Only 3 training speakers and book-style text; the model may learn the sentence pool. The unseen-speaker split in the score guards speakers, not text.
-- Meta may have trained on these public clips (not checked), so the zero-shot baseline and the gain from fine-tuning are both unclear until a recording from outside Common Voice is scored.
+- Meta may have trained on these clips, so the zero-shot baseline and the gain from fine-tuning are both unclear until a recording from outside Common Voice is scored. (Checked 2026-11-28: the paper's Common Voice v22 holds no Gujari, which first appears in 23.0; its other sources are not ruled out. See `scripts/asr/README.md`.)
 - fairseq2 0.6 needs the CUDA 12.8 build of PyTorch 2.8.0; the SageMaker image ships the CUDA 12.9 build. `omni_entry.py` already reinstalls it.
 - Our first fine-tune may run into recipe details only the smoke test shows (checkpoint format, asset card for a local checkpoint). Each failure of that kind costs a short job.
 
